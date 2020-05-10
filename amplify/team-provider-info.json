@@ -1,14 +1,38 @@
 {
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-tennisnow-master-201714-authRole",
+            "UnauthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-master-201714-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-master-201714-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-tennisnow-master-201714-deployment",
+            "UnauthRoleName": "amplify-tennisnow-master-201714-unauthRole",
+            "StackName": "amplify-tennisnow-master-201714",
+            "StackId": "arn:aws:cloudformation:us-east-1:651151937914:stack/amplify-tennisnow-master-201714/cfe4c570-92af-11ea-91a8-0a54954134e7",
+            "AmplifyAppId": "d3rzxqf6swku6l"
+        },
+        "categories": {
+            "auth": {
+                "tennisnowf00afd25": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d3rzxqf6swku6l",
+                    "type": "cicd"
+                }
+            }
+        }
+    },
     "develop": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-tennisnow-develop-184319-authRole",
-            "UnauthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-develop-184319-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-develop-184319-authRole",
+            "AuthRoleName": "amplify-tennisnow-develop-213320-authRole",
+            "UnauthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-develop-213320-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-develop-213320-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-tennisnow-develop-184319-deployment",
-            "UnauthRoleName": "amplify-tennisnow-develop-184319-unauthRole",
-            "StackName": "amplify-tennisnow-develop-184319",
-            "StackId": "arn:aws:cloudformation:us-east-1:651151937914:stack/amplify-tennisnow-develop-184319/b2e2b2a0-92a2-11ea-aaf1-0abd62a7624a",
+            "DeploymentBucketName": "amplify-tennisnow-develop-213320-deployment",
+            "UnauthRoleName": "amplify-tennisnow-develop-213320-unauthRole",
+            "StackName": "amplify-tennisnow-develop-213320",
+            "StackId": "arn:aws:cloudformation:us-east-1:651151937914:stack/amplify-tennisnow-develop-213320/760f2da0-92ba-11ea-927b-0e4a688d3275",
             "AmplifyAppId": "d3rzxqf6swku6l"
         },
         "categories": {
