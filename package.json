@@ -33,8 +33,6 @@
     "test": "react-scripts test",
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "deploy": "aws s3 sync build/ s3://beta.tennisnow.net --cache-control no-cache --exclude 'static/*' --delete; aws s3 sync build/ s3://beta.tennisnow.net --cache-control max-age=31536000 --exclude '*' --include 'static/*' --delete",
-    "deploy:prod": "aws s3 sync build/ s3://tennisnow.net --cache-control no-cache --exclude 'static/*' --delete; aws s3 sync build/ s3://tennisnow.net --cache-control max-age=31536000 --exclude '*' --include 'static/*' --delete",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

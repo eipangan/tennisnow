@@ -38,11 +38,3 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 Shows a source map explorer of all the bundiles in the output build static directory.
 This should be ran after build
 
-### `npm run deploy` 
-
-Deploys the app from build directory to [https://beta.tennisnow.net](https://beta.tennisnow.net).<br>
-This is where we test the app before actually deploying it to production.
-
-### `npm run deploy:prod` 
-
-Deploys the app from build directory to [https://tennisnow.net](https://tennisnow.net). 
