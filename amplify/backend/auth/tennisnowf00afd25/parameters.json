@@ -47,5 +47,5 @@
     "useDefault": "default",
     "userPoolGroupList": [],
     "dependsOn": [],
-    "hostedUI": true
+    "hostedUI": false
 }
