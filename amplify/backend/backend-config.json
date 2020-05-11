@@ -1,16 +1,16 @@
 {
-	"auth": {
-		"tennisnowf00afd25": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	},
-	"api": {},
-	"hosting": {
-		"amplifyhosting": {
-			"service": "amplifyhosting",
-			"type": "cicd"
-		}
-	}
+    "auth": {
+        "tennisnowf00afd25": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
+        }
+    },
+    "api": {},
+    "hosting": {
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "type": "cicd"
+        }
+    }
 }
