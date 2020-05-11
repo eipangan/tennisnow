@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
+    "@aws-amplify/ui-react": "^0.2.5",
     "@testing-library/jest-dom": "^5.7.0",
     "@types/jest": "^25.2.1",
     "@types/lodash": "^4.14.150",
@@ -12,6 +13,7 @@
     "@types/react-dom": "^16.9.7",
     "@types/react-router-dom": "^5.1.5",
     "antd": "^4.2.0",
+    "aws-amplify": "^3.0.10",
     "dayjs": "^1.8.26",
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",

@@ -1,22 +1,19 @@
-import {
-  CopyrightCircleOutlined, DeleteOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined,
-} from '@ant-design/icons';
-import {
-  Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag,
-} from 'antd';
+import { CopyrightCircleOutlined, DeleteOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined } from '@ant-design/icons';
+import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
+import Amplify from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import calendar from 'dayjs/plugin/calendar';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, {
-  Dispatch, SetStateAction, Suspense, useEffect, useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
+import awsconfig from './aws-exports';
 import { EventType, getNewEvent } from './components/event/Event';
 import { ThemeType } from './components/utils/Theme';
 import { useLocalStorage } from './components/utils/Utils';
@@ -45,6 +42,9 @@ dayjs.updateLocale('en', {
     sameElse: 'lll',
   },
 });
+
+// initialize amplify
+Amplify.configure(awsconfig);
 
 const useStyles = createUseStyles((theme: ThemeType) => ({
   app: {
@@ -271,21 +271,21 @@ const App = (): JSX.Element => {
               </Suspense>
             </Route>
             <Route path="/">
-              <>
-                <PageHeader
-                  className={classes.appHeader}
-                  title={(
-                    <img
-                      src={title}
-                      alt={t('title')}
-                      width="180px"
-                      height="32px"
-                    />
-                  )}
-                  extra={[
-                    <NewEventButton key="new" />,
-                  ]}
-                />
+              <PageHeader
+                className={classes.appHeader}
+                title={(
+                  <img
+                    src={title}
+                    alt={t('title')}
+                    width="180px"
+                    height="32px"
+                  />
+                )}
+                extra={[
+                  <NewEventButton key="new" />,
+                ]}
+              />
+              <AmplifyAuthenticator>
                 <Tabs
                   className={classes.appEvents}
                   defaultActiveKey="upoming"
@@ -307,7 +307,8 @@ const App = (): JSX.Element => {
                     />
                   </TabPane>
                 </Tabs>
-              </>
+                <AmplifySignOut />
+              </AmplifyAuthenticator>
             </Route>
           </Switch>
           {(() => {
