@@ -184,7 +184,7 @@ const App = (): JSX.Element => {
 
   const UserButton = () => {
     let icon = user ? <UserOutlined /> : <LoginOutlined />;
-    let label = user || t('login');
+    let label = user || t('signin');
 
     return (
       <Button

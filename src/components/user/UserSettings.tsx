@@ -42,21 +42,21 @@ const UserSettings = (): JSX.Element => {
         <Popconfirm
           cancelText={t('cancel')}
           icon={<QuestionCircleOutlined />}
-          key="logout"
-          okText={t('logout')}
+          key="signout"
+          okText={t('signout')}
           onCancel={(e) => { if (e) e.stopPropagation(); }}
           onConfirm={(e) => {
             Auth.signOut();
             if (e) e.stopPropagation();
           }}
-          title={t('logoutConfirm')}
+          title={t('signoutConfirm')}
         >
           <Button
             icon={<LogoutOutlined />}
             onClick={(e) => e.stopPropagation()}
             type="primary"
           >
-            {t('logout')}
+            {t('signout')}
           </Button>
         </Popconfirm>
       </AmplifyAuthenticator>
