@@ -1,6 +1,6 @@
-import { CopyrightCircleOutlined, DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
+import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
-import Amplify from 'aws-amplify';
+import Amplify, { Auth } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import calendar from 'dayjs/plugin/calendar';
@@ -117,6 +117,7 @@ const App = (): JSX.Element => {
   const [event, setEvent] = useLocalStorage('event', getNewEvent());
   const [isSettingsVisible, setIsSettingsVisible] = useState<boolean>(false);
   const [isAuthVisible, setIsAuthVisible] = useState<boolean>(false);
+  const [user, setUser] = useState<string | undefined>(undefined);
 
   const { TabPane } = Tabs;
 
@@ -180,6 +181,21 @@ const App = (): JSX.Element => {
       icon={<PlusOutlined />}
     />
   );
+
+  const UserButton = () => {
+    let icon = user ? <UserOutlined /> : <LoginOutlined />;
+    let label = user || t('login');
+
+    return (
+      <Button
+        icon={icon}
+        key="user"
+        onClick={() => setIsAuthVisible(true)}
+      >
+        {label}
+      </Button>
+    )
+  }
 
   const EmptyEvents = () => (
     <Empty
@@ -253,6 +269,16 @@ const App = (): JSX.Element => {
   };
 
   useEffect(() => {
+    Auth.currentAuthenticatedUser()
+      .then(((user) => {
+        setUser(user['username']);
+      }))
+      .catch(() => {
+        setUser(undefined);
+      });
+  }, [isAuthVisible]);
+
+  useEffect(() => {
     i18n.changeLanguage(navigator.language);
   }, [i18n]);
 
@@ -267,6 +293,9 @@ const App = (): JSX.Element => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
+
+  useEffect(() => {
+  }, [user])
 
   return (
     <div className={classes.app}>
@@ -290,12 +319,7 @@ const App = (): JSX.Element => {
                   />
                 )}
                 extra={[
-                  <Button
-                    icon={<UserOutlined />}
-                    key="user"
-                    shape="circle"
-                    onClick={() => setIsAuthVisible(true)}
-                  />,
+                  <UserButton key="user" />,
                 ]}
               />
               <Tabs
