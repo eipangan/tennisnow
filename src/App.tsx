@@ -1,5 +1,4 @@
-import { CopyrightCircleOutlined, DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined } from '@ant-design/icons';
-import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { CopyrightCircleOutlined, DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
 import Amplify from 'aws-amplify';
 import dayjs from 'dayjs';
@@ -21,6 +20,7 @@ import title from './title720x128.png';
 
 const Event = React.lazy(() => import('./components/event/Event'));
 const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
+const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -98,6 +98,8 @@ export interface AppContextType {
   setEvent: Dispatch<SetStateAction<EventType>> | (() => {}),
   isSettingsVisible: boolean,
   setIsSettingsVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
+  isAuthVisible: boolean,
+  setIsAuthVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
 }
 
 export const AppContext = React.createContext({} as AppContextType);
@@ -114,6 +116,7 @@ const App = (): JSX.Element => {
   const [events, setEvents] = useLocalStorage('events', []);
   const [event, setEvent] = useLocalStorage('event', getNewEvent());
   const [isSettingsVisible, setIsSettingsVisible] = useState<boolean>(false);
+  const [isAuthVisible, setIsAuthVisible] = useState<boolean>(false);
 
   const { TabPane } = Tabs;
 
@@ -162,6 +165,8 @@ const App = (): JSX.Element => {
     setEvent,
     isSettingsVisible,
     setIsSettingsVisible,
+    isAuthVisible,
+    setIsAuthVisible,
   };
 
   const NewEventButton = () => (
@@ -285,45 +290,46 @@ const App = (): JSX.Element => {
                   />
                 )}
                 extra={[
-                  <AmplifySignOut />,
+                  <Button
+                    icon={<UserOutlined />}
+                    key="user"
+                    shape="circle"
+                    onClick={() => setIsAuthVisible(true)}
+                  />,
                 ]}
               />
-              <AmplifyAuthenticator>
-                <Tabs
-                  className={classes.appEventsTab}
-                  defaultActiveKey="upoming"
-                  tabBarExtraContent={<NewEventButton />}
-                >
-                  <TabPane key="events" tab={t('events')}>
-                    <EventsList
-                      data={events
-                        .filter((a: EventType) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
-                        // eslint-disable-next-line max-len
-                        .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
-                    />
-                  </TabPane>
-                  <TabPane key="finished" tab={t('finished')}>
-                    <EventsList
-                      data={events
-                        .filter((a: EventType) => dayjs(a.date).isBefore(dayjs().startOf('day')))
-                        // eslint-disable-next-line max-len
-                        .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
-                    />
-                  </TabPane>
-                </Tabs>
-              </AmplifyAuthenticator>
+              <Tabs
+                className={classes.appEventsTab}
+                defaultActiveKey="upoming"
+                tabBarExtraContent={<NewEventButton />}
+              >
+                <TabPane key="events" tab={t('events')}>
+                  <EventsList
+                    data={events
+                      .filter((a: EventType) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
+                      // eslint-disable-next-line max-len
+                      .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
+                  />
+                </TabPane>
+                <TabPane key="finished" tab={t('finished')}>
+                  <EventsList
+                    data={events
+                      .filter((a: EventType) => dayjs(a.date).isBefore(dayjs().startOf('day')))
+                      // eslint-disable-next-line max-len
+                      .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
+                  />
+                </TabPane>
+              </Tabs>
             </Route>
           </Switch>
-          {(() => {
-            if (isSettingsVisible) {
-              return (
-                <Suspense fallback={<div className="loader" />}>
-                  <EventSettings />
-                </Suspense>
-              );
-            }
-            return <></>;
-          })()}
+          <Suspense fallback={<div className="loader" />}>
+            {(() => {
+              if (isSettingsVisible) return <EventSettings />;
+            })()}
+            {(() => {
+              if (isAuthVisible) return <UserSettings />;
+            })()}
+          </Suspense>
         </AppContext.Provider>
       </div>
       <div className={classes.appFooter}>
