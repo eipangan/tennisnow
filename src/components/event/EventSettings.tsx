@@ -46,7 +46,7 @@ const EventSettings = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const {
-    event, setEvent, isSettingsVisible, setIsSettingsVisible,
+    event, setEvent, isEventSettingsVisible, setIsEventSettingsVisible,
   } = useContext(AppContext);
   const [myEvent, setMyEvent] = useState<EventType>(cloneDeep(event));
   const { Panel } = Collapse;
@@ -154,10 +154,10 @@ const EventSettings = (): JSX.Element => {
     <Drawer
       className={classes.eventSettings}
       getContainer={false}
-      onClose={() => setIsSettingsVisible(false)}
+      onClose={() => setIsEventSettingsVisible(false)}
       placement="right"
       title={t('eventSettings')}
-      visible={isSettingsVisible}
+      visible={isEventSettingsVisible}
       width={324}
     >
       <Form
@@ -300,7 +300,7 @@ const EventSettings = (): JSX.Element => {
         <div className={classes.eventSettingsRow}>
           <Button
             icon={<CloseOutlined />}
-            onClick={() => setIsSettingsVisible(false)}
+            onClick={() => setIsEventSettingsVisible(false)}
           >
             {t('cancel')}
           </Button>
@@ -313,7 +313,7 @@ const EventSettings = (): JSX.Element => {
                 myEvent.eventID = generateUUID();
               }
               setEvent({ ...myEvent });
-              setIsSettingsVisible(false);
+              setIsEventSettingsVisible(false);
             }}
           >
             {t('ok')}

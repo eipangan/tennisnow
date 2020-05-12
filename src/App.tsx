@@ -102,10 +102,10 @@ export interface AppContextType {
   },
   event: EventType,
   setEvent: Dispatch<SetStateAction<EventType>> | (() => {}),
-  isSettingsVisible: boolean,
-  setIsSettingsVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
-  isAuthVisible: boolean,
-  setIsAuthVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
+  isEventSettingsVisible: boolean,
+  setIsEventSettingsVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
+  isUserSettingsVisible: boolean,
+  setIsUserSettingsVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
 }
 
 export const AppContext = React.createContext({} as AppContextType);
@@ -121,8 +121,8 @@ const App = (): JSX.Element => {
 
   const [events, setEvents] = useLocalStorage('events', []);
   const [event, setEvent] = useLocalStorage('event', getNewEvent());
-  const [isSettingsVisible, setIsSettingsVisible] = useState<boolean>(false);
-  const [isAuthVisible, setIsAuthVisible] = useState<boolean>(false);
+  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
+  const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<string | undefined>(undefined);
 
   const { TabPane } = Tabs;
@@ -170,17 +170,17 @@ const App = (): JSX.Element => {
     },
     event,
     setEvent,
-    isSettingsVisible,
-    setIsSettingsVisible,
-    isAuthVisible,
-    setIsAuthVisible,
+    isEventSettingsVisible,
+    setIsEventSettingsVisible,
+    isUserSettingsVisible,
+    setIsUserSettingsVisible,
   };
 
   const NewEventButton = () => (
     <Button
       onClick={(e) => {
         setEvent(getNewEvent());
-        setIsSettingsVisible(true);
+        setIsEventSettingsVisible(true);
         e.stopPropagation();
       }}
       type="primary"
@@ -196,7 +196,7 @@ const App = (): JSX.Element => {
       <Button
         icon={icon}
         key="user"
-        onClick={() => setIsAuthVisible(true)}
+        onClick={() => setIsUserSettingsVisible(true)}
       >
         {label}
       </Button>
@@ -257,7 +257,7 @@ const App = (): JSX.Element => {
                 key="setting"
                 onClick={(e) => {
                   setEvent(myEvent);
-                  setIsSettingsVisible(true);
+                  setIsEventSettingsVisible(true);
                   e.stopPropagation();
                 }}
                 shape="circle"
@@ -282,7 +282,7 @@ const App = (): JSX.Element => {
       .catch(() => {
         setUser(undefined);
       });
-  }, [isAuthVisible]);
+  }, [isUserSettingsVisible]);
 
   useEffect(() => {
     i18n.changeLanguage(navigator.language);
@@ -352,11 +352,11 @@ const App = (): JSX.Element => {
           </Switch>
           <Suspense fallback={<div className="loader" />}>
             {(() => {
-              if (isSettingsVisible) return <EventSettings />;
+              if (isEventSettingsVisible) return <EventSettings />;
               return null;
             })()}
             {(() => {
-              if (isAuthVisible) return <UserSettings />;
+              if (isUserSettingsVisible) return <UserSettings />;
               return null;
             })()}
           </Suspense>

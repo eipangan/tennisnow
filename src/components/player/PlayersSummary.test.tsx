@@ -34,10 +34,10 @@ const app: AppContextType = {
   },
   event: getNewEvent(),
   setEvent: () => { },
-  isSettingsVisible: false,
-  setIsSettingsVisible: () => { },
-  isAuthVisible: false,
-  setIsAuthVisible: () => { },
+  isEventSettingsVisible: false,
+  setIsEventSettingsVisible: () => { },
+  isUserSettingsVisible: false,
+  setIsUserSettingsVisible: () => { },
 };
 
 test('renders without crashing', async () => {

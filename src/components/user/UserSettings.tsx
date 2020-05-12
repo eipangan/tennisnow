@@ -25,17 +25,17 @@ const UserSettings = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const {
-    isAuthVisible, setIsAuthVisible,
+    isUserSettingsVisible, setIsUserSettingsVisible,
   } = useContext(AppContext);
 
   return (
     <Drawer
       className={classes.authPanel}
       getContainer={false}
-      onClose={() => setIsAuthVisible(false)}
+      onClose={() => setIsUserSettingsVisible(false)}
       placement="left"
       title={t('userSettings')}
-      visible={isAuthVisible}
+      visible={isUserSettingsVisible}
       width={360}
     >
       <AmplifyAuthenticator>

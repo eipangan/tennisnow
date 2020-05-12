@@ -85,7 +85,7 @@ const Event = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const {
-    events, event, setEvent, setIsSettingsVisible,
+    events, event, setEvent, setIsEventSettingsVisible,
   } = useContext(AppContext);
 
   return (
@@ -122,7 +122,7 @@ const Event = (): JSX.Element => {
           <Button
             icon={<SettingOutlined />}
             key="setting"
-            onClick={() => setIsSettingsVisible(true)}
+            onClick={() => setIsEventSettingsVisible(true)}
             shape="circle"
           />,
         ]}

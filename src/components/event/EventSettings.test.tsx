@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext } from '../../App';
+import { AppContext, AppContextType } from '../../App';
 import { theme } from '../utils/Theme';
 import { EventType, getNewEvent } from './Event';
 import EventSettings from './EventSettings';
@@ -26,7 +26,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 test('renders without crashing', async () => {
-  const app = {
+  const app: AppContextType = {
     events: {
       add: (event: EventType): boolean => true,
       get: (eventID: string | undefined): EventType | undefined => undefined,
@@ -35,10 +35,10 @@ test('renders without crashing', async () => {
     },
     event: getNewEvent(),
     setEvent: () => { },
-    isSettingsVisible: true,
-    setIsSettingsVisible: () => { },
-    isAuthVisible: false,
-    setIsAuthVisible: () => { },
+    isEventSettingsVisible: true,
+    setIsEventSettingsVisible: () => { },
+    isUserSettingsVisible: false,
+    setIsUserSettingsVisible: () => { },
   };
 
   render(
