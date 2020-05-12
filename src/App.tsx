@@ -197,6 +197,7 @@ const App = (): JSX.Element => {
         icon={icon}
         key="user"
         onClick={() => setIsUserSettingsVisible(true)}
+        shape="round"
       >
         {label}
       </Button>

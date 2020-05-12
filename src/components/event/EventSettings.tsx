@@ -273,21 +273,20 @@ const EventSettings = (): JSX.Element => {
                 }}
                 >
                   <Button
+                    type="link"
                     onClick={(e) => {
                       clearNames();
                       e.stopPropagation();
                     }}
-                    type="link"
                   >
                     {t('clearNames')}
                   </Button>
-                  <div style={{ width: '12px' }} />
                   <Button
+                    type="link"
                     onClick={(e) => {
                       randomizeOrder();
                       e.stopPropagation();
                     }}
-                    type="link"
                   >
                     {t('randomizeOrder')}
                   </Button>
@@ -301,12 +300,14 @@ const EventSettings = (): JSX.Element => {
           <Button
             icon={<CloseOutlined />}
             onClick={() => setIsEventSettingsVisible(false)}
+            shape="round"
           >
             {t('cancel')}
           </Button>
           <div style={{ width: '12px' }} />
           <Button
             icon={<CheckOutlined />}
+            shape="round"
             type="primary"
             onClick={() => {
               if (!event.eventID) {

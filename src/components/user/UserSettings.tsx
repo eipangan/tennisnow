@@ -54,6 +54,7 @@ const UserSettings = (): JSX.Element => {
           <Button
             icon={<LogoutOutlined />}
             onClick={(e) => e.stopPropagation()}
+            shape="round"
             type="primary"
           >
             {t('signout')}
