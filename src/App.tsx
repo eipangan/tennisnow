@@ -1,5 +1,9 @@
-import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
+import {
+  CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined,
+} from '@ant-design/icons';
+import {
+  Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag,
+} from 'antd';
 import Amplify, { Auth } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -7,7 +11,9 @@ import calendar from 'dayjs/plugin/calendar';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react';
+import React, {
+  Dispatch, SetStateAction, Suspense, useEffect, useState,
+} from 'react';
 import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -183,8 +189,8 @@ const App = (): JSX.Element => {
   );
 
   const UserButton = () => {
-    let icon = user ? <UserOutlined /> : <LoginOutlined />;
-    let label = user || t('signin');
+    const icon = user ? <UserOutlined /> : <LoginOutlined />;
+    const label = user || t('signin');
 
     return (
       <Button
@@ -194,8 +200,8 @@ const App = (): JSX.Element => {
       >
         {label}
       </Button>
-    )
-  }
+    );
+  };
 
   const EmptyEvents = () => (
     <Empty
@@ -270,8 +276,8 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
-      .then(((user) => {
-        setUser(user['username']);
+      .then(((myUser) => {
+        setUser(myUser.username);
       }))
       .catch(() => {
         setUser(undefined);
@@ -295,7 +301,7 @@ const App = (): JSX.Element => {
   }, [event]);
 
   useEffect(() => {
-  }, [user])
+  }, [user]);
 
   return (
     <div className={classes.app}>
@@ -331,7 +337,6 @@ const App = (): JSX.Element => {
                   <EventsList
                     data={events
                       .filter((a: EventType) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
-                      // eslint-disable-next-line max-len
                       .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
                   />
                 </TabPane>
@@ -339,7 +344,6 @@ const App = (): JSX.Element => {
                   <EventsList
                     data={events
                       .filter((a: EventType) => dayjs(a.date).isBefore(dayjs().startOf('day')))
-                      // eslint-disable-next-line max-len
                       .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
                   />
                 </TabPane>
@@ -349,9 +353,11 @@ const App = (): JSX.Element => {
           <Suspense fallback={<div className="loader" />}>
             {(() => {
               if (isSettingsVisible) return <EventSettings />;
+              return null;
             })()}
             {(() => {
               if (isAuthVisible) return <UserSettings />;
+              return null;
             })()}
           </Suspense>
         </AppContext.Provider>
@@ -372,7 +378,7 @@ const App = (): JSX.Element => {
           </Tag>
         </a>
       </div>
-    </div >
+    </div>
   );
 };
 

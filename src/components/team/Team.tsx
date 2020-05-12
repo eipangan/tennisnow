@@ -1,8 +1,8 @@
 import React, { StrictMode, useContext } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
+import { AppContext } from '../../App';
 import Player, { CompetitorStats, PlayerType } from '../player/Player';
 import { ThemeType } from '../utils/Theme';
-import { AppContext } from '../../App';
 
 const useStyle = createUseStyles((theme: ThemeType) => {
   const team = {

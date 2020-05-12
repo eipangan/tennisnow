@@ -1,12 +1,12 @@
 import React, { StrictMode, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { AppContext } from '../../App';
 import { PlayerType } from '../player/Player';
 import Team, {
   recordDraw, recordLoss, recordWin, TeamType, undoDraw, undoLoss, undoWin,
 } from '../team/Team';
 import { ThemeType } from '../utils/Theme';
-import { AppContext } from '../../App';
 
 const useStyles = createUseStyles((theme: ThemeType) => {
   const matchRowCommon = {
