@@ -1,5 +1,7 @@
-import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
-import { Drawer } from 'antd';
+import { LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { AmplifyAuthenticator } from '@aws-amplify/ui-react';
+import { Button, Drawer, Popconfirm } from 'antd';
+import { Auth } from 'aws-amplify';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -37,7 +39,26 @@ const UserSettings = (): JSX.Element => {
       width={360}
     >
       <AmplifyAuthenticator>
-        <AmplifySignOut />
+        <Popconfirm
+          cancelText={t('cancel')}
+          icon={<QuestionCircleOutlined />}
+          key="logout"
+          okText={t('logout')}
+          onCancel={(e) => { if (e) e.stopPropagation(); }}
+          onConfirm={(e) => {
+            Auth.signOut();
+            if (e) e.stopPropagation();
+          }}
+          title={t('logoutConfirm')}
+        >
+          <Button
+            icon={<LogoutOutlined />}
+            onClick={(e) => e.stopPropagation()}
+            type="primary"
+          >
+            {t('logout')}
+          </Button>
+        </Popconfirm>
       </AmplifyAuthenticator>
     </Drawer>
   );

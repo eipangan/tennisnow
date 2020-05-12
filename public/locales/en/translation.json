@@ -10,6 +10,8 @@
   "eventSettings": "Event Settings",
   "eventSummary": "1 court, {{numPlayers}} players, random pairs",
   "finished": "Finished",
+  "logout": "Logout",
+  "logoutConfirm": "Are you sure you want to logout?",
   "lost": "Lost",
   "name": "Name",
   "newEvent": "New Event",
