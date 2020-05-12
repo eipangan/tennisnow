@@ -191,6 +191,8 @@ const App = (): JSX.Element => {
   const UserButton = () => {
     const icon = user ? <UserOutlined /> : <LoginOutlined />;
     const label = user || t('signin');
+    const type = user ? 'default' : 'primary';
+    const style = user ? { background: '#ffffff50' } : {};
 
     return (
       <Button
@@ -198,6 +200,8 @@ const App = (): JSX.Element => {
         key="user"
         onClick={() => setIsUserSettingsVisible(true)}
         shape="round"
+        style={style}
+        type={type}
       >
         {label}
       </Button>
