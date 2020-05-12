@@ -37,6 +37,8 @@ test('renders without crashing', async () => {
     setEvent: () => { },
     isSettingsVisible: true,
     setIsSettingsVisible: () => { },
+    isAuthVisible: false,
+    setIsAuthVisible: () => { },
   };
 
   render(
