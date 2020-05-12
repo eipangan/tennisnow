@@ -52,6 +52,7 @@ dayjs.updateLocale('en', {
 // initialize amplify
 Amplify.configure(awsconfig);
 
+// initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   app: {
     background: theme.background,
@@ -176,6 +177,22 @@ const App = (): JSX.Element => {
     setIsUserSettingsVisible,
   };
 
+  /**
+   * AppTitle Component
+   */
+  const AppTitle = () => (
+    <img
+      src={title}
+      alt={t('title')}
+      width="135px"
+      height="24px"
+    />
+  );
+
+
+  /**
+   * NewEventButton Component
+   */
   const NewEventButton = () => (
     <Button
       onClick={(e) => {
@@ -188,6 +205,9 @@ const App = (): JSX.Element => {
     />
   );
 
+  /**
+   * UserButton Component
+   */
   const UserButton = () => {
     const icon = user ? <UserOutlined /> : <LoginOutlined />;
     const label = user || t('signin');
@@ -208,6 +228,9 @@ const App = (): JSX.Element => {
     );
   };
 
+  /**
+   * EmptyEvents Component
+   */
   const EmptyEvents = () => (
     <Empty
       description={t('noEvents')}
@@ -215,6 +238,11 @@ const App = (): JSX.Element => {
     />
   );
 
+  /**
+   * EventsList Component
+   *
+   * @param props
+   */
   const EventsList = (props: { data: any[] }) => {
     const { data } = props;
     return (
@@ -279,6 +307,10 @@ const App = (): JSX.Element => {
     );
   };
 
+  /**
+   * useEffect Section
+   */
+
   useEffect(() => {
     Auth.currentAuthenticatedUser()
       .then(((myUser) => {
@@ -308,6 +340,9 @@ const App = (): JSX.Element => {
   useEffect(() => {
   }, [user]);
 
+  /**
+   * return Section
+   */
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
@@ -321,14 +356,7 @@ const App = (): JSX.Element => {
             <Route path="/">
               <PageHeader
                 className={classes.appHeader}
-                title={(
-                  <img
-                    src={title}
-                    alt={t('title')}
-                    width="180px"
-                    height="32px"
-                  />
-                )}
+                title={(<AppTitle />)}
                 extra={[
                   <UserButton key="user" />,
                 ]}
