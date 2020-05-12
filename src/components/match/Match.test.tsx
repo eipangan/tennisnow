@@ -22,6 +22,8 @@ const app: AppContextType = {
   setEvent: () => { },
   isSettingsVisible: false,
   setIsSettingsVisible: () => { },
+  isAuthVisible: false,
+  setIsAuthVisible: () => { },
 };
 
 const match: MatchType = {

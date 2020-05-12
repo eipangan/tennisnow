@@ -36,6 +36,8 @@ const app: AppContextType = {
   setEvent: () => { },
   isSettingsVisible: false,
   setIsSettingsVisible: () => { },
+  isAuthVisible: false,
+  setIsAuthVisible: () => { },
 };
 
 test('renders without crashing', async () => {
