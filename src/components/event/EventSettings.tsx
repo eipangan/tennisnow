@@ -277,7 +277,7 @@ const EventSettings = (): JSX.Element => {
                       clearNames();
                       e.stopPropagation();
                     }}
-                    shape="round"
+                    type="link"
                   >
                     {t('clearNames')}
                   </Button>
@@ -287,7 +287,7 @@ const EventSettings = (): JSX.Element => {
                       randomizeOrder();
                       e.stopPropagation();
                     }}
-                    shape="round"
+                    type="link"
                   >
                     {t('randomizeOrder')}
                   </Button>
@@ -300,7 +300,6 @@ const EventSettings = (): JSX.Element => {
         <div className={classes.eventSettingsRow}>
           <Button
             icon={<CloseOutlined />}
-            shape="round"
             onClick={() => setIsSettingsVisible(false)}
           >
             {t('cancel')}
@@ -308,7 +307,6 @@ const EventSettings = (): JSX.Element => {
           <div style={{ width: '12px' }} />
           <Button
             icon={<CheckOutlined />}
-            shape="round"
             type="primary"
             onClick={() => {
               if (!event.eventID) {

@@ -1,4 +1,4 @@
-import { CopyrightCircleOutlined, DeleteOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined } from '@ant-design/icons';
+import { CopyrightCircleOutlined, DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined } from '@ant-design/icons';
 import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
 import Amplify from 'aws-amplify';
@@ -61,13 +61,18 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
   appContent: {
     background: 'transparent',
+    margin: '0px',
+    padding: '0px',
   },
-  appEvents: {
+  appEventsTab: {
+    background: 'transparent',
+  },
+  appEventsList: {
     background: 'transparent',
   },
   appEvent: {
     background: `${theme.baseColor}90`,
-    margin: '0px 12px',
+    margin: '0px 0px',
     padding: '12px',
     textAlign: 'left',
   },
@@ -166,11 +171,9 @@ const App = (): JSX.Element => {
         setIsSettingsVisible(true);
         e.stopPropagation();
       }}
-      shape="round"
       type="primary"
-    >
-      {t('newEvent')}
-    </Button>
+      icon={<PlusOutlined />}
+    />
   );
 
   const EmptyEvents = () => (
@@ -184,7 +187,7 @@ const App = (): JSX.Element => {
     const { data } = props;
     return (
       <List
-        className={classes.appEvents}
+        className={classes.appEventsList}
         dataSource={data}
         locale={{ emptyText: <EmptyEvents /> }}
         renderItem={(myEvent: EventType) => (
@@ -282,13 +285,14 @@ const App = (): JSX.Element => {
                   />
                 )}
                 extra={[
-                  <NewEventButton key="new" />,
+                  <AmplifySignOut />,
                 ]}
               />
               <AmplifyAuthenticator>
                 <Tabs
-                  className={classes.appEvents}
+                  className={classes.appEventsTab}
                   defaultActiveKey="upoming"
+                  tabBarExtraContent={<NewEventButton />}
                 >
                   <TabPane key="events" tab={t('events')}>
                     <EventsList
@@ -307,7 +311,6 @@ const App = (): JSX.Element => {
                     />
                   </TabPane>
                 </Tabs>
-                <AmplifySignOut />
               </AmplifyAuthenticator>
             </Route>
           </Switch>
@@ -339,7 +342,7 @@ const App = (): JSX.Element => {
           </Tag>
         </a>
       </div>
-    </div>
+    </div >
   );
 };
 
