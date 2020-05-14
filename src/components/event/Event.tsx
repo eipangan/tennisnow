@@ -1,12 +1,7 @@
-import {
-  DeleteOutlined, LeftOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined,
-} from '@ant-design/icons';
-import { Button, PageHeader, Popconfirm } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../App';
 import Match, { getMatches, getOrderedMatches, MatchType } from '../match/Match';
 import { getPlayers, PlayerType } from '../player/Player';
@@ -79,54 +74,15 @@ export const getNewEvent = (): EventType => {
  * @param props
  */
 const Event = (): JSX.Element => {
-  const { t } = useTranslation();
-  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
   const {
-    events, event, setEvent, setIsEventSettingsVisible,
+    event, setEvent,
   } = useContext(AppContext);
 
   return (
     <div className={classes.event}>
-      <PageHeader
-        className={classes.eventHeader}
-        onBack={() => history.push('/')}
-        title={dayjs(event.date).calendar()}
-        extra={[
-          <Popconfirm
-            cancelText={t('cancel')}
-            icon={<QuestionCircleOutlined />}
-            key="delete"
-            okText={t('delete')}
-            placement="left"
-            title={t('deleteEventConfirm')}
-            onCancel={(e) => {
-              if (e) e.stopPropagation();
-            }}
-            onConfirm={(e) => {
-              if (e) {
-                events.remove(event.eventID);
-                history.push('/');
-                e.stopPropagation();
-              }
-            }}
-          >
-            <Button
-              icon={<DeleteOutlined />}
-              onClick={(e) => e.stopPropagation()}
-              shape="circle"
-            />
-          </Popconfirm>,
-          <Button
-            icon={<SettingOutlined />}
-            key="setting"
-            onClick={() => setIsEventSettingsVisible(true)}
-            shape="circle"
-          />,
-        ]}
-      />
       <div className={classes.eventMatches}>
         <RightOutlined />
         {event.orderedMatches && event.orderedMatches.map((match: MatchType) => (

@@ -39,5 +39,5 @@ test('renders without crashing', async () => {
     </BrowserRouter>,
   );
 
-  expect(screen.getByText('userSettings')).toBeInTheDocument();
+  expect(screen.getByText('signout')).toBeInTheDocument();
 });

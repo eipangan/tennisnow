@@ -52,9 +52,6 @@ test('renders without crashing', async () => {
     </BrowserRouter>,
   );
 
-  // header
-  expect(screen.getByText(/ at /)).toBeInTheDocument();
-
   // matches
   expect(screen.getAllByText('vs')).toHaveLength(12);
 

@@ -218,7 +218,7 @@ const App = (): JSX.Element => {
       <Button
         icon={icon}
         key="user"
-        onClick={() => setIsUserSettingsVisible(true)}
+        onClick={() => history.push('/auth')}
         shape="round"
         style={style}
         type={type}
@@ -269,7 +269,9 @@ const App = (): JSX.Element => {
                   if (e) e.stopPropagation();
                 }}
                 onConfirm={(e) => {
-                  if (myEvent) app.events.remove(myEvent.eventID);
+                  if (myEvent) {
+                    app.events.remove(myEvent.eventID);
+                  }
                   if (e) e.stopPropagation();
                 }}
                 placement="left"
@@ -348,7 +350,58 @@ const App = (): JSX.Element => {
       <div className={classes.appContent}>
         <AppContext.Provider value={app}>
           <Switch>
+            <Route path="/auth">
+              <Suspense fallback={<div className="loader" />}>
+                <PageHeader
+                  className={classes.appHeader}
+                  onBack={() => history.push('/')}
+                  title={(<AppTitle />)}
+                  extra={[
+                    <UserButton key="user" />,
+                  ]}
+                />
+                <UserSettings />
+              </Suspense>
+            </Route>
             <Route path="/event">
+              <PageHeader
+                className={classes.appHeader}
+                onBack={() => history.push('/')}
+                title={(<AppTitle />)}
+                subTitle={dayjs(event.date).calendar()}
+                extra={[
+                  <Popconfirm
+                    cancelText={t('cancel')}
+                    icon={<QuestionCircleOutlined />}
+                    key="delete"
+                    okText={t('delete')}
+                    placement="left"
+                    title={t('deleteEventConfirm')}
+                    onCancel={(e) => {
+                      if (e) e.stopPropagation();
+                    }}
+                    onConfirm={(e) => {
+                      if (e) {
+                        app.events.remove(event.eventID);
+                        history.push('/');
+                        e.stopPropagation();
+                      }
+                    }}
+                  >
+                    <Button
+                      icon={<DeleteOutlined />}
+                      onClick={(e) => e.stopPropagation()}
+                      shape="circle"
+                    />
+                  </Popconfirm>,
+                  <Button
+                    icon={<SettingOutlined />}
+                    key="setting"
+                    onClick={() => setIsEventSettingsVisible(true)}
+                    shape="circle"
+                  />,
+                ]}
+              />
               <Suspense fallback={<div className="loader" />}>
                 <Event />
               </Suspense>
