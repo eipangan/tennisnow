@@ -3,9 +3,9 @@
    xmlns="http://www.w3.org/2000/svg"
    id="svg8"
    version="1.1"
-   viewBox="0 0 52.387499 7.9375007"
-   height="30"
-   width="198">
+   viewBox="0 0 38.1 6.3500006"
+   height="24"
+   width="144">
   <defs
      id="defs2">
     <linearGradient
@@ -78,7 +78,7 @@
   <g
      id="layer1">
     <g
-       transform="matrix(0.63390439,0,0,0.63390439,0.24627459,0.18574156)"
+       transform="matrix(0.61100187,0,0,0.61100187,-0.38821369,-0.27528952)"
        id="g4333">
       <circle
          style="fill:#aadd66;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.174893;stroke-opacity:1"
@@ -119,19 +119,20 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:8.77048px;line-height:0.3;font-family:sans-serif;letter-spacing:-0.363963px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.205558"
-       x="6.8118987"
-       y="7.2111797"
+       style="font-style:normal;font-weight:normal;font-size:6.24803px;line-height:0.3;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.154556"
+       x="1.8229743"
+       y="5.5126266"
        id="text895"><tspan
          id="tspan893"
-         x="6.8118987"
-         y="7.2111797"
-         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.77048px;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo Medium';stroke-width:0.205558"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo Medium';fill:#000000;fill-opacity:0.8;stroke-width:0.205558"
+         x="1.8229743"
+         y="5.5126266"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.24803px;font-family:Helvetica;-inkscape-font-specification:Helvetica;stroke-width:0.154556"><tspan
+           dx="0"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.24803px;font-family:Helvetica;-inkscape-font-specification:Helvetica;fill:#000000;fill-opacity:0.9;stroke-width:0.154556"
            id="tspan901">Tennis</tspan><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo Bold';fill:#ff6600;stroke-width:0.205558"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.24803px;font-family:Helvetica;-inkscape-font-specification:Helvetica;fill:#ff6600;stroke-width:0.154556"
            id="tspan897">now</tspan><tspan
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:5.48152px;font-family:'Apple SD Gothic Neo';-inkscape-font-specification:'Apple SD Gothic Neo Medium';fill:#000000;fill-opacity:0.8;stroke-width:0.205558"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.8004px;font-family:Helvetica;-inkscape-font-specification:Helvetica;fill:#000000;fill-opacity:0.6;stroke-width:0.154556"
            id="tspan899">.net</tspan></tspan></text>
   </g>
 </svg>
