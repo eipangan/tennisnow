@@ -22,7 +22,7 @@ import awsconfig from './aws-exports';
 import { EventType, getNewEvent } from './components/event/Event';
 import { ThemeType } from './components/utils/Theme';
 import { useLocalStorage } from './components/utils/Utils';
-import title from './title720x128.png';
+import { ReactComponent as AppTitle } from './title.svg';
 
 const Event = React.lazy(() => import('./components/event/Event'));
 const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
@@ -176,19 +176,6 @@ const App = (): JSX.Element => {
     isUserSettingsVisible,
     setIsUserSettingsVisible,
   };
-
-  /**
-   * AppTitle Component
-   */
-  const AppTitle = () => (
-    <img
-      src={title}
-      alt={t('title')}
-      width="135px"
-      height="24px"
-    />
-  );
-
 
   /**
    * NewEventButton Component
