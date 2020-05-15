@@ -197,7 +197,7 @@ const App = (): JSX.Element => {
    */
   const UserButton = () => {
     const icon = user ? <UserOutlined /> : <LoginOutlined />;
-    const label = user || t('signin');
+    const label = user ? null : t('signin');
     const type = user ? 'default' : 'primary';
     const style = user ? { background: '#ffffff50' } : {};
 
