@@ -206,7 +206,7 @@ const App = (): JSX.Element => {
         icon={icon}
         key="user"
         onClick={() => {
-          window.location.href = `https://auth.tennisnow.net/login?client_id=24a815voe8o5mgionamaeafvl&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${window.location.origin}/`;
+          window.location.href = `https://auth.tennisnow.net/login?client_id=2js9qfo0s58p9t3buhr47so43f&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${window.location.origin}/`;
         }}
         shape="round"
         style={style}
