@@ -205,7 +205,7 @@ const App = (): JSX.Element => {
       <Button
         icon={icon}
         key="user"
-        onClick={() => history.push('/auth')}
+        onClick={() => setIsUserSettingsVisible(true)}
         shape="round"
         style={style}
         type={type}
@@ -337,19 +337,6 @@ const App = (): JSX.Element => {
       <div className={classes.appContent}>
         <AppContext.Provider value={app}>
           <Switch>
-            <Route path="/auth">
-              <Suspense fallback={<div className="loader" />}>
-                <PageHeader
-                  className={classes.appHeader}
-                  onBack={() => history.push('/')}
-                  title={(<AppTitle />)}
-                  extra={[
-                    <UserButton key="user" />,
-                  ]}
-                />
-                <UserSettings />
-              </Suspense>
-            </Route>
             <Route path="/event">
               <PageHeader
                 className={classes.appHeader}

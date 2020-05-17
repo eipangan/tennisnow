@@ -1,11 +1,12 @@
 import { LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Drawer } from 'antd';
 import { Auth } from 'aws-amplify';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { ThemeType } from '../utils/Theme';
+import { AppContext } from '../../App';
 
 const useStyles = createUseStyles((theme: ThemeType) => ({
   authPanel: {
@@ -23,8 +24,20 @@ const UserSettings = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
+  const {
+    isUserSettingsVisible, setIsUserSettingsVisible,
+  } = useContext(AppContext);
+
   return (
-    <div className={classes.authPanel}>
+    <Drawer
+      className={classes.authPanel}
+      getContainer={false}
+      onClose={() => setIsUserSettingsVisible(false)}
+      placement="left"
+      title={t('userSettings')}
+      visible={isUserSettingsVisible}
+      width={360}
+    >
       <AmplifyAuthenticator usernameAlias="email">
         <AmplifySignIn slot="sign-in" />
         <Popconfirm
@@ -49,7 +62,7 @@ const UserSettings = (): JSX.Element => {
           </Button>
         </Popconfirm>
       </AmplifyAuthenticator>
-    </div>
+    </Drawer>
   );
 };
 
