@@ -37,7 +37,9 @@
         },
         "categories": {
             "auth": {
-                "tennisnowf00afd25": {}
+                "tennisnowf00afd25": {
+                    "hostedUIProviderCreds": "[]"
+                }
             },
             "hosting": {
                 "amplifyhosting": {
