@@ -1,12 +1,11 @@
 import { LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react';
-import { Button, Popconfirm, Drawer } from 'antd';
+import { Button, Drawer, Popconfirm } from 'antd';
 import { Auth } from 'aws-amplify';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { ThemeType } from '../utils/Theme';
 import { AppContext } from '../../App';
+import { ThemeType } from '../utils/Theme';
 
 const useStyles = createUseStyles((theme: ThemeType) => ({
   authPanel: {
@@ -36,32 +35,29 @@ const UserSettings = (): JSX.Element => {
       placement="left"
       title={t('userSettings')}
       visible={isUserSettingsVisible}
-      width={360}
+      width={240}
     >
-      <AmplifyAuthenticator usernameAlias="email">
-        <AmplifySignIn slot="sign-in" />
-        <Popconfirm
-          cancelText={t('cancel')}
-          icon={<QuestionCircleOutlined />}
-          key="signout"
-          okText={t('signout')}
-          onCancel={(e) => { if (e) e.stopPropagation(); }}
-          onConfirm={(e) => {
-            Auth.signOut();
-            if (e) e.stopPropagation();
-          }}
-          title={t('signoutConfirm')}
+      <Popconfirm
+        cancelText={t('cancel')}
+        icon={<QuestionCircleOutlined />}
+        key="signout"
+        okText={t('signout')}
+        onCancel={(e) => { if (e) e.stopPropagation(); }}
+        onConfirm={(e) => {
+          Auth.signOut();
+          if (e) e.stopPropagation();
+        }}
+        title={t('signoutConfirm')}
+      >
+        <Button
+          icon={<LogoutOutlined />}
+          onClick={(e) => e.stopPropagation()}
+          shape="round"
+          type="primary"
         >
-          <Button
-            icon={<LogoutOutlined />}
-            onClick={(e) => e.stopPropagation()}
-            shape="round"
-            type="primary"
-          >
-            {t('signout')}
-          </Button>
-        </Popconfirm>
-      </AmplifyAuthenticator>
+          {t('signout')}
+        </Button>
+      </Popconfirm>
     </Drawer>
   );
 };

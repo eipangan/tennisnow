@@ -1,9 +1,5 @@
-import {
-  CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined,
-} from '@ant-design/icons';
-import {
-  Button, Collapse, Drawer, Form, Input, Select,
-} from 'antd';
+import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import dayjs from 'dayjs';
 import cloneDeep from 'lodash/cloneDeep';

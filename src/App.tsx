@@ -205,7 +205,9 @@ const App = (): JSX.Element => {
       <Button
         icon={icon}
         key="user"
-        onClick={() => setIsUserSettingsVisible(true)}
+        onClick={() => {
+          window.location.href = `https://auth.tennisnow.net/login?client_id=24a815voe8o5mgionamaeafvl&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${window.location.origin}/`;
+        }}
         shape="round"
         style={style}
         type={type}
