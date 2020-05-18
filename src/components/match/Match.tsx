@@ -3,9 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../App';
 import { PlayerType } from '../player/Player';
-import Team, {
-  recordDraw, recordLoss, recordWin, TeamType, undoDraw, undoLoss, undoWin,
-} from '../team/Team';
+import Team, { recordDraw, recordLoss, recordWin, TeamType, undoDraw, undoLoss, undoWin } from '../team/Team';
 import { ThemeType } from '../utils/Theme';
 
 const useStyles = createUseStyles((theme: ThemeType) => {
