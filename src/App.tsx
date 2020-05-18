@@ -202,7 +202,9 @@ const App = (): JSX.Element => {
       }}
       type="primary"
       icon={<PlusOutlined />}
-    />
+    >
+      {t('newEvent')}
+    </Button>
   );
 
   /**
@@ -218,16 +220,16 @@ const App = (): JSX.Element => {
           shape="round"
           style={{ background: '#ffffff50' }}
           type="default"
-        />
+        >
+          {user.userName}
+        </Button>
       );
     }
     return (
       <Button
         icon={<LoginOutlined />}
         key="user"
-        onClick={() => {
-          window.location.href = `https://auth.tennisnow.net/login?client_id=2js9qfo0s58p9t3buhr47so43f&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${window.location.origin}/`;
-        }}
+        onClick={() => { Auth.federatedSignIn(); }}
         shape="round"
         style={{}}
         type="primary"
