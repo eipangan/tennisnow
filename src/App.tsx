@@ -221,7 +221,7 @@ const App = (): JSX.Element => {
           style={{ background: '#ffffff50' }}
           type="default"
         >
-          {user.userName}
+          {user.username}
         </Button>
       );
     }
