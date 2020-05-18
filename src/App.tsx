@@ -1,6 +1,6 @@
 import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
-import Amplify, { Hub } from 'aws-amplify';
+import Amplify, { Auth, Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import calendar from 'dayjs/plugin/calendar';
@@ -144,6 +144,7 @@ const App = (): JSX.Element => {
     }
   });
 
+  // initialize app AppContext
   const app: AppContextType = {
     events: {
       add: (myEvent: EventType): boolean => {
@@ -322,6 +323,16 @@ const App = (): JSX.Element => {
    */
 
   useEffect(() => {
+    Auth.currentAuthenticatedUser()
+      .then((myUser) => {
+        setUser(myUser);
+      })
+      .catch((error) => {
+        setUser(undefined);
+      });
+  }, []);
+
+  useEffect(() => {
     i18n.changeLanguage(navigator.language);
   }, [i18n]);
 
@@ -334,7 +345,7 @@ const App = (): JSX.Element => {
     if (event && event.eventID) {
       app.events.update(event);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   /**
