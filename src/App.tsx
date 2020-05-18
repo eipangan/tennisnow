@@ -1,19 +1,13 @@
-import {
-  CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined,
-} from '@ant-design/icons';
-import {
-  Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag,
-} from 'antd';
-import Amplify, { Auth } from 'aws-amplify';
+import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
+import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import calendar from 'dayjs/plugin/calendar';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, {
-  Dispatch, SetStateAction, Suspense, useEffect, useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -49,7 +43,8 @@ dayjs.updateLocale('en', {
   },
 });
 
-// initialize amplify
+// todo: initialize amplify
+awsconfig.oauth.domain = 'auth.tennisnow.net';
 Amplify.configure(awsconfig);
 
 // initialize styles
@@ -124,13 +119,30 @@ const App = (): JSX.Element => {
   const [event, setEvent] = useLocalStorage('event', getNewEvent());
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
-  const [user, setUser] = useState<string | undefined>(undefined);
+  const [user, setUser] = useState<any>(undefined);
 
   const { TabPane } = Tabs;
 
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
   ReactGA.pageview(window.location.pathname + window.location.search);
+
+  // initialize amplify hub
+  Hub.listen('auth', (data) => {
+    switch (data.payload.event) {
+      case 'signIn':
+        setUser(data.payload.data);
+        break;
+      case 'signIn_failure':
+        setUser(undefined);
+        break;
+      case 'signOut':
+        setUser(undefined);
+        break;
+      default:
+        break;
+    }
+  });
 
   const app: AppContextType = {
     events: {
@@ -196,23 +208,30 @@ const App = (): JSX.Element => {
    * UserButton Component
    */
   const UserButton = () => {
-    const icon = user ? <UserOutlined /> : <LoginOutlined />;
-    const label = user ? null : t('signin');
-    const type = user ? 'default' : 'primary';
-    const style = user ? { background: '#ffffff50' } : {};
-
+    if (user) {
+      return (
+        <Button
+          icon={<UserOutlined />}
+          key="user"
+          onClick={() => { setIsUserSettingsVisible(true); }}
+          shape="round"
+          style={{ background: '#ffffff50' }}
+          type="default"
+        />
+      );
+    }
     return (
       <Button
-        icon={icon}
+        icon={<LoginOutlined />}
         key="user"
         onClick={() => {
           window.location.href = `https://auth.tennisnow.net/login?client_id=2js9qfo0s58p9t3buhr47so43f&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${window.location.origin}/`;
         }}
         shape="round"
-        style={style}
-        type={type}
+        style={{}}
+        type="primary"
       >
-        {label}
+        {t('signin')}
       </Button>
     );
   };
@@ -303,16 +322,6 @@ const App = (): JSX.Element => {
    */
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then(((myUser) => {
-        setUser(myUser.username);
-      }))
-      .catch(() => {
-        setUser(undefined);
-      });
-  }, [isUserSettingsVisible]);
-
-  useEffect(() => {
     i18n.changeLanguage(navigator.language);
   }, [i18n]);
 
@@ -325,11 +334,8 @@ const App = (): JSX.Element => {
     if (event && event.eventID) {
       app.events.update(event);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
-
-  useEffect(() => {
-  }, [user]);
 
   /**
    * return Section
