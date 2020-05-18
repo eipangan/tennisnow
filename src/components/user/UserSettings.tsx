@@ -47,6 +47,7 @@ const UserSettings = (): JSX.Element => {
           Auth.signOut();
           if (e) e.stopPropagation();
         }}
+        placement="bottom"
         title={t('signoutConfirm')}
       >
         <Button
