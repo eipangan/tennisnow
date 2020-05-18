@@ -1,4 +1,5 @@
 import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
+import { CognitoUser } from '@aws-amplify/auth';
 import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
 import Amplify, { Auth, Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
@@ -119,7 +120,7 @@ const App = (): JSX.Element => {
   const [event, setEvent] = useLocalStorage('event', getNewEvent());
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(undefined);
+  const [user, setUser] = useState<CognitoUser | undefined>(undefined);
 
   const { TabPane } = Tabs;
 
@@ -221,7 +222,7 @@ const App = (): JSX.Element => {
           style={{ background: '#ffffff50' }}
           type="default"
         >
-          {user.username}
+          {user.getUsername()}
         </Button>
       );
     }
