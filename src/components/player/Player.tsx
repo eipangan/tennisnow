@@ -2,6 +2,7 @@ import React, { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { ThemeType } from '../utils/Theme';
 
+// initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   player: {
     float: 'left',

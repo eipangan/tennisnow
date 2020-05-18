@@ -4,7 +4,8 @@ import { AppContext } from '../../App';
 import Player, { CompetitorStats, PlayerType } from '../player/Player';
 import { ThemeType } from '../utils/Theme';
 
-const useStyle = createUseStyles((theme: ThemeType) => {
+// initialize styles
+const useStyles = createUseStyles((theme: ThemeType) => {
   const team = {
     height: theme.height,
     lineHeight: theme.height,
@@ -197,7 +198,7 @@ type TeamProps = {
  */
 const Team = (props: TeamProps): JSX.Element => {
   const theme = useTheme;
-  const classes = useStyle({ theme });
+  const classes = useStyles({ theme });
 
   const { team, onClick, state } = props;
   const { event } = useContext(AppContext);

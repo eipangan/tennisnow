@@ -7,6 +7,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../App';
 import { ThemeType } from '../utils/Theme';
 
+// initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   authPanel: {
     background: 'transparent',
@@ -23,9 +24,7 @@ const UserSettings = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const {
-    isUserSettingsVisible, setIsUserSettingsVisible,
-  } = useContext(AppContext);
+  const { isUserSettingsVisible, setIsUserSettingsVisible } = useContext(AppContext);
 
   return (
     <Drawer

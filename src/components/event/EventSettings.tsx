@@ -16,6 +16,7 @@ import { EventType } from './Event';
 
 const DatePicker = React.lazy(() => import('./DatePicker'));
 
+// initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   eventSettings: {
     background: 'transparent',
@@ -41,9 +42,7 @@ const EventSettings = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const {
-    event, setEvent, isEventSettingsVisible, setIsEventSettingsVisible,
-  } = useContext(AppContext);
+  const { event, setEvent, isEventSettingsVisible, setIsEventSettingsVisible } = useContext(AppContext);
   const [myEvent, setMyEvent] = useState<EventType>(cloneDeep(event));
   const { Panel } = Collapse;
   const { Option } = Select;

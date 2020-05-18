@@ -9,6 +9,7 @@ import PlayersSummary from '../player/PlayersSummary';
 import { getTeams, TeamType } from '../team/Team';
 import { ThemeType } from '../utils/Theme';
 
+// initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   event: {
     background: 'transparent',
@@ -77,9 +78,7 @@ const Event = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const {
-    event, setEvent,
-  } = useContext(AppContext);
+  const { event, setEvent } = useContext(AppContext);
 
   return (
     <div className={classes.event}>

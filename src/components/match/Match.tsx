@@ -6,6 +6,7 @@ import { PlayerType } from '../player/Player';
 import Team, { recordDraw, recordLoss, recordWin, TeamType, undoDraw, undoLoss, undoWin } from '../team/Team';
 import { ThemeType } from '../utils/Theme';
 
+// initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => {
   const matchRowCommon = {
     height: theme.height,

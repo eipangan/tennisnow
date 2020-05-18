@@ -7,7 +7,8 @@ import { AppContext } from '../../App';
 import { ThemeType } from '../utils/Theme';
 import { PlayerType } from './Player';
 
-const useStyle = createUseStyles((theme: ThemeType) => ({
+// initialize styles
+const useStyles = createUseStyles((theme: ThemeType) => ({
   playersSummary: {
     background: 'transparent',
   },
@@ -21,7 +22,7 @@ const useStyle = createUseStyles((theme: ThemeType) => ({
 const PlayersSummary = (): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const classes = useStyle({ theme });
+  const classes = useStyles({ theme });
 
   const { event } = useContext(AppContext);
   const { players } = event;

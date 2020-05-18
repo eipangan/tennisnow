@@ -43,7 +43,7 @@ dayjs.updateLocale('en', {
   },
 });
 
-// todo: initialize amplify
+// initialize amplify
 awsconfig.oauth.domain = 'auth.tennisnow.net';
 Amplify.configure(awsconfig);
 
@@ -193,7 +193,7 @@ const App = (): JSX.Element => {
   /**
    * NewEventButton Component
    */
-  const NewEventButton = () => (
+  const NewEventButton = (): JSX.Element => (
     <Button
       onClick={(e) => {
         setEvent(getNewEvent());
@@ -210,7 +210,7 @@ const App = (): JSX.Element => {
   /**
    * UserButton Component
    */
-  const UserButton = () => {
+  const UserButton = (): JSX.Element => {
     if (user) {
       return (
         <Button
@@ -242,7 +242,7 @@ const App = (): JSX.Element => {
   /**
    * EmptyEvents Component
    */
-  const EmptyEvents = () => (
+  const EmptyEvents = (): JSX.Element => (
     <Empty
       description={t('noEvents')}
       image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -254,7 +254,7 @@ const App = (): JSX.Element => {
    *
    * @param props
    */
-  const EventsList = (props: { data: any[] }) => {
+  const EventsList = (props: { data: any[] }): JSX.Element => {
     const { data } = props;
     return (
       <List
