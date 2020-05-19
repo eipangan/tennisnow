@@ -1,6 +1,6 @@
 import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import { CognitoUser } from '@aws-amplify/auth';
-import { Button, Empty, List, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
+import { Button, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
 import Amplify, { Auth, Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -20,6 +20,7 @@ import { useLocalStorage } from './components/utils/Utils';
 import { ReactComponent as AppTitle } from './title.svg';
 
 const Event = React.lazy(() => import('./components/event/Event'));
+const EventsList = React.lazy(() => import('./components/event/EventsList'));
 const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
@@ -71,15 +72,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
   appEventsTab: {
     background: 'transparent',
-  },
-  appEventsList: {
-    background: 'transparent',
-  },
-  appEvent: {
-    background: `${theme.baseColor}90`,
-    margin: '0px 0px',
-    padding: '12px',
-    textAlign: 'left',
   },
   appFooter: {
     background: 'transparent',
@@ -242,86 +234,24 @@ const App = (): JSX.Element => {
     );
   };
 
-  /**
-   * EmptyEvents Component
-   */
-  const EmptyEvents = (): JSX.Element => (
-    <Empty
-      description={t('noEvents')}
-      image={Empty.PRESENTED_IMAGE_SIMPLE}
-    />
+  const AppCopyright = (): JSX.Element => (
+    <>
+      {t('title')}
+      {' '}
+      <CopyrightCircleOutlined />
+      {' '}
+      2020
+      {' '}
+      <a href="https://twitter.com/tennisnownet">
+        <Tag
+          icon={<TwitterOutlined />}
+          style={{ border: '0', background: 'transparent' }}
+        >
+          @tennisnownet
+        </Tag>
+      </a>
+    </>
   );
-
-  /**
-   * EventsList Component
-   *
-   * @param props
-   */
-  const EventsList = (props: { data: EventType[] }): JSX.Element => {
-    const { data } = props;
-    return (
-      <List
-        className={classes.appEventsList}
-        dataSource={data}
-        locale={{ emptyText: <EmptyEvents /> }}
-        renderItem={(myEvent: EventType) => (
-          <List.Item
-            className={classes.appEvent}
-            key={myEvent.eventID}
-            onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-              setEvent(myEvent);
-              history.push('/event/');
-              e.stopPropagation();
-            }}
-            extra={[
-              <Popconfirm
-                cancelText={t('cancel')}
-                icon={<QuestionCircleOutlined />}
-                key="delete"
-                okText={t('delete')}
-                onCancel={(e) => {
-                  if (e) e.stopPropagation();
-                }}
-                onConfirm={(e) => {
-                  if (myEvent) {
-                    app.events.remove(myEvent.eventID);
-                  }
-                  if (e) e.stopPropagation();
-                }}
-                placement="left"
-                title={t('deleteEventConfirm')}
-              >
-                <Button
-                  icon={<DeleteOutlined />}
-                  onClick={(e) => e.stopPropagation()}
-                  shape="circle"
-                />
-              </Popconfirm>,
-              <div
-                key="spacing"
-                style={{ width: '12px' }}
-              />,
-              <Button
-                icon={<SettingOutlined />}
-                key="setting"
-                onClick={(e) => {
-                  setEvent(myEvent);
-                  setIsEventSettingsVisible(true);
-                  e.stopPropagation();
-                }}
-                shape="circle"
-              />,
-            ]}
-          >
-            <List.Item.Meta
-              description={t('eventSummary', { numPlayers: myEvent.numPlayers })}
-              title={dayjs(myEvent.date).calendar()}
-            />
-          </List.Item>
-        )}
-      />
-    );
-  };
 
   /**
    * useEffect Section
@@ -447,20 +377,7 @@ const App = (): JSX.Element => {
         </AppContext.Provider>
       </div>
       <div className={classes.appFooter}>
-        {t('title')}
-        {' '}
-        <CopyrightCircleOutlined />
-        {' '}
-        2020
-        {' '}
-        <a href="https://twitter.com/tennisnownet">
-          <Tag
-            icon={<TwitterOutlined />}
-            style={{ border: '0', background: 'transparent' }}
-          >
-            @tennisnownet
-          </Tag>
-        </a>
+        <AppCopyright />
       </div>
     </div>
   );
