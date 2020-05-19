@@ -257,7 +257,7 @@ const App = (): JSX.Element => {
    *
    * @param props
    */
-  const EventsList = (props: { data: any[] }): JSX.Element => {
+  const EventsList = (props: { data: EventType[] }): JSX.Element => {
     const { data } = props;
     return (
       <List
