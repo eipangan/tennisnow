@@ -8,11 +8,12 @@ import calendar from 'dayjs/plugin/calendar';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, { Dispatch, SetStateAction, Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
+import { AppContext, AppContextType } from './AppContext';
 import awsconfig from './aws-exports';
 import { EventType, getNewEvent } from './components/event/Event';
 import { ThemeType } from './components/utils/Theme';
@@ -80,26 +81,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     padding: '12px 0px',
   },
 }));
-
-/**
- * AppContextType
- */
-export interface AppContextType {
-  events: {
-    add: (event: EventType) => boolean;
-    get: (eventID: string | undefined) => EventType | undefined;
-    update: (event: EventType) => boolean;
-    remove: (eventID: string | undefined) => boolean;
-  },
-  event: EventType,
-  setEvent: Dispatch<SetStateAction<EventType>> | (() => {}),
-  isEventSettingsVisible: boolean,
-  setIsEventSettingsVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
-  isUserSettingsVisible: boolean,
-  setIsUserSettingsVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
-}
-
-export const AppContext = React.createContext({} as AppContextType);
 
 /**
  * App

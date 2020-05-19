@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext, AppContextType } from '../../App';
+import { AppContext, AppContextType } from '../../AppContext';
 import { theme } from '../utils/Theme';
 import Event, { EventType, getNewEvent } from './Event';
 

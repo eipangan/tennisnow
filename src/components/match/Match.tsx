@@ -1,7 +1,7 @@
 import React, { StrictMode, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppContext';
 import { PlayerType } from '../player/Player';
 import Team, { recordDraw, recordLoss, recordWin, TeamType, undoDraw, undoLoss, undoWin } from '../team/Team';
 import { ThemeType } from '../utils/Theme';

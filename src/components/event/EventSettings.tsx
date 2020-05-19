@@ -6,7 +6,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppContext';
 import { getMatches, getOrderedMatches } from '../match/Match';
 import { getPlayers } from '../player/Player';
 import { getTeams } from '../team/Team';

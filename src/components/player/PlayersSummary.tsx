@@ -3,7 +3,7 @@ import { ColumnProps } from 'antd/es/table';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppContext';
 import { ThemeType } from '../utils/Theme';
 import { PlayerType } from './Player';
 

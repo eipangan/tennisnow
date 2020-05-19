@@ -2,7 +2,7 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppContext';
 import Match, { getMatches, getOrderedMatches, MatchType } from '../match/Match';
 import { getPlayers, PlayerType } from '../player/Player';
 import PlayersSummary from '../player/PlayersSummary';

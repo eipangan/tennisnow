@@ -5,11 +5,11 @@ import { Auth } from 'aws-amplify';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppContext';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles
-const useStyles = createUseStyles(() => ({
+const useStyles = createUseStyles((theme: ThemeType) => ({
   authPanel: {
     background: 'transparent',
   },
@@ -33,7 +33,7 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { user } = props;
-  const { isUserSettingsVisible, setIsUserSettingsVisible } = useContext(AppContext);
+  const { setIsUserSettingsVisible } = useContext(AppContext);
 
   return (
     <Drawer
@@ -42,7 +42,6 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
       onClose={() => setIsUserSettingsVisible(false)}
       placement="left"
       title={t('userSettings')}
-      visible={isUserSettingsVisible}
     >
       <Popconfirm
         cancelText={t('cancel')}

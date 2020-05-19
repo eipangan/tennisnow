@@ -1,6 +1,6 @@
 import React, { StrictMode, useContext } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppContext';
 import Player, { CompetitorStats, PlayerType } from '../player/Player';
 import { ThemeType } from '../utils/Theme';
 

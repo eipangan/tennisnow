@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { AppContext } from '../../App';
+import { AppContext } from '../../AppContext';
 import { ThemeType } from '../utils/Theme';
 import { EventType } from './Event';
 
