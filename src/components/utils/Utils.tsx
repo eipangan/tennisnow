@@ -105,7 +105,6 @@ export const useLocalStorage = (key: string, initialValue: any) => {
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setValue = (value: any) => {
     try {
       // Allow value to be a function so we have same API as useState
