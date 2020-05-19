@@ -32,7 +32,7 @@ test('renders without crashing', async () => {
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
           <AppContext.Provider value={app}>
-            <UserSettings />
+            <UserSettings user={undefined} />
           </AppContext.Provider>
         </Suspense>
       </ThemeProvider>

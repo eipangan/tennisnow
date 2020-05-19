@@ -1,5 +1,6 @@
 import { LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Drawer, Popconfirm } from 'antd';
+import { CognitoUser } from '@aws-amplify/auth';
+import { Button, Drawer, Popconfirm, Typography } from 'antd';
 import { Auth } from 'aws-amplify';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,15 +16,23 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
+ * UserSettingsProps
+ */
+type UserSettingsProps = {
+  user: CognitoUser | undefined;
+};
+
+/**
  * UserSettings
  *
  * @param props
  */
-const UserSettings = (): JSX.Element => {
+const UserSettings = (props: UserSettingsProps): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
+  const { user } = props;
   const { isUserSettingsVisible, setIsUserSettingsVisible } = useContext(AppContext);
 
   return (
@@ -49,14 +58,19 @@ const UserSettings = (): JSX.Element => {
         placement="bottom"
         title={t('signoutConfirm')}
       >
-        <Button
-          icon={<LogoutOutlined />}
-          onClick={(e) => e.stopPropagation()}
-          shape="round"
-          type="primary"
-        >
-          {t('signout')}
-        </Button>
+        <>
+          <Typography>
+            {user?.getUsername()}
+          </Typography>
+          <Button
+            icon={<LogoutOutlined />}
+            onClick={(e) => e.stopPropagation()}
+            shape="round"
+            type="primary"
+          >
+            {t('signout')}
+          </Button>
+        </>
       </Popconfirm>
     </Drawer>
   );

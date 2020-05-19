@@ -440,7 +440,7 @@ const App = (): JSX.Element => {
               return null;
             })()}
             {(() => {
-              if (isUserSettingsVisible) return <UserSettings />;
+              if (isUserSettingsVisible) return <UserSettings user={user} />;
               return null;
             })()}
           </Suspense>
