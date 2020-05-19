@@ -9,7 +9,7 @@ import { AppContext } from '../../App';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles
-const useStyles = createUseStyles((theme: ThemeType) => ({
+const useStyles = createUseStyles(() => ({
   authPanel: {
     background: 'transparent',
   },

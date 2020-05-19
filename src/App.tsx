@@ -262,7 +262,7 @@ const App = (): JSX.Element => {
       .then((myUser) => {
         setUser(myUser);
       })
-      .catch((error) => {
+      .catch(() => {
         setUser(undefined);
       });
   }, []);
