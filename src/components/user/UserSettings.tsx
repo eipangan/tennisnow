@@ -43,7 +43,6 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
       placement="left"
       title={t('userSettings')}
       visible={isUserSettingsVisible}
-      width={180}
     >
       <Popconfirm
         cancelText={t('cancel')}
