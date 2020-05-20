@@ -4,7 +4,6 @@ import { Button, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
 import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
-import calendar from 'dayjs/plugin/calendar';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
@@ -26,7 +25,6 @@ const EventSettings = React.lazy(() => import('./components/event/EventSettings'
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
 // initialize dayjs
-dayjs.extend(calendar);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(updateLocale);
 dayjs.extend(localizedFormat);

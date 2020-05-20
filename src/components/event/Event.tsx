@@ -1,5 +1,6 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import calendar from 'dayjs/plugin/calendar';
 import React, { useContext } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../AppContext';
@@ -8,6 +9,9 @@ import { getPlayers, PlayerType } from '../player/Player';
 import PlayersSummary from '../player/PlayersSummary';
 import { getTeams, TeamType } from '../team/Team';
 import { ThemeType } from '../utils/Theme';
+
+// initialize dayjs
+dayjs.extend(calendar);
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
