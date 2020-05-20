@@ -1,7 +1,7 @@
 import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
-import { CognitoUser } from '@aws-amplify/auth';
+import Auth, { CognitoUser } from '@aws-amplify/auth';
 import { Button, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
-import Amplify, { Auth, Hub } from 'aws-amplify';
+import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import calendar from 'dayjs/plugin/calendar';
@@ -167,6 +167,28 @@ const App = (): JSX.Element => {
   };
 
   /**
+   * AppCopyright Component
+   */
+  const AppCopyright = (): JSX.Element => (
+    <>
+      {t('title')}
+      {' '}
+      <CopyrightCircleOutlined />
+      {' '}
+      2020
+      {' '}
+      <a href="https://twitter.com/tennisnownet">
+        <Tag
+          icon={<TwitterOutlined />}
+          style={{ border: '0', background: 'transparent' }}
+        >
+          @tennisnownet
+        </Tag>
+      </a>
+    </>
+  );
+
+  /**
    * NewEventButton Component
    */
   const NewEventButton = (): JSX.Element => (
@@ -214,25 +236,6 @@ const App = (): JSX.Element => {
       </Button>
     );
   };
-
-  const AppCopyright = (): JSX.Element => (
-    <>
-      {t('title')}
-      {' '}
-      <CopyrightCircleOutlined />
-      {' '}
-      2020
-      {' '}
-      <a href="https://twitter.com/tennisnownet">
-        <Tag
-          icon={<TwitterOutlined />}
-          style={{ border: '0', background: 'transparent' }}
-        >
-          @tennisnownet
-        </Tag>
-      </a>
-    </>
-  );
 
   /**
    * useEffect Section
