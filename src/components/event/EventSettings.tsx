@@ -14,7 +14,7 @@ import { ThemeType } from '../utils/Theme';
 import { generateUUID, getLocaleDateFormat, shuffle } from '../utils/Utils';
 import { EventType } from './Event';
 
-const DatePicker = React.lazy(() => import('./DatePicker'));
+const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
