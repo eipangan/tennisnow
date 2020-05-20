@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
@@ -54,12 +54,18 @@ test('renders without crashing', async () => {
   );
 
   expect(screen.getByText('eventSettings')).toBeInTheDocument();
-
   expect(screen.getByText('players')).toBeInTheDocument();
-
   expect(screen.getByText('clearNames')).toBeInTheDocument();
   expect(screen.getByText('randomizeOrder')).toBeInTheDocument();
-
   expect(screen.getByText('cancel')).toBeInTheDocument();
   expect(screen.getByText('ok')).toBeInTheDocument();
+
+  expect(app.event.numPlayers).toEqual(6);
+  fireEvent.click(screen.getByTestId('minus'));
+
+  fireEvent.click(screen.getByText('players'));
+  fireEvent.click(screen.getByText('clearNames'));
+  fireEvent.click(screen.getByText('randomizeOrder'));
+  fireEvent.click(screen.getByText('cancel'));
+  fireEvent.click(screen.getByText('ok'));
 });

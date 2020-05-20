@@ -229,6 +229,7 @@ const EventSettings = (): JSX.Element => {
               extra={(
                 <ButtonGroup>
                   <Button
+                    data-testid="minus"
                     onClick={(e) => {
                       setNumPlayers(Math.max(minNumPlayers, myEvent.numPlayers - 1));
                       e.stopPropagation();
@@ -237,6 +238,7 @@ const EventSettings = (): JSX.Element => {
                     <MinusOutlined />
                   </Button>
                   <Button
+                    data-testid="plus"
                     onClick={(e) => {
                       setNumPlayers(Math.min(maxNumPlayers, myEvent.numPlayers + 1));
                       e.stopPropagation();
