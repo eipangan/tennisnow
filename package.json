@@ -5,10 +5,10 @@
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
     "@aws-amplify/auth": "^3.2.7",
-    "@testing-library/jest-dom": "^5.7.0",
+    "@testing-library/jest-dom": "^5.8.0",
     "@types/jest": "^25.2.3",
-    "@types/lodash": "^4.14.151",
-    "@types/node": "^13.13.6",
+    "@types/lodash": "^4.14.152",
+    "@types/node": "^13.13.8",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
@@ -16,10 +16,10 @@
     "aws-amplify": "^3.0.11",
     "dayjs": "^1.8.27",
     "i18next": "^19.4.4",
-    "i18next-browser-languagedetector": "^4.1.1",
+    "i18next-browser-languagedetector": "^4.2.0",
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.15",
-    "rc-picker": "^1.4.16",
+    "rc-picker": "^1.5.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-ga": "^2.7.0",
@@ -28,7 +28,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "source-map-explorer": "^2.4.2",
-    "typescript": "^3.9.2"
+    "typescript": "^3.9.3"
   },
   "scripts": {
     "start": "react-scripts start",
