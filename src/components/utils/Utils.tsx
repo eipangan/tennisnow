@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 /**
  * generate unique UUID
@@ -88,7 +88,7 @@ export const shuffle = (a: string[]): string[] => {
  * @param key key to use to identify variable in local storage
  * @param initialValue initial value of the variable
  */
-export const useLocalStorage = (key: string, initialValue: any) => {
+export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -119,4 +119,4 @@ export const useLocalStorage = (key: string, initialValue: any) => {
   };
 
   return [storedValue, setValue];
-};
+}

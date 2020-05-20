@@ -91,8 +91,9 @@ const App = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const [events, setEvents] = useLocalStorage('events', []);
-  const [event, setEvent] = useLocalStorage('event', getNewEvent());
+  const [events, setEvents] = useLocalStorage<EventType[]>('events', []);
+  const [event, setEvent] = useLocalStorage<EventType>('event', getNewEvent());
+
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<CognitoUser | undefined>(undefined);
