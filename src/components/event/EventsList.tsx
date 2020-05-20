@@ -84,6 +84,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
               title={t('deleteEventConfirm')}
             >
               <Button
+                data-testid="delete"
                 icon={<DeleteOutlined />}
                 onClick={(e) => e.stopPropagation()}
                 shape="circle"
@@ -94,6 +95,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
               style={{ width: '12px' }}
             />,
             <Button
+              data-testid="settings"
               icon={<SettingOutlined />}
               key="setting"
               onClick={(e) => {
