@@ -280,7 +280,6 @@ const App = (): JSX.Element => {
                 className={classes.appHeader}
                 onBack={() => history.push('/')}
                 title={(<AppTitle />)}
-                subTitle={dayjs(event.date).calendar()}
                 extra={[
                   <Popconfirm
                     cancelText={t('cancel')}

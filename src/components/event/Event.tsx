@@ -82,6 +82,7 @@ const Event = (): JSX.Element => {
 
   return (
     <div className={classes.event}>
+      {dayjs(event.date).calendar()}
       <div className={classes.eventMatches}>
         <RightOutlined />
         {event.orderedMatches && event.orderedMatches.map((match: MatchType) => (
