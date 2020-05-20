@@ -1,7 +1,9 @@
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { DeleteOutlined, LeftOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../AppContext';
 import Match, { getMatches, getOrderedMatches, MatchType } from '../match/Match';
@@ -51,7 +53,7 @@ export interface EventType {
 }
 
 /**
- * getEvent
+ * getNewEvent
  */
 export const getNewEvent = (): EventType => {
   const defaultNumPlayers = 6;
@@ -71,6 +73,55 @@ export const getNewEvent = (): EventType => {
     matches,
     orderedMatches,
   };
+};
+
+/**
+ * DeleteButton component
+ *
+ * @param props
+ */
+export const DeleteButton = (props: { onConfirm: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void }) => {
+  const { t } = useTranslation();
+  const { onConfirm } = props;
+
+  return (
+    <Popconfirm
+      cancelText={t('cancel')}
+      icon={<QuestionCircleOutlined />}
+      okText={t('delete')}
+      placement="left"
+      title={t('deleteEventConfirm')}
+      onCancel={(e) => {
+        if (e) e.stopPropagation();
+      }}
+      onConfirm={onConfirm}
+    >
+      <Button
+        data-testid="delete"
+        icon={<DeleteOutlined />}
+        onClick={(e) => e.stopPropagation()}
+        shape="circle"
+      />
+    </Popconfirm>
+  );
+};
+
+/**
+ * SettingsButton component
+ *
+ * @param props
+ */
+export const SettingsButton = (props: { onClick: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void }): JSX.Element => {
+  const { onClick } = props;
+
+  return (
+    <Button
+      data-testid="settings"
+      icon={<SettingOutlined />}
+      shape="circle"
+      onClick={onClick}
+    />
+  );
 };
 
 /**

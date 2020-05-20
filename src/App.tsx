@@ -1,6 +1,6 @@
-import { CopyrightCircleOutlined, DeleteOutlined, LoginOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
+import { CopyrightCircleOutlined, LoginOutlined, PlusOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
-import { Button, PageHeader, Popconfirm, Tabs, Tag } from 'antd';
+import { Button, PageHeader, Tabs, Tag } from 'antd';
 import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -14,7 +14,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
 import awsconfig from './aws-exports';
-import { EventType, getNewEvent } from './components/event/Event';
+import { DeleteButton, EventType, getNewEvent, SettingsButton } from './components/event/Event';
 import { ThemeType } from './components/utils/Theme';
 import { useLocalStorage } from './components/utils/Utils';
 import { ReactComponent as AppTitle } from './title.svg';
@@ -280,16 +280,8 @@ const App = (): JSX.Element => {
                 onBack={() => history.push('/')}
                 title={(<AppTitle />)}
                 extra={[
-                  <Popconfirm
-                    cancelText={t('cancel')}
-                    icon={<QuestionCircleOutlined />}
+                  <DeleteButton
                     key="delete"
-                    okText={t('delete')}
-                    placement="left"
-                    title={t('deleteEventConfirm')}
-                    onCancel={(e) => {
-                      if (e) e.stopPropagation();
-                    }}
                     onConfirm={(e) => {
                       if (e) {
                         app.events.remove(event.eventID);
@@ -297,18 +289,13 @@ const App = (): JSX.Element => {
                         e.stopPropagation();
                       }
                     }}
-                  >
-                    <Button
-                      icon={<DeleteOutlined />}
-                      onClick={(e) => e.stopPropagation()}
-                      shape="circle"
-                    />
-                  </Popconfirm>,
-                  <Button
-                    icon={<SettingOutlined />}
-                    key="setting"
-                    onClick={() => setIsEventSettingsVisible(true)}
-                    shape="circle"
+                  />,
+                  <SettingsButton
+                    key="settings"
+                    onClick={(e) => {
+                      setIsEventSettingsVisible(true);
+                      if (e) e.stopPropagation();
+                    }}
                   />,
                 ]}
               />

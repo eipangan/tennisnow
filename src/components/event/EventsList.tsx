@@ -1,5 +1,4 @@
-import { DeleteOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Empty, List, Popconfirm } from 'antd';
+import { Empty, List } from 'antd';
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +6,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../AppContext';
 import { ThemeType } from '../utils/Theme';
-import { EventType } from './Event';
+import { DeleteButton, EventType, SettingsButton } from './Event';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -66,44 +65,26 @@ const EventsList = (props: EventsListProps): JSX.Element => {
             e.stopPropagation();
           }}
           extra={[
-            <Popconfirm
-              cancelText={t('cancel')}
-              icon={<QuestionCircleOutlined />}
+            <DeleteButton
               key="delete"
-              okText={t('delete')}
-              onCancel={(e) => {
-                if (e) e.stopPropagation();
-              }}
               onConfirm={(e) => {
                 if (myEvent) {
                   events.remove(myEvent.eventID);
                 }
                 if (e) e.stopPropagation();
               }}
-              placement="left"
-              title={t('deleteEventConfirm')}
-            >
-              <Button
-                data-testid="delete"
-                icon={<DeleteOutlined />}
-                onClick={(e) => e.stopPropagation()}
-                shape="circle"
-              />
-            </Popconfirm>,
+            />,
             <div
               key="spacing"
               style={{ width: '12px' }}
             />,
-            <Button
-              data-testid="settings"
-              icon={<SettingOutlined />}
-              key="setting"
+            <SettingsButton
+              key="settings"
               onClick={(e) => {
                 setEvent(myEvent);
                 setIsEventSettingsVisible(true);
-                e.stopPropagation();
+                if (e) e.stopPropagation();
               }}
-              shape="circle"
             />,
           ]}
         >
