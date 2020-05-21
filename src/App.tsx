@@ -4,7 +4,6 @@ import { Button, PageHeader, Tag } from 'antd';
 import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import React, { Suspense, useEffect, useState } from 'react';
@@ -25,7 +24,6 @@ const EventSettings = React.lazy(() => import('./components/event/EventSettings'
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
 // initialize dayjs
-dayjs.extend(isSameOrAfter);
 dayjs.extend(updateLocale);
 dayjs.extend(localizedFormat);
 dayjs.updateLocale('ja', {

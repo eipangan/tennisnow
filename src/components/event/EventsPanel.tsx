@@ -1,6 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Tabs } from 'antd';
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -8,6 +9,9 @@ import { AppContext } from '../../AppContext';
 import { ThemeType } from '../utils/Theme';
 import { EventType, getNewEvent } from './Event';
 import EventsList from './EventsList';
+
+// initialize dayjs
+dayjs.extend(isSameOrAfter);
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({

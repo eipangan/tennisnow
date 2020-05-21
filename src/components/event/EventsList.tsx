@@ -1,5 +1,6 @@
 import { Empty, List } from 'antd';
 import dayjs from 'dayjs';
+import calendar from 'dayjs/plugin/calendar';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -7,6 +8,9 @@ import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../AppContext';
 import { ThemeType } from '../utils/Theme';
 import { DeleteButton, EventType, SettingsButton } from './Event';
+
+// initialize dayjs
+dayjs.extend(calendar);
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
