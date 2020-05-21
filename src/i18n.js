@@ -20,6 +20,7 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     fallbackLng: 'en',
+    keySeparator: '.',
     whitelist: ['en', 'ja'],
     debug: false,
     interpolation: {

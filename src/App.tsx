@@ -1,6 +1,6 @@
 import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
-import { Button, PageHeader, Tag, Typography } from 'antd';
+import { Button, PageHeader, Tag } from 'antd';
 import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
+import AppIntro from './AppIntro';
 import awsconfig from './aws-exports';
 import { DeleteButton, EventType, getNewEvent, SettingsButton } from './components/event/Event';
 import { ThemeType } from './components/utils/Theme';
@@ -66,6 +67,10 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     background: 'transparent',
     margin: '0px',
     padding: '0px',
+  },
+  appIntro: {
+    background: 'white',
+    height: '160px',
   },
   appFooter: {
     background: 'transparent',
@@ -163,7 +168,7 @@ const App = (): JSX.Element => {
    */
   const AppBody = (): JSX.Element => {
     if (user) return <EventsPanel data={events} />;
-    return (<Typography>Help</Typography>);
+    return <AppIntro />;
   };
 
   /**

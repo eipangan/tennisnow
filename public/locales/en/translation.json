@@ -23,9 +23,23 @@
   "signin": "Sign in",
   "signout": "Sign out",
   "signoutConfirm": "Are you sure you want to sign out?",
-  "subtitle": "Doubles pair random combination generator web app.",
+  "subtitle": "Web app for people who love tennis!",
   "title": "Tennisnow.net",
   "userSettings": "User Settings",
   "vs": "vs",
-  "won": "Won"
+  "won": "Won",
+  "intro": {
+    "welcome": {
+      "title": "Let's play!",
+      "body": "Web app for people who love tennis!"
+    },
+    "events": {
+      "title": "Organize events",
+      "body": "Manage a local list of events. Manage the number of players, and optionally even the player names. When you're ready to play, you can also randomize team pairings, and matches. You can set who won each match, and later see which player has the most victories."
+    },
+    "signin": {
+      "title": "When you sign in ...",
+      "body": "You will be able to take advantage of all these features, and more! Follow @tennisnownet on Twitter to keep in touch with new features and updates!"
+    }
+  }
 }
