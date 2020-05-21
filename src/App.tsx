@@ -1,6 +1,6 @@
 import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
-import { Button, PageHeader, Tag } from 'antd';
+import { Button, PageHeader, Tag, Typography } from 'antd';
 import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -159,6 +159,14 @@ const App = (): JSX.Element => {
   };
 
   /**
+   * AppBody Component
+   */
+  const AppBody = (): JSX.Element => {
+    if (user) return <EventsPanel data={events} />;
+    return (<Typography>Help</Typography>);
+  };
+
+  /**
    * AppCopyright Component
    */
   const AppCopyright = (): JSX.Element => (
@@ -288,7 +296,7 @@ const App = (): JSX.Element => {
                 ]}
               />
               <Suspense fallback={<div className="loader" />}>
-                <EventsPanel data={events} />
+                <AppBody />
               </Suspense>
             </Route>
           </Switch>
