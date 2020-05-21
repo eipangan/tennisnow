@@ -12,16 +12,16 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
-import AppIntro from './AppIntro';
 import awsconfig from './aws-exports';
 import { DeleteButton, EventType, getNewEvent, SettingsButton } from './components/event/Event';
 import { ThemeType } from './components/utils/Theme';
 import { useLocalStorage } from './components/utils/Utils';
 import { ReactComponent as AppTitle } from './title.svg';
 
+const AppIntro = React.lazy(() => import('./AppIntro'));
 const Event = React.lazy(() => import('./components/event/Event'));
-const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
 const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
+const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
 // initialize dayjs
