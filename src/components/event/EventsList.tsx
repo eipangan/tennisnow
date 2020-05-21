@@ -22,6 +22,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
+ * EventsListProps
  *
  * @param props
  */
@@ -30,10 +31,10 @@ type EventsListProps = {
 };
 
 /**
-   * EventsList Component
-   *
-   * @param props
-   */
+ * EventsList Component
+ *
+ * @param props
+ */
 const EventsList = (props: EventsListProps): JSX.Element => {
   const { t } = useTranslation();
   const history = useHistory();

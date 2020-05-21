@@ -1,6 +1,6 @@
-import { CopyrightCircleOutlined, LoginOutlined, PlusOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
+import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
-import { Button, PageHeader, Tabs, Tag } from 'antd';
+import { Button, PageHeader, Tag } from 'antd';
 import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -20,7 +20,7 @@ import { useLocalStorage } from './components/utils/Utils';
 import { ReactComponent as AppTitle } from './title.svg';
 
 const Event = React.lazy(() => import('./components/event/Event'));
-const EventsList = React.lazy(() => import('./components/event/EventsList'));
+const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
 const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
@@ -69,9 +69,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     margin: '0px',
     padding: '0px',
   },
-  appEventsTab: {
-    background: 'transparent',
-  },
   appFooter: {
     background: 'transparent',
     fontSize: 'small',
@@ -95,8 +92,6 @@ const App = (): JSX.Element => {
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<CognitoUser | undefined>(undefined);
-
-  const { TabPane } = Tabs;
 
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
@@ -185,23 +180,6 @@ const App = (): JSX.Element => {
         </Tag>
       </a>
     </>
-  );
-
-  /**
-   * NewEventButton Component
-   */
-  const NewEventButton = (): JSX.Element => (
-    <Button
-      onClick={(e) => {
-        setEvent(getNewEvent());
-        setIsEventSettingsVisible(true);
-        e.stopPropagation();
-      }}
-      type="primary"
-      icon={<PlusOutlined />}
-    >
-      {t('newEvent')}
-    </Button>
   );
 
   /**
@@ -311,26 +289,9 @@ const App = (): JSX.Element => {
                   <UserButton key="user" />,
                 ]}
               />
-              <Tabs
-                className={classes.appEventsTab}
-                defaultActiveKey="upoming"
-                tabBarExtraContent={<NewEventButton />}
-              >
-                <TabPane key="events" tab={t('events')}>
-                  <EventsList
-                    data={events
-                      .filter((a: EventType) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
-                      .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
-                  />
-                </TabPane>
-                <TabPane key="finished" tab={t('finished')}>
-                  <EventsList
-                    data={events
-                      .filter((a: EventType) => dayjs(a.date).isBefore(dayjs().startOf('day')))
-                      .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
-                  />
-                </TabPane>
-              </Tabs>
+              <Suspense fallback={<div className="loader" />}>
+                <EventsPanel data={events} />
+              </Suspense>
             </Route>
           </Switch>
           <Suspense fallback={<div className="loader" />}>
