@@ -16,7 +16,7 @@ import awsconfig from './aws-exports';
 import { DeleteButton, EventType, getNewEvent, SettingsButton } from './components/event/Event';
 import { ThemeType } from './components/utils/Theme';
 import { useLocalStorage } from './components/utils/Utils';
-import { ReactComponent as AppTitle } from './title.svg';
+import { ReactComponent as AppTitle } from './images/title.svg';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
 const Event = React.lazy(() => import('./components/event/Event'));

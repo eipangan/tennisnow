@@ -6,8 +6,8 @@ import { AppContext, AppContextType } from './AppContext';
 import { EventType, getNewEvent } from './components/event/Event';
 import MatchesPanel from './components/match/MatchesPanel';
 import { ThemeType } from './components/utils/Theme';
-import { ReactComponent as Signup } from './signup.svg';
-import { ReactComponent as Tennis } from './tennis.svg';
+import { ReactComponent as Signup } from './images/signup.svg';
+import { ReactComponent as Tennis } from './images/tennis.svg';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
