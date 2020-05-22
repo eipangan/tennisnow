@@ -1,4 +1,4 @@
-import { Empty, List } from 'antd';
+import { List, Typography } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useContext } from 'react';
@@ -6,8 +6,10 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../AppContext';
+import { ReactComponent as Empty } from '../../empty.svg';
 import { ThemeType } from '../utils/Theme';
 import { DeleteButton, EventType, SettingsButton } from './Event';
+
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -49,10 +51,12 @@ const EventsList = (props: EventsListProps): JSX.Element => {
   const { events, setEvent, setIsEventSettingsVisible } = useContext(AppContext);
 
   const EmptyEvents = (): JSX.Element => (
-    <Empty
-      description={t('noEvents')}
-      image={Empty.PRESENTED_IMAGE_SIMPLE}
-    />
+    <>
+      <Empty width="60%" height="80%" style={{ maxWidth: 300 }} />
+      <Typography>
+        {t('noEvents')}
+      </Typography>
+    </>
   );
 
   return (
