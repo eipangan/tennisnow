@@ -1,4 +1,4 @@
-import { DeleteOutlined, LeftOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined } from '@ant-design/icons';
+import { DeleteOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
@@ -6,7 +6,8 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../AppContext';
-import Match, { getMatches, getOrderedMatches, MatchType } from '../match/Match';
+import { getMatches, getOrderedMatches, MatchType } from '../match/Match';
+import MatchesPanel from '../match/MatchesPanel';
 import { getPlayers, PlayerType } from '../player/Player';
 import PlayersSummary from '../player/PlayersSummary';
 import { getTeams, TeamType } from '../team/Team';
@@ -22,17 +23,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
   eventHeader: {
     background: 'transparent',
-  },
-  eventMatches: {
-    alignItems: 'center',
-    background: 'transparent',
-    display: 'flex',
-    flexDirection: 'row',
-    overflowY: 'scroll',
-    padding: {
-      top: '9px',
-      bottom: '12px',
-    },
   },
   eventPlayersSummary: {
     background: 'transparent',
@@ -138,22 +128,10 @@ const Event = (): JSX.Element => {
   return (
     <div className={classes.event}>
       {dayjs(event.date).calendar()}
-      <div className={classes.eventMatches}>
-        <RightOutlined />
-        {event.orderedMatches && event.orderedMatches.map((match: MatchType) => (
-          <div key={match.matchID}>
-            <Match
-              match={match}
-              onUpdate={() => {
-                if (event) {
-                  setEvent({ ...event });
-                }
-              }}
-            />
-          </div>
-        ))}
-        <LeftOutlined />
-      </div>
+      <MatchesPanel
+        data={event.orderedMatches}
+        onUpdate={() => { if (event) setEvent({ ...event }); }}
+      />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary />
       </div>
