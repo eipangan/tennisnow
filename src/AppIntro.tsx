@@ -7,12 +7,12 @@ import { ThemeType } from './components/utils/Theme';
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   appIntro: {
-    background: theme.bodyBackground,
+    background: `${theme.bodyBackground}69`,
     padding: '12px',
     margin: '12px',
   },
   title: {
-    background: theme.headerBackground,
+    background: 'transparent',
   },
 }));
 

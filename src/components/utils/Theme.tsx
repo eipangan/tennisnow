@@ -25,9 +25,9 @@ export interface ThemeType {
 }
 
 export const theme: ThemeType = {
-  background: 'linear-gradient(0deg, #00000000 0%, #aadd6650 100%)',
+  background: 'linear-gradient(180deg, #00000000 0%, #aadd6650 100%)',
   baseColor,
-  bodyBackground: 'white',
+  bodyBackground: '#ffffff',
   headerBackground: '#ffe7ba',
   height: '48px',
   match: {
