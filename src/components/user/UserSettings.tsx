@@ -39,7 +39,7 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
       className={classes.authPanel}
       getContainer={false}
       onClose={() => setIsUserSettingsVisible(false)}
-      placement="left"
+      placement="right"
       title={t('userSettings')}
       visible
     >
