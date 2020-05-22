@@ -245,7 +245,7 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     dayjs.locale(i18n.language);
-    document.title = `${t('title')} | ${t('subtitle')}`;
+    document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 
   useEffect(() => {

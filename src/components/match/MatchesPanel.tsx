@@ -8,7 +8,8 @@ import Match, { MatchType } from './Match';
 const useStyles = createUseStyles((theme: ThemeType) => ({
   matchesPanel: {
     alignItems: 'center',
-    background: 'transparent',
+    background: theme.highlightColor,
+    border: '1px solid lightgray',
     display: 'flex',
     flexDirection: 'row',
     overflowY: 'scroll',

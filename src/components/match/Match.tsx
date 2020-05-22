@@ -17,7 +17,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 
   return ({
     match: {
-      background: '#FFFFFF66',
+      background: theme.baseColor,
       border: '1px solid lightgray',
       borderRadius: '3px',
       color: 'black',

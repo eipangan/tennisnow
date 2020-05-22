@@ -5,9 +5,8 @@ const baseColor = '#FFFFFF';
 export interface ThemeType {
   background: string,
   baseColor: string,
-  bodyBackground: string,
-  headerBackground: string,
   height: string,
+  highlightColor: string,
   match: {
     won: {
       background: string,
@@ -25,18 +24,17 @@ export interface ThemeType {
 }
 
 export const theme: ThemeType = {
-  background: 'linear-gradient(180deg, #00000000 0%, #aadd6650 100%)',
-  baseColor,
-  bodyBackground: '#ffffff',
-  headerBackground: '#ffe7ba',
+  background: 'linear-gradient(180deg, #00000000 0%, #aadd6651 95%)',
+  baseColor: '#ffffff',
   height: '48px',
+  highlightColor: '#ffe7ba',
   match: {
     won: {
-      background: 'khaki',
+      background: '#fffb8f',
       color: '#787878',
     },
     draw: {
-      background: 'transparent',
+      background: `${baseColor}50`,
       color: '#787878',
     },
     lost: {
