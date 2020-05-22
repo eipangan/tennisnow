@@ -6,6 +6,8 @@ import { AppContext, AppContextType } from './AppContext';
 import { EventType, getNewEvent } from './components/event/Event';
 import MatchesPanel from './components/match/MatchesPanel';
 import { ThemeType } from './components/utils/Theme';
+import { ReactComponent as Signup } from './signup.svg';
+import { ReactComponent as Tennis } from './tennis.svg';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -53,6 +55,9 @@ const AppIntro = (): JSX.Element => {
       <Text>
         {t('slogan')}
       </Text>
+      <div style={{ margin: '12px 0px' }}>
+        <Tennis width="60%" height="80%" style={{ maxWidth: 300 }} />
+      </div>
       <Title className={classes.title} level={3}>
         {t('intro.events.title')}
       </Title>
@@ -76,6 +81,9 @@ const AppIntro = (): JSX.Element => {
       <Text>
         {t('intro.signin.body')}
       </Text>
+      <div style={{ margin: '12px 0px' }}>
+        <Signup width="60%" height="80%" style={{ maxWidth: 300 }} />
+      </div>
     </div>
   );
 };
