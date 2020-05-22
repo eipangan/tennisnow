@@ -263,7 +263,7 @@ const App = (): JSX.Element => {
       <div className={classes.appContent}>
         <AppContext.Provider value={app}>
           <Switch>
-            <Route path="/event">
+            <Route path={['/event']}>
               <PageHeader
                 className={classes.appHeader}
                 onBack={() => history.push('/')}
@@ -292,7 +292,7 @@ const App = (): JSX.Element => {
                 <Event />
               </Suspense>
             </Route>
-            <Route path="/">
+            <Route path={['/']}>
               <PageHeader
                 className={classes.appHeader}
                 title={(<AppTitle />)}
