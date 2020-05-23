@@ -62,7 +62,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
   return (
     <Tabs
       className={classes.eventsPanel}
-      defaultActiveKey="upoming"
+      defaultActiveKey="events"
       tabBarExtraContent={<NewEventButton />}
     >
       <TabPane key="events" tab={t('events')}>
