@@ -18,7 +18,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * UserSettingsProps
  */
 type UserSettingsProps = {
-  user: CognitoUser | undefined;
+  user: CognitoUser;
 };
 
 /**

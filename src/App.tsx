@@ -94,7 +94,7 @@ const App = (): JSX.Element => {
 
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
-  const [user, setUser] = useState<CognitoUser | undefined>(undefined);
+  const [user, setUser] = useState<CognitoUser>();
 
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
@@ -104,14 +104,12 @@ const App = (): JSX.Element => {
   Hub.listen('auth', (data) => {
     switch (data.payload.event) {
       case 'signIn':
+      case 'signIn_failure':
+      case 'signOut':
         setUser(data.payload.data);
         break;
-      case 'signIn_failure':
-        setUser(undefined);
-        break;
-      case 'signOut':
-        setUser(undefined);
-        break;
+      case 'cognitoHostedUI':
+      case 'oAuthSignOut':
       default:
         break;
     }
@@ -234,9 +232,7 @@ const App = (): JSX.Element => {
       .then((myUser) => {
         setUser(myUser);
       })
-      .catch(() => {
-        setUser(undefined);
-      });
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -311,7 +307,7 @@ const App = (): JSX.Element => {
               return null;
             })()}
             {(() => {
-              if (isUserSettingsVisible) return <UserSettings user={user} />;
+              if (isUserSettingsVisible && user) return <UserSettings user={user} />;
               return null;
             })()}
           </Suspense>
