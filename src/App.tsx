@@ -44,6 +44,9 @@ dayjs.updateLocale('en', {
 });
 
 // initialize amplify
+if (awsconfig.oauth.domain.includes('master')) {
+  awsconfig.oauth.domain = 'auth.tennisnow.net';
+}
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 Amplify.configure(awsconfig);
