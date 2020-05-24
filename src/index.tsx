@@ -23,34 +23,24 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-const ua = window.navigator.userAgent;
-const iOS = /iPad|iPhone|iPod/i.test(ua);
-const webkit = /WebKit/i.test(ua);
-const iOSSafari = iOS && webkit && !/(Chrome|CriOS|EdgiOS|FxiOS|OPiOS)/i.test(ua);
-const isTennisNowNet = window.location.hostname === 'tennisnow.net';
+serviceWorker.register({
+  onUpdate: (registration) => {
+    const waitingServiceWorker = registration.waiting;
 
-if (iOSSafari && isTennisNowNet) {
-  serviceWorker.unregister();
-} else {
-  serviceWorker.register({
-    onUpdate: (registration) => {
-      const waitingServiceWorker = registration.waiting;
+    interface ServiceWorkerEvent extends Event {
+      target: Partial<ServiceWorker> & EventTarget | null;
+    }
 
-      interface ServiceWorkerEvent extends Event {
-        target: Partial<ServiceWorker> & EventTarget | null;
-      }
-
-      if (waitingServiceWorker) {
-        waitingServiceWorker.addEventListener(
-          'statechange',
-          (event: ServiceWorkerEvent) => {
-            if (event.target && event.target.state === 'activated') {
-              window.location.reload();
-            }
-          },
-        );
-        waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
-      }
-    },
-  });
-}
+    if (waitingServiceWorker) {
+      waitingServiceWorker.addEventListener(
+        'statechange',
+        (event: ServiceWorkerEvent) => {
+          if (event.target && event.target.state === 'activated') {
+            window.location.reload();
+          }
+        },
+      );
+      waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+    }
+  },
+});
