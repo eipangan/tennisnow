@@ -1,29 +1,59 @@
-type Stats @model {
+type Event
+@model
+@auth(rules: [
+  {allow: owner},
+  {allow: private, operations: [update, read]}
+]) {
+  id: ID!
+  date: DateTime!
+  numPlayers: Int!
+  players: [Player!]!
+  teams: [Team!]!
+  matches: [Match!]!
+  orderedMatches: [Match!]!
+  owner: Player
+}
+
+scalar DateTime
+
+type Match {
+  id: ID!
+  teams: [Team!]!
+  status: MatchStatus = NEW
+}
+
+enum MatchStatus {
+  NEW
+  TEAM1WON
+  TEAM2WON
+  DRAW
+}
+
+type Team {
+  id: ID!
+  players: [Player!]!
+  stats: PlayerStats!
+}
+
+type Player {
+  id: ID!
+  stats: PlayerStats!
+  user: User @connection
+}
+
+type PlayerStats {
   numMatches: Int!
   numWon: Int!
   numDraws: Int!
   numLost: Int!
 }
 
-type Player @model {
+type User
+@model 
+@auth(rules: [
+  {allow: owner},
+  {allow: private, operations: [read]}
+]) {
   id: ID!
   name: String!
-}
-
-type Team @model {
-  id: ID!
-}
-
-type Match @model {
-  id: ID!
-}
-
-type Event @model {
-  id: ID!
-  date: date!
-  numPlayers: Int!
-  players: [Player!]!
-  teams: [Team!]!
-  matches: [Match!]!
-  orderedMatches: [Match!]!
 }
