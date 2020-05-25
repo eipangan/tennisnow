@@ -1,0 +1,29 @@
+type Stats @model {
+  numMatches: Int!
+  numWon: Int!
+  numDraws: Int!
+  numLost: Int!
+}
+
+type Player @model {
+  id: ID!
+  name: String!
+}
+
+type Team @model {
+  id: ID!
+}
+
+type Match @model {
+  id: ID!
+}
+
+type Event @model {
+  id: ID!
+  date: date!
+  numPlayers: Int!
+  players: [Player!]!
+  teams: [Team!]!
+  matches: [Match!]!
+  orderedMatches: [Match!]!
+}
