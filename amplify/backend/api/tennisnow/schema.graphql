@@ -1,25 +1,21 @@
-type Event
-@model
+type Event @model
 @auth(rules: [
   {allow: owner},
   {allow: private, operations: [update, read]}
 ]) {
   id: ID!
-  date: DateTime!
+  date: Int!
   numPlayers: Int!
   players: [Player!]!
   teams: [Team!]!
   matches: [Match!]!
   orderedMatches: [Match!]!
-  owner: Player
 }
-
-scalar DateTime
 
 type Match {
   id: ID!
   teams: [Team!]!
-  status: MatchStatus = NEW
+  status: MatchStatus
 }
 
 enum MatchStatus {
@@ -38,7 +34,7 @@ type Team {
 type Player {
   id: ID!
   stats: PlayerStats!
-  user: User @connection
+  user: User
 }
 
 type PlayerStats {
@@ -48,8 +44,7 @@ type PlayerStats {
   numLost: Int!
 }
 
-type User
-@model 
+type User @model 
 @auth(rules: [
   {allow: owner},
   {allow: private, operations: [read]}
