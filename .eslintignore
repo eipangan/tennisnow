@@ -8,3 +8,6 @@ build/*
 # Ignore these src files
 src/react-app-env.d.ts
 src/setupTests.ts
+
+# Ignore automatically generated models
+src/models/*
