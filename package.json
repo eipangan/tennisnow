@@ -16,7 +16,7 @@
     "antd": "^4.2.5",
     "aws-amplify": "^3.0.12",
     "dayjs": "^1.8.27",
-    "i18next": "^19.4.4",
+    "i18next": "^19.4.5",
     "i18next-browser-languagedetector": "^4.2.0",
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.15",
