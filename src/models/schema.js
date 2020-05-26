@@ -13,7 +13,7 @@ export const schema = {
                 "date": {
                     "name": "date",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -283,5 +283,5 @@ export const schema = {
             }
         }
     },
-    "version": "7867c9684371279563ce4b9397d9b65d"
+    "version": "d46ed350346a3d55f933c3e2e5ba1c66"
 };

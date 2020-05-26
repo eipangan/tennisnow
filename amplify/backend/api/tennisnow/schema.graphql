@@ -4,7 +4,7 @@ type Event @model
   {allow: private, operations: [update, read]}
 ]) {
   id: ID!
-  date: Int!
+  date: AWSDateTime!
   numPlayers: Int!
   players: [Player!]!
   teams: [Team!]!

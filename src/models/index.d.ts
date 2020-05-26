@@ -38,7 +38,7 @@ export declare class Match {
 
 export declare class Event {
   readonly id: string;
-  readonly date: number;
+  readonly date: string;
   readonly numPlayers: number;
   readonly players: Player[];
   readonly teams: Team[];
