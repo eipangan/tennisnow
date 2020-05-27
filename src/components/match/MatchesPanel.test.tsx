@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, Player, Team } from '../../models';
+import { Match, Player, Team, MatchStatus } from '../../models';
 import { theme } from '../utils/Theme';
 import MatchesPanel from './MatchesPanel';
 
@@ -28,6 +28,7 @@ test('render new without crashing', async () => {
           ],
         }),
       ],
+      status: MatchStatus.NEW,
     }),
     new Match({
       teams: [
@@ -44,6 +45,7 @@ test('render new without crashing', async () => {
           ],
         }),
       ],
+      status: MatchStatus.NEW,
     }),
   ];
 
@@ -53,7 +55,7 @@ test('render new without crashing', async () => {
         <Suspense fallback={null}>
           <MatchesPanel
             matches={matches}
-            onUpdate={() => {}}
+            onUpdate={() => { }}
           />
         </Suspense>
       </ThemeProvider>
