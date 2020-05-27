@@ -1,8 +1,7 @@
-import React, { StrictMode, useContext } from 'react';
+import React, { StrictMode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
-import { MatchStatus, Team, Match } from '../../models';
+import { Match, MatchStatus } from '../../models';
 import TeamPanel from '../team/TeamPanel';
 import { ThemeType } from '../utils/Theme';
 
