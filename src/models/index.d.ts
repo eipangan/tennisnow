@@ -9,30 +9,20 @@ export enum MatchStatus {
 
 export declare class Player {
   readonly id: string;
-  readonly stats: PlayerStats;
-  readonly user?: User;
+  readonly name: string;
   constructor(init: ModelInit<Player>);
-}
-
-export declare class PlayerStats {
-  readonly numMatches: number;
-  readonly numWon: number;
-  readonly numDraws: number;
-  readonly numLost: number;
-  constructor(init: ModelInit<PlayerStats>);
 }
 
 export declare class Team {
   readonly id: string;
   readonly players: Player[];
-  readonly stats: PlayerStats;
   constructor(init: ModelInit<Team>);
 }
 
 export declare class Match {
   readonly id: string;
   readonly teams: Team[];
-  readonly status?: MatchStatus | keyof typeof MatchStatus;
+  readonly status: MatchStatus | keyof typeof MatchStatus;
   constructor(init: ModelInit<Match>);
 }
 

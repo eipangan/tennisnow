@@ -169,54 +169,10 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "stats": {
-                    "name": "stats",
+                "name": {
+                    "name": "name",
                     "isArray": false,
-                    "type": {
-                        "nonModel": "PlayerStats"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "user": {
-                    "name": "user",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
-        },
-        "PlayerStats": {
-            "name": "PlayerStats",
-            "fields": {
-                "numMatches": {
-                    "name": "numMatches",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "numWon": {
-                    "name": "numWon",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "numDraws": {
-                    "name": "numDraws",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "numLost": {
-                    "name": "numLost",
-                    "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 }
@@ -237,15 +193,6 @@ export const schema = {
                     "isArray": true,
                     "type": {
                         "nonModel": "Player"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "stats": {
-                    "name": "stats",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "PlayerStats"
                     },
                     "isRequired": true,
                     "attributes": []
@@ -277,11 +224,11 @@ export const schema = {
                     "type": {
                         "enum": "MatchStatus"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 }
             }
         }
     },
-    "version": "d46ed350346a3d55f933c3e2e5ba1c66"
+    "version": "598ffe79819a9ef2eb7c2277c58715d9"
 };
