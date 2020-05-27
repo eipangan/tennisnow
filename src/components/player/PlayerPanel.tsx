@@ -1,5 +1,6 @@
 import React, { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
+import { Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles
@@ -13,48 +14,17 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * PlayerType
- */
-export interface PlayerType {
-  playerID: string;
-  playerName: string;
-  stats: CompetitorStats;
-}
-
-/**
- * CompetitorStatus
- */
-export class CompetitorStats {
-  numMatches: number;
-
-  numWon: number;
-
-  numDraws: number;
-
-  numLost: number;
-
-  constructor() {
-    this.numMatches = 0;
-    this.numWon = 0;
-    this.numDraws = 0;
-    this.numLost = 0;
-  }
-}
-
-/**
  * initialize players
  *
  * @param numPlayers number of players
  */
-export const getPlayers = (numPlayers: number): PlayerType[] => {
-  const players = [];
+export const getPlayers = (numPlayers: number): Player[] => {
+  const players: Player[] = [];
 
   for (let p = 0; p < numPlayers; p += 1) {
-    const player: PlayerType = {
-      playerID: String(players.length + 1),
-      playerName: '',
-      stats: new CompetitorStats(),
-    };
+    const player: Player = new Player({
+      name: '',
+    });
     players.push(player);
   }
 
@@ -65,7 +35,7 @@ export const getPlayers = (numPlayers: number): PlayerType[] => {
  * PlayerProps
  */
 type PlayerProps = {
-  playerID: string;
+  player: Player;
 };
 
 /**
@@ -73,8 +43,8 @@ type PlayerProps = {
  *
  * @param props
  */
-const Player = (props: PlayerProps): JSX.Element => {
-  const { playerID } = props;
+const PlayerPanel = (props: PlayerProps): JSX.Element => {
+  const { player } = props;
 
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -82,10 +52,10 @@ const Player = (props: PlayerProps): JSX.Element => {
   return (
     <StrictMode>
       <div className={classes.player}>
-        {playerID}
+        {player.name}
       </div>
     </StrictMode>
   );
 };
 
-export default Player;
+export default PlayerPanel;

@@ -2,25 +2,29 @@ import { render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
+import { Player, Team } from '../../models';
 import { theme } from '../utils/Theme';
-import Player, { CompetitorStats, PlayerType } from './Player';
+import TeamPanel from './TeamPanel';
 
 test('renders without crashing', async () => {
-  const player: PlayerType = {
-    playerID: String(1),
-    playerName: '',
-    stats: new CompetitorStats(),
-  };
+  const team = new Team({
+    players: [
+      new Player({ name: 'Player1' }),
+      new Player({ name: 'Player2' }),
+    ],
+  });
 
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <Player playerID={player.playerID} />
+          <TeamPanel team={team} />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
   );
 
-  expect(screen.getByText('1')).toBeInTheDocument();
+  expect(screen.getByRole('button')).toBeInTheDocument();
+  expect(screen.getByText('Player1')).toBeInTheDocument();
+  expect(screen.getByText('Player2')).toBeInTheDocument();
 });
