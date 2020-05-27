@@ -1,9 +1,7 @@
 import { Typography } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext, AppContextType } from './AppContext';
-import { EventType, getNewEvent } from './components/event/Event';
 import MatchesPanel from './components/match/MatchesPanel';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as Signup } from './images/signup.svg';
@@ -30,22 +28,6 @@ const AppIntro = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { Title, Text } = Typography;
-  const [event, setEvent] = useState<EventType>(getNewEvent());
-
-  const app: AppContextType = {
-    events: {
-      add: (myEvent: EventType): boolean => true,
-      get: (eventID: string | undefined): EventType | undefined => undefined,
-      update: (myEvent: EventType): boolean => true,
-      remove: (eventID: string | undefined): boolean => true,
-    },
-    event,
-    setEvent,
-    isEventSettingsVisible: true,
-    setIsEventSettingsVisible: () => { },
-    isUserSettingsVisible: false,
-    setIsUserSettingsVisible: () => { },
-  };
 
   return (
     <div className={classes.appIntro}>
@@ -65,12 +47,9 @@ const AppIntro = (): JSX.Element => {
         {t('intro.events.body1')}
       </Text>
       <div style={{ margin: '12px 0px' }}>
-        <AppContext.Provider value={app}>
-          <MatchesPanel
-            data={app.event.orderedMatches}
-            onUpdate={() => { if (event) setEvent({ ...event }); }}
-          />
-        </AppContext.Provider>
+        <MatchesPanel
+          matches={[]}
+        />
       </div>
       <Text>
         {t('intro.events.body2')}
