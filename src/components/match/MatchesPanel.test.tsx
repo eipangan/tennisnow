@@ -1,53 +1,76 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext, AppContextType } from '../../AppContext';
-import { EventType, getNewEvent } from '../event/Event';
+import { Match, Player, Team } from '../../models';
 import { theme } from '../utils/Theme';
 import MatchesPanel from './MatchesPanel';
+
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
-const app: AppContextType = {
-  events: {
-    add: (event: EventType): boolean => true,
-    get: (eventID: string | undefined): EventType | undefined => undefined,
-    update: (event: EventType): boolean => true,
-    remove: (eventID: string | undefined): boolean => true,
-  },
-  event: getNewEvent(),
-  setEvent: () => { },
-  isEventSettingsVisible: false,
-  setIsEventSettingsVisible: () => { },
-  isUserSettingsVisible: false,
-  setIsUserSettingsVisible: () => { },
-};
-
 test('render new without crashing', async () => {
-  const event = getNewEvent();
+  const matches = [
+    new Match({
+      teams: [
+        new Team({
+          players: [
+            new Player({ name: 'Player1' }),
+            new Player({ name: 'Player2' }),
+          ],
+        }),
+        new Team({
+          players: [
+            new Player({ name: 'Player3' }),
+            new Player({ name: 'Player4' }),
+          ],
+        }),
+      ],
+    }),
+    new Match({
+      teams: [
+        new Team({
+          players: [
+            new Player({ name: 'Player5' }),
+            new Player({ name: 'Player6' }),
+          ],
+        }),
+        new Team({
+          players: [
+            new Player({ name: 'Player7' }),
+            new Player({ name: 'Player8' }),
+          ],
+        }),
+      ],
+    }),
+  ];
+
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <AppContext.Provider value={app}>
-            <MatchesPanel
-              data={event.orderedMatches}
-              onUpdate={() => {}}
-            />
-          </AppContext.Provider>
+          <MatchesPanel
+            matches={matches}
+            onUpdate={() => {}}
+          />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
   );
 
-  expect(screen.getAllByText('1')).toHaveLength(8);
-  expect(screen.getAllByText('2')).toHaveLength(8);
-  expect(screen.getAllByText('vs')).toHaveLength(12);
-  expect(screen.getAllByText('3')).toHaveLength(8);
-  expect(screen.getAllByText('4')).toHaveLength(8);
+  expect(screen.getAllByText('vs')).toHaveLength(2);
+
+  expect(screen.getByText('Player1')).toBeInTheDocument();
+  expect(screen.getByText('Player2')).toBeInTheDocument();
+  expect(screen.getByText('Player3')).toBeInTheDocument();
+  expect(screen.getByText('Player4')).toBeInTheDocument();
+
+  expect(screen.getByText('Player5')).toBeInTheDocument();
+  expect(screen.getByText('Player6')).toBeInTheDocument();
+  expect(screen.getByText('Player7')).toBeInTheDocument();
+  expect(screen.getByText('Player8')).toBeInTheDocument();
 
   fireEvent.click(screen.getAllByText('vs')[0]);
 });

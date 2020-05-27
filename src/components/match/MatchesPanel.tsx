@@ -2,7 +2,8 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { ThemeType } from '../utils/Theme';
-import Match, { MatchType } from './Match';
+import MatchPanel from './MatchPanel';
+import { Match } from '../../models';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -24,8 +25,8 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * MatchesPanelProps
  */
 type MatchesPanelProps = {
-  data: MatchType[];
-  onUpdate: () => void;
+  matches: Match[];
+  onUpdate?: () => void;
 }
 
 /**
@@ -37,18 +38,17 @@ const MatchesPanel = (props: MatchesPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { data, onUpdate } = props;
+  const { matches, onUpdate } = props;
 
   return (
     <div className={classes.matchesPanel}>
       <RightOutlined />
-      {data.map((match: MatchType) => (
-        <div key={match.matchID}>
-          <Match
-            match={match}
-            onUpdate={onUpdate}
-          />
-        </div>
+      {matches.map((match, index) => (
+        <MatchPanel
+          key={index.toString()}
+          match={match}
+          onUpdate={onUpdate}
+        />
       ))}
       <LeftOutlined />
     </div>
