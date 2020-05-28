@@ -122,7 +122,7 @@ const App = (): JSX.Element => {
    * AppBody Component
    */
   const AppBody = (): JSX.Element => {
-    if (user) return <EventsPanel data={events} />;
+    if (user) return <EventsPanel events={events} />;
     return <AppIntro />;
   };
 
