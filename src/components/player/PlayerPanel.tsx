@@ -14,24 +14,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * initialize players
- *
- * @param numPlayers number of players
- */
-export const getPlayers = (numPlayers: number): Player[] => {
-  const players: Player[] = [];
-
-  for (let p = 0; p < numPlayers; p += 1) {
-    const player: Player = new Player({
-      name: '',
-    });
-    players.push(player);
-  }
-
-  return players;
-};
-
-/**
  * PlayerProps
  */
 type PlayerProps = {
