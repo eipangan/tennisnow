@@ -11,15 +11,16 @@ import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { AppContext, AppContextType } from './AppContext';
 import awsconfig from './aws-exports';
-import { DeleteButton, EventType, getNewEvent, SettingsButton } from './components/event/Event';
+import { DeleteButton, SettingsButton } from './components/event/EventPanel';
 import { ThemeType } from './components/utils/Theme';
 import { useLocalStorage } from './components/utils/Utils';
 import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
+import getNewEvent from './components/event/EventUtils';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
-const Event = React.lazy(() => import('./components/event/Event'));
+const EventPanel = React.lazy(() => import('./components/event/EventPanel'));
 const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
 const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
@@ -91,8 +92,8 @@ const App = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const [events, setEvents] = useLocalStorage<EventType[]>('events', []);
-  const [event, setEvent] = useLocalStorage<EventType>('event', getNewEvent());
+  const [events, setEvents] = useLocalStorage<Event[]>('events', []);
+  const [event, setEvent] = useLocalStorage<Event>('event', getNewEvent());
 
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
@@ -116,52 +117,6 @@ const App = (): JSX.Element => {
         break;
     }
   });
-
-  // initialize app AppContext
-  const app: AppContextType = {
-    events: {
-      add: (myEvent: EventType): boolean => {
-        if (!myEvent || !myEvent.eventID) return false;
-
-        const otherEvents = events.filter((e: EventType) => e.eventID !== myEvent.eventID);
-        if (otherEvents.length <= 0) {
-          setEvents([myEvent]);
-        } else {
-          setEvents([...otherEvents, myEvent]);
-        }
-
-        return true;
-      },
-      get: (myEventID: string | undefined): EventType | undefined => {
-        if (!myEventID) return undefined;
-
-        return events.find((e: EventType) => e.eventID === myEventID);
-      },
-      update: (myEvent: EventType): boolean => {
-        if (!myEvent || !myEvent.eventID) return false;
-
-        const otherEvents = events.filter((e: EventType) => e.eventID !== myEvent.eventID);
-        if (otherEvents.length <= 0) {
-          setEvents([myEvent]);
-        } else {
-          setEvents([...otherEvents, myEvent]);
-        }
-
-        return true;
-      },
-      remove: (myEventID: string | undefined): boolean => {
-        setEvents(events.filter((e: EventType) => e.eventID !== myEventID));
-        if (event && event.eventID === myEventID) setEvent(getNewEvent());
-        return true;
-      },
-    },
-    event,
-    setEvent,
-    isEventSettingsVisible,
-    setIsEventSettingsVisible,
-    isUserSettingsVisible,
-    setIsUserSettingsVisible,
-  };
 
   /**
    * AppBody Component
@@ -246,74 +201,64 @@ const App = (): JSX.Element => {
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 
-  useEffect(() => {
-    if (event && event.eventID) {
-      app.events.update(event);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
-
   /**
    * return Section
    */
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
-        <AppContext.Provider value={app}>
-          <Switch>
-            <Route path={['/event']}>
-              <PageHeader
-                className={classes.appHeader}
-                onBack={() => history.push('/')}
-                title={(<AppTitle />)}
-                extra={[
-                  <DeleteButton
-                    key="delete"
-                    onConfirm={(e) => {
-                      if (e) {
-                        app.events.remove(event.eventID);
-                        history.push('/');
-                        e.stopPropagation();
-                      }
-                    }}
-                  />,
-                  <SettingsButton
-                    key="settings"
-                    onClick={(e) => {
-                      setIsEventSettingsVisible(true);
-                      if (e) e.stopPropagation();
-                    }}
-                  />,
-                ]}
-              />
-              <Suspense fallback={<div className="loader" />}>
-                <Event />
-              </Suspense>
-            </Route>
-            <Route path={['/']}>
-              <PageHeader
-                className={classes.appHeader}
-                title={(<AppTitle />)}
-                extra={[
-                  <UserButton key="user" />,
-                ]}
-              />
-              <Suspense fallback={<div className="loader" />}>
-                <AppBody />
-              </Suspense>
-            </Route>
-          </Switch>
-          <Suspense fallback={<div className="loader" />}>
-            {(() => {
-              if (isEventSettingsVisible) return <EventSettings />;
-              return null;
-            })()}
-            {(() => {
-              if (isUserSettingsVisible && user) return <UserSettings user={user} />;
-              return null;
-            })()}
-          </Suspense>
-        </AppContext.Provider>
+        <Switch>
+          <Route path={['/event']}>
+            <PageHeader
+              className={classes.appHeader}
+              onBack={() => history.push('/')}
+              title={(<AppTitle />)}
+              extra={[
+                <DeleteButton
+                  key="delete"
+                  onConfirm={(e) => {
+                    if (e) {
+                      history.push('/');
+                      e.stopPropagation();
+                    }
+                  }}
+                />,
+                <SettingsButton
+                  key="settings"
+                  onClick={(e) => {
+                    setIsEventSettingsVisible(true);
+                    if (e) e.stopPropagation();
+                  }}
+                />,
+              ]}
+            />
+            <Suspense fallback={<div className="loader" />}>
+              <EventPanel />
+            </Suspense>
+          </Route>
+          <Route path={['/']}>
+            <PageHeader
+              className={classes.appHeader}
+              title={(<AppTitle />)}
+              extra={[
+                <UserButton key="user" />,
+              ]}
+            />
+            <Suspense fallback={<div className="loader" />}>
+              <AppBody />
+            </Suspense>
+          </Route>
+        </Switch>
+        <Suspense fallback={<div className="loader" />}>
+          {(() => {
+            if (isEventSettingsVisible) return <EventSettings event={event} />;
+            return null;
+          })()}
+          {(() => {
+            if (isUserSettingsVisible && user) return <UserSettings user={user} />;
+            return null;
+          })()}
+        </Suspense>
       </div>
       <div className={classes.appFooter}>
         <AppCopyright />

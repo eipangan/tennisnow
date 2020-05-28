@@ -1,18 +1,19 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { EventType } from './components/event/Event';
+import { Event } from './models';
+
 
 /**
  * AppContextType
  */
 export interface AppContextType {
   events: {
-    add: (event: EventType) => boolean;
-    get: (eventID: string | undefined) => EventType | undefined;
-    update: (event: EventType) => boolean;
+    add: (event: Event) => boolean;
+    get: (eventID: string | undefined) => Event | undefined;
+    update: (event: Event) => boolean;
     remove: (eventID: string | undefined) => boolean;
   },
-  event: EventType,
-  setEvent: Dispatch<SetStateAction<EventType>> | (() => {}),
+  event: Event,
+  setEvent: Dispatch<SetStateAction<Event>> | (() => {}),
   isEventSettingsVisible: boolean,
   setIsEventSettingsVisible: Dispatch<SetStateAction<boolean>> | (() => {}),
   isUserSettingsVisible: boolean,
