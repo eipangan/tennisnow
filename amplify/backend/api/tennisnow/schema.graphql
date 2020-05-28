@@ -15,7 +15,7 @@ type Event @model
 type Match {
   id: ID!
   teams: [Team!]!
-  status: MatchStatus
+  status: MatchStatus!
 }
 
 enum MatchStatus {
@@ -28,20 +28,11 @@ enum MatchStatus {
 type Team {
   id: ID!
   players: [Player!]!
-  stats: PlayerStats!
 }
 
 type Player {
   id: ID!
-  stats: PlayerStats!
-  user: User
-}
-
-type PlayerStats {
-  numMatches: Int!
-  numWon: Int!
-  numDraws: Int!
-  numLost: Int!
+  name: String!
 }
 
 type User @model 
