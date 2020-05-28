@@ -16,7 +16,7 @@ export const getMatches = (teams: Team[]): Match[] => {
  *
  * @param matches
  */
-export const getOrganizedMatches = (matches: Match[]) => {
+export const getOrderedMatches = (matches: Match[]) => {
   const organizedMatches: Match[] = [];
 
   return organizedMatches;
