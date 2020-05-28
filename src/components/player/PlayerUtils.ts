@@ -5,7 +5,7 @@ import { Player } from '../../models';
  *
  * @param numPlayers number of players
  */
-const getPlayers = (numPlayers: number): Player[] => {
+export const getPlayers = (numPlayers: number): Player[] => {
   const players: Player[] = [];
 
   for (let i = 0; i < numPlayers; i += 1) {
