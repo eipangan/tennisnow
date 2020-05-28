@@ -6,11 +6,8 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../AppContext';
-import { getMatches, getOrderedMatches, MatchType } from '../match/Match';
 import MatchesPanel from '../match/MatchesPanel';
-import { getPlayers, PlayerType } from '../player/Player';
 import PlayersSummary from '../player/PlayersSummary';
-import { getTeams, TeamType } from '../team/Team';
 import { ThemeType } from '../utils/Theme';
 
 // initialize dayjs
@@ -28,42 +25,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     background: 'transparent',
   },
 }));
-
-/**
- * EventType
- */
-export interface EventType {
-  eventID: string | undefined;
-  date: Date;
-  numPlayers: number;
-  players: PlayerType[];
-  teams: TeamType[];
-  matches: MatchType[];
-  orderedMatches: MatchType[];
-}
-
-/**
- * getNewEvent
- */
-export const getNewEvent = (): EventType => {
-  const defaultNumPlayers = 6;
-
-  const numPlayers = defaultNumPlayers;
-  const players = getPlayers(numPlayers);
-  const teams = getTeams(players);
-  const matches = getMatches(teams);
-  const orderedMatches = getOrderedMatches(players, teams, matches);
-
-  return {
-    eventID: undefined,
-    date: dayjs().add(1, 'hour').startOf('hour').toDate(),
-    numPlayers,
-    players,
-    teams,
-    matches,
-    orderedMatches,
-  };
-};
 
 /**
  * DeleteButton component
@@ -129,11 +90,11 @@ const Event = (): JSX.Element => {
     <div className={classes.event}>
       {dayjs(event.date).calendar()}
       <MatchesPanel
-        data={event.orderedMatches}
+        matches={event.orderedMatches}
         onUpdate={() => { if (event) setEvent({ ...event }); }}
       />
       <div className={classes.eventPlayersSummary}>
-        <PlayersSummary />
+        <PlayersSummary event={event} />
       </div>
     </div>
   );

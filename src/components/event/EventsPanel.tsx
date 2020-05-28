@@ -6,9 +6,10 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../AppContext';
+import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { EventType, getNewEvent } from './Event';
 import EventsList from './EventsList';
+import getNewEvent from './EventUtils';
 
 // initialize dayjs
 dayjs.extend(isSameOrAfter);
@@ -24,7 +25,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventsPanelProps
  */
 type EventsPanelProps = {
-  data: EventType[];
+  events: Event[];
 }
 
 /**
@@ -37,7 +38,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { data } = props;
+  const { events } = props;
   const { setEvent, setIsEventSettingsVisible } = useContext(AppContext);
 
   const { TabPane } = Tabs;
@@ -67,16 +68,16 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
     >
       <TabPane key="events" tab={t('events')}>
         <EventsList
-          data={data
-            .filter((a: EventType) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
-            .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
+          events={events
+            .filter((a: Event) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
+            .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
         />
       </TabPane>
       <TabPane key="finished" tab={t('finished')}>
         <EventsList
-          data={data
-            .filter((a: EventType) => dayjs(a.date).isBefore(dayjs().startOf('day')))
-            .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
+          events={events
+            .filter((a: Event) => dayjs(a.date).isBefore(dayjs().startOf('day')))
+            .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
         />
       </TabPane>
     </Tabs>

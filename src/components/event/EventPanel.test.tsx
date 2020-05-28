@@ -2,9 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext, AppContextType } from '../../AppContext';
 import { theme } from '../utils/Theme';
-import Event, { EventType, getNewEvent } from './Event';
+import EventPanel from './EventPanel';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -24,29 +23,12 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-const app: AppContextType = {
-  events: {
-    add: (event: EventType): boolean => true,
-    get: (eventID: string | undefined): EventType | undefined => undefined,
-    update: (event: EventType): boolean => true,
-    remove: (eventID: string | undefined): boolean => true,
-  },
-  event: getNewEvent(),
-  setEvent: () => { },
-  isEventSettingsVisible: false,
-  setIsEventSettingsVisible: () => { },
-  isUserSettingsVisible: false,
-  setIsUserSettingsVisible: () => { },
-};
-
 test('renders without crashing', async () => {
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <AppContext.Provider value={app}>
-            <Event />
-          </AppContext.Provider>
+          <EventPanel />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
@@ -67,9 +49,7 @@ test('clicking matches works', async () => {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <AppContext.Provider value={app}>
-            <Event />
-          </AppContext.Provider>
+          <EventPanel />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,

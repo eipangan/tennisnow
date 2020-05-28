@@ -1,11 +1,10 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext, AppContextType } from '../../AppContext';
 import { theme } from '../utils/Theme';
-import { EventType, getNewEvent } from './Event';
 import EventSettings from './EventSettings';
+import getNewEvent from './EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -26,28 +25,11 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 test('renders without crashing', async () => {
-  const app: AppContextType = {
-    events: {
-      add: (event: EventType): boolean => true,
-      get: (eventID: string | undefined): EventType | undefined => undefined,
-      update: (event: EventType): boolean => true,
-      remove: (eventID: string | undefined): boolean => true,
-    },
-    event: getNewEvent(),
-    setEvent: () => { },
-    isEventSettingsVisible: true,
-    setIsEventSettingsVisible: () => { },
-    isUserSettingsVisible: false,
-    setIsUserSettingsVisible: () => { },
-  };
-
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <AppContext.Provider value={app}>
-            <EventSettings />
-          </AppContext.Provider>
+          <EventSettings event={getNewEvent()} />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
@@ -60,7 +42,6 @@ test('renders without crashing', async () => {
   expect(screen.getByText('cancel')).toBeInTheDocument();
   expect(screen.getByText('ok')).toBeInTheDocument();
 
-  expect(app.event.numPlayers).toEqual(6);
   fireEvent.click(screen.getByTestId('minus'));
 
   fireEvent.click(screen.getByText('players'));

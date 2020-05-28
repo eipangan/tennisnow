@@ -7,12 +7,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../AppContext';
-import { getMatches, getOrderedMatches } from '../match/Match';
-import { getPlayers } from '../player/Player';
-import { getTeams } from '../team/Team';
+import { Event } from '../../models';
+import { getMatches, getOrderedMatches } from '../match/MatchUtils';
+import getPlayers from '../player/PlayerUtils';
+import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
 import { generateUUID, getLocaleDateFormat, shuffle } from '../utils/Utils';
-import { EventType } from './Event';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -32,18 +32,23 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
+type EventSettingsProps = {
+  event: Event
+}
+
 /**
  * EventSettings
  *
  * @param props
  */
-const EventSettings = (): JSX.Element => {
+const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, setEvent, isEventSettingsVisible, setIsEventSettingsVisible } = useContext(AppContext);
-  const [myEvent, setMyEvent] = useState<EventType>(cloneDeep(event));
+  const { event } = props;
+  const { setEvent, isEventSettingsVisible, setIsEventSettingsVisible } = useContext(AppContext);
+  const [myEvent, setMyEvent] = useState<Event>(cloneDeep(event));
   const { Panel } = Collapse;
   const { Option } = Select;
   const [form] = Form.useForm();
@@ -59,8 +64,8 @@ const EventSettings = (): JSX.Element => {
       const newPlayerName = '';
 
       // eslint-disable-next-line no-param-reassign
-      player.playerName = newPlayerName;
-      form.setFieldsValue({ [`player${player.playerID}`]: newPlayerName });
+      player.name = newPlayerName;
+      form.setFieldsValue({ [`player${player.id}`]: newPlayerName });
     });
 
     setMyEvent(cloneDeep(myEvent));
@@ -72,7 +77,7 @@ const EventSettings = (): JSX.Element => {
   const randomizeOrder = () => {
     const oldPlayerNames: string[] = [];
     myEvent.players.forEach((player) => {
-      oldPlayerNames.push(player.playerName);
+      oldPlayerNames.push(player.name);
     });
 
     const newPlayerNames = shuffle(oldPlayerNames);
@@ -80,8 +85,8 @@ const EventSettings = (): JSX.Element => {
       const newPlayerName = newPlayerNames[index];
 
       // eslint-disable-next-line no-param-reassign
-      player.playerName = newPlayerName;
-      form.setFieldsValue({ [`player${player.playerID}`]: newPlayerName });
+      player.name = newPlayerName;
+      form.setFieldsValue({ [`player${player.id}`]: newPlayerName });
     });
 
     setMyEvent(cloneDeep(myEvent));
@@ -98,10 +103,10 @@ const EventSettings = (): JSX.Element => {
     const oldPlayers = cloneDeep(myEvent.players);
     myEvent.players = getPlayers(myEvent.numPlayers);
     myEvent.players.forEach((player) => {
-      const oldPlayer = oldPlayers.find((thisPlayer) => thisPlayer.playerID === player.playerID);
+      const oldPlayer = oldPlayers.find((thisPlayer) => thisPlayer.playerID === player.id);
       if (oldPlayer) {
         // eslint-disable-next-line no-param-reassign
-        player.playerName = oldPlayer.playerName;
+        player.name = oldPlayer.name;
       }
     });
 
@@ -123,9 +128,9 @@ const EventSettings = (): JSX.Element => {
    * @param name new name
    */
   const setPlayerName = (id: string, name: string) => {
-    const myPlayer = myEvent.players.find((player) => player.playerID === id);
+    const myPlayer = myEvent.players.find((player) => player.id === id);
     if (myPlayer) {
-      myPlayer.playerName = name.trim();
+      myPlayer.name = name.trim();
       setMyEvent(cloneDeep(myEvent));
     }
   };
@@ -140,7 +145,7 @@ const EventSettings = (): JSX.Element => {
       });
 
       event.players.forEach((player) => {
-        form.setFieldsValue({ [`player${player.playerID}`]: player.playerName });
+        form.setFieldsValue({ [`player${player.id}`]: player.name });
       });
     }
   }, [event, form]);
@@ -252,14 +257,14 @@ const EventSettings = (): JSX.Element => {
               <div>
                 {myEvent.players.map((player) => (
                   <Form.Item
-                    key={`player${player.playerID}`}
-                    name={`player${player.playerID}`}
+                    key={`player${player.id}`}
+                    name={`player${player.id}`}
                     style={{ margin: '9px 9px' }}
                   >
                     <Input
                       allowClear
-                      onChange={(e) => setPlayerName(player.playerID, e.target.value)}
-                      placeholder={t('player') + String(player.playerID)}
+                      onChange={(e) => setPlayerName(player.id, e.target.value)}
+                      placeholder={t('player') + String(player.id)}
                       size="large"
                     />
                   </Form.Item>
