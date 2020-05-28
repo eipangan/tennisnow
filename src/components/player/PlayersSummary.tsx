@@ -1,11 +1,11 @@
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
+import { Event, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { PlayerType } from './Player';
+
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -15,16 +15,23 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
+ * PlayersSummaryProps
+ */
+type PlayersSummaryProps = {
+  event: Event;
+};
+
+/**
  * PlayersSummary
  *
  * @param props
  */
-const PlayersSummary = (): JSX.Element => {
+const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event } = useContext(AppContext);
+  const { event } = props;
   const { players } = event;
 
   if (!players) return <></>;
@@ -37,12 +44,12 @@ const PlayersSummary = (): JSX.Element => {
   }
 
   const dataSource: PlayerStatusType[] | undefined = [];
-  players.forEach((player: PlayerType) => {
+  players.forEach((player: Player) => {
     const data: PlayerStatusType = {
-      playerName: `${player.playerID} ${player.playerName}`,
-      numWon: player.stats ? player.stats.numWon : 0,
-      numLost: player.stats ? player.stats.numLost : 0,
-      numDraws: player.stats ? player.stats.numDraws : 0,
+      playerName: `${player.id} ${player.id}`,
+      numWon: 0,
+      numLost: 0,
+      numDraws: 0,
     };
     dataSource.push(data);
   });
