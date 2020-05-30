@@ -3,16 +3,12 @@ import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import dayjs from 'dayjs';
 import cloneDeep from 'lodash/cloneDeep';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
 import { Event } from '../../models';
-import { getMatches, getOrderedMatches } from '../match/MatchUtils';
-import getPlayers from '../player/PlayerUtils';
-import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
-import { generateUUID, getLocaleDateFormat, shuffle } from '../utils/Utils';
+import { getLocaleDateFormat, shuffle } from '../utils/Utils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -33,7 +29,8 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 type EventSettingsProps = {
-  event: Event
+  event: Event,
+  onUpdate?: () => void
 }
 
 /**
@@ -47,7 +44,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { event } = props;
-  const { setEvent, isEventSettingsVisible, setIsEventSettingsVisible } = useContext(AppContext);
   const [myEvent, setMyEvent] = useState<Event>(cloneDeep(event));
   const { Panel } = Collapse;
   const { Option } = Select;
@@ -63,8 +59,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     myEvent.players.forEach((player) => {
       const newPlayerName = '';
 
-      // eslint-disable-next-line no-param-reassign
-      player.name = newPlayerName;
       form.setFieldsValue({ [`player${player.id}`]: newPlayerName });
     });
 
@@ -84,8 +78,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     myEvent.players.forEach((player, index) => {
       const newPlayerName = newPlayerNames[index];
 
-      // eslint-disable-next-line no-param-reassign
-      player.name = newPlayerName;
       form.setFieldsValue({ [`player${player.id}`]: newPlayerName });
     });
 
@@ -98,26 +90,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    * @param numPlayers number of players
    */
   const setNumPlayers = (numPlayers: number) => {
-    myEvent.numPlayers = numPlayers;
-
-    const oldPlayers = cloneDeep(myEvent.players);
-    myEvent.players = getPlayers(myEvent.numPlayers);
-    myEvent.players.forEach((player) => {
-      const oldPlayer = oldPlayers.find((thisPlayer) => thisPlayer.playerID === player.id);
-      if (oldPlayer) {
-        // eslint-disable-next-line no-param-reassign
-        player.name = oldPlayer.name;
-      }
-    });
-
-    myEvent.teams = getTeams(myEvent.players);
-    myEvent.matches = getMatches(myEvent.teams);
-    myEvent.orderedMatches = getOrderedMatches(
-      myEvent.players,
-      myEvent.teams,
-      myEvent.matches,
-    );
-
     setMyEvent(cloneDeep(myEvent));
   };
 
@@ -130,7 +102,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const setPlayerName = (id: string, name: string) => {
     const myPlayer = myEvent.players.find((player) => player.id === id);
     if (myPlayer) {
-      myPlayer.name = name.trim();
       setMyEvent(cloneDeep(myEvent));
     }
   };
@@ -154,10 +125,10 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     <Drawer
       className={classes.eventSettings}
       getContainer={false}
-      onClose={() => setIsEventSettingsVisible(false)}
+      onClose={() => {}}
       placement="right"
       title={t('eventSettings')}
-      visible={isEventSettingsVisible}
+      visible
       width={324}
     >
       <Form
@@ -176,15 +147,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               hideDisabledOptions
               inputReadOnly
               size="large"
-              onChange={(d) => {
-                if (d) {
-                  myEvent.date = dayjs(myEvent.date)
-                    .set('month', d.get('month'))
-                    .set('date', d.get('date'))
-                    .set('year', d.get('year'))
-                    .toDate();
-                }
-              }}
+              onChange={(d) => { }}
             />
           </Form.Item>
           <div style={{ width: '3px' }} />
@@ -194,12 +157,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
           >
             <Select
               size="large"
-              onChange={(d) => {
-                myEvent.date = dayjs(myEvent.date)
-                  .set('hour', parseInt(d.toString().substring(0, 2), 10))
-                  .set('minute', parseInt(d.toString().substring(2, 5), 10))
-                  .toDate();
-              }}
+              onChange={(d) => { }}
             >
               {(() => {
                 const children: JSX.Element[] = [];
@@ -255,7 +213,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               )}
             >
               <div>
-                {myEvent.players.map((player) => (
+                {myEvent.players.map((player, index) => (
                   <Form.Item
                     key={`player${player.id}`}
                     name={`player${player.id}`}
@@ -301,7 +259,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         <div className={classes.eventSettingsRow}>
           <Button
             icon={<CloseOutlined />}
-            onClick={() => setIsEventSettingsVisible(false)}
+            onClick={() => {}}
             shape="round"
           >
             {t('cancel')}
@@ -311,13 +269,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => {
-              if (!event.eventID) {
-                myEvent.eventID = generateUUID();
-              }
-              setEvent({ ...myEvent });
-              setIsEventSettingsVisible(false);
-            }}
+            onClick={() => { }}
           >
             {t('ok')}
           </Button>
