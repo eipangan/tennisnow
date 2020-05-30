@@ -5,7 +5,7 @@ const isValidMatch = (t1: Team, t2: Team): boolean => {
 
   t1.players.forEach((t1player) => {
     t2.players.forEach((t2player) => {
-      if (t1player == t2player) {
+      if (t1player === t2player) {
         isValid = false;
       }
     });
@@ -35,13 +35,4 @@ export const getMatches = (teams: Team[]): Match[] => {
   return matches;
 };
 
-/**
- * initialize organized matches
- *
- * @param matches
- */
-export const getOrderedMatches = (matches: Match[]) => {
-  const organizedMatches: Match[] = [];
-
-  return organizedMatches;
-};
+export default getMatches;
