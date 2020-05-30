@@ -4,6 +4,7 @@ import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from '../utils/Theme';
 import EventPanel from './EventPanel';
+import getNewEvent from './EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -28,45 +29,15 @@ test('renders without crashing', async () => {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventPanel />
+          <EventPanel event={getNewEvent()} />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
   );
-
-  // matches
-  expect(screen.getAllByText('vs')).toHaveLength(12);
 
   // player summary
   expect(screen.getByText('player')).toBeInTheDocument();
   expect(screen.getByText('won')).toBeInTheDocument();
   expect(screen.getByText('lost')).toBeInTheDocument();
   expect(screen.getByText('draw')).toBeInTheDocument();
-});
-
-test('clicking matches works', async () => {
-  render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <EventPanel />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
-
-  // click on first "vs"
-  fireEvent.click(screen.getAllByText('vs')[0]);
-  expect(screen.getAllByText('vs')).toHaveLength(12);
-  expect(screen.getAllByText('draw')).toHaveLength(1);
-
-  // click on first "1"
-  fireEvent.click(screen.getAllByText('1')[0]);
-  expect(screen.getAllByText('vs')).toHaveLength(12);
-  expect(screen.getAllByText('draw')).toHaveLength(1);
-
-  // click on first "6"
-  fireEvent.click(screen.getAllByText('6')[0]);
-  expect(screen.getAllByText('vs')).toHaveLength(12);
-  expect(screen.getAllByText('draw')).toHaveLength(1);
 });

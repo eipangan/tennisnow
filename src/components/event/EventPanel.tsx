@@ -5,10 +5,10 @@ import calendar from 'dayjs/plugin/calendar';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
 import MatchesPanel from '../match/MatchesPanel';
 import PlayersSummary from '../player/PlayersSummary';
 import { ThemeType } from '../utils/Theme';
+import { Event } from '../../models';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -75,23 +75,29 @@ export const SettingsButton = (props: { onClick: (e?: React.MouseEvent<HTMLEleme
   );
 };
 
+type EventPanelProps = {
+  event: Event;
+  onUpdate?: () => void;
+}
+
+
 /**
  * Event
  *
  * @param props
  */
-const Event = (): JSX.Element => {
+const EventPanel = (props: EventPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, setEvent } = useContext(AppContext);
+  const { event, onUpdate } = props;
 
   return (
     <div className={classes.event}>
       {dayjs(event.date).calendar()}
       <MatchesPanel
         matches={event.orderedMatches}
-        onUpdate={() => { if (event) setEvent({ ...event }); }}
+        onUpdate={onUpdate}
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary event={event} />
@@ -100,4 +106,4 @@ const Event = (): JSX.Element => {
   );
 };
 
-export default Event;
+export default EventPanel;
