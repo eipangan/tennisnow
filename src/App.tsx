@@ -233,7 +233,7 @@ const App = (): JSX.Element => {
               ]}
             />
             <Suspense fallback={<div className="loader" />}>
-              <EventPanel />
+              <EventPanel event={event} />
             </Suspense>
           </Route>
           <Route path={['/']}>
