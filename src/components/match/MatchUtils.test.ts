@@ -8,6 +8,4 @@ test('runs as expected', async () => {
   const matches = getMatches(teams);
 
   expect(matches).toHaveLength(45);
-
-  console.log(matches);
 });

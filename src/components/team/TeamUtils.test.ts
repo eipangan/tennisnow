@@ -6,6 +6,4 @@ test('runs as expected', async () => {
   const teams = getTeams(players);
 
   expect(teams).toHaveLength(15);
-
-  console.log(teams);
 });

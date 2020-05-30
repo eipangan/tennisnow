@@ -215,8 +215,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               <div>
                 {myEvent.players.map((player, index) => (
                   <Form.Item
-                    key={`player${player.id}`}
-                    name={`player${player.id}`}
+                    key={index.toString()}
+                    name={`player${index.toString()}`}
                     style={{ margin: '9px 9px' }}
                   >
                     <Input
