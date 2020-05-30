@@ -96,7 +96,7 @@ const MatchPanel = (props: MatchProps): JSX.Element => {
           className={team1Class}
         />
         <div
-          className={classes.matchRowDrawInactive}
+          className={middleClass}
           onKeyDown={() => { }}
           role="button"
           tabIndex={0}

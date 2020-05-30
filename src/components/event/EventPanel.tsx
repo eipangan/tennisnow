@@ -2,13 +2,13 @@ import { DeleteOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-de
 import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { Event } from '../../models';
 import MatchesPanel from '../match/MatchesPanel';
 import PlayersSummary from '../player/PlayersSummary';
 import { ThemeType } from '../utils/Theme';
-import { Event } from '../../models';
 
 // initialize dayjs
 dayjs.extend(calendar);

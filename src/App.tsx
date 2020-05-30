@@ -13,11 +13,9 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import awsconfig from './aws-exports';
 import { DeleteButton, SettingsButton } from './components/event/EventPanel';
-import { ThemeType } from './components/utils/Theme';
-import { useLocalStorage } from './components/utils/Utils';
-import { ReactComponent as AppTitle } from './images/title.svg';
-import { Event } from './models';
 import getNewEvent from './components/event/EventUtils';
+import { ThemeType } from './components/utils/Theme';
+import { ReactComponent as AppTitle } from './images/title.svg';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
 const EventPanel = React.lazy(() => import('./components/event/EventPanel'));
@@ -92,8 +90,9 @@ const App = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const [events, setEvents] = useLocalStorage<Event[]>('events', []);
-  const [event, setEvent] = useLocalStorage<Event>('event', getNewEvent());
+  // TODO: this is temporary
+  const event = getNewEvent();
+  const events = [event];
 
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
