@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event } from '../../models';
+import { Event, Player, Team, Match } from '../../models';
 import { getMatches } from '../match/MatchUtils';
 import getPlayers from '../player/PlayerUtils';
 import getTeams from '../team/TeamUtils';
@@ -25,8 +25,16 @@ export const getNewEvent = (): Event => {
     players,
     teams,
     matches,
-    orderedMatches: [],
   });
 };
 
-export default getNewEvent;
+/**
+ * getNextMatch
+ *
+ * @param event
+ */
+export const getNextMatch = (event: Event): Match => {
+  let nextMatch: Match;
+
+  return event.matches[0];
+};

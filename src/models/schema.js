@@ -50,15 +50,6 @@ export const schema = {
                     },
                     "isRequired": true,
                     "attributes": []
-                },
-                "orderedMatches": {
-                    "name": "orderedMatches",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "Match"
-                    },
-                    "isRequired": true,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -80,7 +71,8 @@ export const schema = {
                                 "operations": [
                                     "create",
                                     "update",
-                                    "delete"
+                                    "delete",
+                                    "read"
                                 ]
                             },
                             {
@@ -132,7 +124,8 @@ export const schema = {
                                 "operations": [
                                     "create",
                                     "update",
-                                    "delete"
+                                    "delete",
+                                    "read"
                                 ]
                             },
                             {
@@ -230,5 +223,5 @@ export const schema = {
             }
         }
     },
-    "version": "598ffe79819a9ef2eb7c2277c58715d9"
+    "version": "4cf18b2e78baf98fcd56374727b3e77e"
 };

@@ -9,7 +9,6 @@ type Event @model
   players: [Player!]!
   teams: [Team!]!
   matches: [Match!]!
-  orderedMatches: [Match!]!
 }
 
 type Match {
