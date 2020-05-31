@@ -4,7 +4,7 @@ import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from '../utils/Theme';
 import PlayersSummary from './PlayersSummary';
-import getNewEvent from '../event/EventUtils';
+import { getNewEvent } from '../event/EventUtils';
 import { Event } from '../../models';
 
 jest.mock('react-i18next', () => ({

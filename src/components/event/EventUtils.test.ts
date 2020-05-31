@@ -1,4 +1,4 @@
-import getNewEvent from './EventUtils';
+import { getNewEvent } from './EventUtils';
 
 test('runs as expected', async () => {
   const event = getNewEvent();

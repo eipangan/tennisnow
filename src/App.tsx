@@ -13,7 +13,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import awsconfig from './aws-exports';
 import { DeleteButton, SettingsButton } from './components/event/EventPanel';
-import getNewEvent from './components/event/EventUtils';
+import { getNewEvent } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 

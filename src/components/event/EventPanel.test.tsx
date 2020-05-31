@@ -4,7 +4,7 @@ import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from '../utils/Theme';
 import EventPanel from './EventPanel';
-import getNewEvent from './EventUtils';
+import { getNewEvent } from './EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
