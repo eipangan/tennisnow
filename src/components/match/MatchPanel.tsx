@@ -48,19 +48,19 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 });
 
 /**
- * MatchProps
+ * MatchPanelProps
  */
-type MatchProps = {
+type MatchPanelProps = {
   match: Match;
   onUpdate?: () => void;
 };
 
 /**
- * Match
+ * MatchPanel
  *
  * @param props
  */
-const MatchPanel = (props: MatchProps): JSX.Element => {
+const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });

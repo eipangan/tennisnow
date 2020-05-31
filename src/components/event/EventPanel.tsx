@@ -75,6 +75,9 @@ export const SettingsButton = (props: { onClick: (e?: React.MouseEvent<HTMLEleme
   );
 };
 
+/**
+ * EventPanelProps
+ */
 type EventPanelProps = {
   event: Event;
   onUpdate?: () => void;
@@ -82,7 +85,7 @@ type EventPanelProps = {
 
 
 /**
- * Event
+ * EventPanel
  *
  * @param props
  */

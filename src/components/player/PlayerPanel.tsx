@@ -14,18 +14,18 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * PlayerProps
+ * PlayerPanelProps
  */
-type PlayerProps = {
+type PlayerPanelProps = {
   player: Player;
 };
 
 /**
- * Player
+ * PlayerPanel
  *
  * @param props
  */
-const PlayerPanel = (props: PlayerProps): JSX.Element => {
+const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
   const { player } = props;
 
   const theme = useTheme();

@@ -3,19 +3,19 @@ import { Team } from '../../models';
 import PlayerPanel from '../player/PlayerPanel';
 
 /**
- * TeamProps
+ * TeamPanelProps
  */
-type TeamProps = {
+type TeamPanelProps = {
   team: Team;
   className?: string;
 };
 
 /**
- * Team
+ * TeamPanel
  *
  * @param props
  */
-const TeamPanel = (props: TeamProps): JSX.Element => {
+const TeamPanel = (props: TeamPanelProps): JSX.Element => {
   const { team, className } = props;
 
   return (
