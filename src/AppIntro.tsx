@@ -2,6 +2,7 @@ import { Typography } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { getNewEvent } from './components/event/EventUtils';
 import MatchesPanel from './components/match/MatchesPanel';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as Signup } from './images/signup.svg';
@@ -48,7 +49,7 @@ const AppIntro = (): JSX.Element => {
       </Text>
       <div style={{ margin: '12px 0px' }}>
         <MatchesPanel
-          matches={[]}
+          matches={getNewEvent().matches}
         />
       </div>
       <Text>

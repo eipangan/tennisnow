@@ -10,7 +10,7 @@ export const getPlayers = (numPlayers: number): Player[] => {
 
   for (let i = 0; i < numPlayers; i += 1) {
     players.push(new Player({
-      name: '',
+      name: String(i + 1),
     }));
   }
 

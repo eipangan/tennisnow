@@ -1,3 +1,4 @@
+import { Avatar } from 'antd';
 import React, { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Player } from '../../models';
@@ -6,10 +7,8 @@ import { ThemeType } from '../utils/Theme';
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   player: {
-    float: 'left',
-    height: theme.height,
-    lineHeight: theme.height,
-    width: '50%',
+    color: 'black',
+    backgroundColor: theme.baseColor,
   },
 }));
 
@@ -33,9 +32,12 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
 
   return (
     <StrictMode>
-      <div className={classes.player}>
+      <Avatar
+        className={classes.player}
+        size="large"
+      >
         {player.name}
-      </div>
+      </Avatar>
     </StrictMode>
   );
 };
