@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, Player, Team } from '../../models';
+import { Match, MatchStatus, Player, Team } from '../../models';
 import { theme } from '../utils/Theme';
 import MatchPanel from './MatchPanel';
 
@@ -27,6 +27,7 @@ test('render new without crashing', async () => {
         ],
       }),
     ],
+    status: MatchStatus.NEW,
   });
 
   render(
