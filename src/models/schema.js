@@ -106,7 +106,7 @@ export const schema = {
                 "id": {
                     "name": "id",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -208,5 +208,5 @@ export const schema = {
             }
         }
     },
-    "version": "09f55648e8813d16b5657f52f59a70bc"
+    "version": "868c3a1a2c3527793e50d4fb8353c9cb"
 };
