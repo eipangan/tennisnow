@@ -27,19 +27,19 @@ const useStyles = createUseStyles((theme: ThemeType) => {
       width: '90px',
       margin: '0px 4px',
     },
-    matchRowDrawActive: {
+    matchWinner: {
       ...matchRowCommon,
       background: theme.match.won.background,
       color: 'darkbrown',
       fontSize: 'large',
     },
-    matchRowDrawInactive: {
+    matchOthers: {
       ...matchRowCommon,
       background: theme.match.draw.background,
       color: theme.match.draw.color,
       fontSize: 'large',
     },
-    matchRowVs: {
+    matchVs: {
       ...matchRowCommon,
       background: '#90ee904d',
       color: 'darkgreen',
@@ -71,17 +71,17 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const team2 = match.teams[1];
   const { status } = match;
 
-  let team1Class = classes.matchRowDrawInactive;
-  let middleClass = classes.matchRowVs;
+  let team1Class = classes.matchOthers;
+  let middleClass = classes.matchVs;
   let middleText = t('vs');
-  let team2Class = classes.matchRowDrawInactive;
+  let team2Class = classes.matchOthers;
 
   switch (status) {
     case MatchStatus.TEAM1_WON:
-      team1Class = classes.matchRowDrawActive;
-      middleClass = classes.matchRowDrawInactive;
+      team1Class = classes.matchWinner;
+      middleClass = classes.matchOthers;
       middleText = t('draw');
-      team2Class = classes.matchRowDrawInactive;
+      team2Class = classes.matchOthers;
       break;
 
     default:
