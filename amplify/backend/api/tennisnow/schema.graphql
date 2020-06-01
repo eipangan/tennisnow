@@ -12,7 +12,6 @@ type Event @model
 }
 
 type Match {
-  id: ID!
   teams: [Team!]!
   status: MatchStatus!
 }
@@ -25,20 +24,18 @@ enum MatchStatus {
 }
 
 type Team {
-  id: ID!
   players: [Player!]!
+  stats: Stats!
 }
 
 type Player {
-  id: ID!
   name: String!
+  stats: Stats!
 }
 
-type User @model 
-@auth(rules: [
-  {allow: owner},
-  {allow: private, operations: [read]}
-]) {
-  id: ID!
-  name: String!
+type Stats {
+  numMatches: Int!
+  numWon: Int!
+  numDraws: Int!
+  numLost: Int!
 }

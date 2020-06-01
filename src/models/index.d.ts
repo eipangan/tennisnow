@@ -8,19 +8,26 @@ export enum MatchStatus {
 }
 
 export declare class Player {
-  readonly id: string;
   readonly name: string;
+  readonly stats: Stats;
   constructor(init: ModelInit<Player>);
 }
 
+export declare class Stats {
+  readonly numMatches: number;
+  readonly numWon: number;
+  readonly numDraws: number;
+  readonly numLost: number;
+  constructor(init: ModelInit<Stats>);
+}
+
 export declare class Team {
-  readonly id: string;
   readonly players: Player[];
+  readonly stats: Stats;
   constructor(init: ModelInit<Team>);
 }
 
 export declare class Match {
-  readonly id: string;
   readonly teams: Team[];
   readonly status: MatchStatus | keyof typeof MatchStatus;
   constructor(init: ModelInit<Match>);
@@ -35,11 +42,4 @@ export declare class Event {
   readonly matches: Match[];
   constructor(init: ModelInit<Event>);
   static copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
-}
-
-export declare class User {
-  readonly id: string;
-  readonly name: string;
-  constructor(init: ModelInit<User>);
-  static copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }

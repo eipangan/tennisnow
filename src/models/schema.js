@@ -86,58 +86,6 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "User": {
-            "name": "User",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "Users",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            },
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
         }
     },
     "enums": {
@@ -155,17 +103,52 @@ export const schema = {
         "Player": {
             "name": "Player",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "name": {
                     "name": "name",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "stats": {
+                    "name": "stats",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Stats"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
+        "Stats": {
+            "name": "Stats",
+            "fields": {
+                "numMatches": {
+                    "name": "numMatches",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "numWon": {
+                    "name": "numWon",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "numDraws": {
+                    "name": "numDraws",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "numLost": {
+                    "name": "numLost",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 }
@@ -174,18 +157,20 @@ export const schema = {
         "Team": {
             "name": "Team",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "players": {
                     "name": "players",
                     "isArray": true,
                     "type": {
                         "nonModel": "Player"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "stats": {
+                    "name": "stats",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Stats"
                     },
                     "isRequired": true,
                     "attributes": []
@@ -195,13 +180,6 @@ export const schema = {
         "Match": {
             "name": "Match",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "teams": {
                     "name": "teams",
                     "isArray": true,
@@ -223,5 +201,5 @@ export const schema = {
             }
         }
     },
-    "version": "4cf18b2e78baf98fcd56374727b3e77e"
+    "version": "7cd78dcc1891b42af00ee225b123148d"
 };
