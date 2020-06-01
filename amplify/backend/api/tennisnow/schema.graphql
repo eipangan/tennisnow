@@ -29,6 +29,7 @@ type Team {
 }
 
 type Player {
+  userid: ID!
   name: String!
   stats: Stats!
 }
