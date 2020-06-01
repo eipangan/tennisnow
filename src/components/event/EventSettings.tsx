@@ -28,9 +28,13 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
+/**
+ * EventSettingsProps
+ */
 type EventSettingsProps = {
   event: Event,
-  onUpdate?: () => void
+  onClose?: () => void,
+  onUpdate?: () => void,
 }
 
 /**
@@ -43,7 +47,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event } = props;
+  const { event, onClose } = props;
   const [myEvent, setMyEvent] = useState<Event>(cloneDeep(event));
   const { Panel } = Collapse;
   const { Option } = Select;
@@ -125,7 +129,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     <Drawer
       className={classes.eventSettings}
       getContainer={false}
-      onClose={() => {}}
+      onClose={onClose}
       placement="right"
       title={t('eventSettings')}
       visible
@@ -259,7 +263,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         <div className={classes.eventSettingsRow}>
           <Button
             icon={<CloseOutlined />}
-            onClick={() => {}}
+            onClick={onClose}
             shape="round"
           >
             {t('cancel')}
