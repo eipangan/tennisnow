@@ -12,8 +12,8 @@ import { ReactComponent as Tennis } from './images/tennis.svg';
 const useStyles = createUseStyles((theme: ThemeType) => ({
   appIntro: {
     background: `${theme.baseColor}69`,
+    margin: theme.margin,
     padding: '12px',
-    margin: '12px',
   },
   title: {
     background: 'transparent',

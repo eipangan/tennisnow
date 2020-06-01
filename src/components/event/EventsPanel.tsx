@@ -16,6 +16,7 @@ dayjs.extend(isSameOrAfter);
 const useStyles = createUseStyles((theme: ThemeType) => ({
   eventsPanel: {
     background: 'transparent',
+    margin: theme.margin,
   },
 }));
 

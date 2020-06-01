@@ -7,6 +7,7 @@ export interface ThemeType {
   baseColor: string,
   height: string,
   highlightColor: string,
+  margin: string,
   match: {
     won: {
       background: string,
@@ -28,6 +29,7 @@ export const theme: ThemeType = {
   baseColor: '#ffffff',
   height: '48px',
   highlightColor: '#ffe7ba',
+  margin: '12px',
   match: {
     won: {
       background: '#fffb8f',
