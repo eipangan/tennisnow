@@ -103,8 +103,8 @@ export const schema = {
         "Player": {
             "name": "Player",
             "fields": {
-                "id": {
-                    "name": "id",
+                "userid": {
+                    "name": "userid",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -208,5 +208,5 @@ export const schema = {
             }
         }
     },
-    "version": "868c3a1a2c3527793e50d4fb8353c9cb"
+    "version": "ef93629a61b46db2f66d9b5c32524015"
 };
