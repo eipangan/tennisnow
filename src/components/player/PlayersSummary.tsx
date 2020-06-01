@@ -46,7 +46,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const dataSource: PlayerStatusType[] | undefined = [];
   players.forEach((player: Player) => {
     const data: PlayerStatusType = {
-      playerName: `${player.id} ${player.id}`,
+      playerName: `${player.userid} ${player.userid}`,
       numWon: 0,
       numLost: 0,
       numDraws: 0,

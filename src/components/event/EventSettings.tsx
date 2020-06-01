@@ -56,10 +56,10 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    * clearNames
    */
   const clearNames = () => {
-    myEvent.players.forEach((player) => {
+    myEvent.players.forEach((player, index) => {
       const newPlayerName = '';
 
-      form.setFieldsValue({ [`player${player.id}`]: newPlayerName });
+      form.setFieldsValue({ [`player${index + 1}`]: newPlayerName });
     });
 
     setMyEvent(cloneDeep(myEvent));
@@ -78,7 +78,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     myEvent.players.forEach((player, index) => {
       const newPlayerName = newPlayerNames[index];
 
-      form.setFieldsValue({ [`player${player.id}`]: newPlayerName });
+      form.setFieldsValue({ [`player${index + 1}`]: newPlayerName });
     });
 
     setMyEvent(cloneDeep(myEvent));
@@ -96,11 +96,11 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * setPlayerName
    *
-   * @param id id of the player
+   * @param userid id of the player
    * @param name new name
    */
-  const setPlayerName = (id: string, name: string) => {
-    const myPlayer = myEvent.players.find((player) => player.id === id);
+  const setPlayerName = (userid: string, name: string) => {
+    const myPlayer = myEvent.players.find((player) => player.userid === userid);
     if (myPlayer) {
       setMyEvent(cloneDeep(myEvent));
     }
@@ -115,8 +115,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         time: dayjs(event.date).format('HHmm'),
       });
 
-      event.players.forEach((player) => {
-        form.setFieldsValue({ [`player${player.id}`]: player.name });
+      event.players.forEach((player, index) => {
+        form.setFieldsValue({ [`player${index + 1}`]: player.name });
       });
     }
   }, [event, form]);
@@ -221,8 +221,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                   >
                     <Input
                       allowClear
-                      onChange={(e) => setPlayerName(player.id, e.target.value)}
-                      placeholder={t('player') + String(player.id)}
+                      onChange={(e) => setPlayerName(player.userid, e.target.value)}
+                      placeholder={t('player') + String(player.userid)}
                       size="large"
                     />
                   </Form.Item>

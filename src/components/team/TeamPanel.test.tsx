@@ -2,16 +2,40 @@ import { render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Player, Team } from '../../models';
+import { Player, Stats, Team } from '../../models';
 import { theme } from '../utils/Theme';
 import TeamPanel from './TeamPanel';
 
 test('renders without crashing', async () => {
   const team = new Team({
     players: [
-      new Player({ name: 'Player1' }),
-      new Player({ name: 'Player2' }),
+      new Player({
+        userid: 'player1',
+        name: 'Player1',
+        stats: new Stats({
+          numDraws: 0,
+          numLost: 0,
+          numMatches: 0,
+          numWon: 0,
+        }),
+      }),
+      new Player({
+        userid: 'player2',
+        name: 'Player2',
+        stats: new Stats({
+          numDraws: 0,
+          numLost: 0,
+          numMatches: 0,
+          numWon: 0,
+        }),
+      }),
     ],
+    stats: new Stats({
+      numDraws: 0,
+      numLost: 0,
+      numMatches: 0,
+      numWon: 0,
+    }),
   });
 
   render(

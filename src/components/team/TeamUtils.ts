@@ -1,4 +1,4 @@
-import { Player, Team } from '../../models';
+import { Player, Team, Stats } from '../../models';
 
 /**
  * initialize teams
@@ -14,6 +14,12 @@ export const getTeams = (players: Player[]): Team[] => {
       if (p !== np) {
         const team = new Team({
           players: [players[p], players[np]],
+          stats: new Stats({
+            numDraws: 0,
+            numLost: 0,
+            numMatches: 0,
+            numWon: 0,
+          }),
         });
         teams.push(team);
       }
