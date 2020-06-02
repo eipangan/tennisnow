@@ -71,6 +71,9 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
         <EventSettings
           event={event}
           onClose={() => setIsSettingsVisible(false)}
+          onOk={(myEvent: Event) => {
+            setIsSettingsVisible(false);
+          }}
         />
       );
     }
