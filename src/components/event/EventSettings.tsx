@@ -121,14 +121,19 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * setPlayerName
    *
-   * @param userid id of the player
+   * @param index index of the player
    * @param name new name
    */
-  const setPlayerName = (userid: string, name: string) => {
-    const myPlayer = myEvent.players.find((player) => player.userid === userid);
-    if (myPlayer) {
-      setMyEvent(cloneDeep(myEvent));
-    }
+  const setPlayerName = (index: number, name: string) => {
+    setMyEvent(Event.copyOf(myEvent, (updated) => {
+      updated.players.forEach((player, myIndex) => {
+        if (myIndex === index) {
+          // eslint-disable-next-line no-param-reassign
+          player.name = name;
+          form.setFieldsValue({ [`${playerPrefix}${myIndex}`]: name });
+        }
+      });
+    }));
   };
 
   useEffect(() => {
@@ -250,7 +255,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                   >
                     <Input
                       allowClear
-                      onChange={(e) => setPlayerName(player.userid, e.target.value)}
+                      onChange={(e) => setPlayerName(index, e.target.value)}
                       placeholder={t('player') + String(index + 1)}
                       size="large"
                     />
