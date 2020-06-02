@@ -1,4 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
+import { DataStore } from '@aws-amplify/datastore';
 import { Button, Tabs } from 'antd';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
@@ -72,6 +73,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
           event={event}
           onClose={() => setIsSettingsVisible(false)}
           onOk={(myEvent: Event) => {
+            DataStore.save(myEvent);
             setIsSettingsVisible(false);
           }}
         />
