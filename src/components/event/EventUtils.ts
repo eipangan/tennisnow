@@ -30,6 +30,7 @@ export const getNewEvent = (): Event => {
 
 /**
  * getNextMatch
+ * TODO: need to update this function to actually get the next match
  *
  * @param event
  */
