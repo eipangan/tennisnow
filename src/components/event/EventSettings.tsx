@@ -77,19 +77,21 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    * randomizeOrder
    */
   const randomizeOrder = () => {
-    const oldPlayerNames: string[] = [];
-    myEvent.players.forEach((player) => {
-      oldPlayerNames.push(player.name);
-    });
+    setMyEvent(Event.copyOf(myEvent, (updated) => {
+      const oldPlayerNames: string[] = [];
+      myEvent.players.forEach((player) => {
+        oldPlayerNames.push(player.name);
+      });
 
-    const newPlayerNames = shuffle(oldPlayerNames);
-    myEvent.players.forEach((player, index) => {
-      const newPlayerName = newPlayerNames[index];
+      const newPlayerNames = shuffle(oldPlayerNames);
+      updated.players.forEach((player, index) => {
+        const newPlayerName = newPlayerNames[index];
 
-      form.setFieldsValue({ [`${playerPrefix}${index}`]: newPlayerName });
-    });
-
-    setMyEvent(cloneDeep(myEvent));
+        // eslint-disable-next-line no-param-reassign
+        player.name = newPlayerName;
+        form.setFieldsValue({ [`${playerPrefix}${index}`]: newPlayerName });
+      });
+    }));
   };
 
   /**
