@@ -3,7 +3,6 @@ import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import dayjs from 'dayjs';
-import cloneDeep from 'lodash/cloneDeep';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -137,7 +136,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
   useEffect(() => {
     if (event) {
-      setMyEvent(cloneDeep(event));
+      setMyEvent(Event.copyOf(event, () => { }));
 
       form.setFieldsValue({
         date: dayjs(event.date),
