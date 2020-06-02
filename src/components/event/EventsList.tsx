@@ -1,3 +1,4 @@
+import { DataStore } from '@aws-amplify/datastore';
 import { List, Typography } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
@@ -67,13 +68,14 @@ const EventsList = (props: EventsListProps): JSX.Element => {
           className={classes.event}
           key={myEvent.id}
           onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            history.push('/event/');
+            history.push(`/event/${myEvent.id}`);
             e.stopPropagation();
           }}
           extra={[
             <DeleteButton
               key="delete"
               onConfirm={(e) => {
+                DataStore.delete(myEvent);
                 if (e) e.stopPropagation();
               }}
             />,
