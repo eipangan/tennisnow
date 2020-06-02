@@ -34,7 +34,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 type EventSettingsProps = {
   event: Event,
   onClose?: () => void,
-  onUpdate?: () => void,
+  onOk?: (event: Event) => void,
 }
 
 /**
@@ -47,26 +47,30 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, onClose } = props;
-  const [myEvent, setMyEvent] = useState<Event>(cloneDeep(event));
+  const { event, onClose, onOk } = props;
   const { Panel } = Collapse;
   const { Option } = Select;
+
+  const [myEvent, setMyEvent] = useState<Event>(event);
   const [form] = Form.useForm();
 
   const maxNumPlayers = 12;
   const minNumPlayers = 4;
+  const playerPrefix = 'player';
 
   /**
    * clearNames
    */
   const clearNames = () => {
-    myEvent.players.forEach((player, index) => {
-      const newPlayerName = '';
+    setMyEvent(Event.copyOf(myEvent, (updated) => {
+      updated.players.forEach((player, index) => {
+        const newPlayerName = '';
 
-      form.setFieldsValue({ [`player${index + 1}`]: newPlayerName });
-    });
-
-    setMyEvent(cloneDeep(myEvent));
+        // eslint-disable-next-line no-param-reassign
+        player.name = newPlayerName;
+        form.setFieldsValue({ [`${playerPrefix}${index}`]: newPlayerName });
+      });
+    }));
   };
 
   /**
@@ -82,7 +86,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     myEvent.players.forEach((player, index) => {
       const newPlayerName = newPlayerNames[index];
 
-      form.setFieldsValue({ [`player${index + 1}`]: newPlayerName });
+      form.setFieldsValue({ [`${playerPrefix}${index}`]: newPlayerName });
     });
 
     setMyEvent(cloneDeep(myEvent));
@@ -94,6 +98,21 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    * @param numPlayers number of players
    */
   const setNumPlayers = (numPlayers: number) => {
+    // myEvent.numPlayers = numPlayers;
+
+    // const oldPlayers = cloneDeep(myEvent.players);
+    // myEvent.players = getPlayers(myEvent.numPlayers);
+    // myEvent.players.forEach((player) => {
+    //   const oldPlayer = oldPlayers.find((thisPlayer) => thisPlayer.playerID === player.playerID);
+    //   if (oldPlayer) {
+    //     // eslint-disable-next-line no-param-reassign
+    //     player.playerName = oldPlayer.playerName;
+    //   }
+    // });
+    // myEvent.teams = getTeams(myEvent.players);
+    // myEvent.matches = getMatches(myEvent.teams);
+    // setMyEvent(cloneDeep(myEvent));
+
     setMyEvent(cloneDeep(myEvent));
   };
 
@@ -120,10 +139,14 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       });
 
       event.players.forEach((player, index) => {
-        form.setFieldsValue({ [`player${index + 1}`]: player.name });
+        form.setFieldsValue({ [`${playerPrefix}${index}`]: player.name });
       });
     }
   }, [event, form]);
+
+  useEffect(() => {
+    console.log(myEvent);
+  }, [myEvent]);
 
   return (
     <Drawer
@@ -220,13 +243,13 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                 {myEvent.players.map((player, index) => (
                   <Form.Item
                     key={index.toString()}
-                    name={`player${index.toString()}`}
+                    name={`${playerPrefix}${index}`}
                     style={{ margin: '9px 9px' }}
                   >
                     <Input
                       allowClear
                       onChange={(e) => setPlayerName(player.userid, e.target.value)}
-                      placeholder={t('player') + String(player.userid)}
+                      placeholder={t('player') + String(index + 1)}
                       size="large"
                     />
                   </Form.Item>
@@ -273,7 +296,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => { }}
+            onClick={() => { if (onOk) onOk(myEvent); }}
           >
             {t('ok')}
           </Button>
