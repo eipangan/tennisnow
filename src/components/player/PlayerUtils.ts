@@ -5,13 +5,13 @@ import { Player, Stats } from '../../models';
  *
  * @param numPlayers number of players
  */
-export const getPlayers = (numPlayers: number): Player[] => {
+export const getPlayers = (numPlayers: number, playerNames?: string[]): Player[] => {
   const players: Player[] = [];
 
   for (let i = 0; i < numPlayers; i += 1) {
     players.push(new Player({
       userid: '',
-      name: String(i + 1),
+      name: playerNames ? playerNames[i] || String(i + 1) : String(i + 1),
       stats: new Stats({
         numDraws: 0,
         numLost: 0,
