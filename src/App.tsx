@@ -1,5 +1,6 @@
 import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
+import { DataStore } from '@aws-amplify/datastore';
 import { Button, PageHeader, Tag } from 'antd';
 import Amplify, { Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
@@ -16,10 +17,10 @@ import { DeleteButton, SettingsButton } from './components/event/EventPanel';
 import { getNewEvent } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
 const EventPanel = React.lazy(() => import('./components/event/EventPanel'));
-const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
 const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
@@ -90,13 +91,9 @@ const App = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  // TODO: this is temporary
-  const event = getNewEvent();
-  const events = [event];
-
-  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<CognitoUser>();
+  const [events, setEvents] = useState<Event[]>();
 
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
@@ -121,7 +118,7 @@ const App = (): JSX.Element => {
    * AppBody Component
    */
   const AppBody = (): JSX.Element => {
-    if (user) return <EventsPanel events={events} />;
+    if (user) return <EventsPanel events={events || []} />;
     return <AppIntro />;
   };
 
@@ -179,6 +176,48 @@ const App = (): JSX.Element => {
     );
   };
 
+  const EventRoute = (props: any): JSX.Element => {
+    let event: Event = getNewEvent();
+    const { match } = props;
+
+    DataStore.query(Event, match.params.id)
+      .then((myEvent) => {
+        event = myEvent;
+      })
+      .catch(() => { });
+
+    return (
+      <>
+        <PageHeader
+          className={classes.appHeader}
+          onBack={() => history.push('/')}
+          title={(<AppTitle />)}
+          extra={[
+            <DeleteButton
+              key="delete"
+              onConfirm={(e) => {
+                if (e) {
+                  DataStore.delete(event);
+                  history.push('/');
+                  e.stopPropagation();
+                }
+              }}
+            />,
+            <SettingsButton
+              key="settings"
+              onClick={(e) => {
+                if (e) e.stopPropagation();
+              }}
+            />,
+          ]}
+        />
+        <Suspense fallback={<div className="loader" />}>
+          <EventPanel event={event} />
+        </Suspense>
+      </>
+    );
+  };
+
   /**
    * useEffect Section
    */
@@ -187,6 +226,12 @@ const App = (): JSX.Element => {
     Auth.currentAuthenticatedUser()
       .then((myUser) => {
         setUser(myUser);
+      })
+      .catch(() => { });
+
+    DataStore.query(Event)
+      .then((myEvents) => {
+        setEvents(myEvents);
       })
       .catch(() => { });
   }, []);
@@ -207,35 +252,8 @@ const App = (): JSX.Element => {
     <div className={classes.app}>
       <div className={classes.appContent}>
         <Switch>
-          <Route path={['/event']}>
-            <PageHeader
-              className={classes.appHeader}
-              onBack={() => history.push('/')}
-              title={(<AppTitle />)}
-              extra={[
-                <DeleteButton
-                  key="delete"
-                  onConfirm={(e) => {
-                    if (e) {
-                      history.push('/');
-                      e.stopPropagation();
-                    }
-                  }}
-                />,
-                <SettingsButton
-                  key="settings"
-                  onClick={(e) => {
-                    setIsEventSettingsVisible(true);
-                    if (e) e.stopPropagation();
-                  }}
-                />,
-              ]}
-            />
-            <Suspense fallback={<div className="loader" />}>
-              <EventPanel event={event} />
-            </Suspense>
-          </Route>
-          <Route path={['/']}>
+          <Route path="/event/:id" component={EventRoute} />
+          <Route path="/">
             <PageHeader
               className={classes.appHeader}
               title={(<AppTitle />)}
@@ -249,10 +267,6 @@ const App = (): JSX.Element => {
           </Route>
         </Switch>
         <Suspense fallback={<div className="loader" />}>
-          {(() => {
-            if (isEventSettingsVisible) return <EventSettings event={event} />;
-            return null;
-          })()}
           {(() => {
             if (isUserSettingsVisible && user) return <UserSettings user={user} />;
             return null;
