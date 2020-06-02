@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
@@ -7,6 +8,9 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
+import getMatches from '../match/MatchUtils';
+import getPlayers from '../player/PlayerUtils';
+import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
 
@@ -64,11 +68,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const clearNames = () => {
     setMyEvent(Event.copyOf(myEvent, (updated) => {
       updated.players.forEach((player, index) => {
-        const newPlayerName = '';
-
-        // eslint-disable-next-line no-param-reassign
-        player.name = newPlayerName;
-        form.setFieldsValue({ [`${playerPrefix}${index}`]: newPlayerName });
+        player.name = String(index + 1);
       });
     }));
   };
@@ -78,44 +78,20 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    */
   const randomizeOrder = () => {
     setMyEvent(Event.copyOf(myEvent, (updated) => {
+      // keep old names
       const oldPlayerNames: string[] = [];
       myEvent.players.forEach((player) => {
         oldPlayerNames.push(player.name);
       });
 
+      // shuffle sequence
       const newPlayerNames = shuffle(oldPlayerNames);
-      updated.players.forEach((player, index) => {
-        const newPlayerName = newPlayerNames[index];
 
-        // eslint-disable-next-line no-param-reassign
-        player.name = newPlayerName;
-        form.setFieldsValue({ [`${playerPrefix}${index}`]: newPlayerName });
+      // update names
+      updated.players.forEach((player, index) => {
+        player.name = newPlayerNames[index];
       });
     }));
-  };
-
-  /**
-   * setNumPlayers
-   *
-   * @param numPlayers number of players
-   */
-  const setNumPlayers = (numPlayers: number) => {
-    // myEvent.numPlayers = numPlayers;
-
-    // const oldPlayers = cloneDeep(myEvent.players);
-    // myEvent.players = getPlayers(myEvent.numPlayers);
-    // myEvent.players.forEach((player) => {
-    //   const oldPlayer = oldPlayers.find((thisPlayer) => thisPlayer.playerID === player.playerID);
-    //   if (oldPlayer) {
-    //     // eslint-disable-next-line no-param-reassign
-    //     player.playerName = oldPlayer.playerName;
-    //   }
-    // });
-    // myEvent.teams = getTeams(myEvent.players);
-    // myEvent.matches = getMatches(myEvent.teams);
-    // setMyEvent(cloneDeep(myEvent));
-
-    setMyEvent(cloneDeep(myEvent));
   };
 
   /**
@@ -128,11 +104,34 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     setMyEvent(Event.copyOf(myEvent, (updated) => {
       updated.players.forEach((player, myIndex) => {
         if (myIndex === index) {
-          // eslint-disable-next-line no-param-reassign
           player.name = name;
-          form.setFieldsValue({ [`${playerPrefix}${myIndex}`]: name });
         }
       });
+    }));
+  };
+
+  /**
+   * setNumPlayers
+   *
+   * @param numPlayers number of players
+   */
+  const setNumPlayers = (numPlayers: number) => {
+    setMyEvent(Event.copyOf(myEvent, (updated) => {
+      // keep old names
+      const oldPlayerNames: string[] = [];
+      myEvent.players.forEach((player) => {
+        oldPlayerNames.push(player.name);
+      });
+
+      // recreate event
+      const players = getPlayers(numPlayers, oldPlayerNames);
+      const teams = getTeams(players);
+      const matches = getMatches(teams);
+
+      updated.numPlayers = numPlayers;
+      updated.players = players;
+      updated.teams = teams;
+      updated.matches = matches;
     }));
   };
 
@@ -146,14 +145,20 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       });
 
       event.players.forEach((player, index) => {
-        form.setFieldsValue({ [`${playerPrefix}${index}`]: player.name });
+        form.setFieldsValue({
+          [`${playerPrefix}${index}`]: player.name,
+        });
       });
     }
   }, [event, form]);
 
   useEffect(() => {
-    console.log(myEvent);
-  }, [myEvent]);
+    myEvent.players.forEach((player, index) => {
+      form.setFieldsValue({
+        [`${playerPrefix}${index}`]: player.name,
+      });
+    });
+  }, [form, myEvent]);
 
   return (
     <Drawer
