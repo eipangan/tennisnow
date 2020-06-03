@@ -24,27 +24,6 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-test('renders empty event without crashing', async () => {
-  render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <EventsPanel events={[]} />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
-
-  expect(screen.getByText('events')).toBeInTheDocument();
-  expect(screen.getByText('finished')).toBeInTheDocument();
-  expect(screen.getByText('newEvent')).toBeInTheDocument();
-  expect(screen.getByText('noEvents')).toBeInTheDocument();
-
-  fireEvent.click(screen.getByText('events'));
-  fireEvent.click(screen.getByText('finished'));
-  fireEvent.click(screen.getByText('newEvent'));
-});
-
 test('renders one event without crashing', async () => {
   render(
     <BrowserRouter>
