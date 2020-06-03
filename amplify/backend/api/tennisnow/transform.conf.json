@@ -6,5 +6,21 @@
             "ConflictHandler": "AUTOMERGE",
             "ConflictDetection": "VERSION"
         }
+    },
+    "StackMapping": {
+        "EventTable": "Event",
+        "EventIAMRole": "Event",
+        "EventDataSource": "Event",
+        "SyncEventResolver": "Event",
+        "GetEventResolver": "Event",
+        "ListEventResolver": "Event",
+        "CreateEventResolver": "Event",
+        "UpdateEventResolver": "Event",
+        "DeleteEventResolver": "Event",
+        "SubscriptiononCreateEventResolver": "Event",
+        "SubscriptiononDeleteEventResolver": "Event",
+        "GetAttEventTableStreamArn": "Event",
+        "GetAttEventDataSourceName": "Event",
+        "GetAttEventTableName": "Event"
     }
 }

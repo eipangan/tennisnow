@@ -1,7 +1,6 @@
 type Event @model
 @auth(rules: [
   {allow: owner},
-  {allow: private, operations: [update, read]}
 ]) {
   id: ID!
   date: AWSDateTime!

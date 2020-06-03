@@ -74,13 +74,6 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
-                            },
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "update",
-                                    "read"
-                                ]
                             }
                         ]
                     }
