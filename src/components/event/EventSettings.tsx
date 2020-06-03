@@ -2,7 +2,8 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
-import dayjs from 'dayjs';
+import { SelectValue } from 'antd/lib/select';
+import dayjs, { Dayjs } from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -94,6 +95,36 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   };
 
   /**
+   * setDate
+   *
+   * @param d date
+   */
+  const setDate = (d: Dayjs) => {
+    setMyEvent(Event.copyOf(myEvent, (updated) => {
+      updated.date = dayjs(myEvent.date)
+        .set('month', d.get('month'))
+        .set('date', d.get('date'))
+        .set('year', d.get('year'))
+        .toISOString();
+    }));
+  };
+
+  /**
+   * setTime
+   *
+   * @param d date
+   */
+  const setTime = (d: SelectValue) => {
+    setMyEvent(Event.copyOf(myEvent, (updated) => {
+      updated.date = dayjs(myEvent.date)
+        .set('hour', parseInt(d.toString().substring(0, 2), 10))
+        .set('minute', parseInt(d.toString().substring(2, 5), 10))
+        .toISOString();
+    }));
+  };
+
+
+  /**
    * setPlayerName
    *
    * @param index index of the player
@@ -134,30 +165,35 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     }));
   };
 
-  useEffect(() => {
-    if (event) {
-      setMyEvent(Event.copyOf(event, () => { }));
-
+  /**
+   * refreshForm
+   *
+   * @param baseEvent Event object with which to initialize form
+   */
+  const refreshForm = (baseEvent: Event) => {
+    if (baseEvent) {
       form.setFieldsValue({
-        date: dayjs(event.date),
-        time: dayjs(event.date).format('HHmm'),
+        date: dayjs(baseEvent.date),
+        time: dayjs(baseEvent.date).format('HHmm'),
       });
 
-      event.players.forEach((player, index) => {
+      baseEvent.players.forEach((player, index) => {
         form.setFieldsValue({
           [`${playerPrefix}${index}`]: player.name,
         });
       });
     }
-  }, [event, form]);
+  };
 
   useEffect(() => {
-    myEvent.players.forEach((player, index) => {
-      form.setFieldsValue({
-        [`${playerPrefix}${index}`]: player.name,
-      });
-    });
-  }, [form, myEvent]);
+    refreshForm(event);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event]);
+
+  useEffect(() => {
+    refreshForm(myEvent);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myEvent]);
 
   return (
     <Drawer
@@ -185,7 +221,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               hideDisabledOptions
               inputReadOnly
               size="large"
-              onChange={(d) => { }}
+              onChange={(d) => { if (d) setDate(d); }}
             />
           </Form.Item>
           <div style={{ width: '3px' }} />
@@ -195,7 +231,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
           >
             <Select
               size="large"
-              onChange={(d) => { }}
+              onChange={(d) => { if (d) setTime(d); }}
             >
               {(() => {
                 const children: JSX.Element[] = [];
