@@ -1,5 +1,5 @@
-import { DataStore } from '@aws-amplify/datastore';
 import { List, Typography } from 'antd';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React from 'react';

@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { DataStore } from '@aws-amplify/datastore';
 import { Button, Tabs } from 'antd';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import React, { useState } from 'react';
