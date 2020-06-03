@@ -73,12 +73,66 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
+
+/**
+ * EventRoute component
+ *
+ * @param props
+ */
+const EventRoute = (props: any): JSX.Element => {
+  const history = useHistory();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
+  const { match } = props;
+  const [event, setEvent] = useState<Event>(getNewEvent());
+
+  const fetchEvent = async (id: string) => {
+    const myEvent = await DataStore.query(Event, id);
+    setEvent(myEvent);
+  };
+
+  useEffect(() => {
+    fetchEvent(match.params.id);
+  }, [match.params.id]);
+
+  return (
+    <>
+      <PageHeader
+        className={classes.appHeader}
+        onBack={() => history.push('/')}
+        title={(<AppTitle />)}
+        extra={[
+          <DeleteButton
+            key="delete"
+            onConfirm={(e) => {
+              if (e) {
+                if (event) DataStore.delete(event);
+                history.push('/');
+                e.stopPropagation();
+              }
+            }}
+          />,
+          <SettingsButton
+            key="settings"
+            onClick={(e) => {
+              if (e) e.stopPropagation();
+            }}
+          />,
+        ]}
+      />
+      <Suspense fallback={<div className="loader" />}>
+        <EventPanel event={event} />
+      </Suspense>
+    </>
+  );
+};
+
 /**
  * App
  */
 const App = (): JSX.Element => {
   const { t, i18n } = useTranslation();
-  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
@@ -164,48 +218,6 @@ const App = (): JSX.Element => {
       >
         {t('signin')}
       </Button>
-    );
-  };
-
-  const EventRoute = (props: any): JSX.Element => {
-    let event: Event = getNewEvent();
-    const { match } = props;
-
-    DataStore.query(Event, match.params.id)
-      .then((myEvent) => {
-        event = myEvent;
-      })
-      .catch(() => { });
-
-    return (
-      <>
-        <PageHeader
-          className={classes.appHeader}
-          onBack={() => history.push('/')}
-          title={(<AppTitle />)}
-          extra={[
-            <DeleteButton
-              key="delete"
-              onConfirm={(e) => {
-                if (e) {
-                  DataStore.delete(event);
-                  history.push('/');
-                  e.stopPropagation();
-                }
-              }}
-            />,
-            <SettingsButton
-              key="settings"
-              onClick={(e) => {
-                if (e) e.stopPropagation();
-              }}
-            />,
-          ]}
-        />
-        <Suspense fallback={<div className="loader" />}>
-          <EventPanel event={event} />
-        </Suspense>
-      </>
     );
   };
 
