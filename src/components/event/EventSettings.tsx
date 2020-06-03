@@ -33,7 +33,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * SettingsButton component
+ * EventSettingsButton component
  *
  * @param props
  */
