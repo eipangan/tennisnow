@@ -1,8 +1,7 @@
 import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
-import { DataStore } from '@aws-amplify/datastore';
 import { Button, PageHeader, Tag } from 'antd';
-import Amplify, { Hub } from 'aws-amplify';
+import { DataStore, Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -12,7 +11,6 @@ import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import awsconfig from './aws-exports';
 import { DeleteButton, SettingsButton } from './components/event/EventPanel';
 import { getNewEvent } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
@@ -43,13 +41,6 @@ dayjs.updateLocale('en', {
   },
 });
 
-// initialize amplify
-if (awsconfig.oauth.domain.includes('master')) {
-  awsconfig.oauth.domain = 'auth.tennisnow.net';
-}
-awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
-awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
-Amplify.configure(awsconfig);
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -219,21 +210,30 @@ const App = (): JSX.Element => {
   };
 
   /**
+   * fetchEvents
+   */
+  const fetchEvents = async () => {
+    const myEvents = await DataStore.query(Event);
+    setEvents(myEvents);
+  };
+
+  /**
+   * authenticateUser
+   */
+  const authenticateUser = async () => {
+    const myUser = await Auth.currentAuthenticatedUser();
+    setUser(myUser);
+  };
+
+  /**
    * useEffect Section
    */
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then((myUser) => {
-        setUser(myUser);
-      })
-      .catch(() => { });
-
-    DataStore.query(Event)
-      .then((myEvents) => {
-        setEvents(myEvents);
-      })
-      .catch(() => { });
+    authenticateUser();
+    fetchEvents();
+    const subscription = DataStore.observe(Event).subscribe(() => fetchEvents());
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
