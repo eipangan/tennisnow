@@ -67,7 +67,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
         <List.Item
           className={classes.event}
           key={myEvent.id}
-          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+          onClick={(e) => {
             history.push(`/event/${myEvent.id}`);
             e.stopPropagation();
           }}
