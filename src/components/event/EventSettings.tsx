@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import { SelectValue } from 'antd/lib/select';
@@ -31,6 +31,24 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     textAlign: 'left',
   },
 }));
+
+/**
+ * SettingsButton component
+ *
+ * @param props
+ */
+export const EventSettingsButton = (props: { onClick: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void }): JSX.Element => {
+  const { onClick } = props;
+
+  return (
+    <Button
+      data-testid="settings"
+      icon={<SettingOutlined />}
+      shape="circle"
+      onClick={onClick}
+    />
+  );
+};
 
 /**
  * EventSettingsProps

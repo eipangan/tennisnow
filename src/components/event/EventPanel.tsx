@@ -1,4 +1,4 @@
-import { DeleteOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
+import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
@@ -54,24 +54,6 @@ export const DeleteButton = (props: { onConfirm: (e?: React.MouseEvent<HTMLEleme
         shape="circle"
       />
     </Popconfirm>
-  );
-};
-
-/**
- * SettingsButton component
- *
- * @param props
- */
-export const SettingsButton = (props: { onClick: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void }): JSX.Element => {
-  const { onClick } = props;
-
-  return (
-    <Button
-      data-testid="settings"
-      icon={<SettingOutlined />}
-      shape="circle"
-      onClick={onClick}
-    />
   );
 };
 

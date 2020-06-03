@@ -11,7 +11,8 @@ import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { DeleteButton, SettingsButton } from './components/event/EventPanel';
+import { DeleteButton } from './components/event/EventPanel';
+import { EventSettingsButton } from './components/event/EventSettings';
 import { getNewEvent } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
@@ -113,7 +114,7 @@ const EventRoute = (props: any): JSX.Element => {
               }
             }}
           />,
-          <SettingsButton
+          <EventSettingsButton
             key="settings"
             onClick={(e) => {
               if (e) e.stopPropagation();

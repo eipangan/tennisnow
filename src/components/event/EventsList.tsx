@@ -9,7 +9,8 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as Empty } from '../../images/empty.svg';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { DeleteButton, SettingsButton } from './EventPanel';
+import { DeleteButton } from './EventPanel';
+import { EventSettingsButton } from './EventSettings';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -83,7 +84,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
               key="spacing"
               style={{ width: '12px' }}
             />,
-            <SettingsButton
+            <EventSettingsButton
               key="settings"
               onClick={(e) => {
                 if (e) e.stopPropagation();
