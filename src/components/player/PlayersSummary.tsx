@@ -3,7 +3,7 @@ import { ColumnProps } from 'antd/es/table';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event, Player } from '../../models';
+import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
 
 
