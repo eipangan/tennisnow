@@ -14,6 +14,7 @@ import getPlayers from '../player/PlayerUtils';
 import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
+import { getNewEvent } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -33,8 +34,11 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
+/**
+ * EventSettingsButtonProps
+ */
 type EventSettingsButtonProps = {
-  event: Event,
+  event?: Event,
   setEvent?: Dispatch<SetStateAction<Event | undefined>>,
 }
 
@@ -44,22 +48,42 @@ type EventSettingsButtonProps = {
  * @param props
  */
 export const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
+  const { t } = useTranslation();
   const { event, setEvent } = props;
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
+  let button = (
+    <Button
+      data-testid="settings"
+      icon={<SettingOutlined />}
+      shape="circle"
+      onClick={(e) => {
+        setIsEventSettingsVisible(true);
+        e.stopPropagation();
+      }}
+    />
+  );
+
+  if (!event) {
+    button = (
+      <Button
+        data-testid="settings"
+        icon={<PlusOutlined />}
+        onClick={(e) => {
+          setIsEventSettingsVisible(true);
+          e.stopPropagation();
+        }}
+        type="primary"
+      >
+        {t('newEvent')}
+      </Button>
+    );
+  }
 
   return (
     <>
-      <Button
-        data-testid="settings"
-        icon={<SettingOutlined />}
-        shape="circle"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsEventSettingsVisible(true);
-        }}
-      />
+      {button}
       <EventSettings
-        event={event}
+        event={event || getNewEvent()}
         isVisible={isEventSettingsVisible}
         onClose={() => {
           setIsEventSettingsVisible(false);
@@ -73,6 +97,7 @@ export const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Elemen
     </>
   );
 };
+
 
 /**
  * EventSettingsProps

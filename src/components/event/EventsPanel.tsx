@@ -1,5 +1,4 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import React from 'react';
@@ -8,6 +7,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { useLocalStorage } from '../utils/Utils';
+import { EventSettingsButton } from './EventSettings';
 import EventsList from './EventsList';
 
 // initialize dayjs
@@ -43,28 +43,15 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
 
   const [activeTab, setActiveTab] = useLocalStorage<string>('activeTab', 'events');
 
-  /**
-   * NewEventButton Component
-   */
-  const NewEventButton = (): JSX.Element => (
-    <Button
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-      type="primary"
-      icon={<PlusOutlined />}
-    >
-      {t('newEvent')}
-    </Button>
-  );
-
   return (
     <>
       <Tabs
         className={classes.eventsPanel}
         defaultActiveKey={activeTab}
         onChange={(myActiveKey) => setActiveTab(myActiveKey)}
-        tabBarExtraContent={<NewEventButton />}
+        tabBarExtraContent={
+          <EventSettingsButton />
+      }
       >
         <TabPane key="events" tab={t('events')}>
           <EventsList
