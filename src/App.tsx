@@ -6,21 +6,20 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, { Suspense, useContext, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
-import { DeleteButton } from './components/event/EventPanel';
-import EventSettings, { EventSettingsButton } from './components/event/EventSettings';
+import EventSettings from './components/event/EventSettings';
 import { getNewEvent } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
-const EventPanel = React.lazy(() => import('./components/event/EventPanel'));
+const EventRoute = React.lazy(() => import('./components/routes/EventRoute'));
 const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
@@ -75,61 +74,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-/**
- * EventRoute component
- *
- * @param props
- */
-const EventRoute = (props: any): JSX.Element => {
-  const history = useHistory();
-  const theme = useTheme();
-  const classes = useStyles({ theme });
-
-  const { match } = props;
-  const { event, setEvent, setIsEventSettingsVisible } = useContext(AppContext);
-
-  const fetchEvent = async (id: string) => {
-    const myEvent = await DataStore.query(Event, id);
-    setEvent(myEvent);
-  };
-
-  useEffect(() => {
-    fetchEvent(match.params.id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match.params.id]);
-
-  return (
-    <>
-      <PageHeader
-        className={classes.appHeader}
-        onBack={() => history.push('/')}
-        title={(<AppTitle />)}
-        extra={[
-          <DeleteButton
-            key="delete"
-            onConfirm={(e) => {
-              if (e) {
-                DataStore.delete(event);
-                history.push('/');
-                e.stopPropagation();
-              }
-            }}
-          />,
-          <EventSettingsButton
-            key="settings"
-            onClick={(e) => {
-              setIsEventSettingsVisible(true);
-              if (e) e.stopPropagation();
-            }}
-          />,
-        ]}
-      />
-      <Suspense fallback={<div className="loader" />}>
-        <EventPanel event={event} />
-      </Suspense>
-    </>
-  );
-};
 
 /**
  * App
@@ -247,8 +191,10 @@ const App = (): JSX.Element => {
             setIsEventSettingsVisible(false);
           }}
           onOk={(myEvent: Event) => {
-            DataStore.save(myEvent);
+            setEvent(myEvent);
             setIsEventSettingsVisible(false);
+
+            DataStore.save(myEvent);
           }}
         />
       );
