@@ -6,13 +6,14 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch, useHistory } from 'react-router-dom';
+import { AppContext, AppContextType } from './AppContext';
 import { DeleteButton } from './components/event/EventPanel';
-import { EventSettingsButton } from './components/event/EventSettings';
+import EventSettings, { EventSettingsButton } from './components/event/EventSettings';
 import { getNewEvent } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
@@ -74,7 +75,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-
 /**
  * EventRoute component
  *
@@ -86,7 +86,7 @@ const EventRoute = (props: any): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { match } = props;
-  const [event, setEvent] = useState<Event>(getNewEvent());
+  const { event, setEvent, setIsEventSettingsVisible } = useContext(AppContext);
 
   const fetchEvent = async (id: string) => {
     const myEvent = await DataStore.query(Event, id);
@@ -95,6 +95,7 @@ const EventRoute = (props: any): JSX.Element => {
 
   useEffect(() => {
     fetchEvent(match.params.id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.params.id]);
 
   return (
@@ -108,7 +109,7 @@ const EventRoute = (props: any): JSX.Element => {
             key="delete"
             onConfirm={(e) => {
               if (e) {
-                if (event) DataStore.delete(event);
+                DataStore.delete(event);
                 history.push('/');
                 e.stopPropagation();
               }
@@ -117,6 +118,7 @@ const EventRoute = (props: any): JSX.Element => {
           <EventSettingsButton
             key="settings"
             onClick={(e) => {
+              setIsEventSettingsVisible(true);
               if (e) e.stopPropagation();
             }}
           />,
@@ -141,6 +143,9 @@ const App = (): JSX.Element => {
   const [user, setUser] = useState<CognitoUser>();
   const [events, setEvents] = useState<Event[]>();
 
+  const [event, setEvent] = useState<Event>(getNewEvent());
+  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
+
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
   ReactGA.pageview(window.location.pathname + window.location.search);
@@ -159,6 +164,14 @@ const App = (): JSX.Element => {
         break;
     }
   });
+
+  // initialize app AppContext
+  const app: AppContextType = {
+    event,
+    setEvent,
+    isEventSettingsVisible,
+    setIsEventSettingsVisible,
+  };
 
   /**
    * AppBody Component
@@ -223,6 +236,28 @@ const App = (): JSX.Element => {
   };
 
   /**
+   * EventSettingsPanel
+   */
+  const EventSettingsPanel = (): JSX.Element => {
+    if (isEventSettingsVisible) {
+      return (
+        <EventSettings
+          event={event}
+          onClose={() => {
+            setIsEventSettingsVisible(false);
+          }}
+          onOk={(myEvent: Event) => {
+            DataStore.save(myEvent);
+            setIsEventSettingsVisible(false);
+          }}
+        />
+      );
+    }
+
+    return (<></>);
+  };
+
+  /**
    * fetchEvents
    */
   const fetchEvents = async () => {
@@ -264,31 +299,34 @@ const App = (): JSX.Element => {
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
-        <Switch>
-          <Route path="/event/:id" component={EventRoute} />
-          <Route path="/">
-            <PageHeader
-              className={classes.appHeader}
-              title={(<AppTitle />)}
-              extra={[
-                <UserButton key="user" />,
-              ]}
-            />
-            <Suspense fallback={<div className="loader" />}>
-              <AppBody />
-            </Suspense>
-          </Route>
-        </Switch>
-        <Suspense fallback={<div className="loader" />}>
-          {(() => {
-            if (isUserSettingsVisible && user) return <UserSettings user={user} />;
-            return null;
-          })()}
-        </Suspense>
+        <AppContext.Provider value={app}>
+          <Switch>
+            <Route path="/event/:id" component={EventRoute} />
+            <Route path="/">
+              <PageHeader
+                className={classes.appHeader}
+                title={(<AppTitle />)}
+                extra={[
+                  <UserButton key="user" />,
+                ]}
+              />
+              <Suspense fallback={<div className="loader" />}>
+                <AppBody />
+              </Suspense>
+            </Route>
+          </Switch>
+          <Suspense fallback={<div className="loader" />}>
+            {(() => {
+              if (isUserSettingsVisible && user) return <UserSettings user={user} />;
+              return null;
+            })()}
+          </Suspense>
+        </AppContext.Provider>
       </div>
       <div className={classes.appFooter}>
         <AppCopyright />
       </div>
+      <EventSettingsPanel />
     </div>
   );
 };

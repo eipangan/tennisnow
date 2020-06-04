@@ -1,14 +1,13 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Tabs } from 'antd';
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { AppContext } from '../../AppContext';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import EventSettings from './EventSettings';
 import EventsList from './EventsList';
 import { getNewEvent } from './EventUtils';
 
@@ -43,8 +42,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
   const { events } = props;
   const { TabPane } = Tabs;
 
-  const [event, setEvent] = useState<Event>(getNewEvent());
-  const [isSettingsVisible, setIsSettingsVisible] = useState<Boolean>(false);
+  const { setEvent, setIsEventSettingsVisible } = useContext(AppContext);
 
   /**
    * NewEventButton Component
@@ -53,7 +51,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
     <Button
       onClick={(e) => {
         setEvent(getNewEvent());
-        setIsSettingsVisible(true);
+        setIsEventSettingsVisible(true);
         e.stopPropagation();
       }}
       type="primary"
@@ -62,26 +60,6 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
       {t('newEvent')}
     </Button>
   );
-
-  /**
-   * EventSettingsPanel
-   */
-  const EventSettingsPanel = (): JSX.Element => {
-    if (isSettingsVisible) {
-      return (
-        <EventSettings
-          event={event}
-          onClose={() => setIsSettingsVisible(false)}
-          onOk={(myEvent: Event) => {
-            DataStore.save(myEvent);
-            setIsSettingsVisible(false);
-          }}
-        />
-      );
-    }
-
-    return (<></>);
-  };
 
   return (
     <>
@@ -105,7 +83,6 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
           />
         </TabPane>
       </Tabs>
-      <EventSettingsPanel />
     </>
   );
 };
