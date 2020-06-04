@@ -86,9 +86,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
             />,
             <EventSettingsButton
               key="settings"
-              onClick={(e) => {
-                if (e) e.stopPropagation();
-              }}
+              event={myEvent}
             />,
           ]}
         >

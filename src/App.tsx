@@ -11,9 +11,6 @@ import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
-import { AppContext, AppContextType } from './AppContext';
-import EventSettings from './components/event/EventSettings';
-import { getNewEvent } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
@@ -87,9 +84,6 @@ const App = (): JSX.Element => {
   const [user, setUser] = useState<CognitoUser>();
   const [events, setEvents] = useState<Event[]>();
 
-  const [event, setEvent] = useState<Event>(getNewEvent());
-  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
-
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
   ReactGA.pageview(window.location.pathname + window.location.search);
@@ -108,14 +102,6 @@ const App = (): JSX.Element => {
         break;
     }
   });
-
-  // initialize app AppContext
-  const app: AppContextType = {
-    event,
-    setEvent,
-    isEventSettingsVisible,
-    setIsEventSettingsVisible,
-  };
 
   /**
    * AppBody Component
@@ -180,30 +166,6 @@ const App = (): JSX.Element => {
   };
 
   /**
-   * EventSettingsPanel
-   */
-  const EventSettingsPanel = (): JSX.Element => {
-    if (isEventSettingsVisible) {
-      return (
-        <EventSettings
-          event={event}
-          onClose={() => {
-            setIsEventSettingsVisible(false);
-          }}
-          onOk={(myEvent: Event) => {
-            setEvent(myEvent);
-            setIsEventSettingsVisible(false);
-
-            DataStore.save(myEvent);
-          }}
-        />
-      );
-    }
-
-    return (<></>);
-  };
-
-  /**
    * fetchEvents
    */
   const fetchEvents = async () => {
@@ -226,7 +188,9 @@ const App = (): JSX.Element => {
   useEffect(() => {
     authenticateUser();
     fetchEvents();
-    const subscription = DataStore.observe(Event).subscribe(() => fetchEvents());
+    const subscription = DataStore.observe(Event).subscribe(() => {
+      fetchEvents();
+    });
     return () => subscription.unsubscribe();
   }, []);
 
@@ -245,34 +209,31 @@ const App = (): JSX.Element => {
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
-        <AppContext.Provider value={app}>
-          <Switch>
-            <Route path="/event/:id" component={EventRoute} />
-            <Route path="/">
-              <PageHeader
-                className={classes.appHeader}
-                title={(<AppTitle />)}
-                extra={[
-                  <UserButton key="user" />,
-                ]}
-              />
-              <Suspense fallback={<div className="loader" />}>
-                <AppBody />
-              </Suspense>
-            </Route>
-          </Switch>
-          <Suspense fallback={<div className="loader" />}>
-            {(() => {
-              if (isUserSettingsVisible && user) return <UserSettings user={user} />;
-              return null;
-            })()}
-          </Suspense>
-        </AppContext.Provider>
+        <Switch>
+          <Route path="/event/:id" component={EventRoute} />
+          <Route path="/">
+            <PageHeader
+              className={classes.appHeader}
+              title={(<AppTitle />)}
+              extra={[
+                <UserButton key="user" />,
+              ]}
+            />
+            <Suspense fallback={<div className="loader" />}>
+              <AppBody />
+            </Suspense>
+          </Route>
+        </Switch>
+        <Suspense fallback={<div className="loader" />}>
+          {(() => {
+            if (isUserSettingsVisible && user) return <UserSettings user={user} />;
+            return null;
+          })()}
+        </Suspense>
       </div>
       <div className={classes.appFooter}>
         <AppCopyright />
       </div>
-      <EventSettingsPanel />
     </div>
   );
 };

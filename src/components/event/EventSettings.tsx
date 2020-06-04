@@ -3,8 +3,9 @@ import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined, SettingOutli
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import { SelectValue } from 'antd/lib/select';
+import { DataStore } from 'aws-amplify';
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
@@ -32,21 +33,44 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
+type EventSettingsButtonProps = {
+  event: Event,
+  setEvent?: Dispatch<SetStateAction<Event | undefined>>,
+}
+
 /**
  * EventSettingsButton component
  *
  * @param props
  */
-export const EventSettingsButton = (props: { onClick: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void }): JSX.Element => {
-  const { onClick } = props;
+export const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
+  const { event, setEvent } = props;
+  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   return (
-    <Button
-      data-testid="settings"
-      icon={<SettingOutlined />}
-      shape="circle"
-      onClick={onClick}
-    />
+    <>
+      <Button
+        data-testid="settings"
+        icon={<SettingOutlined />}
+        shape="circle"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsEventSettingsVisible(true);
+        }}
+      />
+      <EventSettings
+        event={event}
+        isVisible={isEventSettingsVisible}
+        onClose={() => {
+          setIsEventSettingsVisible(false);
+        }}
+        onOk={(myEvent: Event) => {
+          if (setEvent) setEvent(myEvent);
+          DataStore.save(myEvent);
+          setIsEventSettingsVisible(false);
+        }}
+      />
+    </>
   );
 };
 
@@ -55,6 +79,7 @@ export const EventSettingsButton = (props: { onClick: (e?: React.MouseEvent<HTML
  */
 type EventSettingsProps = {
   event: Event,
+  isVisible: boolean,
   onClose?: () => void,
   onOk?: (event: Event) => void,
 }
@@ -69,7 +94,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, onClose, onOk } = props;
+  const { event, isVisible, onClose, onOk } = props;
   const { Panel } = Collapse;
   const { Option } = Select;
 
@@ -140,7 +165,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         .toISOString();
     }));
   };
-
 
   /**
    * setPlayerName
@@ -220,7 +244,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       onClose={onClose}
       placement="right"
       title={t('eventSettings')}
-      visible
+      visible={isVisible}
       width={324}
     >
       <Form
