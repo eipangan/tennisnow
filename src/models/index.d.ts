@@ -41,6 +41,7 @@ export declare class Event {
   readonly players: Player[];
   readonly teams: Team[];
   readonly matches: Match[];
+  readonly owner?: string;
   constructor(init: ModelInit<Event>);
   static copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
 }

@@ -8,6 +8,7 @@ type Event @model
   players: [Player!]!
   teams: [Team!]!
   matches: [Match!]!
+  owner: String
 }
 
 type Match {

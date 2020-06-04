@@ -50,6 +50,13 @@ export const schema = {
                     },
                     "isRequired": true,
                     "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -201,5 +208,5 @@ export const schema = {
             }
         }
     },
-    "version": "ef93629a61b46db2f66d9b5c32524015"
+    "version": "bbab09f5a9c81d8c3d67ada636edeba8"
 };

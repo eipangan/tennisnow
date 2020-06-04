@@ -21,6 +21,7 @@
         "SubscriptiononDeleteEventResolver": "Event",
         "GetAttEventTableStreamArn": "Event",
         "GetAttEventDataSourceName": "Event",
-        "GetAttEventTableName": "Event"
+        "GetAttEventTableName": "Event",
+        "SubscriptiononUpdateEventResolver": "Event"
     }
 }
