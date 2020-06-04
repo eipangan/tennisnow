@@ -8,6 +8,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { AppContext } from '../../AppContext';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
+import { useLocalStorage } from '../utils/Utils';
 import EventsList from './EventsList';
 import { getNewEvent } from './EventUtils';
 
@@ -42,6 +43,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
   const { events } = props;
   const { TabPane } = Tabs;
 
+  const [activeTab, setActiveTab] = useLocalStorage<string>('activeTab', 'events');
   const { setEvent, setIsEventSettingsVisible } = useContext(AppContext);
 
   /**
@@ -65,7 +67,8 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
     <>
       <Tabs
         className={classes.eventsPanel}
-        defaultActiveKey="events"
+        defaultActiveKey={activeTab}
+        onChange={(myActiveKey) => setActiveTab(myActiveKey)}
         tabBarExtraContent={<NewEventButton />}
       >
         <TabPane key="events" tab={t('events')}>
