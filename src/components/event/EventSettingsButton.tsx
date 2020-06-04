@@ -53,7 +53,12 @@ const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
   }
 
   return (
-    <>
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+      role="button"
+      tabIndex={0}
+    >
       {button}
       <EventSettings
         event={event || getNewEvent()}
@@ -67,7 +72,7 @@ const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
           setIsEventSettingsVisible(false);
         }}
       />
-    </>
+    </div>
   );
 };
 
