@@ -5,7 +5,7 @@ import { Player, Team, Stats } from '../../models';
  *
  * @param players players in the event
  */
-export const getTeams = (players: Player[]): Team[] => {
+const getTeams = (players: Player[]): Team[] => {
   if (!players) return [];
 
   const teams: Team[] = [];

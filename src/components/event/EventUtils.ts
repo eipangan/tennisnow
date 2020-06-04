@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import { Event, Match } from '../../models';
-import { getMatches } from '../match/MatchUtils';
+import getMatches from '../match/MatchUtils';
 import getPlayers from '../player/PlayerUtils';
 import getTeams from '../team/TeamUtils';
 

@@ -19,7 +19,7 @@ const isValidMatch = (t1: Team, t2: Team): boolean => {
  *
  * @param teams number of players
  */
-export const getMatches = (teams: Team[]): Match[] => {
+const getMatches = (teams: Team[]): Match[] => {
   const matches: Match[] = [];
   for (let t = 0; t < teams.length; t += 1) {
     for (let nt = t; nt < teams.length; nt += 1) {
