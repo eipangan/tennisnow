@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as AppTitle } from '../../images/title.svg';
 import { Event } from '../../models';
 import EventPanel, { DeleteButton } from '../event/EventPanel';
-import { EventSettingsButton } from '../event/EventSettings';
+import EventSettingsButton from '../event/EventSettingsButton';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles

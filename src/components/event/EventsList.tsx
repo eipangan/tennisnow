@@ -10,7 +10,7 @@ import { ReactComponent as Empty } from '../../images/empty.svg';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { DeleteButton } from './EventPanel';
-import { EventSettingsButton } from './EventSettings';
+import EventSettingsButton from './EventSettingsButton';
 
 // initialize dayjs
 dayjs.extend(calendar);

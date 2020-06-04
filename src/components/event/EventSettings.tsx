@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import { SelectValue } from 'antd/lib/select';
-import { DataStore } from 'aws-amplify';
 import dayjs, { Dayjs } from 'dayjs';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
@@ -14,7 +13,6 @@ import getPlayers from '../player/PlayerUtils';
 import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
-import { getNewEvent } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -33,71 +31,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     textAlign: 'left',
   },
 }));
-
-/**
- * EventSettingsButtonProps
- */
-type EventSettingsButtonProps = {
-  event?: Event,
-  setEvent?: Dispatch<SetStateAction<Event | undefined>>,
-}
-
-/**
- * EventSettingsButton component
- *
- * @param props
- */
-export const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
-  const { t } = useTranslation();
-  const { event, setEvent } = props;
-  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
-  let button = (
-    <Button
-      data-testid="settings"
-      icon={<SettingOutlined />}
-      shape="circle"
-      onClick={(e) => {
-        setIsEventSettingsVisible(true);
-        e.stopPropagation();
-      }}
-    />
-  );
-
-  if (!event) {
-    button = (
-      <Button
-        data-testid="settings"
-        icon={<PlusOutlined />}
-        onClick={(e) => {
-          setIsEventSettingsVisible(true);
-          e.stopPropagation();
-        }}
-        type="primary"
-      >
-        {t('newEvent')}
-      </Button>
-    );
-  }
-
-  return (
-    <>
-      {button}
-      <EventSettings
-        event={event || getNewEvent()}
-        isVisible={isEventSettingsVisible}
-        onClose={() => {
-          setIsEventSettingsVisible(false);
-        }}
-        onOk={(myEvent: Event) => {
-          if (setEvent) setEvent(myEvent);
-          DataStore.save(myEvent);
-          setIsEventSettingsVisible(false);
-        }}
-      />
-    </>
-  );
-};
-
 
 /**
  * EventSettingsProps

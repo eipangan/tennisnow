@@ -7,7 +7,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { useLocalStorage } from '../utils/Utils';
-import { EventSettingsButton } from './EventSettings';
+import EventSettingsButton from './EventSettingsButton';
 import EventsList from './EventsList';
 
 // initialize dayjs
