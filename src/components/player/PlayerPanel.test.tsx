@@ -30,5 +30,5 @@ test('renders without crashing', async () => {
     </BrowserRouter>,
   );
 
-  expect(screen.getByText('Player1')).toBeInTheDocument();
+  expect(screen.getByText('Pla')).toBeInTheDocument();
 });
