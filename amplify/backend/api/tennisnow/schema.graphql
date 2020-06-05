@@ -11,7 +11,7 @@ type Event @model
 }
 
 type Match {
-  teams: [Team!]!
+  players: [Player!]!
   status: MatchStatus!
 }
 

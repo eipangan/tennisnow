@@ -18,6 +18,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 type PlayerPanelProps = {
   player: Player;
+  className?: string;
 };
 
 /**
@@ -29,16 +30,23 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { player } = props;
+  const { player, className } = props;
 
   return (
     <StrictMode>
-      <Avatar
-        className={classes.player}
-        size="large"
+      <div
+        className={className}
+        onKeyDown={() => { }}
+        role="button"
+        tabIndex={0}
       >
-        {getPlayerName(player)}
-      </Avatar>
+        <Avatar
+          className={classes.player}
+          size="large"
+        >
+          {getPlayerName(player)}
+        </Avatar>
+      </div>
     </StrictMode>
   );
 };

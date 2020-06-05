@@ -50,7 +50,6 @@ test('renders without crashing', async () => {
     </BrowserRouter>,
   );
 
-  expect(screen.getByRole('button')).toBeInTheDocument();
   expect(screen.getByText('P1')).toBeInTheDocument();
   expect(screen.getByText('P2')).toBeInTheDocument();
 });

@@ -24,7 +24,7 @@ export declare class Stats {
 }
 
 export declare class Match {
-  readonly teams: Team[];
+  readonly players: Player[];
   readonly status: MatchStatus | keyof typeof MatchStatus;
   constructor(init: ModelInit<Match>);
 }

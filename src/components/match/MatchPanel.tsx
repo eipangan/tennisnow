@@ -2,7 +2,7 @@ import React, { StrictMode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus } from '../../models';
-import TeamPanel from '../team/TeamPanel';
+import PlayerPanel from '../player/PlayerPanel';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles
@@ -67,8 +67,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   const { match } = props;
 
-  const team1 = match.teams[0];
-  const team2 = match.teams[1];
+  const player1 = match.players[0];
+  const player2 = match.players[1];
   const { status } = match;
 
   let team1Class = classes.matchOthers;
@@ -91,8 +91,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   return (
     <StrictMode>
       <div className={classes.match}>
-        <TeamPanel
-          team={team1}
+        <PlayerPanel
+          player={player1}
           className={team1Class}
         />
         <div
@@ -103,8 +103,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         >
           {middleText}
         </div>
-        <TeamPanel
-          team={team2}
+        <PlayerPanel
+          player={player2}
           className={team2Class}
         />
       </div>
