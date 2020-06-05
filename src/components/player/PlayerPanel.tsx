@@ -3,6 +3,7 @@ import React, { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
+import { getPlayerName } from './PlayerUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -29,7 +30,6 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { player } = props;
-  const getPlayerName = () => player.name.substring(0, 3);
 
   return (
     <StrictMode>
@@ -37,7 +37,7 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
         className={classes.player}
         size="large"
       >
-        {getPlayerName()}
+        {getPlayerName(player)}
       </Avatar>
     </StrictMode>
   );

@@ -1,4 +1,4 @@
-import getPlayers from '../player/PlayerUtils';
+import { getPlayers } from '../player/PlayerUtils';
 import getTeams from './TeamUtils';
 
 test('runs as expected', async () => {

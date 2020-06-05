@@ -29,9 +29,10 @@ type Team {
 }
 
 type Player {
-  userid: String!
-  name: String!
-  stats: Stats!
+  index: Int!
+  userid: String
+  name: String
+  stats: Stats
 }
 
 type Stats {

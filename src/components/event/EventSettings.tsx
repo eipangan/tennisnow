@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
 import getMatches from '../match/MatchUtils';
-import getPlayers from '../player/PlayerUtils';
+import { getPlayers } from '../player/PlayerUtils';
 import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';

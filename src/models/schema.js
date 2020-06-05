@@ -103,18 +103,25 @@ export const schema = {
         "Player": {
             "name": "Player",
             "fields": {
+                "index": {
+                    "name": "index",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "userid": {
                     "name": "userid",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "name": {
                     "name": "name",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "stats": {
@@ -123,7 +130,7 @@ export const schema = {
                     "type": {
                         "nonModel": "Stats"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 }
             }
@@ -208,5 +215,5 @@ export const schema = {
             }
         }
     },
-    "version": "bbab09f5a9c81d8c3d67ada636edeba8"
+    "version": "16cf17795bad3b22c7e7e6b4b82e249e"
 };

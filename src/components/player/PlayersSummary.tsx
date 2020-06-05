@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
+import { getPlayerName } from './PlayerUtils';
 
 
 // initialize styles
@@ -46,7 +47,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const dataSource: PlayerStatusType[] | undefined = [];
   players.forEach((player) => {
     const data: PlayerStatusType = {
-      playerName: player.name,
+      playerName: getPlayerName(player),
       numWon: 0,
       numLost: 0,
       numDraws: 0,
