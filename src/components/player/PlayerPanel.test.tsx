@@ -9,8 +9,8 @@ import PlayerPanel from './PlayerPanel';
 test('renders without crashing', async () => {
   const player = new Player({
     index: 0,
-    userid: ['player1'],
-    name: 'Player1',
+    userid: ['P1'],
+    name: 'P1',
     stats: new Stats({
       numDraws: 0,
       numLost: 0,
@@ -31,5 +31,5 @@ test('renders without crashing', async () => {
     </BrowserRouter>,
   );
 
-  expect(screen.getByText('Pla')).toBeInTheDocument();
+  expect(screen.getByText('P1')).toBeInTheDocument();
 });
