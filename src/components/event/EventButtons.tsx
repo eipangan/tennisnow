@@ -27,31 +27,37 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   const { event, setEvent } = props;
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
-  const DeleteButton = () => (
-    <Popconfirm
-      cancelText={t('cancel')}
-      icon={<QuestionCircleOutlined />}
-      okText={t('delete')}
-      placement="left"
-      title={t('deleteEventConfirm')}
-      onCancel={(e) => {
-        if (e) e.stopPropagation();
-      }}
-      onConfirm={(e) => {
-        if (event) {
-          DataStore.delete(event);
-          history.push('/');
-        }
-      }}
-    >
-      <Button
-        data-testid="delete"
-        icon={<DeleteOutlined />}
-        onClick={(e) => e.stopPropagation()}
-        shape="circle"
-      />
-    </Popconfirm>
-  );
+  const DeleteButton = () => {
+    if (event) {
+      return (
+        <Popconfirm
+          cancelText={t('cancel')}
+          icon={<QuestionCircleOutlined />}
+          okText={t('delete')}
+          placement="left"
+          title={t('deleteEventConfirm')}
+          onCancel={(e) => {
+            if (e) e.stopPropagation();
+          }}
+          onConfirm={(e) => {
+            if (event) {
+              DataStore.delete(event);
+              history.push('/');
+            }
+          }}
+        >
+          <Button
+            data-testid="delete"
+            icon={<DeleteOutlined />}
+            onClick={(e) => e.stopPropagation()}
+            shape="circle"
+          />
+        </Popconfirm>
+      );
+    }
+
+    return <></>;
+  };
 
   const SettingsButton = (): JSX.Element => {
     if (event) {
