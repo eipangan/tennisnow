@@ -7,7 +7,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { useLocalStorage } from '../utils/Utils';
-import EventSettingsButton from './EventSettingsButton';
+import EventButtons from './EventButtons';
 import EventsList from './EventsList';
 
 // initialize dayjs
@@ -50,7 +50,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
         defaultActiveKey={activeTab}
         onChange={(myActiveKey) => setActiveTab(myActiveKey)}
         tabBarExtraContent={
-          <EventSettingsButton />
+          <EventButtons />
       }
       >
         <TabPane key="events" tab={t('events')}>

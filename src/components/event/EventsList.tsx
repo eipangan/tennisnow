@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as Empty } from '../../images/empty.svg';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import EventSettingsButton from './EventSettingsButton';
+import EventButtons from './EventButtons';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -71,7 +71,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
             e.stopPropagation();
           }}
           extra={[
-            <EventSettingsButton
+            <EventButtons
               key="settings"
               event={myEvent}
             />,

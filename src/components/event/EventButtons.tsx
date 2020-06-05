@@ -9,19 +9,19 @@ import EventSettings from './EventSettings';
 import { getNewEvent } from './EventUtils';
 
 /**
- * EventSettingsButtonProps
+ * EventButtonsProps
  */
-type EventSettingsButtonProps = {
+type EventButtonsProps = {
   event?: Event,
   setEvent?: Dispatch<SetStateAction<Event | undefined>>,
 }
 
 /**
- * EventSettingsButton component
+ * EventButtons component
  *
  * @param props
  */
-const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
+const EventButtons = (props: EventButtonsProps): JSX.Element => {
   const { t } = useTranslation();
   const history = useHistory();
   const { event, setEvent } = props;
@@ -117,4 +117,4 @@ const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
   );
 };
 
-export default EventSettingsButton;
+export default EventButtons;

@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as AppTitle } from '../../images/title.svg';
 import { Event } from '../../models';
 import EventPanel from '../event/EventPanel';
-import EventSettingsButton from '../event/EventSettingsButton';
+import EventButtons from '../event/EventButtons';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles
@@ -81,7 +81,7 @@ const EventRoute = (props: any): JSX.Element => {
         onBack={() => history.push('/')}
         title={(<AppTitle />)}
         extra={[
-          <EventSettingsButton
+          <EventButtons
             key="settings"
             event={event}
             setEvent={setEvent}
