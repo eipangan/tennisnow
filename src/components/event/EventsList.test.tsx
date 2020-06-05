@@ -24,20 +24,6 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-test('renders empty event without crashing', async () => {
-  render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <EventsList events={[]} />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
-
-  expect(screen.getByText('noEvents')).toBeInTheDocument();
-});
-
 test('renders one event without crashing', async () => {
   render(
     <BrowserRouter>
@@ -60,28 +46,4 @@ test('renders one event without crashing', async () => {
   fireEvent.click(screen.getByText('cancel'));
 
   fireEvent.click(screen.getByTestId('settings'));
-});
-
-test('renders two events without crashing', async () => {
-  render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <EventsList events={[getNewEvent(), getNewEvent()]} />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
-
-  expect(screen.getAllByText('eventSummary')).toHaveLength(2);
-  expect(screen.getAllByTestId('delete')).toHaveLength(2);
-  expect(screen.getAllByTestId('settings')).toHaveLength(2);
-
-  fireEvent.click(screen.getAllByTestId('delete')[0]);
-  expect(screen.getByText('deleteEventConfirm')).toBeInTheDocument();
-  expect(screen.getByText('cancel')).toBeInTheDocument();
-  expect(screen.getByText('delete')).toBeInTheDocument();
-  fireEvent.click(screen.getByText('cancel'));
-
-  fireEvent.click(screen.getAllByTestId('settings')[0]);
 });
