@@ -63,54 +63,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const playerPrefix = 'player';
 
   /**
-   * clearNames
-   */
-  const clearNames = () => {
-    for (let p = 0; p < numPlayers; p += 1) {
-      form.setFieldsValue({ [`${playerPrefix}${p}`]: '' });
-    }
-  };
-
-  /**
-   * randomizeOrder
-   */
-  const randomizeOrder = () => {
-    // keep old names
-    const oldPlayerNames: string[] = [];
-    for (let p = 0; p < numPlayers; p += 1) {
-      oldPlayerNames.push(form.getFieldValue(`${playerPrefix}${p}`));
-    }
-
-    // shuffle sequence
-    const newPlayerNames = shuffle(oldPlayerNames);
-
-    // update names
-    for (let p = 0; p < numPlayers; p += 1) {
-      form.setFieldsValue({ [`${playerPrefix}${p}`]: newPlayerNames[p] });
-    }
-  };
-
-  /**
-   * refreshForm
-   *
-   * @param baseEvent Event object with which to initialize form
-   */
-  const refreshForm = (baseEvent: Event) => {
-    if (baseEvent) {
-      form.setFieldsValue({
-        date: dayjs(baseEvent.date),
-        time: dayjs(baseEvent.date).format('HHmm'),
-      });
-
-      baseEvent.players.forEach((player, index) => {
-        form.setFieldsValue({
-          [`${playerPrefix}${index}`]: player.name,
-        });
-      });
-    }
-  };
-
-  /**
    * get updated Event based on data in the form
    */
   const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
@@ -142,9 +94,17 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   });
 
   useEffect(() => {
-    refreshForm(event);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
+    form.setFieldsValue({
+      date: dayjs(event.date),
+      time: dayjs(event.date).format('HHmm'),
+    });
+
+    event.players.forEach((player, index) => {
+      form.setFieldsValue({
+        [`${playerPrefix}${index}`]: player.name,
+      });
+    });
+  }, [event, form]);
 
   return (
     <Drawer
@@ -263,7 +223,9 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                   <Button
                     type="link"
                     onClick={(e) => {
-                      clearNames();
+                      for (let p = 0; p < numPlayers; p += 1) {
+                        form.setFieldsValue({ [`${playerPrefix}${p}`]: '' });
+                      }
                       e.stopPropagation();
                     }}
                   >
@@ -272,7 +234,14 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                   <Button
                     type="link"
                     onClick={(e) => {
-                      randomizeOrder();
+                      const oldPlayerNames: string[] = [];
+                      for (let p = 0; p < numPlayers; p += 1) {
+                        oldPlayerNames.push(form.getFieldValue(`${playerPrefix}${p}`));
+                      }
+                      const newPlayerNames = shuffle(oldPlayerNames);
+                      for (let p = 0; p < numPlayers; p += 1) {
+                        form.setFieldsValue({ [`${playerPrefix}${p}`]: newPlayerNames[p] });
+                      }
                       e.stopPropagation();
                     }}
                   >
