@@ -1,7 +1,7 @@
 import { Player, Team, Stats } from '../../models';
 
 /**
- * initialize teams
+ * @deprecated initialize teams
  *
  * @param players players in the event
  */

@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import { Event, Match } from '../../models';
 import { getPlayers } from '../player/PlayerUtils';
-import getTeams from '../team/TeamUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -14,14 +13,13 @@ export const getNewEvent = (): Event => {
   const defaultNumPlayers = 6;
 
   const players = getPlayers(defaultNumPlayers);
-  const teams = getTeams(players);
 
   return new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
     numPlayers: defaultNumPlayers,
     players,
-    teams,
+    teams: [],
     matches: [],
   });
 };

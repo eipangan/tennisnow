@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
 import { getPlayers } from '../player/PlayerUtils';
-import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
 
@@ -89,11 +88,10 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
     // recreate event
     const players = getPlayers(numPlayers, oldPlayerNames);
-    const teams = getTeams(players);
 
     updatedEvent.numPlayers = numPlayers;
     updatedEvent.players = players;
-    updatedEvent.teams = teams;
+    updatedEvent.teams = [];
     updatedEvent.matches = [];
   });
 
