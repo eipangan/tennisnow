@@ -29,7 +29,7 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { player } = props;
-  const getPlayerName = () => player.name;
+  const getPlayerName = () => player.name.substring(0, 3);
 
   return (
     <StrictMode>
