@@ -5,8 +5,8 @@ import { Player, Stats } from '../../models';
  *
  * @param player
  */
-export const getPlayerName = (player: Player) : string => {
-  if (player.name) return player.name.substring(0, 3);
+export const getPlayerName = (player: Player, maxLength: number = Number.MAX_VALUE) : string => {
+  if (player.name) return player.name.substring(0, maxLength);
   return String(player.index + 1);
 };
 
