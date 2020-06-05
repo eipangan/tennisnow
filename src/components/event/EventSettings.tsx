@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
