@@ -6,7 +6,6 @@ type Event @model
   date: AWSDateTime!
   numPlayers: Int!
   players: [Player!]!
-  teams: [Team!]!
   matches: [Match!]!
   owner: String
 }
@@ -24,7 +23,6 @@ enum MatchStatus {
 }
 
 type Team {
-  
   players: [Player!]!
   stats: Stats!
 }

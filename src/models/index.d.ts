@@ -23,16 +23,16 @@ export declare class Stats {
   constructor(init: ModelInit<Stats>);
 }
 
-export declare class Team {
-  readonly players: Player[];
-  readonly stats: Stats;
-  constructor(init: ModelInit<Team>);
-}
-
 export declare class Match {
   readonly teams: Team[];
   readonly status: MatchStatus | keyof typeof MatchStatus;
   constructor(init: ModelInit<Match>);
+}
+
+export declare class Team {
+  readonly players: Player[];
+  readonly stats: Stats;
+  constructor(init: ModelInit<Team>);
 }
 
 export declare class Event {
@@ -40,7 +40,6 @@ export declare class Event {
   readonly date: string;
   readonly numPlayers: number;
   readonly players: Player[];
-  readonly teams: Team[];
   readonly matches: Match[];
   readonly owner?: string;
   constructor(init: ModelInit<Event>);

@@ -91,7 +91,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
     updatedEvent.numPlayers = numPlayers;
     updatedEvent.players = players;
-    updatedEvent.teams = [];
     updatedEvent.matches = [getNextMatch(players, [])];
   });
 

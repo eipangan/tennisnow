@@ -21,7 +21,6 @@ export const getNewEvent = (): Event => {
       .toISOString(),
     numPlayers: defaultNumPlayers,
     players,
-    teams: [],
     matches: [],
   });
 };

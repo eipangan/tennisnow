@@ -33,15 +33,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "teams": {
-                    "name": "teams",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "Team"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "matches": {
                     "name": "matches",
                     "isArray": true,
@@ -168,29 +159,6 @@ export const schema = {
                 }
             }
         },
-        "Team": {
-            "name": "Team",
-            "fields": {
-                "players": {
-                    "name": "players",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "Player"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "stats": {
-                    "name": "stats",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "Stats"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
         "Match": {
             "name": "Match",
             "fields": {
@@ -213,7 +181,30 @@ export const schema = {
                     "attributes": []
                 }
             }
+        },
+        "Team": {
+            "name": "Team",
+            "fields": {
+                "players": {
+                    "name": "players",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Player"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "stats": {
+                    "name": "stats",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Stats"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
         }
     },
-    "version": "16cf17795bad3b22c7e7e6b4b82e249e"
+    "version": "1f1128d8474b56db2cbfda60c2022552"
 };

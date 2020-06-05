@@ -8,13 +8,12 @@ test('runs getNewEvent() as expected', async () => {
   expect(event.date).toContain('Z');
   expect(event.numPlayers).toBe(6);
   expect(event.players).toHaveLength(6);
-  expect(event.teams).toHaveLength(0);
   expect(event.matches).toHaveLength(0);
 });
 
 test('runs getNextMatch() as expected', async () => {
   const event = getNewEvent();
-  const nextMatch = getNextMatch(event);
+  const nextMatch = getNextMatch(event.players, event.matches);
 
   expect(nextMatch).not.toBeNull();
 });
