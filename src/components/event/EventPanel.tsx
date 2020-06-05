@@ -3,7 +3,7 @@ import calendar from 'dayjs/plugin/calendar';
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
-import MatchesPanel from '../match/MatchesPanel';
+import MatchesList from '../match/MatchesList';
 import PlayersSummary from '../player/PlayersSummary';
 import { ThemeType } from '../utils/Theme';
 
@@ -45,7 +45,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   return (
     <div className={classes.event}>
       {dayjs(event.date).calendar()}
-      <MatchesPanel
+      <MatchesList
         matches={event.matches}
         onUpdate={onUpdate}
       />

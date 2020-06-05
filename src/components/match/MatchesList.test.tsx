@@ -2,9 +2,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, Player, Team, MatchStatus, Stats } from '../../models';
+import { Match, MatchStatus, Player, Stats, Team } from '../../models';
 import { theme } from '../utils/Theme';
-import MatchesPanel from './MatchesPanel';
+import MatchesList from './MatchesList';
 
 
 jest.mock('react-i18next', () => ({
@@ -149,7 +149,7 @@ test('render new without crashing', async () => {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <MatchesPanel
+          <MatchesList
             matches={matches}
             onUpdate={() => { }}
           />

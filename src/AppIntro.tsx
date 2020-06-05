@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { getNewEvent } from './components/event/EventUtils';
-import MatchesPanel from './components/match/MatchesPanel';
+import MatchesList from './components/match/MatchesList';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as Signup } from './images/signup.svg';
 import { ReactComponent as Tennis } from './images/tennis.svg';
@@ -48,7 +48,7 @@ const AppIntro = (): JSX.Element => {
         {t('intro.events.body1')}
       </Text>
       <div style={{ margin: '12px 0px' }}>
-        <MatchesPanel
+        <MatchesList
           matches={getNewEvent().matches}
         />
       </div>

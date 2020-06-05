@@ -22,19 +22,19 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * MatchesPanelProps
+ * MatchesListProps
  */
-type MatchesPanelProps = {
+type MatchesListProps = {
   matches: Match[];
   onUpdate?: () => void;
 }
 
 /**
- * MatchesPanel Component
+ * MatchesList Component
  *
  * @param props
  */
-const MatchesPanel = (props: MatchesPanelProps): JSX.Element => {
+const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
@@ -55,4 +55,4 @@ const MatchesPanel = (props: MatchesPanelProps): JSX.Element => {
   );
 };
 
-export default MatchesPanel;
+export default MatchesList;

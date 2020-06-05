@@ -10,8 +10,8 @@ test('renders without crashing', async () => {
   const team = new Team({
     players: [
       new Player({
-        userid: 'player1',
-        name: 'Player1',
+        userid: 'P1',
+        name: 'P1',
         stats: new Stats({
           numDraws: 0,
           numLost: 0,
@@ -20,8 +20,8 @@ test('renders without crashing', async () => {
         }),
       }),
       new Player({
-        userid: 'player2',
-        name: 'Player2',
+        userid: 'P2',
+        name: 'P2',
         stats: new Stats({
           numDraws: 0,
           numLost: 0,
@@ -49,6 +49,6 @@ test('renders without crashing', async () => {
   );
 
   expect(screen.getByRole('button')).toBeInTheDocument();
-  expect(screen.getByText('Player1')).toBeInTheDocument();
-  expect(screen.getByText('Player2')).toBeInTheDocument();
+  expect(screen.getByText('P1')).toBeInTheDocument();
+  expect(screen.getByText('P2')).toBeInTheDocument();
 });
