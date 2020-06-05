@@ -14,6 +14,7 @@ import { Route, Switch } from 'react-router-dom';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
+import { AppContextType, AppContext } from './AppContext';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
 const EventRoute = React.lazy(() => import('./components/routes/EventRoute'));
@@ -38,7 +39,6 @@ dayjs.updateLocale('en', {
     sameElse: 'lll',
   },
 });
-
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -176,6 +176,7 @@ const App = (): JSX.Element => {
   /**
    * authenticateUser
    */
+  const app : AppContextType = { username: String(user?.getUsername()) };
   const authenticateUser = async () => {
     const myUser = await Auth.currentAuthenticatedUser();
     setUser(myUser);
@@ -209,21 +210,23 @@ const App = (): JSX.Element => {
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
-        <Switch>
-          <Route path="/event/:id" component={EventRoute} />
-          <Route path="/">
-            <PageHeader
-              className={classes.appHeader}
-              title={(<AppTitle />)}
-              extra={[
-                <UserButton key="user" />,
-              ]}
-            />
-            <Suspense fallback={<div className="loader" />}>
-              <AppBody />
-            </Suspense>
-          </Route>
-        </Switch>
+        <AppContext.Provider value={app}>
+          <Switch>
+            <Route path="/event/:id" component={EventRoute} />
+            <Route path="/">
+              <PageHeader
+                className={classes.appHeader}
+                title={(<AppTitle />)}
+                extra={[
+                  <UserButton key="user" />,
+                ]}
+              />
+              <Suspense fallback={<div className="loader" />}>
+                <AppBody />
+              </Suspense>
+            </Route>
+          </Switch>
+        </AppContext.Provider>
         <Suspense fallback={<div className="loader" />}>
           {(() => {
             if (isUserSettingsVisible && user) return <UserSettings user={user} />;

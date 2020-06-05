@@ -1,7 +1,9 @@
-type Event @model
-@auth(rules: [
-  {allow: owner},
-]) {
+type Event
+  @model
+  @auth(rules: [
+      {allow: owner},
+    ])
+{
   id: ID!
   date: AWSDateTime!
   numPlayers: Int!
@@ -10,26 +12,30 @@ type Event @model
   owner: String
 }
 
-type Match {
+type Match
+{
   playerIndices: [Int!]!
   status: MatchStatus!
 }
 
-enum MatchStatus {
+enum MatchStatus
+{
   NEW
   TEAM1WON
   TEAM2WON
   DRAW
 }
 
-type Player {
+type Player
+{
   index: Int!
   userIDs: [String!]!
   name: String
   stats: Stats
 }
 
-type Stats {
+type Stats
+{
   numMatches: Int!
   numWon: Int!
   numDraws: Int!

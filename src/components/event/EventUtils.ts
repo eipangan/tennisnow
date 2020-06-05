@@ -7,6 +7,21 @@ import { getPlayers } from '../player/PlayerUtils';
 dayjs.extend(calendar);
 
 /**
+ * getNextMatch
+ *
+ * @param event
+ */
+export const getNextMatch = (players: Player[], matches: Match[]): Match => {
+  const playerIndices : number[] = [];
+  players.map((player) => playerIndices.push(player.index));
+
+  return new Match({
+    playerIndices,
+    status: MatchStatus.NEW,
+  });
+};
+
+/**
  * getNewEvent
  */
 export const getNewEvent = (): Event => {
@@ -19,22 +34,7 @@ export const getNewEvent = (): Event => {
       .toISOString(),
     numPlayers: defaultNumPlayers,
     players,
-    matches: [],
-  });
-};
-
-/**
- * getNextMatch
- * TODO: need to update this function to actually get the next match
- *
- * @param event
- */
-export const getNextMatch = (players: Player[], matches: Match[]): Match => {
-  const playerIndices : number[] = [];
-  players.map((player) => playerIndices.push(player.index));
-
-  return new Match({
-    playerIndices,
-    status: MatchStatus.NEW,
+    matches: [getNextMatch(players, [])],
+    owner: '',
   });
 };
