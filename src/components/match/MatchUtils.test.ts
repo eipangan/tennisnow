@@ -1,6 +1,6 @@
-import { getMatches } from './MatchUtils';
 import getPlayers from '../player/PlayerUtils';
 import getTeams from '../team/TeamUtils';
+import getMatches from './MatchUtils';
 
 test('runs as expected', async () => {
   const players = getPlayers(6);
