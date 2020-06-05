@@ -2,8 +2,7 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
-import { SelectValue } from 'antd/lib/select';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -56,8 +55,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { Panel } = Collapse;
   const { Option } = Select;
 
-  const [myEvent, setMyEvent] = useState<Event>(event);
   const [form] = Form.useForm();
+  const [numPlayers, setNumPlayers] = useState<number>(event.numPlayers);
 
   const maxNumPlayers = 12;
   const minNumPlayers = 4;
@@ -67,102 +66,28 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    * clearNames
    */
   const clearNames = () => {
-    setMyEvent(Event.copyOf(myEvent, (updated) => {
-      updated.players.forEach((player, index) => {
-        player.name = String(index + 1);
-      });
-    }));
+    for (let p = 0; p < numPlayers; p += 1) {
+      form.setFieldsValue({ [`${playerPrefix}${p}`]: '' });
+    }
   };
 
   /**
    * randomizeOrder
    */
   const randomizeOrder = () => {
-    setMyEvent(Event.copyOf(myEvent, (updated) => {
-      // keep old names
-      const oldPlayerNames: string[] = [];
-      myEvent.players.forEach((player) => {
-        oldPlayerNames.push(player.name);
-      });
+    // keep old names
+    const oldPlayerNames: string[] = [];
+    for (let p = 0; p < numPlayers; p += 1) {
+      oldPlayerNames.push(form.getFieldValue(`${playerPrefix}${p}`));
+    }
 
-      // shuffle sequence
-      const newPlayerNames = shuffle(oldPlayerNames);
+    // shuffle sequence
+    const newPlayerNames = shuffle(oldPlayerNames);
 
-      // update names
-      updated.players.forEach((player, index) => {
-        player.name = newPlayerNames[index];
-      });
-    }));
-  };
-
-  /**
-   * setDate
-   *
-   * @param d date
-   */
-  const setDate = (d: Dayjs) => {
-    setMyEvent(Event.copyOf(myEvent, (updated) => {
-      updated.date = dayjs(myEvent.date)
-        .set('month', d.get('month'))
-        .set('date', d.get('date'))
-        .set('year', d.get('year'))
-        .toISOString();
-    }));
-  };
-
-  /**
-   * setTime
-   *
-   * @param d date
-   */
-  const setTime = (d: SelectValue) => {
-    setMyEvent(Event.copyOf(myEvent, (updated) => {
-      updated.date = dayjs(myEvent.date)
-        .set('hour', parseInt(d.toString().substring(0, 2), 10))
-        .set('minute', parseInt(d.toString().substring(2, 5), 10))
-        .toISOString();
-    }));
-  };
-
-  /**
-   * setPlayerName
-   *
-   * @param index index of the player
-   * @param name new name
-   */
-  const setPlayerName = (index: number, name: string) => {
-    setMyEvent(Event.copyOf(myEvent, (updated) => {
-      updated.players.forEach((player, myIndex) => {
-        if (myIndex === index) {
-          player.name = name;
-        }
-      });
-    }));
-  };
-
-  /**
-   * setNumPlayers
-   *
-   * @param numPlayers number of players
-   */
-  const setNumPlayers = (numPlayers: number) => {
-    setMyEvent(Event.copyOf(myEvent, (updated) => {
-      // keep old names
-      const oldPlayerNames: string[] = [];
-      myEvent.players.forEach((player) => {
-        oldPlayerNames.push(player.name);
-      });
-
-      // recreate event
-      const players = getPlayers(numPlayers, oldPlayerNames);
-      const teams = getTeams(players);
-      const matches = getMatches(teams);
-
-      updated.numPlayers = numPlayers;
-      updated.players = players;
-      updated.teams = teams;
-      updated.matches = matches;
-    }));
+    // update names
+    for (let p = 0; p < numPlayers; p += 1) {
+      form.setFieldsValue({ [`${playerPrefix}${p}`]: newPlayerNames[p] });
+    }
   };
 
   /**
@@ -185,15 +110,41 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     }
   };
 
+  /**
+   * get updated Event based on data in the form
+   */
+  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
+    // update date and time
+    const date = form.getFieldValue('date');
+    const time = form.getFieldValue('time');
+    updated.date = dayjs(event.date)
+      .set('month', date.get('month'))
+      .set('date', date.get('date'))
+      .set('year', date.get('year'))
+      .set('hour', parseInt(time.toString().substring(0, 2), 10))
+      .set('minute', parseInt(time.toString().substring(2, 5), 10))
+      .toISOString();
+
+    // TODO: keep old names
+    const oldPlayerNames: string[] = [];
+    for (let p = 0; p < numPlayers; p += 1) {
+      oldPlayerNames.push(form.getFieldValue(`${playerPrefix}${p}`));
+    }
+
+    // recreate event
+    const players = getPlayers(numPlayers, oldPlayerNames);
+    const teams = getTeams(players);
+    const matches = getMatches(teams);
+
+    updated.players = players;
+    updated.teams = teams;
+    updated.matches = matches;
+  });
+
   useEffect(() => {
     refreshForm(event);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
-
-  useEffect(() => {
-    refreshForm(myEvent);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myEvent]);
 
   return (
     <Drawer
@@ -221,7 +172,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               hideDisabledOptions
               inputReadOnly
               size="large"
-              onChange={(d) => { if (d) setDate(d); }}
             />
           </Form.Item>
           <div style={{ width: '3px' }} />
@@ -231,7 +181,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
           >
             <Select
               size="large"
-              onChange={(d) => { if (d) setTime(d); }}
             >
               {(() => {
                 const children: JSX.Element[] = [];
@@ -260,7 +209,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               key="players"
               header={(
                 <Button type="link" size="large">
-                  {t('players', { numPlayers: myEvent.numPlayers })}
+                  {t('players', { numPlayers })}
                 </Button>
               )}
               extra={(
@@ -268,7 +217,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                   <Button
                     data-testid="minus"
                     onClick={(e) => {
-                      setNumPlayers(Math.max(minNumPlayers, myEvent.numPlayers - 1));
+                      setNumPlayers(Math.max(minNumPlayers, numPlayers - 1));
                       e.stopPropagation();
                     }}
                   >
@@ -277,7 +226,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                   <Button
                     data-testid="plus"
                     onClick={(e) => {
-                      setNumPlayers(Math.min(maxNumPlayers, myEvent.numPlayers + 1));
+                      setNumPlayers(Math.min(maxNumPlayers, numPlayers + 1));
                       e.stopPropagation();
                     }}
                   >
@@ -287,20 +236,25 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               )}
             >
               <div>
-                {myEvent.players.map((player, index) => (
-                  <Form.Item
-                    key={index.toString()}
-                    name={`${playerPrefix}${index}`}
-                    style={{ margin: '9px 9px' }}
-                  >
-                    <Input
-                      allowClear
-                      onChange={(e) => setPlayerName(index, e.target.value)}
-                      placeholder={t('player') + String(index + 1)}
-                      size="large"
-                    />
-                  </Form.Item>
-                ))}
+                {(() => {
+                  const playerInputBox = [];
+                  for (let p = 0; p < numPlayers; p += 1) {
+                    playerInputBox.push(
+                      <Form.Item
+                        key={p.toString()}
+                        name={`${playerPrefix}${p}`}
+                        style={{ margin: '9px 9px' }}
+                      >
+                        <Input
+                          allowClear
+                          placeholder={t('player') + String(p + 1)}
+                          size="large"
+                        />
+                      </Form.Item>,
+                    );
+                  }
+                  return playerInputBox;
+                })()}
                 <div style={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -343,7 +297,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => { if (onOk) onOk(myEvent); }}
+            onClick={() => { if (onOk) onOk(getUpdatedEvent()); }}
           >
             {t('ok')}
           </Button>

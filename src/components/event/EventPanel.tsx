@@ -1,9 +1,6 @@
-import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
 import MatchesPanel from '../match/MatchesPanel';
@@ -27,44 +24,12 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * DeleteButton component
- *
- * @param props
- */
-export const DeleteButton = (props: { onConfirm: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void }) => {
-  const { t } = useTranslation();
-  const { onConfirm } = props;
-
-  return (
-    <Popconfirm
-      cancelText={t('cancel')}
-      icon={<QuestionCircleOutlined />}
-      okText={t('delete')}
-      placement="left"
-      title={t('deleteEventConfirm')}
-      onCancel={(e) => {
-        if (e) e.stopPropagation();
-      }}
-      onConfirm={onConfirm}
-    >
-      <Button
-        data-testid="delete"
-        icon={<DeleteOutlined />}
-        onClick={(e) => e.stopPropagation()}
-        shape="circle"
-      />
-    </Popconfirm>
-  );
-};
-
-/**
  * EventPanelProps
  */
 type EventPanelProps = {
   event: Event;
   onUpdate?: () => void;
 }
-
 
 /**
  * EventPanel

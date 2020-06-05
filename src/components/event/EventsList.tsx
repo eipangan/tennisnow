@@ -1,5 +1,4 @@
 import { List, Typography } from 'antd';
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React from 'react';
@@ -9,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as Empty } from '../../images/empty.svg';
 import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { DeleteButton } from './EventPanel';
 import EventSettingsButton from './EventSettingsButton';
 
 // initialize dayjs
@@ -73,17 +71,6 @@ const EventsList = (props: EventsListProps): JSX.Element => {
             e.stopPropagation();
           }}
           extra={[
-            <DeleteButton
-              key="delete"
-              onConfirm={(e) => {
-                DataStore.delete(myEvent);
-                if (e) e.stopPropagation();
-              }}
-            />,
-            <div
-              key="spacing"
-              style={{ width: '12px' }}
-            />,
             <EventSettingsButton
               key="settings"
               event={myEvent}

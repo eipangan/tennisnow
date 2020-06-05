@@ -1,8 +1,9 @@
-import { PlusOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Popconfirm } from 'antd';
+import { DataStore } from 'aws-amplify';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DataStore } from 'aws-amplify';
+import { useHistory } from 'react-router-dom';
 import { Event } from '../../models';
 import EventSettings from './EventSettings';
 import { getNewEvent } from './EventUtils';
@@ -22,22 +23,52 @@ type EventSettingsButtonProps = {
  */
 const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
   const { t } = useTranslation();
+  const history = useHistory();
   const { event, setEvent } = props;
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
-  let button = (
-    <Button
-      data-testid="settings"
-      icon={<SettingOutlined />}
-      shape="circle"
-      onClick={(e) => {
-        setIsEventSettingsVisible(true);
-        e.stopPropagation();
+
+  const DeleteButton = () => (
+    <Popconfirm
+      cancelText={t('cancel')}
+      icon={<QuestionCircleOutlined />}
+      okText={t('delete')}
+      placement="left"
+      title={t('deleteEventConfirm')}
+      onCancel={(e) => {
+        if (e) e.stopPropagation();
       }}
-    />
+      onConfirm={(e) => {
+        if (event) {
+          DataStore.delete(event);
+          history.push('/');
+        }
+      }}
+    >
+      <Button
+        data-testid="delete"
+        icon={<DeleteOutlined />}
+        onClick={(e) => e.stopPropagation()}
+        shape="circle"
+      />
+    </Popconfirm>
   );
 
-  if (!event) {
-    button = (
+  const SettingsButton = (): JSX.Element => {
+    if (event) {
+      return (
+        <Button
+          data-testid="settings"
+          icon={<SettingOutlined />}
+          shape="circle"
+          onClick={(e) => {
+            setIsEventSettingsVisible(true);
+            e.stopPropagation();
+          }}
+        />
+      );
+    }
+
+    return (
       <Button
         data-testid="settings"
         icon={<PlusOutlined />}
@@ -50,16 +81,11 @@ const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
         {t('newEvent')}
       </Button>
     );
-  }
+  };
 
-  return (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-      role="button"
-      tabIndex={0}
-    >
-      {button}
+  const SettingsDrawer = () : JSX.Element => {
+    if (!isEventSettingsVisible) return <></>;
+    return (
       <EventSettings
         event={event || getNewEvent()}
         isVisible={isEventSettingsVisible}
@@ -72,6 +98,21 @@ const EventSettingsButton = (props: EventSettingsButtonProps): JSX.Element => {
           setIsEventSettingsVisible(false);
         }}
       />
+    );
+  };
+
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+      role="button"
+      tabIndex={0}
+      style={{ display: 'flex' }}
+    >
+      <DeleteButton />
+      <div style={{ width: '12px' }} />
+      <SettingsButton />
+      <SettingsDrawer />
     </div>
   );
 };

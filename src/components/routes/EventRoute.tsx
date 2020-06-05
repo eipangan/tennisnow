@@ -5,7 +5,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as AppTitle } from '../../images/title.svg';
 import { Event } from '../../models';
-import EventPanel, { DeleteButton } from '../event/EventPanel';
+import EventPanel from '../event/EventPanel';
 import EventSettingsButton from '../event/EventSettingsButton';
 import { ThemeType } from '../utils/Theme';
 
@@ -81,17 +81,6 @@ const EventRoute = (props: any): JSX.Element => {
         onBack={() => history.push('/')}
         title={(<AppTitle />)}
         extra={[
-          <DeleteButton
-            key="delete"
-            onConfirm={(e) => {
-              if (e) {
-                DataStore.delete(event);
-                history.push('/');
-
-                e.stopPropagation();
-              }
-            }}
-          />,
           <EventSettingsButton
             key="settings"
             event={event}
