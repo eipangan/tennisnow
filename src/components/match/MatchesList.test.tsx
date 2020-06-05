@@ -13,10 +13,10 @@ jest.mock('react-i18next', () => ({
 
 test('render new without crashing', async () => {
   const players = [
-    new Player({ index: 0, userid: [], name: 'P1' }),
-    new Player({ index: 1, userid: [], name: 'P2' }),
-    new Player({ index: 2, userid: [], name: 'P3' }),
-    new Player({ index: 3, userid: [], name: 'P4' }),
+    new Player({ index: 0, userIDs: [], name: 'P1' }),
+    new Player({ index: 1, userIDs: [], name: 'P2' }),
+    new Player({ index: 2, userIDs: [], name: 'P3' }),
+    new Player({ index: 3, userIDs: [], name: 'P4' }),
   ];
 
   const matches = [

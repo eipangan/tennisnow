@@ -93,7 +93,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     <StrictMode>
       <div className={classes.match}>
         <PlayerPanel
-          player={player1 || new Player({ index: 0, userid: [], name: 'guest' })}
+          player={player1 || new Player({ index: 0, userIDs: [], name: 'guest' })}
           className={team1Class}
         />
         <div
@@ -105,7 +105,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
           {middleText}
         </div>
         <PlayerPanel
-          player={player2 || new Player({ index: 2, userid: [], name: 'guest' })}
+          player={player2 || new Player({ index: 2, userIDs: [], name: 'guest' })}
           className={team2Class}
         />
       </div>

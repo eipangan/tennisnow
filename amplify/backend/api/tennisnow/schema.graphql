@@ -24,7 +24,7 @@ enum MatchStatus {
 
 type Player {
   index: Int!
-  userid: [String!]!
+  userIDs: [String!]!
   name: String
   stats: Stats
 }

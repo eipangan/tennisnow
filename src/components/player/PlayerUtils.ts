@@ -21,7 +21,7 @@ export const getPlayers = (numPlayers: number, playerNames?: string[]): Player[]
   for (let i = 0; i < numPlayers; i += 1) {
     players.push(new Player({
       index: i,
-      userid: [],
+      userIDs: [],
       name: playerNames ? playerNames[i] : '',
       stats: new Stats({
         numDraws: 0,

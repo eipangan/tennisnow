@@ -9,7 +9,7 @@ export enum MatchStatus {
 
 export declare class Player {
   readonly index: number;
-  readonly userid: string[];
+  readonly userIDs: string[];
   readonly name?: string;
   readonly stats?: Stats;
   constructor(init: ModelInit<Player>);
