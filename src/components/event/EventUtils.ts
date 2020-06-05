@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event, Match } from '../../models';
+import { Event, Match, Player } from '../../models';
 import { getPlayers } from '../player/PlayerUtils';
+import getMatches from '../match/MatchUtils';
+import getTeams from '../team/TeamUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -30,4 +32,12 @@ export const getNewEvent = (): Event => {
  *
  * @param event
  */
-export const getNextMatch = (event: Event): Match => event.matches[0];
+export const getNextMatch = (players: Player[], matches: Match[]): Match => {
+  // get potential 4 players
+
+  // get potential 2 teams
+  const teams = getTeams(players);
+
+  // get potential match
+  return getMatches(teams)[0];
+};
