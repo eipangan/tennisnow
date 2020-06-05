@@ -181,30 +181,7 @@ export const schema = {
                     "attributes": []
                 }
             }
-        },
-        "Team": {
-            "name": "Team",
-            "fields": {
-                "players": {
-                    "name": "players",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "Player"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "stats": {
-                    "name": "stats",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "Stats"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
         }
     },
-    "version": "1e344e2c24ab72cd82d5f0a5a198a1e7"
+    "version": "d7b0c9724cc7082304b6dcbbf99e5ec8"
 };

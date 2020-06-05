@@ -22,11 +22,6 @@ enum MatchStatus {
   DRAW
 }
 
-type Team {
-  players: [Player!]!
-  stats: Stats!
-}
-
 type Player {
   index: Int!
   userid: [String!]!

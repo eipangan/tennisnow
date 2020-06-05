@@ -29,12 +29,6 @@ export declare class Match {
   constructor(init: ModelInit<Match>);
 }
 
-export declare class Team {
-  readonly players: Player[];
-  readonly stats: Stats;
-  constructor(init: ModelInit<Team>);
-}
-
 export declare class Event {
   readonly id: string;
   readonly date: string;
