@@ -65,11 +65,11 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * get updated Event based on data in the form
    */
-  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
+  const getUpdatedEvent = (): Event => Event.copyOf(event, (updatedEvent) => {
     // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
-    updated.date = dayjs(event.date)
+    updatedEvent.date = dayjs(event.date)
       .set('month', date.get('month'))
       .set('date', date.get('date'))
       .set('year', date.get('year'))
@@ -93,9 +93,10 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     const teams = getTeams(players);
     const matches = getMatches(teams);
 
-    updated.players = players;
-    updated.teams = teams;
-    updated.matches = matches;
+    updatedEvent.numPlayers = numPlayers;
+    updatedEvent.players = players;
+    updatedEvent.teams = teams;
+    updatedEvent.matches = matches;
   });
 
   useEffect(() => {
