@@ -15,7 +15,7 @@ const isValidMatch = (t1: Team, t2: Team): boolean => {
 };
 
 /**
- * initialize matches
+ * @deprecated initialize matches
  *
  * @param teams number of players
  */

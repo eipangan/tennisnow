@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
-import getMatches from '../match/MatchUtils';
 import { getPlayers } from '../player/PlayerUtils';
 import getTeams from '../team/TeamUtils';
 import { ThemeType } from '../utils/Theme';
@@ -91,12 +90,11 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     // recreate event
     const players = getPlayers(numPlayers, oldPlayerNames);
     const teams = getTeams(players);
-    const matches = getMatches(teams);
 
     updatedEvent.numPlayers = numPlayers;
     updatedEvent.players = players;
     updatedEvent.teams = teams;
-    updatedEvent.matches = matches;
+    updatedEvent.matches = [];
   });
 
   useEffect(() => {
