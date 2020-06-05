@@ -8,7 +8,8 @@ import PlayerPanel from './PlayerPanel';
 
 test('renders without crashing', async () => {
   const player = new Player({
-    userid: 'player1',
+    index: 0,
+    userid: ['player1'],
     name: 'Player1',
     stats: new Stats({
       numDraws: 0,

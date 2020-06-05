@@ -18,7 +18,8 @@ test('render new without crashing', async () => {
         new Team({
           players: [
             new Player({
-              userid: 'P1',
+              index: 0,
+              userid: ['P1'],
               name: 'P1',
               stats: new Stats({
                 numDraws: 0,
@@ -28,7 +29,8 @@ test('render new without crashing', async () => {
               }),
             }),
             new Player({
-              userid: 'P2',
+              index: 1,
+              userid: ['P2'],
               name: 'P2',
               stats: new Stats({
                 numDraws: 0,
@@ -48,7 +50,8 @@ test('render new without crashing', async () => {
         new Team({
           players: [
             new Player({
-              userid: 'P3',
+              index: 2,
+              userid: ['P3'],
               name: 'P3',
               stats: new Stats({
                 numDraws: 0,
@@ -58,7 +61,8 @@ test('render new without crashing', async () => {
               }),
             }),
             new Player({
-              userid: 'P4',
+              index: 3,
+              userid: ['P4'],
               name: 'P4',
               stats: new Stats({
                 numDraws: 0,
@@ -83,7 +87,8 @@ test('render new without crashing', async () => {
         new Team({
           players: [
             new Player({
-              userid: 'P5',
+              index: 4,
+              userid: ['P5'],
               name: 'P5',
               stats: new Stats({
                 numDraws: 0,
@@ -93,7 +98,8 @@ test('render new without crashing', async () => {
               }),
             }),
             new Player({
-              userid: 'P6',
+              index: 5,
+              userid: ['P6'],
               name: 'P6',
               stats: new Stats({
                 numDraws: 0,
@@ -113,7 +119,8 @@ test('render new without crashing', async () => {
         new Team({
           players: [
             new Player({
-              userid: 'P7',
+              index: 6,
+              userid: ['P7'],
               name: 'P7',
               stats: new Stats({
                 numDraws: 0,
@@ -123,7 +130,8 @@ test('render new without crashing', async () => {
               }),
             }),
             new Player({
-              userid: 'P8',
+              index: 7,
+              userid: ['P8'],
               name: 'P8',
               stats: new Stats({
                 numDraws: 0,

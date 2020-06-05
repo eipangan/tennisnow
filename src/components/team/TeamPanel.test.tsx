@@ -10,7 +10,8 @@ test('renders without crashing', async () => {
   const team = new Team({
     players: [
       new Player({
-        userid: 'P1',
+        index: 0,
+        userid: ['P1'],
         name: 'P1',
         stats: new Stats({
           numDraws: 0,
@@ -20,7 +21,8 @@ test('renders without crashing', async () => {
         }),
       }),
       new Player({
-        userid: 'P2',
+        index: 1,
+        userid: ['P2'],
         name: 'P2',
         stats: new Stats({
           numDraws: 0,

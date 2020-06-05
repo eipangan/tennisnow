@@ -112,9 +112,9 @@ export const schema = {
                 },
                 "userid": {
                     "name": "userid",
-                    "isArray": false,
+                    "isArray": true,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "name": {

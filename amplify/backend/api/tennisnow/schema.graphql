@@ -24,13 +24,14 @@ enum MatchStatus {
 }
 
 type Team {
+  
   players: [Player!]!
   stats: Stats!
 }
 
 type Player {
   index: Int!
-  userid: String
+  userid: [String!]!
   name: String
   stats: Stats
 }

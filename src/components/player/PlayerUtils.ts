@@ -7,7 +7,6 @@ import { Player, Stats } from '../../models';
  */
 export const getPlayerName = (player: Player) : string => {
   if (player.name) return player.name.substring(0, 3);
-  if (player.userid) return player.userid.substring(0, 3);
   return String(player.index);
 };
 
@@ -22,7 +21,7 @@ export const getPlayers = (numPlayers: number, playerNames?: string[]): Player[]
   for (let i = 0; i < numPlayers; i += 1) {
     players.push(new Player({
       index: i,
-      userid: '',
+      userid: [],
       name: playerNames ? playerNames[i] : '',
       stats: new Stats({
         numDraws: 0,
