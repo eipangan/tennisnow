@@ -6,7 +6,6 @@ test('runs getNewEvent() as expected', async () => {
   expect(event).not.toBeNull();
   expect(event.date).toContain('T');
   expect(event.date).toContain('Z');
-  expect(event.numPlayers).toBe(6);
   expect(event.players).toHaveLength(6);
   expect(event.matches).toHaveLength(1);
 });

@@ -17,13 +17,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "numPlayers": {
-                    "name": "numPlayers",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "players": {
                     "name": "players",
                     "isArray": true,
@@ -181,5 +174,5 @@ export const schema = {
             }
         }
     },
-    "version": "25aa22f8b3727b8e20bb4117379a01ed"
+    "version": "a581b66cf7ffda408348f546a817c2b5"
 };

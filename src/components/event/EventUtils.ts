@@ -28,13 +28,12 @@ export const getNewEvent = (): Event => {
   const defaultNumPlayers = 6;
 
   const players = getPlayers(defaultNumPlayers);
-
-  return new Event({
+  const event = new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
-    numPlayers: defaultNumPlayers,
     players,
     matches: [getNextMatch(players, [])],
-    owner: '',
   });
+
+  return event;
 };

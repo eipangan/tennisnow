@@ -89,6 +89,10 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
     );
   };
 
+  const onSave = async (myEvent: Event) => {
+    await DataStore.save(myEvent);
+  };
+
   const SettingsDrawer = () : JSX.Element => {
     if (!isEventSettingsVisible) return <></>;
     return (
@@ -99,8 +103,8 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
           setIsEventSettingsVisible(false);
         }}
         onOk={(myEvent: Event) => {
+          onSave(myEvent);
           if (setEvent) setEvent(myEvent);
-          DataStore.save(myEvent);
           setIsEventSettingsVisible(false);
         }}
       />

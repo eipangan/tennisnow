@@ -32,7 +32,6 @@ export declare class Match {
 export declare class Event {
   readonly id: string;
   readonly date: string;
-  readonly numPlayers: number;
   readonly players: Player[];
   readonly matches: Match[];
   readonly owner?: string;

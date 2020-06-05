@@ -6,7 +6,6 @@ type Event
 {
   id: ID!
   date: AWSDateTime!
-  numPlayers: Int!
   players: [Player!]!
   matches: [Match!]!
   owner: String

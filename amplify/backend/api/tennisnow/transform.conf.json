@@ -1,4 +1,27 @@
 {
     "Version": 5,
-    "ElasticsearchWarning": true
+    "ElasticsearchWarning": true,
+    "StackMapping": {
+        "EventTable": "Event",
+        "EventIAMRole": "Event",
+        "EventDataSource": "Event",
+        "GetEventResolver": "Event",
+        "ListEventResolver": "Event",
+        "CreateEventResolver": "Event",
+        "UpdateEventResolver": "Event",
+        "DeleteEventResolver": "Event",
+        "SubscriptiononCreateEventResolver": "Event",
+        "SubscriptiononUpdateEventResolver": "Event",
+        "SubscriptiononDeleteEventResolver": "Event",
+        "GetAttEventTableStreamArn": "Event",
+        "GetAttEventDataSourceName": "Event",
+        "GetAttEventTableName": "Event",
+        "SyncEventResolver": "Event"
+    },
+    "ResolverConfig": {
+        "project": {
+            "ConflictHandler": "AUTOMERGE",
+            "ConflictDetection": "VERSION"
+        }
+    }
 }
