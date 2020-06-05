@@ -77,10 +77,15 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       .set('minute', parseInt(time.toString().substring(2, 5), 10))
       .toISOString();
 
-    // TODO: keep old names
+    // keep default or old names
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
-      oldPlayerNames.push(form.getFieldValue(`${playerPrefix}${p}`));
+      const newPlayerName = form.getFieldValue(`${playerPrefix}${p}`);
+      if (newPlayerName && newPlayerName.length > 0) {
+        oldPlayerNames.push(newPlayerName);
+      } else {
+        oldPlayerNames.push(String(p + 1));
+      }
     }
 
     // recreate event
@@ -101,7 +106,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
     event.players.forEach((player, index) => {
       form.setFieldsValue({
-        [`${playerPrefix}${index}`]: player.name,
+        [`${playerPrefix}${index}`]: player.name === String(index + 1) ? '' : player.name,
       });
     });
   }, [event, form]);
