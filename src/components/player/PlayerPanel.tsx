@@ -25,10 +25,11 @@ type PlayerPanelProps = {
  * @param props
  */
 const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
-  const { player } = props;
-
   const theme = useTheme();
   const classes = useStyles({ theme });
+
+  const { player } = props;
+  const getPlayerName = () => player.name;
 
   return (
     <StrictMode>
@@ -36,7 +37,7 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
         className={classes.player}
         size="large"
       >
-        {player.name}
+        {getPlayerName()}
       </Avatar>
     </StrictMode>
   );
