@@ -162,12 +162,10 @@ export const schema = {
         "Match": {
             "name": "Match",
             "fields": {
-                "players": {
-                    "name": "players",
+                "playerIndices": {
+                    "name": "playerIndices",
                     "isArray": true,
-                    "type": {
-                        "nonModel": "Player"
-                    },
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -183,5 +181,5 @@ export const schema = {
             }
         }
     },
-    "version": "d7b0c9724cc7082304b6dcbbf99e5ec8"
+    "version": "bf162bd0125e1908249739d79fa08256"
 };

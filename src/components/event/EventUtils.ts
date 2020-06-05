@@ -29,13 +29,12 @@ export const getNewEvent = (): Event => {
  *
  * @param event
  */
-export const getNextMatch = (players: Player[], matches: Match[]): Match => (
-  // get potential match
-  new Match({
-    players: [
-      new Player({ index: 0, userid: [] }),
-      new Player({ index: 2, userid: [] }),
-    ],
+export const getNextMatch = (players: Player[], matches: Match[]): Match => {
+  const playerIndices : number[] = [];
+  players.map((player) => playerIndices.push(player.index));
+
+  return new Match({
+    playerIndices,
     status: MatchStatus.NEW,
-  })
-);
+  });
+};

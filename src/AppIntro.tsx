@@ -29,6 +29,7 @@ const AppIntro = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { Title, Text } = Typography;
+  const newEvent = getNewEvent();
 
   return (
     <div className={classes.appIntro}>
@@ -49,7 +50,8 @@ const AppIntro = (): JSX.Element => {
       </Text>
       <div style={{ margin: '12px 0px' }}>
         <MatchesList
-          matches={getNewEvent().matches}
+          matches={newEvent.matches}
+          players={newEvent.players}
         />
       </div>
       <Text>

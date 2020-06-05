@@ -12,17 +12,13 @@ jest.mock('react-i18next', () => ({
 
 
 test('render new without crashing', async () => {
+  const players = [
+    new Player({ index: 0, userid: [], name: 'P1' }),
+    new Player({ index: 1, userid: [], name: 'P2' }),
+  ];
+
   const match = new Match({
-    players: [
-      new Player({
-        index: 0,
-        userid: ['P1'],
-      }),
-      new Player({
-        index: 1,
-        userid: ['P2'],
-      }),
-    ],
+    playerIndices: [0, 1],
     status: MatchStatus.NEW,
   });
 
@@ -32,13 +28,14 @@ test('render new without crashing', async () => {
         <Suspense fallback={null}>
           <MatchPanel
             match={match}
+            players={players}
           />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
   );
 
-  expect(screen.getByText('1')).toBeInTheDocument();
+  expect(screen.getByText('P1')).toBeInTheDocument();
   expect(screen.getByText('vs')).toBeInTheDocument();
-  expect(screen.getByText('2')).toBeInTheDocument();
+  expect(screen.getByText('P2')).toBeInTheDocument();
 });

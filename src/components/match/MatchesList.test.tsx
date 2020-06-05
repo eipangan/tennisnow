@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, MatchStatus, Player, Stats, Team } from '../../models';
+import { Match, MatchStatus, Player } from '../../models';
 import { theme } from '../utils/Theme';
 import MatchesList from './MatchesList';
 
@@ -12,31 +12,20 @@ jest.mock('react-i18next', () => ({
 }));
 
 test('render new without crashing', async () => {
+  const players = [
+    new Player({ index: 0, userid: [], name: 'P1' }),
+    new Player({ index: 1, userid: [], name: 'P2' }),
+    new Player({ index: 2, userid: [], name: 'P3' }),
+    new Player({ index: 3, userid: [], name: 'P4' }),
+  ];
+
   const matches = [
     new Match({
-      players: [
-        new Player({
-          index: 0,
-          userid: ['P1'],
-        }),
-        new Player({
-          index: 1,
-          userid: ['P2'],
-        }),
-      ],
+      playerIndices: [0, 1],
       status: MatchStatus.NEW,
     }),
     new Match({
-      players: [
-        new Player({
-          index: 2,
-          userid: ['P3'],
-        }),
-        new Player({
-          index: 3,
-          userid: ['P4'],
-        }),
-      ],
+      playerIndices: [2, 3],
       status: MatchStatus.NEW,
     }),
   ];
@@ -47,6 +36,7 @@ test('render new without crashing', async () => {
         <Suspense fallback={null}>
           <MatchesList
             matches={matches}
+            players={players}
             onUpdate={() => { }}
           />
         </Suspense>
@@ -56,10 +46,10 @@ test('render new without crashing', async () => {
 
   expect(screen.getAllByText('vs')).toHaveLength(2);
 
-  expect(screen.getByText('1')).toBeInTheDocument();
-  expect(screen.getByText('2')).toBeInTheDocument();
-  expect(screen.getByText('3')).toBeInTheDocument();
-  expect(screen.getByText('4')).toBeInTheDocument();
+  expect(screen.getByText('P1')).toBeInTheDocument();
+  expect(screen.getByText('P2')).toBeInTheDocument();
+  expect(screen.getByText('P3')).toBeInTheDocument();
+  expect(screen.getByText('P4')).toBeInTheDocument();
 
   fireEvent.click(screen.getAllByText('vs')[0]);
 });

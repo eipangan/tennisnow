@@ -1,7 +1,7 @@
 import React, { StrictMode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Match, MatchStatus } from '../../models';
+import { Match, MatchStatus, Player } from '../../models';
 import PlayerPanel from '../player/PlayerPanel';
 import { ThemeType } from '../utils/Theme';
 
@@ -52,6 +52,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
  */
 type MatchPanelProps = {
   match: Match;
+  players: Player[];
   onUpdate?: () => void;
 };
 
@@ -65,10 +66,10 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { match } = props;
+  const { match, players } = props;
 
-  const player1 = match.players[0];
-  const player2 = match.players[1];
+  const player1 = players.find((player) => player.index === match.playerIndices[0]);
+  const player2 = players.find((player) => player.index === match.playerIndices[1]);
   const { status } = match;
 
   let team1Class = classes.matchOthers;
@@ -92,7 +93,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     <StrictMode>
       <div className={classes.match}>
         <PlayerPanel
-          player={player1}
+          player={player1 || new Player({ index: 0, userid: [], name: 'guest' })}
           className={team1Class}
         />
         <div
@@ -104,7 +105,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
           {middleText}
         </div>
         <PlayerPanel
-          player={player2}
+          player={player2 || new Player({ index: 2, userid: [], name: 'guest' })}
           className={team2Class}
         />
       </div>

@@ -3,7 +3,7 @@ import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { ThemeType } from '../utils/Theme';
 import MatchPanel from './MatchPanel';
-import { Match } from '../../models';
+import { Match, Player } from '../../models';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -26,6 +26,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 type MatchesListProps = {
   matches: Match[];
+  players: Player[];
   onUpdate?: () => void;
 }
 
@@ -38,7 +39,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { matches, onUpdate } = props;
+  const { matches, players, onUpdate } = props;
 
   return (
     <div className={classes.matchesPanel}>
@@ -47,6 +48,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
         <MatchPanel
           key={index.toString()}
           match={match}
+          players={players}
           onUpdate={onUpdate}
         />
       ))}

@@ -47,6 +47,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
       {dayjs(event.date).calendar()}
       <MatchesList
         matches={event.matches}
+        players={event.players}
         onUpdate={onUpdate}
       />
       <div className={classes.eventPlayersSummary}>
