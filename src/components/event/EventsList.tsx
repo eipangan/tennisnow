@@ -78,7 +78,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
           ]}
         >
           <List.Item.Meta
-            description={t('eventSummary', { numPlayers: myEvent.players.length })}
+            description={t('eventSummary', { numPlayers: myEvent.players ? myEvent.players.length : 0 })}
             title={dayjs(myEvent.date).calendar()}
           />
         </List.Item>

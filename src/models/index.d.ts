@@ -9,7 +9,7 @@ export enum MatchStatus {
 
 export declare class Player {
   readonly index: number;
-  readonly userIDs: string[];
+  readonly userIDs?: string[];
   readonly name?: string;
   readonly stats?: Stats;
   constructor(init: ModelInit<Player>);
@@ -32,8 +32,8 @@ export declare class Match {
 export declare class Event {
   readonly id: string;
   readonly date: string;
-  readonly players: Player[];
-  readonly matches: Match[];
+  readonly players?: Player[];
+  readonly matches?: Match[];
   readonly owner?: string;
   constructor(init: ModelInit<Event>);
   static copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;

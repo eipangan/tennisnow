@@ -6,8 +6,8 @@ type Event
 {
   id: ID!
   date: AWSDateTime!
-  players: [Player!]!
-  matches: [Match!]!
+  players: [Player]
+  matches: [Match]
   owner: String
 }
 
@@ -28,7 +28,7 @@ enum MatchStatus
 type Player
 {
   index: Int!
-  userIDs: [String!]!
+  userIDs: [String]
   name: String
   stats: Stats
 }

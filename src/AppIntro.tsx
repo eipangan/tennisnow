@@ -50,8 +50,8 @@ const AppIntro = (): JSX.Element => {
       </Text>
       <div style={{ margin: '12px 0px' }}>
         <MatchesList
-          matches={newEvent.matches}
-          players={newEvent.players}
+          matches={newEvent.matches || []}
+          players={newEvent.players || []}
         />
       </div>
       <Text>

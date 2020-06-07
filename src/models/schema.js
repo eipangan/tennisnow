@@ -23,7 +23,7 @@ export const schema = {
                     "type": {
                         "nonModel": "Player"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "matches": {
@@ -32,7 +32,7 @@ export const schema = {
                     "type": {
                         "nonModel": "Match"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "owner": {
@@ -98,7 +98,7 @@ export const schema = {
                     "name": "userIDs",
                     "isArray": true,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "name": {

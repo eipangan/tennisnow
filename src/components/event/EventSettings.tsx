@@ -54,7 +54,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { Option } = Select;
 
   const [form] = Form.useForm();
-  const [numPlayers, setNumPlayers] = useState<number>(event.players.length);
+  const [numPlayers, setNumPlayers] = useState<number>(event.players ? event.players.length : 0);
 
   const maxNumPlayers = 12;
   const minNumPlayers = 4;
@@ -99,11 +99,13 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       time: dayjs(event.date).format('HHmm'),
     });
 
-    event.players.forEach((player, index) => {
-      form.setFieldsValue({
-        [`${playerPrefix}${index}`]: player.name === String(index + 1) ? '' : player.name,
+    if (event.players) {
+      event.players.forEach((player, index) => {
+        form.setFieldsValue({
+          [`${playerPrefix}${index}`]: player.name === String(index + 1) ? '' : player.name,
+        });
       });
-    });
+    }
   }, [event, form]);
 
   return (
