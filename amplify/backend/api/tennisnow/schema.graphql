@@ -14,7 +14,7 @@ type Event
 type Match
 {
   playerIndices: [Int!]!
-  status: MatchStatus!
+  status: MatchStatus
 }
 
 enum MatchStatus

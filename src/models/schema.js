@@ -168,7 +168,7 @@ export const schema = {
                     "type": {
                         "enum": "MatchStatus"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 }
             }
