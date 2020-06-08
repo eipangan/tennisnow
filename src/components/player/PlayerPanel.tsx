@@ -1,4 +1,3 @@
-import { Typography } from 'antd';
 import React, { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Player } from '../../models';
@@ -8,9 +7,7 @@ import { getPlayerName } from './PlayerUtils';
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   player: {
-    color: 'black',
-    backgroundColor: theme.baseColor,
-    padding: '0px 12px',
+    backgroundColor: 'transparent',
   },
 }));
 
@@ -19,7 +16,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 type PlayerPanelProps = {
   player: Player;
-  className?: string;
 };
 
 /**
@@ -31,21 +27,14 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { player, className } = props;
+  const { player } = props;
 
   return (
     <StrictMode>
       <div
-        className={className}
-        onKeyDown={() => { }}
-        role="button"
-        tabIndex={0}
+        className={classes.player}
       >
-        <Typography
-          className={classes.player}
-        >
-          {getPlayerName(player)}
-        </Typography>
+        {getPlayerName(player)}
       </div>
     </StrictMode>
   );

@@ -1,4 +1,5 @@
-import React, { StrictMode } from 'react';
+import { PlayCircleOutlined, TrophyOutlined } from '@ant-design/icons';
+import React, { StrictMode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
@@ -8,9 +9,12 @@ import { ThemeType } from '../utils/Theme';
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => {
   const matchRowCommon = {
+    background: 'white',
+    color: 'black',
     height: theme.height,
     lineHeight: theme.height,
     outline: 'none',
+    padding: '0px 12px',
     width: '100%',
   };
 
@@ -19,24 +23,24 @@ const useStyles = createUseStyles((theme: ThemeType) => {
       background: theme.baseColor,
       border: '1px solid lightgray',
       borderRadius: '3px',
-      color: 'black',
       display: 'flex',
       flex: 'none',
       flexDirection: 'column',
-      fontSize: 'x-large',
+      fontSize: 'large',
+      minWidth: '90px',
       margin: '0px 4px',
     },
     matchWinner: {
       ...matchRowCommon,
-      background: theme.match.won.background,
-      color: 'darkbrown',
-      fontSize: 'large',
+      background: '#fffb8f',
     },
-    matchOthers: {
+    matchLoser: {
       ...matchRowCommon,
-      background: theme.match.draw.background,
-      color: theme.match.draw.color,
-      fontSize: 'large',
+      color: 'lightgray',
+    },
+    matchNeutral: {
+      ...matchRowCommon,
+      color: 'black',
     },
     matchVs: {
       ...matchRowCommon,
@@ -69,44 +73,75 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   const player1 = players.find((player) => player.index === match.playerIndices[0]);
   const player2 = players.find((player) => player.index === match.playerIndices[1]);
-  const { status } = match;
 
-  let team1Class = classes.matchOthers;
-  let middleClass = classes.matchVs;
-  let middleText = t('vs');
-  let team2Class = classes.matchOthers;
+  const [status, setStatus] = useState<String>(match.status || MatchStatus.NEW);
+  const [team1Class, setTeam1Class] = useState(classes.matchNeutral);
+  const [middleClass, setMiddleClass] = useState(classes.matchVs);
+  const [middleText, setMiddleText] = useState(<PlayCircleOutlined />);
+  const [team2Class, setTeam2Class] = useState(classes.matchNeutral);
 
-  switch (status) {
-    case MatchStatus.TEAM1_WON:
-      team1Class = classes.matchWinner;
-      middleClass = classes.matchOthers;
-      middleText = t('draw');
-      team2Class = classes.matchOthers;
-      break;
+  useEffect(() => {
+    switch (status) {
+      case MatchStatus.TEAM1_WON:
+        setTeam1Class(classes.matchWinner);
+        setMiddleClass(classes.matchWinner);
+        setMiddleText(<TrophyOutlined />);
+        setTeam2Class(classes.matchLoser);
+        break;
 
-    default:
-      break;
-  }
+      case MatchStatus.DRAW:
+        setTeam1Class(classes.matchNeutral);
+        setMiddleClass(classes.matchWinner);
+        setMiddleText(t('draw'));
+        setTeam2Class(classes.matchNeutral);
+        break;
+
+      case MatchStatus.TEAM2_WON:
+        setTeam1Class(classes.matchLoser);
+        setMiddleClass(classes.matchWinner);
+        setMiddleText(<TrophyOutlined />);
+        setTeam2Class(classes.matchWinner);
+        break;
+
+      default:
+        setTeam1Class(classes.matchNeutral);
+        setMiddleClass(classes.matchVs);
+        setMiddleText(t('vs'));
+        setTeam2Class(classes.matchNeutral);
+        break;
+    }
+  }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, status, t]);
 
   return (
     <StrictMode>
       <div className={classes.match}>
-        <PlayerPanel
-          player={player1 || new Player({ index: 0, userIDs: [], name: 'guest', stats: { numDraws: 0, numLost: 0, numMatches: 0, numWon: 0 } })}
+        <div
           className={team1Class}
-        />
+          onClick={() => { setStatus(status === MatchStatus.TEAM1_WON ? MatchStatus.NEW : MatchStatus.TEAM1_WON); }}
+          onKeyDown={() => { }}
+          role="button"
+          tabIndex={0}
+        >
+          <PlayerPanel player={player1 || new Player({ index: 0 })} />
+        </div>
         <div
           className={middleClass}
+          onClick={() => { setStatus(status === MatchStatus.DRAW ? MatchStatus.NEW : MatchStatus.DRAW); }}
           onKeyDown={() => { }}
           role="button"
           tabIndex={0}
         >
           {middleText}
         </div>
-        <PlayerPanel
-          player={player2 || new Player({ index: 1, userIDs: [], name: 'guest', stats: { numDraws: 0, numLost: 0, numMatches: 0, numWon: 0 } })}
+        <div
           className={team2Class}
-        />
+          onClick={() => { setStatus(status === MatchStatus.TEAM2_WON ? MatchStatus.NEW : MatchStatus.TEAM2_WON); }}
+          onKeyDown={() => { }}
+          role="button"
+          tabIndex={0}
+        >
+          <PlayerPanel player={player2 || new Player({ index: 1 })} />
+        </div>
       </div>
     </StrictMode>
   );

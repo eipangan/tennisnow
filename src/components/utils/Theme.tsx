@@ -1,27 +1,11 @@
 import 'antd/dist/antd.css';
 
-const baseColor = '#FFFFFF';
-
 export interface ThemeType {
   background: string,
   baseColor: string,
   height: string,
   highlightColor: string,
   margin: string,
-  match: {
-    won: {
-      background: string,
-      color: string,
-    }
-    draw: {
-      background: string,
-      color: string,
-    }
-    lost: {
-      background: string,
-      color: string,
-    }
-  }
 }
 
 export const theme: ThemeType = {
@@ -30,18 +14,4 @@ export const theme: ThemeType = {
   height: '48px',
   highlightColor: '#ffe7ba',
   margin: '12px',
-  match: {
-    won: {
-      background: '#fffb8f',
-      color: '#787878',
-    },
-    draw: {
-      background: `${baseColor}50`,
-      color: '#787878',
-    },
-    lost: {
-      background: `${baseColor}50`,
-      color: '#787878',
-    },
-  },
 };
