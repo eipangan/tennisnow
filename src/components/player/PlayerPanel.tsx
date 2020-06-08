@@ -1,4 +1,4 @@
-import { Avatar } from 'antd';
+import { Typography } from 'antd';
 import React, { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Player } from '../../models';
@@ -10,6 +10,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   player: {
     color: 'black',
     backgroundColor: theme.baseColor,
+    padding: '0px 12px',
   },
 }));
 
@@ -40,12 +41,11 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
         role="button"
         tabIndex={0}
       >
-        <Avatar
+        <Typography
           className={classes.player}
-          size="large"
         >
           {getPlayerName(player)}
-        </Avatar>
+        </Typography>
       </div>
     </StrictMode>
   );

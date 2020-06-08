@@ -24,7 +24,6 @@ const useStyles = createUseStyles((theme: ThemeType) => {
       flex: 'none',
       flexDirection: 'column',
       fontSize: 'x-large',
-      width: '90px',
       margin: '0px 4px',
     },
     matchWinner: {
