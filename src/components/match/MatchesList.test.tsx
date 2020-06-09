@@ -21,10 +21,12 @@ test('render new without crashing', async () => {
 
   const matches = [
     new Match({
+      index: 0,
       playerIndices: [0, 1],
       status: MatchStatus.NEW,
     }),
     new Match({
+      index: 1,
       playerIndices: [2, 3],
       status: MatchStatus.NEW,
     }),
