@@ -24,7 +24,8 @@ export declare class Stats {
 }
 
 export declare class Match {
-  readonly playerIndices: number[];
+  readonly index: number;
+  readonly playerIndices?: number[];
   readonly status?: MatchStatus | keyof typeof MatchStatus;
   constructor(init: ModelInit<Match>);
 }

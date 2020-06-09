@@ -13,7 +13,8 @@ type Event
 
 type Match
 {
-  playerIndices: [Int!]!
+  index: Int!
+  playerIndices: [Int]
   status: MatchStatus
 }
 

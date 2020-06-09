@@ -16,6 +16,7 @@ export const getNextMatch = (players: Player[], matches: Match[]): Match => {
   players.map((player) => playerIndices.push(player.index));
 
   return new Match({
+    index: matches.length,
     playerIndices,
     status: MatchStatus.NEW,
   });

@@ -71,8 +71,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   const { match, players } = props;
 
-  const player1 = players.find((player) => player.index === match.playerIndices[0]);
-  const player2 = players.find((player) => player.index === match.playerIndices[1]);
+  const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
+  const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
 
   const [status, setStatus] = useState<String>(match.status || MatchStatus.NEW);
   const [team1Class, setTeam1Class] = useState(classes.matchNeutral);
