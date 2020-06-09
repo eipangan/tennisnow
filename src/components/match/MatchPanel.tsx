@@ -56,7 +56,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 type MatchPanelProps = {
   match: Match;
   players: Player[];
-  onUpdate?: () => void;
+  onUpdate?: (match: Match) => void;
 };
 
 /**
@@ -69,18 +69,24 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { match, players } = props;
+  const { match, players, onUpdate } = props;
 
   const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
   const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
 
-  const [status, setStatus] = useState<String>(match.status || MatchStatus.NEW);
+  const [status, setStatus] = useState(match.status || MatchStatus.NEW);
   const [team1Class, setTeam1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
   const [middleText, setMiddleText] = useState(<PlayCircleOutlined />);
   const [team2Class, setTeam2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
+    const getUpdatedMatch = (): Match => new Match({
+      index: match.index,
+      playerIndices: match.playerIndices,
+      status,
+    });
+
     switch (status) {
       case MatchStatus.TEAM1_WON:
         setTeam1Class(classes.matchWinner);
@@ -110,7 +116,11 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         setTeam2Class(classes.matchNeutral);
         break;
     }
-  }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, status, t]);
+
+    if (onUpdate && match.status !== status) {
+      onUpdate(getUpdatedMatch());
+    }
+  }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, match.index, match.playerIndices, match.status, onUpdate, status, t]);
 
   return (
     <StrictMode>

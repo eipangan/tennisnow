@@ -89,7 +89,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
     );
   };
 
-  const onSave = async (myEvent: Event) => {
+  const saveEvent = async (myEvent: Event) => {
     await DataStore.save(myEvent);
   };
 
@@ -103,7 +103,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
           setIsEventSettingsVisible(false);
         }}
         onOk={(myEvent: Event) => {
-          onSave(myEvent);
+          saveEvent(myEvent);
           if (setEvent) setEvent(myEvent);
           setIsEventSettingsVisible(false);
         }}

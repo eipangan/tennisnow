@@ -2,7 +2,8 @@ import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event } from '../../models';
+import { DataStore } from 'aws-amplify';
+import { Event, Match } from '../../models';
 import MatchesList from '../match/MatchesList';
 import PlayersSummary from '../player/PlayersSummary';
 import { ThemeType } from '../utils/Theme';
@@ -28,7 +29,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 type EventPanelProps = {
   event: Event;
-  onUpdate?: () => void;
 }
 
 /**
@@ -40,7 +40,11 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, onUpdate } = props;
+  const { event } = props;
+
+  const saveEvent = async (myEvent: Event) => {
+    await DataStore.save(myEvent);
+  };
 
   return (
     <div className={classes.event}>
@@ -48,7 +52,11 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
       <MatchesList
         matches={event.matches || []}
         players={event.players || []}
-        onUpdate={onUpdate}
+        onUpdate={(matches: Match[]) => {
+          saveEvent(Event.copyOf(event, (updatedEvent) => {
+            updatedEvent.matches = matches;
+          }));
+        }}
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary event={event} />

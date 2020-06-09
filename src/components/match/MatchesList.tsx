@@ -27,7 +27,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 type MatchesListProps = {
   matches: Match[];
   players: Player[];
-  onUpdate?: () => void;
+  onUpdate?: (matches: Match[]) => void;
 }
 
 /**
@@ -41,6 +41,20 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
 
   const { matches, players, onUpdate } = props;
 
+  const getUpdatedMatches = (updatedMatch: Match): Match[] => {
+    const updatedMatches: Match[] = [];
+
+    matches.forEach((match) => {
+      if (match.index === updatedMatch.index) {
+        updatedMatches.push(updatedMatch);
+      } else {
+        updatedMatches.push(match);
+      }
+    });
+
+    return updatedMatches;
+  };
+
   return (
     <div className={classes.matchesPanel}>
       <RightOutlined />
@@ -49,7 +63,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           key={index.toString()}
           match={match}
           players={players}
-          onUpdate={onUpdate}
+          onUpdate={(updatedMatch) => { if (onUpdate) onUpdate(getUpdatedMatches(updatedMatch)); }}
         />
       ))}
       <LeftOutlined />
