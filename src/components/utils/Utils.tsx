@@ -74,9 +74,7 @@ export const shuffle = (a: string[]): string[] => {
   for (i = a.length - 1; i > 0; i -= 1) {
     j = Math.floor(Math.random() * (i + 1));
     x = a[i];
-    // eslint-disable-next-line no-param-reassign
     a[i] = a[j];
-    // eslint-disable-next-line no-param-reassign
     a[j] = x;
   }
   return a;
