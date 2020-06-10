@@ -13,9 +13,7 @@
         },
         "categories": {
             "auth": {
-                "tennisnowf00afd25": {
-                    "hostedUIProviderCreds": "[]"
-                }
+                "tennisnowf00afd25": {}
             },
             "hosting": {
                 "amplifyhosting": {
@@ -39,9 +37,7 @@
         },
         "categories": {
             "auth": {
-                "tennisnowf00afd25": {
-                    "hostedUIProviderCreds": "[]"
-                }
+                "tennisnowf00afd25": {}
             },
             "hosting": {
                 "amplifyhosting": {
