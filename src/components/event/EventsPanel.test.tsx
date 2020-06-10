@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext, AppContextType } from '../../AppContext';
 import { theme } from '../utils/Theme';
 import EventsPanel from './EventsPanel';
 import { getNewEvent } from './EventUtils';
@@ -25,22 +24,12 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-// initialize app AppContext
-const app: AppContextType = {
-  event: getNewEvent(),
-  setEvent: () => {},
-  isEventSettingsVisible: true,
-  setIsEventSettingsVisible: () => {},
-};
-
 test('renders one event without crashing', async () => {
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <AppContext.Provider value={app}>
-            <EventsPanel events={[getNewEvent()]} />
-          </AppContext.Provider>
+          <EventsPanel events={[getNewEvent()]} />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
