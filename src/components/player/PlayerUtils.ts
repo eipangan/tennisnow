@@ -1,4 +1,4 @@
-import { Player, Stats } from '../../models';
+import { Player } from '../../models';
 
 /**
  * get player name
@@ -22,12 +22,6 @@ export const getPlayers = (numPlayers: number, playerNames?: string[]): Player[]
     players.push(new Player({
       index: i,
       name: playerNames ? playerNames[i] : '',
-      stats: new Stats({
-        numDraws: 0,
-        numLost: 0,
-        numMatches: 0,
-        numWon: 0,
-      }),
     }));
   }
 

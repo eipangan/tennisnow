@@ -107,48 +107,6 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
-                },
-                "stats": {
-                    "name": "stats",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "Stats"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
-        },
-        "Stats": {
-            "name": "Stats",
-            "fields": {
-                "numMatches": {
-                    "name": "numMatches",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "numWon": {
-                    "name": "numWon",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "numDraws": {
-                    "name": "numDraws",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "numLost": {
-                    "name": "numLost",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
                 }
             }
         },
@@ -181,5 +139,5 @@ export const schema = {
             }
         }
     },
-    "version": "5ed78beca888fe5f33db3f16bc8a51e5"
+    "version": "3cad2d53b8e92ec3a1d7c9d8a8b0f257"
 };

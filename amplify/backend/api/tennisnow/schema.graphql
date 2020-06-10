@@ -31,13 +31,4 @@ type Player
   index: Int!
   userIDs: [String]
   name: String
-  stats: Stats
-}
-
-type Stats
-{
-  numMatches: Int!
-  numWon: Int!
-  numDraws: Int!
-  numLost: Int!
 }

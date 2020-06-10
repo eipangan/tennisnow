@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Player, Stats } from '../../models';
+import { Player } from '../../models';
 import { theme } from '../utils/Theme';
 import PlayerPanel from './PlayerPanel';
 
@@ -11,12 +11,6 @@ test('renders without crashing', async () => {
     index: 0,
     userIDs: ['P1'],
     name: 'P1',
-    stats: new Stats({
-      numDraws: 0,
-      numLost: 0,
-      numMatches: 0,
-      numWon: 0,
-    }),
   });
 
   render(
