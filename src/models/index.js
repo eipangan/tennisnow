@@ -14,6 +14,6 @@ const { Event, Match, Player } = initSchema(schema);
 export {
   Event,
   Match,
-  MatchStatus,
-  Player
+  Player,
+  MatchStatus
 };

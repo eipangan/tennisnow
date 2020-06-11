@@ -6,9 +6,9 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event } from '../../models';
-import { getPlayers } from '../player/PlayerUtils';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
+import { getPlayers } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -86,8 +86,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     }
 
     // recreate event
-    const players = getPlayers(numPlayers, oldPlayerNames);
-
+    const players = getPlayers(event, numPlayers, oldPlayerNames);
     updatedEvent.players = players;
   });
 

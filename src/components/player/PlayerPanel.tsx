@@ -15,7 +15,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * PlayerPanelProps
  */
 type PlayerPanelProps = {
-  player: Player;
+  player: Player | undefined;
 };
 
 /**
@@ -28,6 +28,8 @@ const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { player } = props;
+
+  if (!player) return <></>;
 
   return (
     <StrictMode>

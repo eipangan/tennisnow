@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
@@ -34,10 +34,4 @@ test('renders without crashing', async () => {
       </ThemeProvider>
     </BrowserRouter>,
   );
-
-  // player summary
-  expect(screen.getByText('player')).toBeInTheDocument();
-  expect(screen.getByText('won')).toBeInTheDocument();
-  expect(screen.getByText('lost')).toBeInTheDocument();
-  expect(screen.getByText('draw')).toBeInTheDocument();
 });

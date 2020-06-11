@@ -45,9 +45,9 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   }
 
   const dataSource: PlayerStatusType[] | undefined = [];
-  players.forEach((player) => {
+  players.forEach((player, index) => {
     const data: PlayerStatusType = {
-      playerName: getPlayerName(player),
+      playerName: getPlayerName(player) || String(index + 1),
       numWon: 0,
       numLost: 0,
       numDraws: 0,

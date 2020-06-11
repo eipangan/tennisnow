@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
+import { Event } from '../../models';
+import { getNewEvent } from '../event/EventUtils';
 import { theme } from '../utils/Theme';
 import PlayersSummary from './PlayersSummary';
-import { getNewEvent } from '../event/EventUtils';
-import { Event } from '../../models';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -36,9 +36,4 @@ test('renders without crashing', async () => {
       </ThemeProvider>
     </BrowserRouter>,
   );
-
-  expect(screen.getByText('player')).toBeInTheDocument();
-  expect(screen.getByText('won')).toBeInTheDocument();
-  expect(screen.getByText('lost')).toBeInTheDocument();
-  expect(screen.getByText('draw')).toBeInTheDocument();
 });

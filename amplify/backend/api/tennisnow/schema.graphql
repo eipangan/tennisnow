@@ -4,8 +4,8 @@ type Event
 {
   id: ID!
   date: AWSDateTime!
-  players: [Player]
   matches: [Match] @connection(keyName: "byEvent", fields:["id"])
+  players: [Player] @connection(keyName: "byEvent", fields:["id"])
   owner: String
 }
 
@@ -30,8 +30,14 @@ type Match
 }
 
 type Player
+  @model
+  @auth(rules: [{allow: owner}])
+  @key(name: "byEvent", fields: ["eventID"])
 {
+  id: ID!
+  eventID: ID!
   index: Int!
   userIDs: [String]
   name: String
+  owner: String
 }

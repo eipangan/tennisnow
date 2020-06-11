@@ -1,29 +1,27 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Player } from '../../models';
+import { getNewEvent, getPlayers } from '../event/EventUtils';
 import { theme } from '../utils/Theme';
 import PlayerPanel from './PlayerPanel';
 
 test('renders without crashing', async () => {
-  const player = new Player({
-    index: 0,
-    userIDs: ['P1'],
-    name: 'P1',
-  });
+  const event = getNewEvent();
+  const players = getPlayers(event, 6);
+  if (players) {
+    const player = players[0];
 
-  render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <PlayerPanel
-            player={player}
-          />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
-
-  expect(screen.getByText('P1')).toBeInTheDocument();
+    render(
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>
+            <PlayerPanel
+              player={player}
+            />
+          </Suspense>
+        </ThemeProvider>
+      </BrowserRouter>,
+    );
+  }
 });

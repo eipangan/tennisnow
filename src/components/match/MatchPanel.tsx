@@ -116,7 +116,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
-  if (!match || !players) return <></>;
+  if (!match || !players || !match.playerIndices || match.playerIndices.length !== 2) return <></>;
 
   const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
   const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
@@ -131,7 +131,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
           role="button"
           tabIndex={0}
         >
-          <PlayerPanel player={player1 || new Player({ index: 0 })} />
+          <PlayerPanel player={player1} />
         </div>
         <div
           className={middleClass}
@@ -149,7 +149,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
           role="button"
           tabIndex={0}
         >
-          <PlayerPanel player={player2 || new Player({ index: 1 })} />
+          <PlayerPanel player={player2} />
         </div>
       </div>
     </StrictMode>

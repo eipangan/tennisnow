@@ -17,20 +17,24 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "players": {
-                    "name": "players",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "Player"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "matches": {
                     "name": "matches",
                     "isArray": true,
                     "type": {
                         "model": "Match"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "eventID"
+                    }
+                },
+                "players": {
+                    "name": "players",
+                    "isArray": true,
+                    "type": {
+                        "model": "Player"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -152,23 +156,24 @@ export const schema = {
                     }
                 }
             ]
-        }
-    },
-    "enums": {
-        "MatchStatus": {
-            "name": "MatchStatus",
-            "values": [
-                "NEW",
-                "TEAM1WON",
-                "TEAM2WON",
-                "DRAW"
-            ]
-        }
-    },
-    "nonModels": {
+        },
         "Player": {
             "name": "Player",
             "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "eventID": {
+                    "name": "eventID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "index": {
                     "name": "index",
                     "isArray": false,
@@ -189,9 +194,64 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
-            }
+            },
+            "syncable": true,
+            "pluralName": "Players",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byEvent",
+                        "fields": [
+                            "eventID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     },
-    "version": "63fa4a884373f7ebaf345857c97dd28a"
+    "enums": {
+        "MatchStatus": {
+            "name": "MatchStatus",
+            "values": [
+                "NEW",
+                "TEAM1WON",
+                "TEAM2WON",
+                "DRAW"
+            ]
+        }
+    },
+    "nonModels": {},
+    "version": "16ed5bdf4ee2211bb92f5eb2b5e35025"
 };
