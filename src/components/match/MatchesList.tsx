@@ -1,9 +1,9 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
+import { Match, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import MatchPanel from './MatchPanel';
-import { Match, Player } from '../../models';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -63,7 +63,12 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           key={index.toString()}
           match={match}
           players={players}
-          onUpdate={(updatedMatch) => { if (onUpdate) onUpdate(getUpdatedMatches(updatedMatch)); }}
+          onUpdate={(updatedMatch) => {
+            if (onUpdate) {
+              const updatedMatches = getUpdatedMatches(updatedMatch);
+              onUpdate(updatedMatches);
+            }
+          }}
         />
       ))}
       <LeftOutlined />

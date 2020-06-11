@@ -81,12 +81,6 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const [team2Class, setTeam2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
-    const getUpdatedMatch = (): Match => new Match({
-      index: match.index,
-      playerIndices: match.playerIndices,
-      status,
-    });
-
     switch (status) {
       case MatchStatus.TEAM1_WON:
         setTeam1Class(classes.matchWinner);
@@ -117,10 +111,20 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         break;
     }
 
-    if (onUpdate && match.status !== status) {
-      onUpdate(getUpdatedMatch());
+    if (match.status !== status) {
+      const getUpdatedMatch = (): Match => new Match({
+        index: match.index,
+        playerIndices: match.playerIndices,
+        status,
+      });
+
+
+      if (onUpdate) {
+        onUpdate(getUpdatedMatch());
+      }
     }
-  }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, match.index, match.playerIndices, match.status, onUpdate, status, t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   return (
     <StrictMode>
