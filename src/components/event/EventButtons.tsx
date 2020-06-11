@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Event } from '../../models';
 import EventSettings from './EventSettings';
-import { getNewEvent } from './EventUtils';
+import { getNewEvent, saveEvent } from './EventUtils';
 
 /**
  * EventButtonsProps
@@ -89,7 +89,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
     );
   };
 
-  const SettingsDrawer = () : JSX.Element => {
+  const SettingsDrawer = (): JSX.Element => {
     if (!isEventSettingsVisible) return <></>;
     return (
       <EventSettings
@@ -99,7 +99,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
           setIsEventSettingsVisible(false);
         }}
         onOk={(myEvent: Event) => {
-          DataStore.save(myEvent);
+          saveEvent(myEvent);
           if (setEvent) setEvent(myEvent);
           setIsEventSettingsVisible(false);
         }}

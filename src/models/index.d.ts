@@ -14,13 +14,6 @@ export declare class Player {
   constructor(init: ModelInit<Player>);
 }
 
-export declare class Match {
-  readonly index: number;
-  readonly playerIndices?: number[];
-  readonly status?: MatchStatus | keyof typeof MatchStatus;
-  constructor(init: ModelInit<Match>);
-}
-
 export declare class Event {
   readonly id: string;
   readonly date: string;
@@ -29,4 +22,14 @@ export declare class Event {
   readonly owner?: string;
   constructor(init: ModelInit<Event>);
   static copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
+}
+
+export declare class Match {
+  readonly id: string;
+  readonly eventID: string;
+  readonly playerIndices?: number[];
+  readonly status?: MatchStatus | keyof typeof MatchStatus;
+  readonly owner?: string;
+  constructor(init: ModelInit<Match>);
+  static copyOf(source: Match, mutator: (draft: MutableModel<Match>) => MutableModel<Match> | void): Match;
 }

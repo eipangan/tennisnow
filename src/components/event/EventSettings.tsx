@@ -9,7 +9,6 @@ import { Event } from '../../models';
 import { getPlayers } from '../player/PlayerUtils';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
-import { getNextMatch } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -90,7 +89,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     const players = getPlayers(numPlayers, oldPlayerNames);
 
     updatedEvent.players = players;
-    updatedEvent.matches = [getNextMatch(players, [])];
   });
 
   useEffect(() => {

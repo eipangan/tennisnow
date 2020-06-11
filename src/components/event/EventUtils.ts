@@ -1,26 +1,11 @@
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event, Match, MatchStatus, Player } from '../../models';
+import { DataStore } from 'aws-amplify';
+import { Event, Match, MatchStatus } from '../../models';
 import { getPlayers } from '../player/PlayerUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
-
-/**
- * getNextMatch
- *
- * @param event
- */
-export const getNextMatch = (players: Player[], matches: Match[]): Match => {
-  const playerIndices : number[] = [];
-  players.map((player) => playerIndices.push(player.index));
-
-  return new Match({
-    index: matches.length,
-    playerIndices,
-    status: MatchStatus.NEW,
-  });
-};
 
 /**
  * getNewEvent
@@ -33,8 +18,38 @@ export const getNewEvent = (): Event => {
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
     players,
-    matches: [getNextMatch(players, [])],
   });
 
   return event;
+};
+
+/**
+ * getNextMatch
+ *
+ * @param event
+ */
+export const getNextMatch = (event: Event): Match | undefined => {
+  let nextMatch: Match | undefined;
+  const { id, players, matches } = event;
+
+  if (matches) {
+    const playerIndices: number[] = [];
+    if (players) players.map((player) => playerIndices.push(player.index));
+
+    nextMatch = new Match({
+      eventID: id,
+      playerIndices,
+      status: MatchStatus.NEW,
+    });
+  }
+  return nextMatch;
+};
+
+/**
+ * saveEvent
+ *
+ * @param myEvent
+ */
+export const saveEvent = async (myEvent: Event) => {
+  await DataStore.save(myEvent);
 };

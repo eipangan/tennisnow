@@ -5,6 +5,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
 import PlayerPanel from '../player/PlayerPanel';
 import { ThemeType } from '../utils/Theme';
+import { saveMatch } from './MatchUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => {
@@ -56,7 +57,6 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 type MatchPanelProps = {
   match: Match;
   players: Player[];
-  onUpdate?: (match: Match) => void;
 };
 
 /**
@@ -69,12 +69,9 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { match, players, onUpdate } = props;
+  const { match, players } = props;
 
-  const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
-  const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
-
-  const [status, setStatus] = useState(match.status || MatchStatus.NEW);
+  const [status, setStatus] = useState(match ? match.status || MatchStatus.NEW : MatchStatus.NEW);
   const [team1Class, setTeam1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
   const [middleText, setMiddleText] = useState(<PlayCircleOutlined />);
@@ -111,20 +108,18 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         break;
     }
 
-    if (match.status !== status) {
-      const getUpdatedMatch = (): Match => new Match({
-        index: match.index,
-        playerIndices: match.playerIndices,
-        status,
-      });
-
-
-      if (onUpdate) {
-        onUpdate(getUpdatedMatch());
-      }
+    if (match && match.status !== status) {
+      saveMatch(Match.copyOf(match, (updatedMatch) => {
+        updatedMatch.status = status;
+      }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
+
+  if (!match || !players) return <></>;
+
+  const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
+  const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
 
   return (
     <StrictMode>

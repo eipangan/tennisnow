@@ -9,11 +9,11 @@ const MatchStatus = {
   "DRAW": "DRAW"
 };
 
-const { Event, Player, Match } = initSchema(schema);
+const { Event, Match, Player } = initSchema(schema);
 
 export {
   Event,
+  Match,
   MatchStatus,
-  Player,
-  Match
+  Player
 };

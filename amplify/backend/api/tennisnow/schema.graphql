@@ -1,21 +1,12 @@
 type Event
   @model
-  @auth(rules: [
-      {allow: owner},
-    ])
+  @auth(rules: [{allow: owner}])
 {
   id: ID!
   date: AWSDateTime!
   players: [Player]
-  matches: [Match]
+  matches: [Match] @connection(keyName: "byEvent", fields:["id"])
   owner: String
-}
-
-type Match
-{
-  index: Int!
-  playerIndices: [Int]
-  status: MatchStatus
 }
 
 enum MatchStatus
@@ -24,6 +15,18 @@ enum MatchStatus
   TEAM1WON
   TEAM2WON
   DRAW
+}
+
+type Match
+  @model
+  @auth(rules: [{allow: owner}])
+  @key(name: "byEvent", fields: ["eventID"])
+{
+  id: ID!
+  eventID: ID!
+  playerIndices: [Int]
+  status: MatchStatus
+  owner: String
 }
 
 type Player

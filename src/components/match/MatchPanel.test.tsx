@@ -18,7 +18,6 @@ test('render new without crashing', async () => {
   ];
 
   const match = new Match({
-    index: 0,
     playerIndices: [0, 1],
     status: MatchStatus.NEW,
   });

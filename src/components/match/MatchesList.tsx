@@ -27,7 +27,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 type MatchesListProps = {
   matches: Match[];
   players: Player[];
-  onUpdate?: (matches: Match[]) => void;
 }
 
 /**
@@ -39,21 +38,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { matches, players, onUpdate } = props;
-
-  const getUpdatedMatches = (updatedMatch: Match): Match[] => {
-    const updatedMatches: Match[] = [];
-
-    matches.forEach((match) => {
-      if (match.index === updatedMatch.index) {
-        updatedMatches.push(updatedMatch);
-      } else {
-        updatedMatches.push(match);
-      }
-    });
-
-    return updatedMatches;
-  };
+  const { matches, players } = props;
 
   return (
     <div className={classes.matchesPanel}>
@@ -63,12 +48,6 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           key={index.toString()}
           match={match}
           players={players}
-          onUpdate={(updatedMatch) => {
-            if (onUpdate) {
-              const updatedMatches = getUpdatedMatches(updatedMatch);
-              onUpdate(updatedMatches);
-            }
-          }}
         />
       ))}
       <LeftOutlined />
