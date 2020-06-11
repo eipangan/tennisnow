@@ -8,7 +8,7 @@ import PlayerPanel from './PlayerPanel';
 
 test('renders without crashing', async () => {
   const event = getNewEvent();
-  const players = getPlayers(event, 6);
+  const players = getPlayers(event.id, 6);
   if (players) {
     const player = players[0];
 

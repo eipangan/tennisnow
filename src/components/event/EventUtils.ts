@@ -34,21 +34,25 @@ export const getNextMatch = (event: Event): Match | undefined => {
   return nextMatch;
 };
 
+/**
+ * get players
+ *
+ * @param event
+ * @param numPlayers
+ * @param playerNames
+ */
 export const getPlayers = (
-  event: Event,
-  numPlayers: number,
+  eventID: string,
+  numPlayers: number = 6,
   playerNames?: string[],
 ): Player[] | undefined => {
-  let players: Player[] | undefined;
-  if (event.players) {
-    players = [];
-    for (let i = 0; i < numPlayers; i += 1) {
-      players.push(new Player({
-        eventID: event.id,
-        index: i,
-        name: playerNames ? playerNames[i] : '',
-      }));
-    }
+  const players: Player[] = [];
+  for (let i = 0; i < numPlayers; i += 1) {
+    players.push(new Player({
+      eventID,
+      index: i,
+      name: playerNames ? playerNames[i] : '',
+    }));
   }
 
   return players;

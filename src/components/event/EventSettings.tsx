@@ -86,7 +86,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     }
 
     // recreate event
-    const players = getPlayers(event, numPlayers, oldPlayerNames);
+    const players = getPlayers(event.id, numPlayers, oldPlayerNames);
     updatedEvent.players = players;
   });
 
