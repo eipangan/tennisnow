@@ -51,7 +51,7 @@ export const getPlayers = (
     players.push(new Player({
       eventID,
       index: i,
-      name: playerNames ? playerNames[i] : '',
+      name: playerNames ? playerNames[i] || '' : '',
     }));
   }
 
