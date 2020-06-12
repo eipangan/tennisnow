@@ -23,14 +23,18 @@ export const getNewEvent = (): Event => {
  *
  * @param event
  */
-export const getNextMatch = (event: Event): Match | undefined => {
-  let nextMatch: Match | undefined;
-  if (event.matches) {
-    nextMatch = new Match({
-      eventID: event.id,
-      status: MatchStatus.NEW,
-    });
-  }
+export const getNextMatch = (
+  eventID: string,
+  players: Player[] = [],
+  matches: Match[] = [],
+): Match | undefined => {
+  if (players.length === 0) return undefined;
+
+  const nextMatch = new Match({
+    eventID,
+    status: MatchStatus.NEW,
+  });
+
   return nextMatch;
 };
 
@@ -44,14 +48,14 @@ export const getNextMatch = (event: Event): Match | undefined => {
 export const getPlayers = (
   eventID: string,
   numPlayers: number = 6,
-  playerNames?: string[],
+  playerNames: string[] = [],
 ): Player[] | undefined => {
   const players: Player[] = [];
   for (let i = 0; i < numPlayers; i += 1) {
     players.push(new Player({
       eventID,
       index: i,
-      name: playerNames ? playerNames[i] || '' : '',
+      name: playerNames[i] || '',
     }));
   }
 

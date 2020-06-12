@@ -1,5 +1,6 @@
-import { getNewEvent, getNextMatch, getPlayers } from './EventUtils';
+import { MatchStatus } from '../../models';
 import { generateUUID } from '../utils/Utils';
+import { getNewEvent, getNextMatch, getPlayers } from './EventUtils';
 
 test('runs getNewEvent() as expected', async () => {
   const event = getNewEvent();
@@ -24,11 +25,37 @@ test('runs getNewEvent() as expected', async () => {
   }
 });
 
-test('runs getNextMatch() as expected', async () => {
+test('runs getNextMatch() with eventID parameter', async () => {
   const event = getNewEvent();
-  const nextMatch = getNextMatch(event);
+  const nextMatch = getNextMatch(event.id);
 
   expect(nextMatch).toBeUndefined();
+});
+
+test('runs getNextMatch() with eventID, players parameter', async () => {
+  const event = getNewEvent();
+  const nextMatch = getNextMatch(event.id, getPlayers(event.id, 6));
+
+  expect(nextMatch).toBeDefined();
+  expect(nextMatch).not.toBeNull();
+
+  // id
+  expect(nextMatch?.id).toBeDefined();
+  expect(nextMatch?.id).not.toBeNull();
+  expect(nextMatch?.id.length).toBeGreaterThan(32);
+
+  // eventID
+  expect(nextMatch?.eventID).toBeDefined();
+  expect(nextMatch?.eventID).not.toBeNull();
+  expect(nextMatch?.eventID).toBe(event.id);
+
+  // TODO: playerIndices
+
+  // status
+  expect(nextMatch?.status).toBe(MatchStatus.NEW);
+
+  // owner
+  expect(nextMatch?.owner).toBeUndefined();
 });
 
 test('runs getPlayers() with eventID parameter', async () => {
