@@ -73,17 +73,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       .set('minute', parseInt(time.toString().substring(2, 5), 10))
       .toISOString();
 
-    // update matches
-    const nextMatch = getNextMatch(event.id, event.players, event.matches);
-    if (nextMatch) {
-      if (!updatedEvent.matches) {
-        updatedEvent.matches = [];
-      }
-      if (updatedEvent.matches) {
-        updatedEvent.matches.push(nextMatch);
-      }
-    }
-
     // keep default or old names
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
@@ -98,6 +87,16 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     // update players
     const players = getPlayers(event.id, numPlayers, oldPlayerNames);
     updatedEvent.players = players;
+
+    // update matches
+    if (event.matches) {
+      updatedEvent.matches = event.matches;
+    } else {
+      const nextMatch = getNextMatch(event.id, players, event.matches);
+      if (nextMatch) {
+        updatedEvent.matches = [nextMatch];
+      }
+    }
   });
 
   useEffect(() => {
