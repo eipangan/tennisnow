@@ -33,7 +33,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 type EventSettingsProps = {
   event: Event,
-  isVisible: boolean,
   onClose?: () => void,
   onOk?: (event: Event) => void,
 }
@@ -48,7 +47,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, isVisible, onClose, onOk } = props;
+  const { event, onClose, onOk } = props;
   const { Panel } = Collapse;
   const { Option } = Select;
 
@@ -112,7 +111,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       onClose={onClose}
       placement="right"
       title={t('eventSettings')}
-      visible={isVisible}
+      visible
       width={324}
     >
       <Form

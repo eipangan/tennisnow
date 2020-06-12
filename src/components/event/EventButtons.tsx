@@ -94,7 +94,6 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
     return (
       <EventSettings
         event={event || getNewEvent()}
-        isVisible={isEventSettingsVisible}
         onClose={() => {
           setIsEventSettingsVisible(false);
         }}
