@@ -31,7 +31,6 @@ test('renders without crashing', async () => {
         <Suspense fallback={null}>
           <EventSettings
             event={getNewEvent()}
-            isVisible
           />
         </Suspense>
       </ThemeProvider>
