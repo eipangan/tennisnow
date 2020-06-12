@@ -4,9 +4,20 @@ import { generateUUID } from '../utils/Utils';
 test('runs getNewEvent() as expected', async () => {
   const event = getNewEvent();
 
+  expect(event).toBeDefined();
   expect(event).not.toBeNull();
+
+  expect(event.id).toBeDefined();
+  expect(event.id).not.toBeNull();
+  expect(event.id.length).toBeGreaterThan(32);
+
   expect(event.date).toContain('T');
   expect(event.date).toContain('Z');
+
+  expect(event.matches).toBeUndefined();
+  expect(event.players).toBeUndefined();
+
+  expect(event.owner).toBeUndefined();
 
   if (event.players) {
     expect(event.players).toHaveLength(6);
@@ -15,11 +26,9 @@ test('runs getNewEvent() as expected', async () => {
 
 test('runs getNextMatch() as expected', async () => {
   const event = getNewEvent();
+  const nextMatch = getNextMatch(event);
 
-  if (event.players && event.matches) {
-    const nextMatch = getNextMatch(event);
-    expect(nextMatch).not.toBeNull();
-  }
+  expect(nextMatch).toBeUndefined();
 });
 
 test('runs getPlayers() with eventID parameter', async () => {
@@ -36,7 +45,7 @@ test('runs getPlayers() with eventID parameter', async () => {
   expect(players?.find((player) => player.eventID === event.id)).toBeDefined();
   expect(players?.filter((player) => player.eventID === event.id)).toHaveLength(defaultNumPlayers);
 
-  expect(players?.find((player) => player.eventID === generateUUID())).not.toBeDefined();
+  expect(players?.find((player) => player.eventID === generateUUID())).toBeUndefined();
   expect(players?.filter((player) => player.eventID === generateUUID())).toHaveLength(0);
 
   // index --- required
@@ -46,12 +55,23 @@ test('runs getPlayers() with eventID parameter', async () => {
   expect(players?.find((player) => player.index === 3)).toBeDefined();
   expect(players?.find((player) => player.index === 4)).toBeDefined();
   expect(players?.find((player) => player.index === 5)).toBeDefined();
-  expect(players?.find((player) => player.index === 6)).not.toBeDefined();
+  expect(players?.find((player) => player.index === 6)).toBeUndefined();
 
   // name
   expect(players?.find((player) => player.name === '')).toBeDefined();
   expect(players?.filter((player) => player.name === '')).toHaveLength(defaultNumPlayers);
-  expect(players?.find((player) => player.name === '1')).not.toBeDefined();
+  expect(players?.find((player) => player.name === '1')).toBeUndefined();
+
+  if (players) {
+    players.forEach((player) => {
+      expect(player).toBeDefined();
+      expect(player).not.toBeNull();
+
+      expect(player.id).toBeDefined();
+      expect(player.id).not.toBeNull();
+      expect(player.id.length).toBeGreaterThan(32);
+    });
+  }
 });
 
 test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
@@ -68,7 +88,7 @@ test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
   expect(players?.find((player) => player.eventID === event.id)).toBeDefined();
   expect(players?.filter((player) => player.eventID === event.id)).toHaveLength(numPlayers);
 
-  expect(players?.find((player) => player.eventID === generateUUID())).not.toBeDefined();
+  expect(players?.find((player) => player.eventID === generateUUID())).toBeUndefined();
   expect(players?.filter((player) => player.eventID === generateUUID())).toHaveLength(0);
 
   // index --- required
@@ -76,12 +96,12 @@ test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
   expect(players?.find((player) => player.index === 1)).toBeDefined();
   expect(players?.find((player) => player.index === 2)).toBeDefined();
   expect(players?.find((player) => player.index === 3)).toBeDefined();
-  expect(players?.find((player) => player.index === 4)).not.toBeDefined();
+  expect(players?.find((player) => player.index === 4)).toBeUndefined();
 
   // name
   expect(players?.find((player) => player.name === '')).toBeDefined();
   expect(players?.filter((player) => player.name === '')).toHaveLength(numPlayers);
-  expect(players?.find((player) => player.name === '1')).not.toBeDefined();
+  expect(players?.find((player) => player.name === '1')).toBeUndefined();
 });
 
 test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', async () => {
@@ -99,7 +119,7 @@ test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', asy
   expect(players?.find((player) => player.eventID === event.id)).toBeDefined();
   expect(players?.filter((player) => player.eventID === event.id)).toHaveLength(numPlayers);
 
-  expect(players?.find((player) => player.eventID === generateUUID())).not.toBeDefined();
+  expect(players?.find((player) => player.eventID === generateUUID())).toBeUndefined();
   expect(players?.filter((player) => player.eventID === generateUUID())).toHaveLength(0);
 
   // index --- required
@@ -107,7 +127,7 @@ test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', asy
   expect(players?.find((player) => player.index === 1)).toBeDefined();
   expect(players?.find((player) => player.index === 2)).toBeDefined();
   expect(players?.find((player) => player.index === 3)).toBeDefined();
-  expect(players?.find((player) => player.index === 4)).not.toBeDefined();
+  expect(players?.find((player) => player.index === 4)).toBeUndefined();
 
   // name
   expect(players?.find((player) => player.name === '')).toBeDefined();
@@ -122,5 +142,5 @@ test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', asy
   expect(players?.find((player) => player.name === 'P3')).toBeDefined();
   expect(players?.filter((player) => player.name === 'P3')).toHaveLength(1);
 
-  expect(players?.find((player) => player.name === 'P4')).not.toBeDefined();
+  expect(players?.find((player) => player.name === 'P4')).toBeUndefined();
 });
