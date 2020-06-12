@@ -32,7 +32,40 @@ test('runs getNextMatch() with eventID parameter', async () => {
   expect(nextMatch).toBeUndefined();
 });
 
-test('runs getNextMatch() with eventID, players parameter', async () => {
+test('runs getNextMatch() with eventID, players[1] parameter', async () => {
+  const event = getNewEvent();
+  const nextMatch = getNextMatch(event.id, getPlayers(event.id, 1));
+
+  expect(nextMatch).toBeUndefined();
+});
+
+test('runs getNextMatch() with eventID, players[2] parameter', async () => {
+  const event = getNewEvent();
+  const nextMatch = getNextMatch(event.id, getPlayers(event.id, 2));
+
+  expect(nextMatch).toBeDefined();
+  expect(nextMatch).not.toBeNull();
+
+  // id
+  expect(nextMatch?.id).toBeDefined();
+  expect(nextMatch?.id).not.toBeNull();
+  expect(nextMatch?.id.length).toBeGreaterThan(32);
+
+  // eventID
+  expect(nextMatch?.eventID).toBeDefined();
+  expect(nextMatch?.eventID).not.toBeNull();
+  expect(nextMatch?.eventID).toBe(event.id);
+
+  // TODO: playerIndices
+
+  // status
+  expect(nextMatch?.status).toBe(MatchStatus.NEW);
+
+  // owner
+  expect(nextMatch?.owner).toBeUndefined();
+});
+
+test('runs getNextMatch() with eventID, players[6] parameter', async () => {
   const event = getNewEvent();
   const nextMatch = getNextMatch(event.id, getPlayers(event.id, 6));
 
