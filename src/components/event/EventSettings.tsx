@@ -52,7 +52,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { Option } = Select;
 
   const [form] = Form.useForm();
-  const [numPlayers, setNumPlayers] = useState<number>(event.players ? event.players.length : 0);
+  const [numPlayers, setNumPlayers] = useState<number>(event.players ? event.players.length : 6);
 
   const maxNumPlayers = 12;
   const minNumPlayers = 4;
