@@ -28,10 +28,33 @@ export const getNextMatch = (
   players: Player[] = [],
   matches: Match[] = [],
 ): Match | undefined => {
-  if (players.length === 0) return undefined;
+  if (players.length < 2) return undefined;
 
+  // initialize numPlayed array
+  const numPlayed = players.map(() => 0);
+  matches.forEach((match) => {
+    if (match.playerIndices) {
+      match.playerIndices.forEach((playerIndex) => {
+        numPlayed[playerIndex] += 1;
+      });
+    }
+  });
+
+  // inidialize next players
+  const nextPlayerIndices: number[] = [];
+  for (let i = 0; i < players.length; i += 1) {
+    players.forEach((player) => {
+      if (numPlayed[player.index] === i) {
+        nextPlayerIndices.push(player.index);
+      }
+    });
+  }
+
+  // build nextMatch
+  const maxPlayerIndicex = 2;
   const nextMatch = new Match({
     eventID,
+    playerIndices: nextPlayerIndices.slice(0, maxPlayerIndicex),
     status: MatchStatus.NEW,
   });
 
