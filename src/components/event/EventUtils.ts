@@ -7,7 +7,7 @@ import { Event, Match, MatchStatus, Player } from '../../models';
 dayjs.extend(calendar);
 
 /**
- * getNewEvent
+ * get new event
  */
 export const getNewEvent = (): Event => {
   const event = new Event({
@@ -19,7 +19,7 @@ export const getNewEvent = (): Event => {
 };
 
 /**
- * getNextMatch
+ * get next match or undefined if cannot get next match
  *
  * @param event
  */
