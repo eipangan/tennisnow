@@ -91,5 +91,6 @@ export const getPlayers = (
  * @param myEvent
  */
 export const saveEvent = async (myEvent: Event) => {
+  console.log('saveEvent', myEvent);
   await DataStore.save(myEvent);
 };
