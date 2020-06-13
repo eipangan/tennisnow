@@ -7,6 +7,17 @@ import { Event, Match, MatchStatus, Player } from '../../models';
 dayjs.extend(calendar);
 
 /**
+ * delete event
+ *
+ * @param myEvent
+ */
+export const deleteEvent = async (myEvent: Event) => {
+  console.log('deleteEvent', myEvent);
+  await DataStore.delete(myEvent);
+};
+
+
+/**
  * get new event
  */
 export const getNewEvent = (): Event => {
@@ -86,7 +97,7 @@ export const getPlayers = (
 };
 
 /**
- * saveEvent
+ * save event
  *
  * @param myEvent
  */

@@ -1,12 +1,11 @@
 import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
-import { DataStore } from 'aws-amplify';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Event } from '../../models';
 import EventSettings from './EventSettings';
-import { getNewEvent, saveEvent } from './EventUtils';
+import { deleteEvent, getNewEvent, saveEvent } from './EventUtils';
 
 /**
  * EventButtonsProps
@@ -41,7 +40,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
           }}
           onConfirm={(e) => {
             if (event) {
-              DataStore.delete(event);
+              deleteEvent(event);
               history.push('/');
             }
           }}
