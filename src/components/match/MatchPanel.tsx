@@ -109,8 +109,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     }
 
     if (match && match.status !== status) {
-      saveMatch(Match.copyOf(match, (updatedMatch) => {
-        updatedMatch.status = status;
+      saveMatch(Match.copyOf(match, (updated) => {
+        updated.status = status;
       }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
