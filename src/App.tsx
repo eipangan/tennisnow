@@ -169,7 +169,9 @@ const App = (): JSX.Element => {
    * fetchEvents
    */
   const fetchEvents = async () => {
-    setEvents(await DataStore.query(Event));
+    const fetchedEvents = await DataStore.query(Event);
+    console.log('fetchedEvents', fetchedEvents);
+    setEvents(fetchedEvents);
   };
 
   /**
