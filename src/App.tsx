@@ -169,14 +169,13 @@ const App = (): JSX.Element => {
    * fetchEvents
    */
   const fetchEvents = async () => {
-    const myEvents = await DataStore.query(Event);
-    setEvents(myEvents);
+    setEvents(await DataStore.query(Event));
   };
 
   /**
    * authenticateUser
    */
-  const app : AppContextType = { username: String(user?.getUsername()) };
+  const app: AppContextType = { username: String(user?.getUsername()) };
   const authenticateUser = async () => {
     const myUser = await Auth.currentAuthenticatedUser();
     setUser(myUser);
