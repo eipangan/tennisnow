@@ -7,7 +7,6 @@ import { Match } from '../../models';
  * @param myMatch
  */
 export const deleteMatch = async (myMatch: Match) => {
-  console.log('deleteMatch', myMatch);
   await DataStore.delete(myMatch);
 };
 
@@ -17,6 +16,5 @@ export const deleteMatch = async (myMatch: Match) => {
  * @param myMatch
  */
 export const saveMatch = async (myMatch: Match) => {
-  console.log('saveMatch', myMatch);
   await DataStore.save(myMatch);
 };

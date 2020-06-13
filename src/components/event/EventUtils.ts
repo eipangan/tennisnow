@@ -12,7 +12,6 @@ dayjs.extend(calendar);
  * @param myEvent
  */
 export const deleteEvent = async (myEvent: Event) => {
-  console.log('deleteEvent', myEvent);
   await DataStore.delete(myEvent);
 };
 
@@ -102,6 +101,5 @@ export const getPlayers = (
  * @param myEvent
  */
 export const saveEvent = async (myEvent: Event) => {
-  console.log('saveEvent', myEvent);
   await DataStore.save(myEvent);
 };

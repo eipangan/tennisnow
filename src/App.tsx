@@ -166,15 +166,6 @@ const App = (): JSX.Element => {
   };
 
   /**
-   * fetchEvents
-   */
-  const fetchEvents = async () => {
-    const fetchedEvents = await DataStore.query(Event);
-    console.log('fetchedEvents', fetchedEvents);
-    setEvents(fetchedEvents);
-  };
-
-  /**
    * authenticateUser
    */
   const app: AppContextType = { username: String(user?.getUsername()) };
@@ -188,6 +179,10 @@ const App = (): JSX.Element => {
    */
 
   useEffect(() => {
+    const fetchEvents = async () => {
+      setEvents(await DataStore.query(Event));
+    };
+
     authenticateUser();
     fetchEvents();
     const subscription = DataStore.observe(Event).subscribe(() => {
