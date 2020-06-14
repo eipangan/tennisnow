@@ -132,6 +132,41 @@ test('runs getNextMatch() with eventID, players[6], matches[1] parameter', async
   expect(nextMatch?.owner).toBeUndefined();
 });
 
+test('runs getNextMatch() with 4 players', async () => {
+  const event = getNewEvent();
+  const matches: Match[] = [];
+  const players = getPlayers(event.id, 4);
+
+  // round 1
+  {
+    const nextMatch = getNextMatch(event.id, players, matches);
+    if (nextMatch) {
+      expect(nextMatch).toBeDefined();
+      expect(nextMatch.playerIndices).toBeDefined();
+      expect(nextMatch.playerIndices?.length).toBe(2);
+      if (nextMatch.playerIndices) {
+        expect(nextMatch.playerIndices[0]).toBe(0);
+        expect(nextMatch.playerIndices[1]).toBe(1);
+      }
+      matches.push(nextMatch);
+    }
+  }
+
+  // round 2
+  {
+    const nextMatch = getNextMatch(event.id, players, matches);
+    if (nextMatch) {
+      expect(nextMatch).toBeDefined();
+      expect(nextMatch.playerIndices).toBeDefined();
+      expect(nextMatch.playerIndices?.length).toBe(2);
+      if (nextMatch.playerIndices) {
+        expect(nextMatch.playerIndices[0]).toBe(2);
+        expect(nextMatch.playerIndices[1]).toBe(3);
+      }
+      matches.push(nextMatch);
+    }
+  }
+});
 
 test('runs getPlayers() with eventID parameter', async () => {
   const event = getNewEvent();
