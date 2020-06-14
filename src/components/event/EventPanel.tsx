@@ -4,7 +4,6 @@ import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event, Match } from '../../models';
 import MatchesList from '../match/MatchesList';
@@ -42,7 +41,6 @@ type EventPanelProps = {
  * @param props
  */
 const EventPanel = (props: EventPanelProps): JSX.Element => {
-  const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
