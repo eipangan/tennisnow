@@ -50,7 +50,7 @@ export const getNextMatch = (
     }
   });
 
-  // inidialize next players
+  // initialize next players
   const nextPlayerIndices: number[] = [];
   for (let i = 0; i < players.length; i += 1) {
     players.forEach((player) => {
