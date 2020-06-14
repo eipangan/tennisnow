@@ -1,7 +1,10 @@
+import { PlusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event, Match } from '../../models';
 import MatchesList from '../match/MatchesList';
@@ -39,6 +42,7 @@ type EventPanelProps = {
  * @param props
  */
 const EventPanel = (props: EventPanelProps): JSX.Element => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
@@ -72,6 +76,28 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
       <MatchesList
         matches={matches || []}
         players={event.players || []}
+        extra={(
+          <>
+            <Button
+              data-testid="add-match"
+              icon={<PlusOutlined />}
+              shape="round"
+              onClick={() => {
+                const newMatch = getNextMatch(event.id, event.players, matches);
+                if (newMatch) {
+                  saveMatch(newMatch);
+                  if (matches) {
+                    setMatches([...matches, newMatch]);
+                  } else {
+                    setMatches([newMatch]);
+                  }
+                }
+              }}
+            >
+              {t('nextMatch')}
+            </Button>
+          </>
+        )}
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary event={event} />

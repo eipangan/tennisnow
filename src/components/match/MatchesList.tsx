@@ -27,6 +27,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 type MatchesListProps = {
   matches: Match[];
   players: Player[];
+  extra?: JSX.Element;
 }
 
 /**
@@ -38,7 +39,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { matches, players } = props;
+  const { matches, players, extra } = props;
 
   return (
     <div className={classes.matchesPanel}>
@@ -50,6 +51,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           players={players}
         />
       ))}
+      {extra}
       <LeftOutlined />
     </div>
   );
