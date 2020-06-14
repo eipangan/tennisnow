@@ -17,7 +17,7 @@
     "i18next": "^19.4.5",
     "i18next-browser-languagedetector": "^4.2.0",
     "i18next-xhr-backend": "^3.2.2",
-    "rc-picker": "^1.6.3",
+    "rc-picker": "^1.6.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-ga": "^3.0.0",
@@ -51,7 +51,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.10.0",
+    "@testing-library/jest-dom": "^5.10.1",
     "@testing-library/react": "^10.2.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
