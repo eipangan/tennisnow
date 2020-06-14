@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
@@ -36,7 +36,7 @@ test('render new without crashing', async () => {
       </BrowserRouter>,
     );
 
-    expect(screen.getAllByRole('button')).toHaveLength(3);
+    expect(screen.getAllByRole('button')).toHaveLength(4);
     expect(screen.getByText('vs')).toBeInTheDocument();
 
     // fireEvent.click(screen.getAllByRole('button')[0]);

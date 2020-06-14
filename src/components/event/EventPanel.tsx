@@ -81,7 +81,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
             <Button
               data-testid="add-match"
               icon={<PlusOutlined />}
-              shape="round"
+              shape="circle"
               onClick={() => {
                 const newMatch = getNextMatch(event.id, event.players, matches);
                 if (newMatch) {
@@ -93,9 +93,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
                   }
                 }
               }}
-            >
-              {t('nextMatch')}
-            </Button>
+            />
           </>
         )}
       />

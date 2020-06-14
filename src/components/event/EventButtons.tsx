@@ -33,7 +33,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
           cancelText={t('cancel')}
           icon={<QuestionCircleOutlined />}
           okText={t('delete')}
-          placement="left"
+          placement="bottom"
           title={t('deleteEventConfirm')}
           onCancel={(e) => {
             if (e) e.stopPropagation();

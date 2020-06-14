@@ -1,11 +1,12 @@
-import { PlayCircleOutlined, TrophyOutlined } from '@ant-design/icons';
-import React, { StrictMode, useEffect, useState } from 'react';
+import { CloseOutlined, PlayCircleOutlined, QuestionCircleOutlined, TrophyOutlined } from '@ant-design/icons';
+import { Button, Popconfirm } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
 import PlayerPanel from '../player/PlayerPanel';
 import { ThemeType } from '../utils/Theme';
-import { saveMatch } from './MatchUtils';
+import { deleteMatch, saveMatch } from './MatchUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => {
@@ -122,7 +123,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
 
   return (
-    <StrictMode>
+    <div>
       <div className={classes.match}>
         <div
           className={team1Class}
@@ -152,7 +153,29 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
           <PlayerPanel player={player2} />
         </div>
       </div>
-    </StrictMode>
+      <div style={{ height: '3px' }} />
+      <Popconfirm
+        cancelText={t('cancel')}
+        icon={<QuestionCircleOutlined />}
+        okText={t('delete')}
+        placement="bottom"
+        title={t('deleteMatchConfirm')}
+        onCancel={(e) => {
+          if (e) e.stopPropagation();
+        }}
+        onConfirm={(e) => {
+          if (match) {
+            deleteMatch(match);
+          }
+        }}
+      >
+        <Button
+          icon={<CloseOutlined />}
+          shape="circle"
+          style={{ background: '#ffffff50', color: 'darkgray' }}
+        />
+      </Popconfirm>
+    </div>
   );
 };
 

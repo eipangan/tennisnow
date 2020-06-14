@@ -1,4 +1,3 @@
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, Player } from '../../models';
@@ -14,10 +13,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     display: 'flex',
     flexDirection: 'row',
     overflowY: 'scroll',
-    padding: {
-      top: '9px',
-      bottom: '12px',
-    },
+    padding: '9px 15px',
   },
 }));
 
@@ -43,7 +39,6 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
 
   return (
     <div className={classes.matchesPanel}>
-      <RightOutlined />
       {matches.map((match, index) => (
         <MatchPanel
           key={index.toString()}
@@ -51,8 +46,9 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           players={players}
         />
       ))}
-      {extra}
-      <LeftOutlined />
+      <div style={{ padding: '0px 15px 0px 0px' }}>
+        {extra}
+      </div>
     </div>
   );
 };
