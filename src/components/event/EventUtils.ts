@@ -40,31 +40,52 @@ export const getNextMatch = (
 ): Match | undefined => {
   if (players.length < 2) return undefined;
 
-  // initialize numPlayed array
-  const numPlayed = players.map(() => 0);
-  matches.forEach((match) => {
-    if (match.playerIndices) {
-      match.playerIndices.forEach((playerIndex) => {
-        numPlayed[playerIndex] += 1;
-      });
-    }
-  });
-
-  // initialize next players
-  const nextPlayerIndices: number[] = [];
-  for (let i = 0; i < players.length; i += 1) {
-    players.forEach((player) => {
-      if (numPlayed[player.index] === i) {
-        nextPlayerIndices.push(player.index);
+  const getPotentialPlayers = () => {
+    const numPlayed = players.map(() => 0);
+    matches.forEach((myMatch) => {
+      if (myMatch.playerIndices) {
+        myMatch.playerIndices.forEach((playerIndex) => {
+          numPlayed[playerIndex] += 1;
+        });
       }
     });
-  }
+
+    // initialize potential players
+    const potentialPlayers: number[] = [];
+    for (let i = 0; i < players.length; i += 1) {
+      players.forEach((player) => {
+        if (numPlayed[player.index] === i) {
+          potentialPlayers.push(player.index);
+        }
+      });
+    }
+
+    return potentialPlayers;
+  };
+
+  const getPotentialMatches = () => {
+    const allMatches = players.flatMap((v, i) => players.slice(i + 1).map((w) => `${v.index}-${w.index}`));
+    const allMatchesDone = matches.map((m) => {
+      if (!m.playerIndices) return undefined;
+      return `${m.playerIndices[0]}-${m.playerIndices[1]}`;
+    });
+    const potentialMatches = allMatches.filter((m) => !allMatchesDone.includes(m));
+    return potentialMatches;
+  };
+
+  const potentialPlayers = getPotentialPlayers();
+  const potentialMatches = getPotentialMatches();
+
+
+  // TEST
+  console.log(potentialPlayers, potentialMatches);
+
 
   // build nextMatch
   const maxPlayerIndicex = 2;
   const nextMatch = new Match({
     eventID,
-    playerIndices: nextPlayerIndices.slice(0, maxPlayerIndicex),
+    playerIndices: potentialPlayers.slice(0, maxPlayerIndicex),
     status: MatchStatus.NEW,
   });
 
