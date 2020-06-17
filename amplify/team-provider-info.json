@@ -12,11 +12,6 @@
             "AmplifyAppId": "d3rzxqf6swku6l"
         },
         "categories": {
-            "auth": {
-                "tennisnowf00afd25": {
-                    "hostedUIProviderCreds": "[]"
-                }
-            },
             "hosting": {
                 "amplifyhosting": {
                     "appId": "d3rzxqf6swku6l",
