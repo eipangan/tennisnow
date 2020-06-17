@@ -90,7 +90,10 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         )}
       />
       <div className={classes.eventPlayersSummary}>
-        <PlayersSummary event={event} />
+        <PlayersSummary
+          players={event.players || []}
+          matches={matches || []}
+        />
       </div>
     </div>
   );
