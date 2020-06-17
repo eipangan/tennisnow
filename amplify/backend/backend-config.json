@@ -1,22 +1,6 @@
 {
 	"auth": {},
-	"api": {
-		"tennisnow": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authtennisnowf00afd25"
-						}
-					}
-				}
-			}
-		}
-	},
+	"api": {},
 	"hosting": {
 		"amplifyhosting": {
 			"service": "amplifyhosting",
