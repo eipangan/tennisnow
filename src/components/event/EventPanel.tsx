@@ -49,15 +49,8 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
 
   useEffect(() => {
     const fetchMatches = async () => {
-      const fetchedMatches = (await DataStore.query(Match)).filter((m) => m.eventID === event.id);
-      if (fetchedMatches.length === 0) {
-        const firstMatch = getNextMatch(event.id, event.players);
-        if (firstMatch) {
-          saveMatch(firstMatch);
-          fetchedMatches.push(firstMatch);
-        }
-      }
-
+      const allMatches = await DataStore.query(Match);
+      const fetchedMatches = allMatches.filter((m) => m.eventID === event.id);
       setMatches(fetchedMatches);
     };
 
@@ -66,7 +59,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
       fetchMatches();
     });
     return () => subscription.unsubscribe();
-  }, [event.id, event.players]);
+  }, [event.id]);
 
   return (
     <div className={classes.event}>
