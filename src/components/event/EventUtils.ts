@@ -40,6 +40,7 @@ export const getNextMatch = (
 ): Match | undefined => {
   if (players.length < 2) return undefined;
 
+  // get potential players
   const getPotentialPlayers = () => {
     const numPlayed = players.map(() => 0);
     matches.forEach((myMatch) => {
@@ -50,7 +51,6 @@ export const getNextMatch = (
       }
     });
 
-    // initialize potential players
     const potentialPlayers: number[] = [];
     for (let i = 0; i < players.length; i += 1) {
       players.forEach((player) => {
@@ -63,31 +63,38 @@ export const getNextMatch = (
     return potentialPlayers;
   };
 
+  // get potential matches
   const getPotentialMatches = () => {
-    const allMatches = players.flatMap((v, i) => players.slice(i + 1).map((w) => `${v.index}-${w.index}`));
+    const allMatches = players.flatMap((v, i) => players.slice(i + 1).map((w) => ([v.index, w.index])));
     const allMatchesDone = matches.map((m) => {
       if (!m.playerIndices) return undefined;
-      return `${m.playerIndices[0]}-${m.playerIndices[1]}`;
+      return ([m.playerIndices[0], m.playerIndices[1]]);
     });
-    const potentialMatches = allMatches.filter((m) => !allMatchesDone.includes(m));
-    return potentialMatches;
+    return allMatches.filter((m) => JSON.stringify(allMatchesDone).indexOf(JSON.stringify(m)) === -1);
   };
 
   const potentialPlayers = getPotentialPlayers();
   const potentialMatches = getPotentialMatches();
 
-
-  // TEST
-  console.log(potentialPlayers, potentialMatches);
-
-
-  // build nextMatch
-  const maxPlayerIndicex = 2;
-  const nextMatch = new Match({
-    eventID,
-    playerIndices: potentialPlayers.slice(0, maxPlayerIndicex),
-    status: MatchStatus.NEW,
-  });
+  const BreakException = {};
+  let nextMatch: Match | undefined;
+  try {
+    potentialPlayers.forEach((p1) => {
+      // eslint-disable-next-line consistent-return
+      potentialPlayers.forEach((p2) => {
+        if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
+          nextMatch = new Match({
+            eventID,
+            playerIndices: [p1, p2],
+            status: MatchStatus.NEW,
+          });
+          throw BreakException;
+        }
+      });
+    });
+  } catch (e) {
+    if (e !== BreakException) throw e;
+  }
 
   return nextMatch;
 };
