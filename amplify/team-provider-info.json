@@ -17,6 +17,11 @@
                     "appId": "d3rzxqf6swku6l",
                     "type": "cicd"
                 }
+            },
+            "auth": {
+                "tennisnow918c11b0": {
+                    "hostedUIProviderCreds": "[]"
+                }
             }
         }
     },
