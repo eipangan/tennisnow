@@ -1,11 +1,5 @@
 {
-	"auth": {
-		"tennisnowf00afd25": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	},
+	"auth": {},
 	"api": {
 		"tennisnow": {
 			"service": "AppSync",
