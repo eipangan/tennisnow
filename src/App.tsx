@@ -1,7 +1,7 @@
 import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
 import { Button, PageHeader, Tag } from 'antd';
-import Amplify, { Hub } from 'aws-amplify';
+import { DataStore, Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -10,17 +10,14 @@ import React, { Suspense, useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Route, Switch, useHistory } from 'react-router-dom';
-import { AppContext, AppContextType } from './AppContext';
-import awsconfig from './aws-exports';
-import { DeleteButton, EventType, getNewEvent, SettingsButton } from './components/event/Event';
+import { Route, Switch } from 'react-router-dom';
 import { ThemeType } from './components/utils/Theme';
-import { useLocalStorage } from './components/utils/Utils';
 import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
+import { AppContextType, AppContext } from './AppContext';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
-const Event = React.lazy(() => import('./components/event/Event'));
-const EventSettings = React.lazy(() => import('./components/event/EventSettings'));
+const EventRoute = React.lazy(() => import('./components/routes/EventRoute'));
 const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
 const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
 
@@ -42,14 +39,6 @@ dayjs.updateLocale('en', {
     sameElse: 'lll',
   },
 });
-
-// initialize amplify
-if (awsconfig.oauth.domain.includes('master')) {
-  awsconfig.oauth.domain = 'auth.tennisnow.net';
-}
-awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
-awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
-Amplify.configure(awsconfig);
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -82,21 +71,18 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
+
 /**
  * App
  */
 const App = (): JSX.Element => {
   const { t, i18n } = useTranslation();
-  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const [events, setEvents] = useLocalStorage<EventType[]>('events', []);
-  const [event, setEvent] = useLocalStorage<EventType>('event', getNewEvent());
-
-  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<CognitoUser>();
+  const [events, setEvents] = useState<Event[]>();
 
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
@@ -117,57 +103,11 @@ const App = (): JSX.Element => {
     }
   });
 
-  // initialize app AppContext
-  const app: AppContextType = {
-    events: {
-      add: (myEvent: EventType): boolean => {
-        if (!myEvent || !myEvent.eventID) return false;
-
-        const otherEvents = events.filter((e: EventType) => e.eventID !== myEvent.eventID);
-        if (otherEvents.length <= 0) {
-          setEvents([myEvent]);
-        } else {
-          setEvents([...otherEvents, myEvent]);
-        }
-
-        return true;
-      },
-      get: (myEventID: string | undefined): EventType | undefined => {
-        if (!myEventID) return undefined;
-
-        return events.find((e: EventType) => e.eventID === myEventID);
-      },
-      update: (myEvent: EventType): boolean => {
-        if (!myEvent || !myEvent.eventID) return false;
-
-        const otherEvents = events.filter((e: EventType) => e.eventID !== myEvent.eventID);
-        if (otherEvents.length <= 0) {
-          setEvents([myEvent]);
-        } else {
-          setEvents([...otherEvents, myEvent]);
-        }
-
-        return true;
-      },
-      remove: (myEventID: string | undefined): boolean => {
-        setEvents(events.filter((e: EventType) => e.eventID !== myEventID));
-        if (event && event.eventID === myEventID) setEvent(getNewEvent());
-        return true;
-      },
-    },
-    event,
-    setEvent,
-    isEventSettingsVisible,
-    setIsEventSettingsVisible,
-    isUserSettingsVisible,
-    setIsUserSettingsVisible,
-  };
-
   /**
    * AppBody Component
    */
   const AppBody = (): JSX.Element => {
-    if (user) return <EventsPanel data={events} />;
+    if (user) return <EventsPanel events={events || []} />;
     return <AppIntro />;
   };
 
@@ -226,15 +166,29 @@ const App = (): JSX.Element => {
   };
 
   /**
+   * authenticateUser
+   */
+  const app: AppContextType = { username: String(user?.getUsername()) };
+  const authenticateUser = async () => {
+    const myUser = await Auth.currentAuthenticatedUser();
+    setUser(myUser);
+  };
+
+  /**
    * useEffect Section
    */
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then((myUser) => {
-        setUser(myUser);
-      })
-      .catch(() => { });
+    const fetchEvents = async () => {
+      setEvents(await DataStore.query(Event));
+    };
+
+    authenticateUser();
+    fetchEvents();
+    const subscription = DataStore.observe(Event).subscribe(() => {
+      fetchEvents();
+    });
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -246,13 +200,6 @@ const App = (): JSX.Element => {
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 
-  useEffect(() => {
-    if (event && event.eventID) {
-      app.events.update(event);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
-
   /**
    * return Section
    */
@@ -261,36 +208,8 @@ const App = (): JSX.Element => {
       <div className={classes.appContent}>
         <AppContext.Provider value={app}>
           <Switch>
-            <Route path={['/event']}>
-              <PageHeader
-                className={classes.appHeader}
-                onBack={() => history.push('/')}
-                title={(<AppTitle />)}
-                extra={[
-                  <DeleteButton
-                    key="delete"
-                    onConfirm={(e) => {
-                      if (e) {
-                        app.events.remove(event.eventID);
-                        history.push('/');
-                        e.stopPropagation();
-                      }
-                    }}
-                  />,
-                  <SettingsButton
-                    key="settings"
-                    onClick={(e) => {
-                      setIsEventSettingsVisible(true);
-                      if (e) e.stopPropagation();
-                    }}
-                  />,
-                ]}
-              />
-              <Suspense fallback={<div className="loader" />}>
-                <Event />
-              </Suspense>
-            </Route>
-            <Route path={['/']}>
+            <Route path="/event/:id" component={EventRoute} />
+            <Route path="/">
               <PageHeader
                 className={classes.appHeader}
                 title={(<AppTitle />)}
@@ -303,17 +222,13 @@ const App = (): JSX.Element => {
               </Suspense>
             </Route>
           </Switch>
-          <Suspense fallback={<div className="loader" />}>
-            {(() => {
-              if (isEventSettingsVisible) return <EventSettings />;
-              return null;
-            })()}
-            {(() => {
-              if (isUserSettingsVisible && user) return <UserSettings user={user} />;
-              return null;
-            })()}
-          </Suspense>
         </AppContext.Provider>
+        <Suspense fallback={<div className="loader" />}>
+          {(() => {
+            if (isUserSettingsVisible && user) return <UserSettings user={user} />;
+            return null;
+          })()}
+        </Suspense>
       </div>
       <div className={classes.appFooter}>
         <AppCopyright />

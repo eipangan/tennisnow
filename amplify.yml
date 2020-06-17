@@ -3,6 +3,7 @@ backend:
   phases:
     build:
       commands:
+        - amplify --version
         - amplifyPush --simple
 frontend:
   phases:

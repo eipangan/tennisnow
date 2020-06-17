@@ -46,6 +46,7 @@
     },
     "rules": {
         "max-len": "off",
+        "no-param-reassign": "off",
         "no-unused-vars": "off",
         "object-curly-newline": "off",
         "react-hooks/rules-of-hooks": "error",

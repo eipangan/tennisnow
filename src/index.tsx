@@ -1,7 +1,9 @@
+import Amplify from 'aws-amplify';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
+import awsconfig from './aws-exports';
 import { theme } from './components/utils/Theme';
 import './i18n';
 import './index.css';
@@ -9,6 +11,15 @@ import * as serviceWorker from './serviceWorker';
 
 const App = React.lazy(() => import('./App'));
 
+// initialize amplify
+if (awsconfig.oauth.domain.includes('master')) {
+  awsconfig.oauth.domain = 'auth.tennisnow.net';
+}
+awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
+Amplify.configure(awsconfig);
+
+// render App
 ReactDOM.render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>

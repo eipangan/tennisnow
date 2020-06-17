@@ -1,13 +1,13 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
+import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { EventType, getNewEvent } from './Event';
+import { useLocalStorage } from '../utils/Utils';
+import EventButtons from './EventButtons';
 import EventsList from './EventsList';
 
 // initialize dayjs
@@ -17,6 +17,7 @@ dayjs.extend(isSameOrAfter);
 const useStyles = createUseStyles((theme: ThemeType) => ({
   eventsPanel: {
     background: 'transparent',
+    margin: theme.margin,
   },
 }));
 
@@ -24,7 +25,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventsPanelProps
  */
 type EventsPanelProps = {
-  data: EventType[];
+  events: Event[];
 }
 
 /**
@@ -37,49 +38,37 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { data } = props;
-  const { setEvent, setIsEventSettingsVisible } = useContext(AppContext);
-
+  const { events } = props;
   const { TabPane } = Tabs;
 
-  /**
-   * NewEventButton Component
-   */
-  const NewEventButton = (): JSX.Element => (
-    <Button
-      onClick={(e) => {
-        setEvent(getNewEvent());
-        setIsEventSettingsVisible(true);
-        e.stopPropagation();
-      }}
-      type="primary"
-      icon={<PlusOutlined />}
-    >
-      {t('newEvent')}
-    </Button>
-  );
+  const [activeTab, setActiveTab] = useLocalStorage<string>('activeTab', 'events');
 
   return (
-    <Tabs
-      className={classes.eventsPanel}
-      defaultActiveKey="events"
-      tabBarExtraContent={<NewEventButton />}
-    >
-      <TabPane key="events" tab={t('events')}>
-        <EventsList
-          data={data
-            .filter((a: EventType) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
-            .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
-        />
-      </TabPane>
-      <TabPane key="finished" tab={t('finished')}>
-        <EventsList
-          data={data
-            .filter((a: EventType) => dayjs(a.date).isBefore(dayjs().startOf('day')))
-            .sort((a: EventType, b: EventType) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
-        />
-      </TabPane>
-    </Tabs>
+    <>
+      <Tabs
+        className={classes.eventsPanel}
+        defaultActiveKey={activeTab}
+        onChange={(myActiveKey) => setActiveTab(myActiveKey)}
+        tabBarExtraContent={
+          <EventButtons />
+      }
+      >
+        <TabPane key="events" tab={t('events')}>
+          <EventsList
+            events={events
+              .filter((a: Event) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
+              .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
+          />
+        </TabPane>
+        <TabPane key="finished" tab={t('finished')}>
+          <EventsList
+            events={events
+              .filter((a: Event) => dayjs(a.date).isBefore(dayjs().startOf('day')))
+              .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
+          />
+        </TabPane>
+      </Tabs>
+    </>
   );
 };
 

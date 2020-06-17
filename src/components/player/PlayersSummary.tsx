@@ -1,11 +1,11 @@
-import { Table } from 'antd';
-import { ColumnProps } from 'antd/es/table';
-import React, { useContext } from 'react';
+import Table, { ColumnProps } from 'antd/lib/table';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
+import { Match, MatchStatus, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { PlayerType } from './Player';
+import getPlayerName from './PlayerUtils';
+
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -15,17 +15,24 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
+ * PlayersSummaryProps
+ */
+type PlayersSummaryProps = {
+  players: Player[],
+  matches: Match[],
+};
+
+/**
  * PlayersSummary
  *
  * @param props
  */
-const PlayersSummary = (): JSX.Element => {
+const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event } = useContext(AppContext);
-  const { players } = event;
+  const { players, matches } = props;
 
   if (!players) return <></>;
 
@@ -37,12 +44,47 @@ const PlayersSummary = (): JSX.Element => {
   }
 
   const dataSource: PlayerStatusType[] | undefined = [];
-  players.forEach((player: PlayerType) => {
+  players.forEach((player, index) => {
+    const getStats = (
+      myIndex: number,
+      myMatches: Match[],
+    ) => {
+      let numWon = 0;
+      let numLost = 0;
+      let numDraws = 0;
+
+      myMatches.forEach((match) => {
+        if (match.status && match.playerIndices && match.playerIndices.length === 2) {
+          const p1 = match.playerIndices[0];
+          const p2 = match.playerIndices[1];
+
+          switch (match.status) {
+            case MatchStatus.TEAM1_WON:
+              if (index === p1) numWon += 1;
+              if (index === p2) numLost += 1;
+              break;
+            case MatchStatus.DRAW:
+              if (index === p1) numDraws += 1;
+              if (index === p2) numDraws += 1;
+              break;
+            case MatchStatus.TEAM2_WON:
+              if (index === p1) numLost += 1;
+              if (index === p2) numWon += 1;
+              break;
+            default:
+          }
+        }
+      });
+
+      return { numWon, numLost, numDraws };
+    };
+
+    const { numWon, numLost, numDraws } = getStats(index, matches);
     const data: PlayerStatusType = {
-      playerName: `${player.playerID} ${player.playerName}`,
-      numWon: player.stats ? player.stats.numWon : 0,
-      numLost: player.stats ? player.stats.numLost : 0,
-      numDraws: player.stats ? player.stats.numDraws : 0,
+      playerName: getPlayerName(player) || String(index + 1),
+      numWon,
+      numLost,
+      numDraws,
     };
     dataSource.push(data);
   });

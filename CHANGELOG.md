@@ -4,8 +4,10 @@
 
 ### Highlightes
 
+* Added Authentication to allow users to signin
+* Added Homepage, as an introduction to potential new users
 * Added separate tabs for upcoming events and for finished events
-* Fixed issue preventing users from scrollong down list of events
+* Fixed issue preventing users from scrolling down list of events
 * Cleaned up theme to use gradient backgrounds
 
 ### Changes

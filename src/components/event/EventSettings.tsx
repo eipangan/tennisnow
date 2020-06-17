@@ -2,17 +2,13 @@ import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import dayjs from 'dayjs';
-import cloneDeep from 'lodash/cloneDeep';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
-import { getMatches, getOrderedMatches } from '../match/Match';
-import { getPlayers } from '../player/Player';
-import { getTeams } from '../team/Team';
+import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { generateUUID, getLocaleDateFormat, shuffle } from '../utils/Utils';
-import { EventType } from './Event';
+import { getLocaleDateFormat, shuffle } from '../utils/Utils';
+import { getPlayers } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -33,114 +29,77 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
+ * EventSettingsProps
+ */
+type EventSettingsProps = {
+  event: Event,
+  onClose?: () => void,
+  onOk?: (event: Event) => void,
+}
+
+/**
  * EventSettings
  *
  * @param props
  */
-const EventSettings = (): JSX.Element => {
+const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, setEvent, isEventSettingsVisible, setIsEventSettingsVisible } = useContext(AppContext);
-  const [myEvent, setMyEvent] = useState<EventType>(cloneDeep(event));
+  const { event, onClose, onOk } = props;
   const { Panel } = Collapse;
   const { Option } = Select;
+
   const [form] = Form.useForm();
+  const [numPlayers, setNumPlayers] = useState<number>(event.players ? event.players.length : 6);
 
   const maxNumPlayers = 12;
   const minNumPlayers = 4;
+  const playerPrefix = 'player';
 
   /**
-   * clearNames
+   * get updated Event based on data in the form
    */
-  const clearNames = () => {
-    myEvent.players.forEach((player) => {
-      const newPlayerName = '';
+  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
+    // update date and time
+    const date = form.getFieldValue('date');
+    const time = form.getFieldValue('time');
+    updated.date = dayjs(event.date)
+      .set('month', date.get('month'))
+      .set('date', date.get('date'))
+      .set('year', date.get('year'))
+      .set('hour', parseInt(time.toString().substring(0, 2), 10))
+      .set('minute', parseInt(time.toString().substring(2, 5), 10))
+      .toISOString();
 
-      // eslint-disable-next-line no-param-reassign
-      player.playerName = newPlayerName;
-      form.setFieldsValue({ [`player${player.playerID}`]: newPlayerName });
-    });
-
-    setMyEvent(cloneDeep(myEvent));
-  };
-
-  /**
-   * randomizeOrder
-   */
-  const randomizeOrder = () => {
+    // keep default or old names
     const oldPlayerNames: string[] = [];
-    myEvent.players.forEach((player) => {
-      oldPlayerNames.push(player.playerName);
-    });
-
-    const newPlayerNames = shuffle(oldPlayerNames);
-    myEvent.players.forEach((player, index) => {
-      const newPlayerName = newPlayerNames[index];
-
-      // eslint-disable-next-line no-param-reassign
-      player.playerName = newPlayerName;
-      form.setFieldsValue({ [`player${player.playerID}`]: newPlayerName });
-    });
-
-    setMyEvent(cloneDeep(myEvent));
-  };
-
-  /**
-   * setNumPlayers
-   *
-   * @param numPlayers number of players
-   */
-  const setNumPlayers = (numPlayers: number) => {
-    myEvent.numPlayers = numPlayers;
-
-    const oldPlayers = cloneDeep(myEvent.players);
-    myEvent.players = getPlayers(myEvent.numPlayers);
-    myEvent.players.forEach((player) => {
-      const oldPlayer = oldPlayers.find((thisPlayer) => thisPlayer.playerID === player.playerID);
-      if (oldPlayer) {
-        // eslint-disable-next-line no-param-reassign
-        player.playerName = oldPlayer.playerName;
+    for (let p = 0; p < numPlayers; p += 1) {
+      const newPlayerName = form.getFieldValue(`${playerPrefix}${p}`);
+      if (newPlayerName && newPlayerName.length > 0) {
+        oldPlayerNames.push(newPlayerName);
+      } else {
+        oldPlayerNames.push(String(p + 1));
       }
-    });
-
-    myEvent.teams = getTeams(myEvent.players);
-    myEvent.matches = getMatches(myEvent.teams);
-    myEvent.orderedMatches = getOrderedMatches(
-      myEvent.players,
-      myEvent.teams,
-      myEvent.matches,
-    );
-
-    setMyEvent(cloneDeep(myEvent));
-  };
-
-  /**
-   * setPlayerName
-   *
-   * @param id id of the player
-   * @param name new name
-   */
-  const setPlayerName = (id: string, name: string) => {
-    const myPlayer = myEvent.players.find((player) => player.playerID === id);
-    if (myPlayer) {
-      myPlayer.playerName = name.trim();
-      setMyEvent(cloneDeep(myEvent));
     }
-  };
+
+    // update players
+    const players = getPlayers(event.id, numPlayers, oldPlayerNames);
+    updated.players = players;
+  });
 
   useEffect(() => {
-    if (event) {
-      setMyEvent(cloneDeep(event));
+    form.setFieldsValue({
+      date: dayjs(event.date),
+      time: dayjs(event.date).format('HHmm'),
+    });
 
-      form.setFieldsValue({
-        date: dayjs(event.date),
-        time: dayjs(event.date).format('HHmm'),
-      });
-
-      event.players.forEach((player) => {
-        form.setFieldsValue({ [`player${player.playerID}`]: player.playerName });
+    if (event.players) {
+      event.players.forEach((player, index) => {
+        form.setFieldsValue({
+          [`${playerPrefix}${index}`]: player.name === String(index + 1) ? '' : player.name,
+        });
       });
     }
   }, [event, form]);
@@ -149,10 +108,10 @@ const EventSettings = (): JSX.Element => {
     <Drawer
       className={classes.eventSettings}
       getContainer={false}
-      onClose={() => setIsEventSettingsVisible(false)}
+      onClose={onClose}
       placement="right"
       title={t('eventSettings')}
-      visible={isEventSettingsVisible}
+      visible
       width={324}
     >
       <Form
@@ -171,15 +130,6 @@ const EventSettings = (): JSX.Element => {
               hideDisabledOptions
               inputReadOnly
               size="large"
-              onChange={(d) => {
-                if (d) {
-                  myEvent.date = dayjs(myEvent.date)
-                    .set('month', d.get('month'))
-                    .set('date', d.get('date'))
-                    .set('year', d.get('year'))
-                    .toDate();
-                }
-              }}
             />
           </Form.Item>
           <div style={{ width: '3px' }} />
@@ -189,12 +139,6 @@ const EventSettings = (): JSX.Element => {
           >
             <Select
               size="large"
-              onChange={(d) => {
-                myEvent.date = dayjs(myEvent.date)
-                  .set('hour', parseInt(d.toString().substring(0, 2), 10))
-                  .set('minute', parseInt(d.toString().substring(2, 5), 10))
-                  .toDate();
-              }}
             >
               {(() => {
                 const children: JSX.Element[] = [];
@@ -223,7 +167,7 @@ const EventSettings = (): JSX.Element => {
               key="players"
               header={(
                 <Button type="link" size="large">
-                  {t('players', { numPlayers: myEvent.numPlayers })}
+                  {t('players', { numPlayers })}
                 </Button>
               )}
               extra={(
@@ -231,7 +175,7 @@ const EventSettings = (): JSX.Element => {
                   <Button
                     data-testid="minus"
                     onClick={(e) => {
-                      setNumPlayers(Math.max(minNumPlayers, myEvent.numPlayers - 1));
+                      setNumPlayers(Math.max(minNumPlayers, numPlayers - 1));
                       e.stopPropagation();
                     }}
                   >
@@ -240,7 +184,7 @@ const EventSettings = (): JSX.Element => {
                   <Button
                     data-testid="plus"
                     onClick={(e) => {
-                      setNumPlayers(Math.min(maxNumPlayers, myEvent.numPlayers + 1));
+                      setNumPlayers(Math.min(maxNumPlayers, numPlayers + 1));
                       e.stopPropagation();
                     }}
                   >
@@ -250,20 +194,25 @@ const EventSettings = (): JSX.Element => {
               )}
             >
               <div>
-                {myEvent.players.map((player) => (
-                  <Form.Item
-                    key={`player${player.playerID}`}
-                    name={`player${player.playerID}`}
-                    style={{ margin: '9px 9px' }}
-                  >
-                    <Input
-                      allowClear
-                      onChange={(e) => setPlayerName(player.playerID, e.target.value)}
-                      placeholder={t('player') + String(player.playerID)}
-                      size="large"
-                    />
-                  </Form.Item>
-                ))}
+                {(() => {
+                  const playerInputBox = [];
+                  for (let p = 0; p < numPlayers; p += 1) {
+                    playerInputBox.push(
+                      <Form.Item
+                        key={p.toString()}
+                        name={`${playerPrefix}${p}`}
+                        style={{ margin: '9px 9px' }}
+                      >
+                        <Input
+                          allowClear
+                          placeholder={t('player') + String(p + 1)}
+                          size="large"
+                        />
+                      </Form.Item>,
+                    );
+                  }
+                  return playerInputBox;
+                })()}
                 <div style={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -272,7 +221,9 @@ const EventSettings = (): JSX.Element => {
                   <Button
                     type="link"
                     onClick={(e) => {
-                      clearNames();
+                      for (let p = 0; p < numPlayers; p += 1) {
+                        form.setFieldsValue({ [`${playerPrefix}${p}`]: '' });
+                      }
                       e.stopPropagation();
                     }}
                   >
@@ -281,7 +232,14 @@ const EventSettings = (): JSX.Element => {
                   <Button
                     type="link"
                     onClick={(e) => {
-                      randomizeOrder();
+                      const oldPlayerNames: string[] = [];
+                      for (let p = 0; p < numPlayers; p += 1) {
+                        oldPlayerNames.push(form.getFieldValue(`${playerPrefix}${p}`));
+                      }
+                      const newPlayerNames = shuffle(oldPlayerNames);
+                      for (let p = 0; p < numPlayers; p += 1) {
+                        form.setFieldsValue({ [`${playerPrefix}${p}`]: newPlayerNames[p] });
+                      }
                       e.stopPropagation();
                     }}
                   >
@@ -296,7 +254,7 @@ const EventSettings = (): JSX.Element => {
         <div className={classes.eventSettingsRow}>
           <Button
             icon={<CloseOutlined />}
-            onClick={() => setIsEventSettingsVisible(false)}
+            onClick={onClose}
             shape="round"
           >
             {t('cancel')}
@@ -306,13 +264,7 @@ const EventSettings = (): JSX.Element => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => {
-              if (!event.eventID) {
-                myEvent.eventID = generateUUID();
-              }
-              setEvent({ ...myEvent });
-              setIsEventSettingsVisible(false);
-            }}
+            onClick={() => { if (onOk) onOk(getUpdatedEvent()); }}
           >
             {t('ok')}
           </Button>

@@ -1,10 +1,9 @@
 import { LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
 import { Button, Drawer, Popconfirm, Typography } from 'antd';
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext } from '../../AppContext';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles
@@ -18,7 +17,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * UserSettingsProps
  */
 type UserSettingsProps = {
-  user: CognitoUser;
+  user?: CognitoUser;
 };
 
 /**
@@ -32,16 +31,16 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { user } = props;
-  const { setIsUserSettingsVisible } = useContext(AppContext);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
 
   return (
     <Drawer
       className={classes.authPanel}
       getContainer={false}
-      onClose={() => setIsUserSettingsVisible(false)}
+      onClose={() => setIsVisible(false)}
       placement="right"
       title={t('userSettings')}
-      visible
+      visible={isVisible}
     >
       <Typography>
         {user?.getUsername()}

@@ -1,15 +1,14 @@
 import { List, Typography } from 'antd';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { AppContext } from '../../AppContext';
 import { ReactComponent as Empty } from '../../images/empty.svg';
+import { Event } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import { DeleteButton, EventType, SettingsButton } from './Event';
-
+import EventButtons from './EventButtons';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -33,7 +32,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * @param props
  */
 type EventsListProps = {
-  data: EventType[];
+  events: Event[];
 };
 
 /**
@@ -47,8 +46,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { data } = props;
-  const { events, setEvent, setIsEventSettingsVisible } = useContext(AppContext);
+  const { events } = props;
 
   const EmptyEvents = (): JSX.Element => (
     <>
@@ -62,43 +60,25 @@ const EventsList = (props: EventsListProps): JSX.Element => {
   return (
     <List
       className={classes.eventsList}
-      dataSource={data}
+      dataSource={events}
       locale={{ emptyText: <EmptyEvents /> }}
-      renderItem={(myEvent: EventType) => (
+      renderItem={(myEvent: Event) => (
         <List.Item
           className={classes.event}
-          key={myEvent.eventID}
-          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            setEvent(myEvent);
-            history.push('/event/');
+          key={myEvent.id}
+          onClick={(e) => {
+            history.push(`/event/${myEvent.id}`);
             e.stopPropagation();
           }}
           extra={[
-            <DeleteButton
-              key="delete"
-              onConfirm={(e) => {
-                if (myEvent) {
-                  events.remove(myEvent.eventID);
-                }
-                if (e) e.stopPropagation();
-              }}
-            />,
-            <div
-              key="spacing"
-              style={{ width: '12px' }}
-            />,
-            <SettingsButton
+            <EventButtons
               key="settings"
-              onClick={(e) => {
-                setEvent(myEvent);
-                setIsEventSettingsVisible(true);
-                if (e) e.stopPropagation();
-              }}
+              event={myEvent}
             />,
           ]}
         >
           <List.Item.Meta
-            description={t('eventSummary', { numPlayers: myEvent.numPlayers })}
+            description={t('eventSummary', { numPlayers: myEvent.players ? myEvent.players.length : 0 })}
             title={dayjs(myEvent.date).calendar()}
           />
         </List.Item>

@@ -1,10 +1,9 @@
 import { Typography } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { AppContext, AppContextType } from './AppContext';
-import { EventType, getNewEvent } from './components/event/Event';
-import MatchesPanel from './components/match/MatchesPanel';
+import { getNewEvent, getNextMatch } from './components/event/EventUtils';
+import MatchesList from './components/match/MatchesList';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as Signup } from './images/signup.svg';
 import { ReactComponent as Tennis } from './images/tennis.svg';
@@ -13,8 +12,8 @@ import { ReactComponent as Tennis } from './images/tennis.svg';
 const useStyles = createUseStyles((theme: ThemeType) => ({
   appIntro: {
     background: `${theme.baseColor}69`,
+    margin: theme.margin,
     padding: '12px',
-    margin: '12px',
   },
   title: {
     background: 'transparent',
@@ -30,22 +29,10 @@ const AppIntro = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { Title, Text } = Typography;
-  const [event, setEvent] = useState<EventType>(getNewEvent());
-
-  const app: AppContextType = {
-    events: {
-      add: (myEvent: EventType): boolean => true,
-      get: (eventID: string | undefined): EventType | undefined => undefined,
-      update: (myEvent: EventType): boolean => true,
-      remove: (eventID: string | undefined): boolean => true,
-    },
-    event,
-    setEvent,
-    isEventSettingsVisible: true,
-    setIsEventSettingsVisible: () => { },
-    isUserSettingsVisible: false,
-    setIsUserSettingsVisible: () => { },
-  };
+  const newEvent = getNewEvent();
+  const matches = [];
+  const nextMatch = getNextMatch(newEvent.id, newEvent.players);
+  if (nextMatch) matches.push(nextMatch);
 
   return (
     <div className={classes.appIntro}>
@@ -65,12 +52,10 @@ const AppIntro = (): JSX.Element => {
         {t('intro.events.body1')}
       </Text>
       <div style={{ margin: '12px 0px' }}>
-        <AppContext.Provider value={app}>
-          <MatchesPanel
-            data={app.event.orderedMatches}
-            onUpdate={() => { if (event) setEvent({ ...event }); }}
-          />
-        </AppContext.Provider>
+        <MatchesList
+          matches={matches || []}
+          players={newEvent.players || []}
+        />
       </div>
       <Text>
         {t('intro.events.body2')}

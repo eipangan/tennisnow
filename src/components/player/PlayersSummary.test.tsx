@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { AppContext, AppContextType } from '../../AppContext';
-import { EventType, getNewEvent } from '../event/Event';
+import { Event } from '../../models';
+import { getNewEvent } from '../event/EventUtils';
 import { theme } from '../utils/Theme';
 import PlayersSummary from './PlayersSummary';
 
@@ -25,36 +25,15 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-const app: AppContextType = {
-  events: {
-    add: (event: EventType): boolean => true,
-    get: (eventID: string | undefined): EventType | undefined => undefined,
-    update: (event: EventType): boolean => true,
-    remove: (eventID: string | undefined): boolean => true,
-  },
-  event: getNewEvent(),
-  setEvent: () => { },
-  isEventSettingsVisible: false,
-  setIsEventSettingsVisible: () => { },
-  isUserSettingsVisible: false,
-  setIsUserSettingsVisible: () => { },
-};
-
 test('renders without crashing', async () => {
+  const event: Event = getNewEvent();
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <AppContext.Provider value={app}>
-            <PlayersSummary />
-          </AppContext.Provider>
+          <PlayersSummary event={event} />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
   );
-
-  expect(screen.getByText('player')).toBeInTheDocument();
-  expect(screen.getByText('won')).toBeInTheDocument();
-  expect(screen.getByText('lost')).toBeInTheDocument();
-  expect(screen.getByText('draw')).toBeInTheDocument();
 });

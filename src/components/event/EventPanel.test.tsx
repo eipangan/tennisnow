@@ -1,10 +1,12 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
+import { DataStore } from 'aws-amplify';
 import { theme } from '../utils/Theme';
-import EventsPanel from './EventsPanel';
+import EventPanel from './EventPanel';
 import { getNewEvent } from './EventUtils';
+import { MatchStatus, Match } from '../../models';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -24,23 +26,27 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-test('renders one event without crashing', async () => {
+const event = getNewEvent();
+
+DataStore.query = jest.fn().mockImplementation(() => [new Match({
+  eventID: event.id,
+  status: MatchStatus.NEW,
+})]);
+
+DataStore.observe = jest.fn().mockImplementation(() => ({
+  subscribe: () => ({
+    unsubscribe: () => {},
+  }),
+}));
+
+test('renders without crashing', async () => {
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventsPanel events={[getNewEvent()]} />
+          <EventPanel event={event} />
         </Suspense>
       </ThemeProvider>
     </BrowserRouter>,
   );
-
-  expect(screen.getByText('events')).toBeInTheDocument();
-  expect(screen.getByText('finished')).toBeInTheDocument();
-  expect(screen.getByText('newEvent')).toBeInTheDocument();
-  expect(screen.getByText('eventSummary')).toBeInTheDocument();
-
-  fireEvent.click(screen.getByText('events'));
-  fireEvent.click(screen.getByText('finished'));
-  fireEvent.click(screen.getByText('newEvent'));
 });

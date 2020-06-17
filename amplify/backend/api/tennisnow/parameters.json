@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "tennisnow",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authtennisnow918c11b0",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
