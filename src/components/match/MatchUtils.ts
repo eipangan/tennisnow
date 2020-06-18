@@ -4,17 +4,17 @@ import { Match } from '../../models';
 /**
  * delete match
  *
- * @param myMatch
+ * @param match
  */
-export const deleteMatch = async (myMatch: Match) => {
-  await DataStore.delete(myMatch);
+export const deleteMatch = async (match: Match) => {
+  await DataStore.delete(match);
 };
 
 /**
  * save match
  *
- * @param myMatch
+ * @param match
  */
-export const saveMatch = async (myMatch: Match) => {
-  await DataStore.save(myMatch);
+export const saveMatch = async (match: Match) => {
+  await DataStore.save(match);
 };
