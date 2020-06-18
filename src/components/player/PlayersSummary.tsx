@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import getPlayerName from './PlayerUtils';
+import { getPlayerName } from './PlayerUtils';
 
 
 // initialize styles

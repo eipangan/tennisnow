@@ -1,4 +1,14 @@
+import { DataStore } from 'aws-amplify';
 import { Player } from '../../models';
+
+/**
+ * delete player
+ *
+ * @param player
+ */
+export const deletePlayer = async (player: Player) => {
+  await DataStore.delete(player);
+};
 
 /**
  * get player name
@@ -10,4 +20,11 @@ export const getPlayerName = (player: Player, maxLength: number = Number.MAX_VAL
   return undefined;
 };
 
-export default getPlayerName;
+/**
+ * save player
+ *
+ * @param player
+ */
+export const savePlayer = async (player: Player) => {
+  await DataStore.save(player);
+};
