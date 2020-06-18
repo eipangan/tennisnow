@@ -9,12 +9,11 @@ dayjs.extend(calendar);
 /**
  * delete event
  *
- * @param myEvent
+ * @param event
  */
-export const deleteEvent = async (myEvent: Event) => {
-  await DataStore.delete(myEvent);
+export const deleteEvent = async (event: Event) => {
+  await DataStore.delete(event);
 };
-
 
 /**
  * get new event
@@ -31,7 +30,9 @@ export const getNewEvent = (): Event => {
 /**
  * get next match or undefined if cannot get next match
  *
- * @param event
+ * @param eventID
+ * @param players
+ * @param matches
  */
 export const getNextMatch = (
   eventID: string,
@@ -102,7 +103,7 @@ export const getNextMatch = (
 /**
  * get players
  *
- * @param event
+ * @param eventID
  * @param numPlayers
  * @param playerNames
  */
@@ -126,8 +127,8 @@ export const getPlayers = (
 /**
  * save event
  *
- * @param myEvent
+ * @param event
  */
-export const saveEvent = async (myEvent: Event) => {
-  await DataStore.save(myEvent);
+export const saveEvent = async (event: Event) => {
+  await DataStore.save(event);
 };
