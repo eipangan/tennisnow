@@ -8,7 +8,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Event, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
-import { getPlayers } from './EventUtils';
+import { getNewPlayers } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -87,7 +87,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
   const getUpdatedPlayers = (eventID: string, oldPlayerNames: string[] = []): Player[] | undefined => {
     // update players
-    const players = getPlayers(event.id, numPlayers, oldPlayerNames);
+    const players = getNewPlayers(event.id, numPlayers, oldPlayerNames);
     return players;
   };
 

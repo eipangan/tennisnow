@@ -70,7 +70,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     };
 
     fetchPlayers();
-    const subscription = DataStore.observe(Match).subscribe(() => fetchPlayers());
+    const subscription = DataStore.observe(Player).subscribe(() => fetchPlayers());
     return () => subscription.unsubscribe();
   }, [event.id]);
 

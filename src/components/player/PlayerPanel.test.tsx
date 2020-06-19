@@ -2,13 +2,13 @@ import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { getNewEvent, getPlayers } from '../event/EventUtils';
+import { getNewEvent, getNewPlayers } from '../event/EventUtils';
 import { theme } from '../utils/Theme';
 import PlayerPanel from './PlayerPanel';
 
 test('renders without crashing', async () => {
   const event = getNewEvent();
-  const players = getPlayers(event.id, 6);
+  const players = getNewPlayers(event.id, 6);
   if (players) {
     const player = players[0];
 

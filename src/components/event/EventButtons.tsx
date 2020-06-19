@@ -98,10 +98,9 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
         }}
         onOk={(myEvent: Event, myPlayers: Player[]) => {
           saveEvent(myEvent);
-          savePlayers(myEvent.id, myPlayers);
-
           if (setEvent) setEvent(myEvent);
 
+          savePlayers(myEvent.id, myPlayers);
           setIsEventSettingsVisible(false);
         }}
       />
