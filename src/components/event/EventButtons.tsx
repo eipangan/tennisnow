@@ -3,9 +3,9 @@ import { Button, Popconfirm } from 'antd';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { Event } from '../../models';
+import { Event, Player } from '../../models';
 import EventSettings from './EventSettings';
-import { deleteEvent, getNewEvent, saveEvent } from './EventUtils';
+import { deleteEvent, getNewEvent, saveEvent, savePlayers } from './EventUtils';
 
 /**
  * EventButtonsProps
@@ -96,9 +96,12 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
         onClose={() => {
           setIsEventSettingsVisible(false);
         }}
-        onOk={(myEvent: Event) => {
+        onOk={(myEvent: Event, myPlayers: Player[]) => {
           saveEvent(myEvent);
+          savePlayers(myEvent.id, myPlayers);
+
           if (setEvent) setEvent(myEvent);
+
           setIsEventSettingsVisible(false);
         }}
       />

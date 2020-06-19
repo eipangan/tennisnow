@@ -2,6 +2,7 @@ import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import { Event, Match, MatchStatus, Player } from '../../models';
+import { savePlayer } from '../player/PlayerUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -131,4 +132,15 @@ export const getPlayers = (
  */
 export const saveEvent = async (event: Event) => {
   await DataStore.save(event);
+};
+
+/**
+ * save players for an event
+ *
+ * @param eventID id of the event
+ * @param players players
+ */
+export const savePlayers = async (eventID: string, players: Player[]) => {
+  const currentPlayers = DataStore.query(Player, (p) => p.eventID('eq', eventID));
+  players.forEach((player) => { savePlayer(player); });
 };
