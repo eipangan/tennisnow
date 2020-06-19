@@ -1,6 +1,7 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -52,7 +53,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { Option } = Select;
 
   const [form] = Form.useForm();
-  const [numPlayers, setNumPlayers] = useState<number>(event.players ? event.players.length : 6);
+  const [players, setPlayers] = useState<Player[]>();
+  const [numPlayers, setNumPlayers] = useState<number>(6);
 
   const maxNumPlayers = 12;
   const minNumPlayers = 4;
@@ -72,7 +74,15 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       .set('hour', parseInt(time.toString().substring(0, 2), 10))
       .set('minute', parseInt(time.toString().substring(2, 5), 10))
       .toISOString();
+  });
 
+  /**
+   * get updated players
+   *
+   * @param eventID
+   * @param oldPlayerNames
+   */
+  const getUpdatedPlayers = (eventID: string): Player[] | undefined => {
     // keep default or old names
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
@@ -83,28 +93,43 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         oldPlayerNames.push(String(p + 1));
       }
     }
-  });
 
-  const getUpdatedPlayers = (eventID: string, oldPlayerNames: string[] = []): Player[] | undefined => {
     // update players
-    const players = getNewPlayers(event.id, numPlayers, oldPlayerNames);
-    return players;
+    const updatedPlayers = getNewPlayers(event.id, numPlayers, oldPlayerNames);
+    return updatedPlayers;
   };
 
+  /**
+   * whenever event changes
+   */
   useEffect(() => {
     form.setFieldsValue({
       date: dayjs(event.date),
       time: dayjs(event.date).format('HHmm'),
     });
 
-    if (event.players) {
-      event.players.forEach((player, index) => {
+    const fetchPlayers = async () => {
+      const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', event.id));
+      setPlayers(fetchedPlayers);
+      setNumPlayers(fetchedPlayers.length);
+    };
+
+    fetchPlayers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * whenever players change
+   */
+  useEffect(() => {
+    if (players) {
+      players.forEach((player, index) => {
         form.setFieldsValue({
           [`${playerPrefix}${index}`]: player.name === String(index + 1) ? '' : player.name,
         });
       });
     }
-  }, [event, form]);
+  }, [players, form]);
 
   return (
     <Drawer
