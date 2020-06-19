@@ -37,7 +37,6 @@ type Player
   id: ID!
   eventID: ID!
   index: Int!
-  userIDs: [String]
   name: String
   owner: String
 }

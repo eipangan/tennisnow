@@ -33,7 +33,6 @@ export declare class Player {
   readonly id: string;
   readonly eventID: string;
   readonly index: number;
-  readonly userIDs?: string[];
   readonly name?: string;
   readonly owner?: string;
   constructor(init: ModelInit<Player>);
