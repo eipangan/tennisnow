@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event } from '../../models';
+import { Event, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
 import { getPlayers } from './EventUtils';
@@ -34,7 +34,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 type EventSettingsProps = {
   event: Event,
   onClose?: () => void,
-  onOk?: (event: Event) => void,
+  onOk?: (event: Event, players: Player[]) => void,
 }
 
 /**
@@ -83,11 +83,13 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         oldPlayerNames.push(String(p + 1));
       }
     }
+  });
 
+  const getUpdatedPlayers = (eventID: string, oldPlayerNames: string[] = []): Player[] | undefined => {
     // update players
     const players = getPlayers(event.id, numPlayers, oldPlayerNames);
-    updated.players = players;
-  });
+    return players;
+  };
 
   useEffect(() => {
     form.setFieldsValue({
@@ -264,7 +266,14 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => { if (onOk) onOk(getUpdatedEvent()); }}
+            onClick={() => {
+              if (onOk) {
+                const okEvent = getUpdatedEvent();
+                const okPlayers = getUpdatedPlayers(okEvent.id);
+
+                onOk(okEvent, okPlayers || []);
+              }
+            }}
           >
             {t('ok')}
           </Button>
