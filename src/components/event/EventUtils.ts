@@ -130,7 +130,7 @@ export const getNewPlayers = (
   eventID: string,
   numPlayers: number = 6,
   playerNames: string[] = [],
-): Player[] | undefined => {
+): Player[] => {
   const players: Player[] = [];
   for (let i = 0; i < numPlayers; i += 1) {
     players.push(new Player({

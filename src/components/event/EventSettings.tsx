@@ -79,7 +79,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    * get updated players
    *
    * @param eventID
-   * @param oldPlayerNames
    */
   const getUpdatedPlayers = (eventID: string): Player[] | undefined => {
     // keep default or old names
@@ -93,9 +92,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       }
     }
 
-    // update players
-    const updatedPlayers = getNewPlayers(event.id, numPlayers, oldPlayerNames);
-    return updatedPlayers;
+    // return update players
+    return getNewPlayers(event.id, numPlayers, oldPlayerNames);
   };
 
   /**
@@ -108,7 +106,10 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     });
 
     const fetchPlayers = async () => {
-      const fetchedPlayers = await getPlayers(event.id);
+      let fetchedPlayers = await getPlayers(event.id);
+      if (fetchedPlayers.length < minNumPlayers) {
+        fetchedPlayers = getNewPlayers(event.id);
+      }
       setPlayers(fetchedPlayers);
       setNumPlayers(fetchedPlayers.length);
     };
