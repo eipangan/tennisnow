@@ -2,6 +2,7 @@ import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import { Event, Match, MatchStatus, Player } from '../../models';
+import { deleteMatch } from '../match/MatchUtils';
 import { deletePlayer, savePlayer } from '../player/PlayerUtils';
 
 // initialize dayjs
@@ -33,7 +34,14 @@ export const getEvent = async (eventID: string) => {
  */
 export const getMatches = async (eventID: string) => {
   const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eventID));
-  return fetchedMatches;
+
+  // remove invalid matches (usually caused by automerge)
+  const invalidMatches = fetchedMatches.filter((m) => m.playerIndices?.length !== 2);
+  invalidMatches.forEach((m) => deleteMatch(m));
+
+  // return only valid matches
+  const validMatches = fetchedMatches.filter((m) => m.playerIndices?.length === 2);
+  return validMatches;
 };
 
 /**
