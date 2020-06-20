@@ -55,11 +55,10 @@ export const getNewEvent = (): Event => {
  * @param players
  * @param matches
  */
-export const getNextMatch = (
-  eventID: string,
-  players: Player[] = [],
-  matches: Match[] = [],
-): Match | undefined => {
+export const getNextMatch = async (eventID: string): Promise<Match | undefined> => {
+  const matches = await getMatches(eventID);
+  const players = await getPlayers(eventID);
+
   if (players.length < 2) return undefined;
 
   // get potential players

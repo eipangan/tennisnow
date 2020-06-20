@@ -85,15 +85,17 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
             data-testid="add-match"
             icon={<PlusOutlined />}
             onClick={() => {
-              const newMatch = getNextMatch(event.id, players, matches);
-              if (newMatch) {
-                saveMatch(newMatch);
-                if (matches) {
-                  setMatches([...matches, newMatch]);
-                } else {
-                  setMatches([newMatch]);
-                }
-              }
+              getNextMatch(event.id)
+                .then((newMatch) => {
+                  if (newMatch) {
+                    saveMatch(newMatch);
+                    if (matches) {
+                      setMatches([...matches, newMatch]);
+                    } else {
+                      setMatches([newMatch]);
+                    }
+                  }
+                });
             }}
           >
             {t('newMatch')}
