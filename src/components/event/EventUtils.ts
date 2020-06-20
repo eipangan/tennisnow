@@ -17,6 +17,16 @@ export const deleteEvent = async (event: Event) => {
 };
 
 /**
+ * get event given an eventID
+ *
+ * @param eventID
+ */
+export const getEvent = async (eventID: string) => {
+  const fetchedEvent = await DataStore.query(Event, eventID);
+  return fetchedEvent;
+};
+
+/**
  * get matches given an eventID
  *
  * @param eventID
