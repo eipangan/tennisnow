@@ -71,12 +71,16 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { match, players } = props;
+  const [status, setStatus] = useState(match.status || MatchStatus.NEW);
 
-  const [status, setStatus] = useState(match ? match.status || MatchStatus.NEW : MatchStatus.NEW);
   const [team1Class, setTeam1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
   const [middleText, setMiddleText] = useState(<PlayCircleOutlined />);
   const [team2Class, setTeam2Class] = useState(classes.matchNeutral);
+
+  useEffect(() => {
+    if (match.status !== status) setStatus(match.status || MatchStatus.NEW);
+  }, [match.status, status]);
 
   useEffect(() => {
     switch (status) {
@@ -109,7 +113,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         break;
     }
 
-    if (match && match.status !== status) {
+    if (match.status !== status) {
       saveMatch(Match.copyOf(match, (updated) => {
         updated.status = status;
       }));
