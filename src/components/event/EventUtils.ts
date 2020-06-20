@@ -52,8 +52,6 @@ export const getNewEvent = (): Event => {
  * get next match or undefined if cannot get next match
  *
  * @param eventID
- * @param players
- * @param matches
  */
 export const getNextMatch = async (eventID: string): Promise<Match | undefined> => {
   const matches = await getMatches(eventID);
@@ -94,11 +92,12 @@ export const getNextMatch = async (eventID: string): Promise<Match | undefined> 
     return allMatches.filter((m) => JSON.stringify(allMatchesDone).indexOf(JSON.stringify(m)) === -1);
   };
 
+  // get next match
+  let nextMatch: Match | undefined;
+
   const potentialPlayers = getPotentialPlayers();
   const potentialMatches = getPotentialMatches();
-
   const BreakException = {};
-  let nextMatch: Match | undefined;
   try {
     potentialPlayers.forEach((p1) => {
       // eslint-disable-next-line consistent-return
@@ -121,7 +120,7 @@ export const getNextMatch = async (eventID: string): Promise<Match | undefined> 
 };
 
 /**
- * get players
+ * get new players
  *
  * @param eventID
  * @param numPlayers
