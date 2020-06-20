@@ -57,8 +57,6 @@ export const getNextMatch = async (eventID: string): Promise<Match | undefined> 
   const matches = await getMatches(eventID);
   const players = await getPlayers(eventID);
 
-  if (players.length < 2) return undefined;
-
   // get potential players
   const getPotentialPlayers = () => {
     const numPlayed = players.map(() => 0);
