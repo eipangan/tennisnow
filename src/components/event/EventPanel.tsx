@@ -11,7 +11,7 @@ import MatchesList from '../match/MatchesList';
 import { saveMatch } from '../match/MatchUtils';
 import PlayersSummary from '../player/PlayersSummary';
 import { ThemeType } from '../utils/Theme';
-import { getNextMatch } from './EventUtils';
+import { getMatches, getNextMatch, getPlayers } from './EventUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -53,7 +53,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   // update matches
   useEffect(() => {
     const fetchMatches = async () => {
-      const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', event.id));
+      const fetchedMatches = await getMatches(event.id);
       setMatches(fetchedMatches);
     };
 
@@ -65,7 +65,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   // update players
   useEffect(() => {
     const fetchPlayers = async () => {
-      const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', event.id));
+      const fetchedPlayers = await getPlayers(event.id);
       setPlayers(fetchedPlayers);
     };
 

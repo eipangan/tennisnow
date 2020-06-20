@@ -1,7 +1,6 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +8,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Event, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
-import { getNewPlayers } from './EventUtils';
+import { getNewPlayers, getPlayers } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -109,7 +108,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     });
 
     const fetchPlayers = async () => {
-      const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', event.id));
+      const fetchedPlayers = await getPlayers(event.id);
       setPlayers(fetchedPlayers);
       setNumPlayers(fetchedPlayers.length);
     };

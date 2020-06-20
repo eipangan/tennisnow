@@ -17,6 +17,26 @@ export const deleteEvent = async (event: Event) => {
 };
 
 /**
+ * get matches given an eventID
+ *
+ * @param eventID
+ */
+export const getMatches = async (eventID: string) => {
+  const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eventID));
+  return fetchedMatches;
+};
+
+/**
+ * get players given an eventID
+ *
+ * @param eventID
+ */
+export const getPlayers = async (eventID: string) => {
+  const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
+  return fetchedPlayers;
+};
+
+/**
  * get new event
  */
 export const getNewEvent = (): Event => {
