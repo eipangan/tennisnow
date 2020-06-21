@@ -36,7 +36,7 @@
     },
     "events": {
       "title": "Organize events",
-      "body1": "Manage a local list of events. Manage the number of players, and optionally even the player names. When you're ready to play, you can also randomize team pairings, and matches.",
+      "body1": "Manage a list of events. Manage the number of players, and optionally even the player names. When you're ready to play, you can also randomize player matches.",
       "body2": "You can set who won each match, and later see which player has the most victories."
     },
     "signin": {
