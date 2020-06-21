@@ -11,10 +11,10 @@ import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
+import { AppContext, AppContextType } from './AppContext';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
-import { AppContextType, AppContext } from './AppContext';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
 const EventRoute = React.lazy(() => import('./components/routes/EventRoute'));
@@ -70,7 +70,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     padding: '12px 0px',
   },
 }));
-
 
 /**
  * App

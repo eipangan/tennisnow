@@ -1,12 +1,12 @@
 import { PageHeader } from 'antd';
-import { DataStore } from 'aws-amplify';
 import React, { Suspense, useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as AppTitle } from '../../images/title.svg';
 import { Event } from '../../models';
-import EventPanel from '../event/EventPanel';
 import EventButtons from '../event/EventButtons';
+import EventPanel from '../event/EventPanel';
+import { getEvent } from '../event/EventUtils';
 import { ThemeType } from '../utils/Theme';
 
 // initialize styles
@@ -55,13 +55,13 @@ const EventRoute = (props: any): JSX.Element => {
   const { params } = match;
 
   const fetchEvent = async (id: string) => {
-    const myEvent = await DataStore.query(Event, id);
+    const myEvent = await getEvent(id);
     setEvent(myEvent);
   };
 
   useEffect(() => {
     fetchEvent(params.id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   if (!event) {

@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
-import getPlayerName from './PlayerUtils';
-
+import { getPlayerName } from './PlayerUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -54,7 +53,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
       let numDraws = 0;
 
       myMatches.forEach((match) => {
-        if (match.status && match.playerIndices && match.playerIndices.length === 2) {
+        if (match.status && match.playerIndices && match.playerIndices.length >= 2) {
           const p1 = match.playerIndices[0];
           const p2 = match.playerIndices[1];
 

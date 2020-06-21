@@ -1,6 +1,6 @@
 import { Match, MatchStatus } from '../../models';
 import { generateUUID } from '../utils/Utils';
-import { getNewEvent, getNextMatch, getPlayers } from './EventUtils';
+import { getNewEvent, getNextMatch, getNewPlayers } from './EventUtils';
 
 test('runs getNewEvent() as expected', async () => {
   const event = getNewEvent();
@@ -34,14 +34,14 @@ test('runs getNextMatch() with eventID parameter', async () => {
 
 test('runs getNextMatch() with eventID, players[1] parameter', async () => {
   const event = getNewEvent();
-  const nextMatch = getNextMatch(event.id, getPlayers(event.id, 1));
+  const nextMatch = getNextMatch(event.id, getNewPlayers(event.id, 1));
 
   expect(nextMatch).toBeUndefined();
 });
 
 test('runs getNextMatch() with eventID, players[2] parameter', async () => {
   const event = getNewEvent();
-  const nextMatch = getNextMatch(event.id, getPlayers(event.id, 2));
+  const nextMatch = getNextMatch(event.id, getNewPlayers(event.id, 2));
 
   expect(nextMatch).toBeDefined();
   expect(nextMatch).not.toBeNull();
@@ -70,7 +70,7 @@ test('runs getNextMatch() with eventID, players[2] parameter', async () => {
 
 test('runs getNextMatch() with eventID, players[6] parameter', async () => {
   const event = getNewEvent();
-  const nextMatch = getNextMatch(event.id, getPlayers(event.id, 6));
+  const nextMatch = getNextMatch(event.id, getNewPlayers(event.id, 6));
 
   expect(nextMatch).toBeDefined();
   expect(nextMatch).not.toBeNull();
@@ -104,7 +104,7 @@ test('runs getNextMatch() with eventID, players[6], matches[1] parameter', async
     playerIndices: [0, 1],
   });
   const matches: Match[] = [match];
-  const players = getPlayers(event.id, 6);
+  const players = getNewPlayers(event.id, 6);
   const nextMatch = getNextMatch(event.id, players, matches);
 
   expect(nextMatch).toBeDefined();
@@ -135,7 +135,7 @@ test('runs getNextMatch() with eventID, players[6], matches[1] parameter', async
 test('runs getNextMatch() with 4 players', async () => {
   const event = getNewEvent();
   const matches: Match[] = [];
-  const players = getPlayers(event.id, 4);
+  const players = getNewPlayers(event.id, 4);
 
   // round 1
   {
@@ -171,7 +171,7 @@ test('runs getNextMatch() with 4 players', async () => {
 test('runs getPlayers() with eventID parameter', async () => {
   const event = getNewEvent();
   const defaultNumPlayers = 6;
-  const players = getPlayers(event.id);
+  const players = getNewPlayers(event.id);
 
   // players
   expect(players).toBeDefined();
@@ -214,7 +214,7 @@ test('runs getPlayers() with eventID parameter', async () => {
 test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
   const event = getNewEvent();
   const numPlayers = 4;
-  const players = getPlayers(event.id, numPlayers);
+  const players = getNewPlayers(event.id, numPlayers);
 
   // players
   expect(players).toBeDefined();
@@ -245,7 +245,7 @@ test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', asy
   const event = getNewEvent();
   const numPlayers = 4;
   const playerNames = ['P1', 'P2', 'P3'];
-  const players = getPlayers(event.id, numPlayers, playerNames);
+  const players = getNewPlayers(event.id, numPlayers, playerNames);
 
   // players
   expect(players).toBeDefined();

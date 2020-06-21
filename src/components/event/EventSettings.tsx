@@ -5,10 +5,10 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event } from '../../models';
+import { Event, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
-import { getPlayers } from './EventUtils';
+import { getNewPlayers, getPlayers } from './EventUtils';
 
 const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
@@ -34,7 +34,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 type EventSettingsProps = {
   event: Event,
   onClose?: () => void,
-  onOk?: (event: Event) => void,
+  onOk?: (event: Event, players: Player[]) => void,
 }
 
 /**
@@ -52,7 +52,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { Option } = Select;
 
   const [form] = Form.useForm();
-  const [numPlayers, setNumPlayers] = useState<number>(event.players ? event.players.length : 6);
+  const [players, setPlayers] = useState<Player[]>();
+  const [numPlayers, setNumPlayers] = useState<number>(6);
 
   const maxNumPlayers = 12;
   const minNumPlayers = 4;
@@ -72,7 +73,14 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       .set('hour', parseInt(time.toString().substring(0, 2), 10))
       .set('minute', parseInt(time.toString().substring(2, 5), 10))
       .toISOString();
+  });
 
+  /**
+   * get updated players
+   *
+   * @param eventID
+   */
+  const getUpdatedPlayers = (eventID: string): Player[] | undefined => {
     // keep default or old names
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
@@ -84,25 +92,44 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       }
     }
 
-    // update players
-    const players = getPlayers(event.id, numPlayers, oldPlayerNames);
-    updated.players = players;
-  });
+    // return update players
+    return getNewPlayers(event.id, numPlayers, oldPlayerNames);
+  };
 
+  /**
+   * whenever event changes
+   */
   useEffect(() => {
     form.setFieldsValue({
       date: dayjs(event.date),
       time: dayjs(event.date).format('HHmm'),
     });
 
-    if (event.players) {
-      event.players.forEach((player, index) => {
+    const fetchPlayers = async () => {
+      let fetchedPlayers = await getPlayers(event.id);
+      if (fetchedPlayers.length < minNumPlayers) {
+        fetchedPlayers = getNewPlayers(event.id);
+      }
+      setPlayers(fetchedPlayers);
+      setNumPlayers(fetchedPlayers.length);
+    };
+
+    fetchPlayers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * whenever players change
+   */
+  useEffect(() => {
+    if (players) {
+      players.forEach((player, index) => {
         form.setFieldsValue({
           [`${playerPrefix}${index}`]: player.name === String(index + 1) ? '' : player.name,
         });
       });
     }
-  }, [event, form]);
+  }, [players, form]);
 
   return (
     <Drawer
@@ -264,7 +291,14 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => { if (onOk) onOk(getUpdatedEvent()); }}
+            onClick={() => {
+              if (onOk) {
+                const okEvent = getUpdatedEvent();
+                const okPlayers = getUpdatedPlayers(okEvent.id);
+
+                onOk(okEvent, okPlayers || []);
+              }
+            }}
           >
             {t('ok')}
           </Button>

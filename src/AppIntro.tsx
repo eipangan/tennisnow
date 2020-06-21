@@ -2,8 +2,6 @@ import { Typography } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getNewEvent, getNextMatch } from './components/event/EventUtils';
-import MatchesList from './components/match/MatchesList';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as Signup } from './images/signup.svg';
 import { ReactComponent as Tennis } from './images/tennis.svg';
@@ -29,10 +27,6 @@ const AppIntro = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { Title, Text } = Typography;
-  const newEvent = getNewEvent();
-  const matches = [];
-  const nextMatch = getNextMatch(newEvent.id, newEvent.players);
-  if (nextMatch) matches.push(nextMatch);
 
   return (
     <div className={classes.appIntro}>
@@ -51,12 +45,6 @@ const AppIntro = (): JSX.Element => {
       <Text>
         {t('intro.events.body1')}
       </Text>
-      <div style={{ margin: '12px 0px' }}>
-        <MatchesList
-          matches={matches || []}
-          players={newEvent.players || []}
-        />
-      </div>
       <Text>
         {t('intro.events.body2')}
       </Text>
