@@ -1,9 +1,17 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
+export enum EventType {
+  SINGLES_ROUND_ROBIN = "SINGLES_ROUND_ROBIN",
+  DOUBLES_ROUND_ROBIN = "DOUBLES_ROUND_ROBIN",
+  SINGLES_ONE_MATCH = "SINGLES_ONE_MATCH",
+  DOUBLES_ONE_MATCH = "DOUBLES_ONE_MATCH",
+  DEFAULT = "DEFAULT"
+}
+
 export enum MatchStatus {
   NEW = "NEW",
-  TEAM1_WON = "TEAM1WON",
-  TEAM2_WON = "TEAM2WON",
+  PLAYER1_WON = "PLAYER1_WON",
+  PLAYER2_WON = "PLAYER2_WON",
   DRAW = "DRAW"
 }
 
@@ -12,6 +20,8 @@ export enum MatchStatus {
 export declare class Event {
   readonly id: string;
   readonly date: string;
+  readonly place?: string;
+  readonly type?: EventType | keyof typeof EventType;
   readonly matches?: Match[];
   readonly players?: Player[];
   readonly owner?: string;

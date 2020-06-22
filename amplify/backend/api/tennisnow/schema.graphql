@@ -4,17 +4,20 @@ type Event
 {
   id: ID!
   date: AWSDateTime!
+  place: String
+  type: EventType
   matches: [Match] @connection(keyName: "byEvent", fields:["id"])
   players: [Player] @connection(keyName: "byEvent", fields:["id"])
   owner: String
 }
 
-enum MatchStatus
+enum EventType
 {
-  NEW
-  TEAM1WON
-  TEAM2WON
-  DRAW
+  SINGLES_ROUND_ROBIN
+  DOUBLES_ROUND_ROBIN
+  SINGLES_ONE_MATCH
+  DOUBLES_ONE_MATCH
+  DEFAULT
 }
 
 type Match
@@ -28,6 +31,14 @@ type Match
   playerIndices: [Int]
   status: MatchStatus
   owner: String
+}
+
+enum MatchStatus
+{
+  NEW
+  PLAYER1_WON
+  PLAYER2_WON
+  DRAW
 }
 
 type Player

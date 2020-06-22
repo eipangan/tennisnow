@@ -17,6 +17,22 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "place": {
+                    "name": "place",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "EventType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "matches": {
                     "name": "matches",
                     "isArray": true,
@@ -242,16 +258,26 @@ export const schema = {
         }
     },
     "enums": {
+        "EventType": {
+            "name": "EventType",
+            "values": [
+                "SINGLES_ROUND_ROBIN",
+                "DOUBLES_ROUND_ROBIN",
+                "SINGLES_ONE_MATCH",
+                "DOUBLES_ONE_MATCH",
+                "DEFAULT"
+            ]
+        },
         "MatchStatus": {
             "name": "MatchStatus",
             "values": [
                 "NEW",
-                "TEAM1WON",
-                "TEAM2WON",
+                "PLAYER1_WON",
+                "PLAYER2_WON",
                 "DRAW"
             ]
         }
     },
     "nonModels": {},
-    "version": "e0f5a4491776e22cb873b700acadc0db"
+    "version": "6438e3115429adf75027f188622fdcae"
 };

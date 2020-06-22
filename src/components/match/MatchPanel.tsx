@@ -73,10 +73,10 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const { match, players } = props;
   const [status, setStatus] = useState(match.status || MatchStatus.NEW);
 
-  const [team1Class, setTeam1Class] = useState(classes.matchNeutral);
+  const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
   const [middleText, setMiddleText] = useState(<PlayCircleOutlined />);
-  const [team2Class, setTeam2Class] = useState(classes.matchNeutral);
+  const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
     if (match.status !== status) setStatus(match.status || MatchStatus.NEW);
@@ -84,32 +84,32 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   useEffect(() => {
     switch (status) {
-      case MatchStatus.TEAM1_WON:
-        setTeam1Class(classes.matchWinner);
+      case MatchStatus.PLAYER1_WON:
+        setPlayer1Class(classes.matchWinner);
         setMiddleClass(classes.matchWinner);
         setMiddleText(<TrophyOutlined />);
-        setTeam2Class(classes.matchLoser);
+        setPlayer2Class(classes.matchLoser);
         break;
 
       case MatchStatus.DRAW:
-        setTeam1Class(classes.matchNeutral);
+        setPlayer1Class(classes.matchNeutral);
         setMiddleClass(classes.matchWinner);
         setMiddleText(t('draw'));
-        setTeam2Class(classes.matchNeutral);
+        setPlayer2Class(classes.matchNeutral);
         break;
 
-      case MatchStatus.TEAM2_WON:
-        setTeam1Class(classes.matchLoser);
+      case MatchStatus.PLAYER2_WON:
+        setPlayer1Class(classes.matchLoser);
         setMiddleClass(classes.matchWinner);
         setMiddleText(<TrophyOutlined />);
-        setTeam2Class(classes.matchWinner);
+        setPlayer2Class(classes.matchWinner);
         break;
 
       default:
-        setTeam1Class(classes.matchNeutral);
+        setPlayer1Class(classes.matchNeutral);
         setMiddleClass(classes.matchVs);
         setMiddleText(t('vs'));
-        setTeam2Class(classes.matchNeutral);
+        setPlayer2Class(classes.matchNeutral);
         break;
     }
 
@@ -130,8 +130,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     <div>
       <div className={classes.match}>
         <div
-          className={team1Class}
-          onClick={() => { setStatus(status === MatchStatus.TEAM1_WON ? MatchStatus.NEW : MatchStatus.TEAM1_WON); }}
+          className={player1Class}
+          onClick={() => { setStatus(status === MatchStatus.PLAYER1_WON ? MatchStatus.NEW : MatchStatus.PLAYER1_WON); }}
           onKeyDown={() => { }}
           role="button"
           tabIndex={0}
@@ -148,8 +148,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
           {middleText}
         </div>
         <div
-          className={team2Class}
-          onClick={() => { setStatus(status === MatchStatus.TEAM2_WON ? MatchStatus.NEW : MatchStatus.TEAM2_WON); }}
+          className={player2Class}
+          onClick={() => { setStatus(status === MatchStatus.PLAYER2_WON ? MatchStatus.NEW : MatchStatus.PLAYER2_WON); }}
           onKeyDown={() => { }}
           role="button"
           tabIndex={0}

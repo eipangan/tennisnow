@@ -58,7 +58,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
           const p2 = match.playerIndices[1];
 
           switch (match.status) {
-            case MatchStatus.TEAM1_WON:
+            case MatchStatus.PLAYER1_WON:
               if (index === p1) numWon += 1;
               if (index === p2) numLost += 1;
               break;
@@ -66,7 +66,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
               if (index === p1) numDraws += 1;
               if (index === p2) numDraws += 1;
               break;
-            case MatchStatus.TEAM2_WON:
+            case MatchStatus.PLAYER2_WON:
               if (index === p1) numLost += 1;
               if (index === p2) numWon += 1;
               break;
