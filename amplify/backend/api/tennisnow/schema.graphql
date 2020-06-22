@@ -24,6 +24,7 @@ type Match
 {
   id: ID!
   eventID: ID!
+  createdTime: AWSDateTime
   playerIndices: [Int]
   status: MatchStatus
   owner: String

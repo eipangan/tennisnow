@@ -113,6 +113,7 @@ export const getNextMatch = async (eventID: string): Promise<Match | undefined> 
         if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
           nextMatch = new Match({
             eventID,
+            createdTime: dayjs().toDate().toISOString(),
             playerIndices: [p1, p2],
             status: MatchStatus.NEW,
           });

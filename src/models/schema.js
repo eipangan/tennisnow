@@ -96,6 +96,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "createdTime": {
+                    "name": "createdTime",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "playerIndices": {
                     "name": "playerIndices",
                     "isArray": true,
@@ -246,5 +253,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "d67f58f59d082786e161930d91440b56"
+    "version": "e0f5a4491776e22cb873b700acadc0db"
 };

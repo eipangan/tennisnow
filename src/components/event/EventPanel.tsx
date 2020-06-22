@@ -78,7 +78,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     <div className={classes.event}>
       {dayjs(event.date).calendar()}
       <MatchesList
-        matches={matches || []}
+        matches={matches?.sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1)) || []}
         players={players || []}
         extra={(
           <Button

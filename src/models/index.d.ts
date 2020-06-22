@@ -22,6 +22,7 @@ export declare class Event {
 export declare class Match {
   readonly id: string;
   readonly eventID: string;
+  readonly createdTime?: string;
   readonly playerIndices?: number[];
   readonly status?: MatchStatus | keyof typeof MatchStatus;
   readonly owner?: string;
