@@ -25,6 +25,7 @@ type MatchesListProps = {
   players: Player[];
   extra?: JSX.Element;
   onUpdate?: (match: Match, status: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => void;
+  onDelete?: (match: Match) => void;
 }
 
 /**
@@ -36,7 +37,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { matches, players, extra, onUpdate } = props;
+  const { matches, players, extra, onUpdate, onDelete } = props;
 
   return (
     <div className={classes.matchesPanel}>
@@ -46,6 +47,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           match={match}
           players={players}
           onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       ))}
       <div style={{ padding: '0px 15px 0px 0px' }}>

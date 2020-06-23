@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event, Match, MatchStatus, Player } from '../../models';
 import MatchesList from '../match/MatchesList';
-import { saveMatch } from '../match/MatchUtils';
+import { deleteMatch, saveMatch } from '../match/MatchUtils';
 import PlayersSummary from '../player/PlayersSummary';
 import { ThemeType } from '../utils/Theme';
 import { getMatches, getNextMatch, getPlayers } from './EventUtils';
@@ -108,6 +108,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
             }));
           }
         }}
+        onDelete={(myMatch: Match) => deleteMatch(myMatch)}
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary
