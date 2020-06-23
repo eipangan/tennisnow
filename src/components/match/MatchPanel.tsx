@@ -6,7 +6,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
 import PlayerPanel from '../player/PlayerPanel';
 import { ThemeType } from '../utils/Theme';
-import { deleteMatch, saveMatch } from './MatchUtils';
+import { deleteMatch } from './MatchUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => {
@@ -58,6 +58,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 type MatchPanelProps = {
   match: Match;
   players: Player[];
+  onUpdate?: (match: Match, status: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => void;
 };
 
 /**
@@ -70,8 +71,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { match, players } = props;
-  const [status, setStatus] = useState(match.status || MatchStatus.NEW);
+  const { match, players, onUpdate } = props;
+  const [status, setStatus] = useState<MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined>(match.status);
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
@@ -79,8 +80,9 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
-    if (match.status !== status) setStatus(match.status || MatchStatus.NEW);
-  }, [match.status, status]);
+    if (match.status && (match.status !== status)) setStatus(match.status);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [match.status]);
 
   useEffect(() => {
     switch (status) {
@@ -113,11 +115,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         break;
     }
 
-    if (match.status !== status) {
-      saveMatch(Match.copyOf(match, (updated) => {
-        updated.status = status;
-      }));
-    }
+    if (onUpdate) onUpdate(match, status);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 

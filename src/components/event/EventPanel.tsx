@@ -6,7 +6,7 @@ import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event, Match, Player } from '../../models';
+import { Event, Match, MatchStatus, Player } from '../../models';
 import MatchesList from '../match/MatchesList';
 import { saveMatch } from '../match/MatchUtils';
 import PlayersSummary from '../player/PlayersSummary';
@@ -101,6 +101,13 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
             {t('newMatch')}
           </Button>
         )}
+        onUpdate={(myMatch: Match, myStatus: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => {
+          if (myMatch.status !== myStatus) {
+            saveMatch(Match.copyOf(myMatch, (updated) => {
+              updated.status = myStatus;
+            }));
+          }
+        }}
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary
