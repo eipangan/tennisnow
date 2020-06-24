@@ -32,23 +32,34 @@ const AppIntro = (): JSX.Element => {
   const { Title, Text } = Typography;
 
   const event = getNewEvent();
+  const [matches, setMatches] = useState<Match[]>();
   const players = getNewPlayers(event.id, 6, ['1', '2', '3', '4', '5', '6']);
 
-  const [matches, setMatches] = useState<Match[]>();
-  useEffect(() => {
-    const getMatches = async () : Promise<Match[]> => {
-      const match = await getNextMatch(event.id, matches, players);
-      if (match) return ([match]);
-      return [];
+  const fetchMatches = async () => {
+    const myMatches: Match[] = [];
+    let myNextMatch: Match | undefined;
+
+    const getMyNextMatch = async () => {
+      myNextMatch = await getNextMatch(event.id, myMatches, players);
+      if (myNextMatch) myMatches.push(myNextMatch);
     };
 
-    getMatches()
-      .then((myMatches) => {
-        if (myMatches) {
-          setMatches(myMatches);
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    await getMyNextMatch();
+    await getMyNextMatch();
+    await getMyNextMatch();
+    await getMyNextMatch();
+    await getMyNextMatch();
+    await getMyNextMatch();
+    await getMyNextMatch();
+    await getMyNextMatch();
+    await getMyNextMatch();
+
+    setMatches(myMatches);
+  };
+
+  useEffect(() => {
+    fetchMatches();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
