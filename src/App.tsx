@@ -169,8 +169,12 @@ const App = (): JSX.Element => {
    */
   const app: AppContextType = { username: String(user?.getUsername()) };
   const authenticateUser = async () => {
-    const myUser = await Auth.currentAuthenticatedUser();
-    setUser(myUser);
+    try {
+      const myUser = await Auth.currentAuthenticatedUser();
+      setUser(myUser);
+    } catch (error) {
+      // ignore
+    }
   };
 
   /**
