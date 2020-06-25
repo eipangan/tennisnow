@@ -228,8 +228,15 @@ const App = (): JSX.Element => {
         </AppContext.Provider>
         <Suspense fallback={<div className="loader" />}>
           {(() => {
-            if (isUserSettingsVisible && user) return <UserSettings user={user} />;
-            return null;
+            if (!isUserSettingsVisible || !user) return <></>;
+            return (
+              <UserSettings
+                user={user}
+                onClose={() => {
+                  setIsUserSettingsVisible(false);
+                }}
+              />
+            );
           })()}
         </Suspense>
       </div>
