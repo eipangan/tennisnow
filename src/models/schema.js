@@ -33,6 +33,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "summary": {
+                    "name": "summary",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "details": {
+                    "name": "details",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "matches": {
                     "name": "matches",
                     "isArray": true,
@@ -279,5 +293,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "6438e3115429adf75027f188622fdcae"
+    "version": "1aa0cacc935b38312fde911b26ac04fb"
 };

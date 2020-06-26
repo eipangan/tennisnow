@@ -6,6 +6,8 @@ type Event
   date: AWSDateTime!
   place: String
   type: EventType
+  summary: String
+  details: String
   matches: [Match] @connection(keyName: "byEvent", fields:["id"])
   players: [Player] @connection(keyName: "byEvent", fields:["id"])
   owner: String

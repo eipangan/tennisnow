@@ -22,6 +22,8 @@ export declare class Event {
   readonly date: string;
   readonly place?: string;
   readonly type?: EventType | keyof typeof EventType;
+  readonly summary?: string;
+  readonly details?: string;
   readonly matches?: Match[];
   readonly players?: Player[];
   readonly owner?: string;
