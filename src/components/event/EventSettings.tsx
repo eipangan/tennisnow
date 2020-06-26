@@ -63,7 +63,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    * get updated Event based on data in the form
    */
   const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
-    // update date and time
+    // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
     updated.date = dayjs(event.date)
@@ -73,6 +73,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       .set('hour', parseInt(time.toString().substring(0, 2), 10))
       .set('minute', parseInt(time.toString().substring(2, 5), 10))
       .toISOString();
+    updated.summary = t('eventSummary', { numPlayers });
   });
 
   /**
