@@ -1,4 +1,4 @@
-import { CloseOutlined, PlayCircleOutlined, QuestionCircleOutlined, TrophyOutlined } from '@ant-design/icons';
+import { CloseOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -76,7 +76,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
-  const [middleText, setMiddleText] = useState(<PlayCircleOutlined />);
+  const [middleText, setMiddleText] = useState<JSX.Element>();
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
@@ -88,8 +88,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     switch (status) {
       case MatchStatus.PLAYER1_WON:
         setPlayer1Class(classes.matchWinner);
-        setMiddleClass(classes.matchWinner);
-        setMiddleText(<TrophyOutlined />);
+        setMiddleClass(classes.matchLoser);
+        setMiddleText(t('draw'));
         setPlayer2Class(classes.matchLoser);
         break;
 
@@ -102,8 +102,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
       case MatchStatus.PLAYER2_WON:
         setPlayer1Class(classes.matchLoser);
-        setMiddleClass(classes.matchWinner);
-        setMiddleText(<TrophyOutlined />);
+        setMiddleClass(classes.matchLoser);
+        setMiddleText(t('draw'));
         setPlayer2Class(classes.matchWinner);
         break;
 
