@@ -17,7 +17,6 @@ dayjs.extend(isSameOrAfter);
 const useStyles = createUseStyles((theme: ThemeType) => ({
   eventsPanel: {
     background: 'transparent',
-    margin: theme.margin,
   },
 }));
 
@@ -53,6 +52,7 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
           <EventButtons />
       }
       >
+        <TabPane />
         <TabPane key="events" tab={t('events')}>
           <EventsList
             events={events

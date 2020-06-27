@@ -16,5 +16,7 @@ export const deleteMatch = async (match: Match) => {
  * @param match
  */
 export const saveMatch = async (match: Match) => {
-  await DataStore.save(match);
+  await DataStore.save(Match.copyOf(match, (updated) => {
+    updated.playerIndices = match.playerIndices?.slice(0, 2);
+  }));
 };

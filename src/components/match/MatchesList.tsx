@@ -1,6 +1,6 @@
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Match, Player } from '../../models';
+import { Match, MatchStatus, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import MatchPanel from './MatchPanel';
 
@@ -24,6 +24,8 @@ type MatchesListProps = {
   matches: Match[];
   players: Player[];
   extra?: JSX.Element;
+  onUpdate?: (match: Match, status: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => void;
+  onDelete?: (match: Match) => void;
 }
 
 /**
@@ -35,7 +37,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { matches, players, extra } = props;
+  const { matches, players, extra, onUpdate, onDelete } = props;
 
   return (
     <div className={classes.matchesPanel}>
@@ -44,6 +46,8 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           key={index.toString()}
           match={match}
           players={players}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       ))}
       <div style={{ padding: '0px 15px 0px 0px' }}>

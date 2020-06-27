@@ -169,8 +169,12 @@ const App = (): JSX.Element => {
    */
   const app: AppContextType = { username: String(user?.getUsername()) };
   const authenticateUser = async () => {
-    const myUser = await Auth.currentAuthenticatedUser();
-    setUser(myUser);
+    try {
+      const myUser = await Auth.currentAuthenticatedUser();
+      setUser(myUser);
+    } catch (error) {
+      // ignore
+    }
   };
 
   /**
@@ -224,8 +228,15 @@ const App = (): JSX.Element => {
         </AppContext.Provider>
         <Suspense fallback={<div className="loader" />}>
           {(() => {
-            if (isUserSettingsVisible && user) return <UserSettings user={user} />;
-            return null;
+            if (!isUserSettingsVisible || !user) return <></>;
+            return (
+              <UserSettings
+                user={user}
+                onClose={() => {
+                  setIsUserSettingsVisible(false);
+                }}
+              />
+            );
           })()}
         </Suspense>
       </div>

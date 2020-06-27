@@ -6,9 +6,9 @@ import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event, Match, Player } from '../../models';
+import { Event, Match, MatchStatus, Player } from '../../models';
 import MatchesList from '../match/MatchesList';
-import { saveMatch } from '../match/MatchUtils';
+import { deleteMatch, saveMatch } from '../match/MatchUtils';
 import PlayersSummary from '../player/PlayersSummary';
 import { ThemeType } from '../utils/Theme';
 import { getMatches, getNextMatch, getPlayers } from './EventUtils';
@@ -78,7 +78,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     <div className={classes.event}>
       {dayjs(event.date).calendar()}
       <MatchesList
-        matches={matches || []}
+        matches={matches?.sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1)) || []}
         players={players || []}
         extra={(
           <Button
@@ -101,6 +101,14 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
             {t('newMatch')}
           </Button>
         )}
+        onUpdate={(myMatch: Match, myStatus: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => {
+          if (myMatch.status !== myStatus) {
+            saveMatch(Match.copyOf(myMatch, (updated) => {
+              updated.status = myStatus;
+            }));
+          }
+        }}
+        onDelete={(myMatch: Match) => deleteMatch(myMatch)}
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary

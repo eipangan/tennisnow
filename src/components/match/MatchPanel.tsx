@@ -1,4 +1,4 @@
-import { CloseOutlined, PlayCircleOutlined, QuestionCircleOutlined, TrophyOutlined } from '@ant-design/icons';
+import { CloseOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,6 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
 import PlayerPanel from '../player/PlayerPanel';
 import { ThemeType } from '../utils/Theme';
-import { deleteMatch, saveMatch } from './MatchUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => {
@@ -58,6 +57,8 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 type MatchPanelProps = {
   match: Match;
   players: Player[];
+  onUpdate?: (match: Match, status: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => void;
+  onDelete?: (match: Match) => void;
 };
 
 /**
@@ -70,54 +71,52 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { match, players } = props;
-  const [status, setStatus] = useState(match.status || MatchStatus.NEW);
+  const { match, players, onUpdate, onDelete } = props;
+  const [status, setStatus] = useState<MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined>(match.status);
 
-  const [team1Class, setTeam1Class] = useState(classes.matchNeutral);
+  const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
-  const [middleText, setMiddleText] = useState(<PlayCircleOutlined />);
-  const [team2Class, setTeam2Class] = useState(classes.matchNeutral);
+  const [middleText, setMiddleText] = useState<JSX.Element>();
+  const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
-    if (match.status !== status) setStatus(match.status || MatchStatus.NEW);
-  }, [match.status, status]);
+    if (match.status && (match.status !== status)) setStatus(match.status);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [match.status]);
 
   useEffect(() => {
     switch (status) {
-      case MatchStatus.TEAM1_WON:
-        setTeam1Class(classes.matchWinner);
-        setMiddleClass(classes.matchWinner);
-        setMiddleText(<TrophyOutlined />);
-        setTeam2Class(classes.matchLoser);
+      case MatchStatus.PLAYER1_WON:
+        setPlayer1Class(classes.matchWinner);
+        setMiddleClass(classes.matchLoser);
+        setMiddleText(t('draw'));
+        setPlayer2Class(classes.matchLoser);
         break;
 
       case MatchStatus.DRAW:
-        setTeam1Class(classes.matchNeutral);
+        setPlayer1Class(classes.matchNeutral);
         setMiddleClass(classes.matchWinner);
         setMiddleText(t('draw'));
-        setTeam2Class(classes.matchNeutral);
+        setPlayer2Class(classes.matchNeutral);
         break;
 
-      case MatchStatus.TEAM2_WON:
-        setTeam1Class(classes.matchLoser);
-        setMiddleClass(classes.matchWinner);
-        setMiddleText(<TrophyOutlined />);
-        setTeam2Class(classes.matchWinner);
+      case MatchStatus.PLAYER2_WON:
+        setPlayer1Class(classes.matchLoser);
+        setMiddleClass(classes.matchLoser);
+        setMiddleText(t('draw'));
+        setPlayer2Class(classes.matchWinner);
         break;
 
       default:
-        setTeam1Class(classes.matchNeutral);
+        setPlayer1Class(classes.matchNeutral);
         setMiddleClass(classes.matchVs);
         setMiddleText(t('vs'));
-        setTeam2Class(classes.matchNeutral);
+        setPlayer2Class(classes.matchNeutral);
         break;
     }
 
-    if (match.status !== status) {
-      saveMatch(Match.copyOf(match, (updated) => {
-        updated.status = status;
-      }));
-    }
+    if (onUpdate) onUpdate(match, status);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
@@ -130,8 +129,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     <div>
       <div className={classes.match}>
         <div
-          className={team1Class}
-          onClick={() => { setStatus(status === MatchStatus.TEAM1_WON ? MatchStatus.NEW : MatchStatus.TEAM1_WON); }}
+          className={player1Class}
+          onClick={() => { setStatus(status === MatchStatus.PLAYER1_WON ? MatchStatus.NEW : MatchStatus.PLAYER1_WON); }}
           onKeyDown={() => { }}
           role="button"
           tabIndex={0}
@@ -148,8 +147,8 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
           {middleText}
         </div>
         <div
-          className={team2Class}
-          onClick={() => { setStatus(status === MatchStatus.TEAM2_WON ? MatchStatus.NEW : MatchStatus.TEAM2_WON); }}
+          className={player2Class}
+          onClick={() => { setStatus(status === MatchStatus.PLAYER2_WON ? MatchStatus.NEW : MatchStatus.PLAYER2_WON); }}
           onKeyDown={() => { }}
           role="button"
           tabIndex={0}
@@ -158,27 +157,28 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         </div>
       </div>
       <div style={{ height: '3px' }} />
-      <Popconfirm
-        cancelText={t('cancel')}
-        icon={<QuestionCircleOutlined />}
-        okText={t('delete')}
-        placement="bottom"
-        title={t('deleteMatchConfirm')}
-        onCancel={(e) => {
-          if (e) e.stopPropagation();
-        }}
-        onConfirm={(e) => {
-          if (match) {
-            deleteMatch(match);
-          }
-        }}
-      >
-        <Button
-          icon={<CloseOutlined />}
-          shape="circle"
-          style={{ background: '#ffffff50', color: 'darkgray' }}
-        />
-      </Popconfirm>
+      {(() => {
+        if (!onDelete) return <></>;
+        return (
+          <Popconfirm
+            cancelText={t('cancel')}
+            icon={<QuestionCircleOutlined />}
+            okText={t('delete')}
+            placement="bottom"
+            title={t('deleteMatchConfirm')}
+            onCancel={(e) => {
+              if (e) e.stopPropagation();
+            }}
+            onConfirm={(e) => { onDelete(match); }}
+          >
+            <Button
+              icon={<CloseOutlined />}
+              shape="circle"
+              style={{ background: '#ffffff50', color: 'darkgray' }}
+            />
+          </Popconfirm>
+        );
+      })()}
     </div>
   );
 };

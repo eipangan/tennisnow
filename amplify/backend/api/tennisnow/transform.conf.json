@@ -3,8 +3,43 @@
     "ElasticsearchWarning": true,
     "ResolverConfig": {
         "project": {
-            "ConflictHandler": "OPTIMISTIC_CONCURRENCY",
+            "ConflictHandler": "AUTOMERGE",
             "ConflictDetection": "VERSION"
         }
+    },
+    "StackMapping": {
+        "EventmatchesResolver": "ConnectionStack",
+        "EventplayersResolver": "ConnectionStack",
+        "EventTable": "Event",
+        "EventIAMRole": "Event",
+        "EventDataSource": "Event",
+        "SyncEventResolver": "Event",
+        "GetEventResolver": "Event",
+        "ListEventResolver": "Event",
+        "CreateEventResolver": "Event",
+        "UpdateEventResolver": "Event",
+        "DeleteEventResolver": "Event",
+        "SubscriptiononCreateEventResolver": "Event",
+        "SubscriptiononUpdateEventResolver": "Event",
+        "SubscriptiononDeleteEventResolver": "Event",
+        "GetAttEventTableStreamArn": "Event",
+        "GetAttEventDataSourceName": "Event",
+        "GetAttEventTableName": "Event",
+        "PlayerTable": "Player",
+        "PlayerIAMRole": "Player",
+        "PlayerDataSource": "Player",
+        "SyncPlayerResolver": "Player",
+        "GetPlayerResolver": "Player",
+        "ListPlayerResolver": "Player",
+        "CreatePlayerResolver": "Player",
+        "UpdatePlayerResolver": "Player",
+        "DeletePlayerResolver": "Player",
+        "QueryqueryPlayersByEventResolver": "Player",
+        "SubscriptiononCreatePlayerResolver": "Player",
+        "SubscriptiononUpdatePlayerResolver": "Player",
+        "SubscriptiononDeletePlayerResolver": "Player",
+        "GetAttPlayerTableStreamArn": "Player",
+        "GetAttPlayerDataSourceName": "Player",
+        "GetAttPlayerTableName": "Player"
     }
 }

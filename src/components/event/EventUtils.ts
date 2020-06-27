@@ -63,14 +63,18 @@ export const getNewEvent = (): Event => {
  *
  * @param eventID
  */
-export const getNextMatch = async (eventID: string): Promise<Match | undefined> => {
-  const matches = await getMatches(eventID);
-  const players = await getPlayers(eventID);
+export const getNextMatch = async (
+  eventID: string,
+  matches: Match[] | undefined = undefined,
+  players: Player[] | undefined = undefined,
+): Promise<Match | undefined> => {
+  const myMatches = matches || await getMatches(eventID);
+  const myPlayers = players || await getPlayers(eventID);
 
   // get potential players
   const getPotentialPlayers = () => {
-    const numPlayed = players.map(() => 0);
-    matches.forEach((myMatch) => {
+    const numPlayed = myPlayers.map(() => 0);
+    myMatches.forEach((myMatch) => {
       if (myMatch.playerIndices) {
         myMatch.playerIndices.forEach((playerIndex) => {
           numPlayed[playerIndex] += 1;
@@ -79,8 +83,8 @@ export const getNextMatch = async (eventID: string): Promise<Match | undefined> 
     });
 
     const potentialPlayers: number[] = [];
-    for (let i = 0; i < players.length; i += 1) {
-      players.forEach((player) => {
+    for (let i = 0; i < myPlayers.length; i += 1) {
+      myPlayers.forEach((player) => {
         if (numPlayed[player.index] === i) {
           potentialPlayers.push(player.index);
         }
@@ -92,8 +96,8 @@ export const getNextMatch = async (eventID: string): Promise<Match | undefined> 
 
   // get potential matches
   const getPotentialMatches = () => {
-    const allMatches = players.flatMap((v, i) => players.slice(i + 1).map((w) => ([v.index, w.index])));
-    const allMatchesDone = matches.map((m) => {
+    const allMatches = myPlayers.flatMap((v, i) => myPlayers.slice(i + 1).map((w) => ([v.index, w.index])));
+    const allMatchesDone = myMatches.map((m) => {
       if (!m.playerIndices) return undefined;
       return ([m.playerIndices[0], m.playerIndices[1]]);
     });
@@ -113,6 +117,7 @@ export const getNextMatch = async (eventID: string): Promise<Match | undefined> 
         if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
           nextMatch = new Match({
             eventID,
+            createdTime: dayjs().toDate().toISOString(),
             playerIndices: [p1, p2],
             status: MatchStatus.NEW,
           });

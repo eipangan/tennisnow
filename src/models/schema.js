@@ -17,6 +17,36 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "place": {
+                    "name": "place",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "EventType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "summary": {
+                    "name": "summary",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "details": {
+                    "name": "details",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "matches": {
                     "name": "matches",
                     "isArray": true,
@@ -94,6 +124,13 @@ export const schema = {
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "createdTime": {
+                    "name": "createdTime",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "playerIndices": {
@@ -235,16 +272,26 @@ export const schema = {
         }
     },
     "enums": {
+        "EventType": {
+            "name": "EventType",
+            "values": [
+                "SINGLES_ROUND_ROBIN",
+                "DOUBLES_ROUND_ROBIN",
+                "SINGLES_ONE_MATCH",
+                "DOUBLES_ONE_MATCH",
+                "DEFAULT"
+            ]
+        },
         "MatchStatus": {
             "name": "MatchStatus",
             "values": [
                 "NEW",
-                "TEAM1WON",
-                "TEAM2WON",
+                "PLAYER1_WON",
+                "PLAYER2_WON",
                 "DRAW"
             ]
         }
     },
     "nonModels": {},
-    "version": "d67f58f59d082786e161930d91440b56"
+    "version": "1aa0cacc935b38312fde911b26ac04fb"
 };
