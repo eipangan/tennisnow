@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
+import { Match, MatchStatus } from '../../models';
 import { theme } from '../utils/Theme';
 import EventSettings from './EventSettings';
 import { getNewEvent } from './EventUtils';
@@ -23,6 +25,19 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+const event = getNewEvent();
+
+DataStore.query = jest.fn().mockImplementation(() => [new Match({
+  eventID: event.id,
+  status: MatchStatus.NEW,
+})]);
+
+DataStore.observe = jest.fn().mockImplementation(() => ({
+  subscribe: () => ({
+    unsubscribe: () => {},
+  }),
+}));
 
 test('renders without crashing', async () => {
   render(
