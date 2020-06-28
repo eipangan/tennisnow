@@ -59,24 +59,27 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           {(() => {
             if (!onDelete) return <></>;
             return (
-              <Popconfirm
-                cancelText={t('cancel')}
-                icon={<QuestionCircleOutlined />}
-                okText={t('delete')}
-                placement="bottom"
-                title={t('deleteMatchConfirm')}
-                onCancel={(e) => {
-                  if (e) e.stopPropagation();
-                }}
-                onConfirm={(e) => { onDelete(match); }}
-              >
-                <Button
-                  // eslint-disable-next-line react/jsx-no-undef
-                  icon={<PlusOutlined />}
-                  shape="circle"
-                  style={{ background: '#ffffff50', color: 'darkgray' }}
-                />
-              </Popconfirm>
+              <div>
+                <div style={{ height: '3px' }} />
+                <Popconfirm
+                  cancelText={t('cancel')}
+                  icon={<QuestionCircleOutlined />}
+                  okText={t('delete')}
+                  placement="bottom"
+                  title={t('deleteMatchConfirm')}
+                  onCancel={(e) => {
+                    if (e) e.stopPropagation();
+                  }}
+                  onConfirm={(e) => { onDelete(match); }}
+                >
+                  <Button
+                    // eslint-disable-next-line react/jsx-no-undef
+                    icon={<PlusOutlined />}
+                    shape="circle"
+                    style={{ background: '#ffffff50', color: 'darkgray' }}
+                  />
+                </Popconfirm>
+              </div>
             );
           })()}
 

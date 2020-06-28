@@ -123,37 +123,34 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
 
   return (
-    <div>
-      <div className={classes.match}>
-        <div
-          className={player1Class}
-          onClick={() => { setStatus(status === MatchStatus.PLAYER1_WON ? MatchStatus.NEW : MatchStatus.PLAYER1_WON); }}
-          onKeyDown={() => { }}
-          role="button"
-          tabIndex={0}
-        >
-          <PlayerPanel player={player1} />
-        </div>
-        <div
-          className={middleClass}
-          onClick={() => { setStatus(status === MatchStatus.DRAW ? MatchStatus.NEW : MatchStatus.DRAW); }}
-          onKeyDown={() => { }}
-          role="button"
-          tabIndex={0}
-        >
-          {middleText}
-        </div>
-        <div
-          className={player2Class}
-          onClick={() => { setStatus(status === MatchStatus.PLAYER2_WON ? MatchStatus.NEW : MatchStatus.PLAYER2_WON); }}
-          onKeyDown={() => { }}
-          role="button"
-          tabIndex={0}
-        >
-          <PlayerPanel player={player2} />
-        </div>
+    <div className={classes.match}>
+      <div
+        className={player1Class}
+        onClick={() => { setStatus(status === MatchStatus.PLAYER1_WON ? MatchStatus.NEW : MatchStatus.PLAYER1_WON); }}
+        onKeyDown={() => { }}
+        role="button"
+        tabIndex={0}
+      >
+        <PlayerPanel player={player1} />
       </div>
-      <div style={{ height: '3px' }} />
+      <div
+        className={middleClass}
+        onClick={() => { setStatus(status === MatchStatus.DRAW ? MatchStatus.NEW : MatchStatus.DRAW); }}
+        onKeyDown={() => { }}
+        role="button"
+        tabIndex={0}
+      >
+        {middleText}
+      </div>
+      <div
+        className={player2Class}
+        onClick={() => { setStatus(status === MatchStatus.PLAYER2_WON ? MatchStatus.NEW : MatchStatus.PLAYER2_WON); }}
+        onKeyDown={() => { }}
+        role="button"
+        tabIndex={0}
+      >
+        <PlayerPanel player={player2} />
+      </div>
     </div>
   );
 };
