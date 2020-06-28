@@ -1,5 +1,3 @@
-import { CloseOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -58,7 +56,6 @@ type MatchPanelProps = {
   match: Match;
   players: Player[];
   onUpdate?: (match: Match, status: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => void;
-  onDelete?: (match: Match) => void;
 };
 
 /**
@@ -71,7 +68,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { match, players, onUpdate, onDelete } = props;
+  const { match, players, onUpdate } = props;
   const [status, setStatus] = useState<MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined>(match.status);
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
@@ -157,28 +154,6 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         </div>
       </div>
       <div style={{ height: '3px' }} />
-      {(() => {
-        if (!onDelete) return <></>;
-        return (
-          <Popconfirm
-            cancelText={t('cancel')}
-            icon={<QuestionCircleOutlined />}
-            okText={t('delete')}
-            placement="bottom"
-            title={t('deleteMatchConfirm')}
-            onCancel={(e) => {
-              if (e) e.stopPropagation();
-            }}
-            onConfirm={(e) => { onDelete(match); }}
-          >
-            <Button
-              icon={<CloseOutlined />}
-              shape="circle"
-              style={{ background: '#ffffff50', color: 'darkgray' }}
-            />
-          </Popconfirm>
-        );
-      })()}
     </div>
   );
 };

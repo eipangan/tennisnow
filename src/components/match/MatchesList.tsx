@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, Popconfirm } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -49,13 +49,38 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   return (
     <div className={classes.matchesPanel}>
       {matches.map((match, index) => (
-        <MatchPanel
-          key={index.toString()}
-          match={match}
-          players={players}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
-        />
+        <div>
+          <MatchPanel
+            key={index.toString()}
+            match={match}
+            players={players}
+            onUpdate={onUpdate}
+          />
+          {(() => {
+            if (!onDelete) return <></>;
+            return (
+              <Popconfirm
+                cancelText={t('cancel')}
+                icon={<QuestionCircleOutlined />}
+                okText={t('delete')}
+                placement="bottom"
+                title={t('deleteMatchConfirm')}
+                onCancel={(e) => {
+                  if (e) e.stopPropagation();
+                }}
+                onConfirm={(e) => { onDelete(match); }}
+              >
+                <Button
+                  // eslint-disable-next-line react/jsx-no-undef
+                  icon={<PlusOutlined />}
+                  shape="circle"
+                  style={{ background: '#ffffff50', color: 'darkgray' }}
+                />
+              </Popconfirm>
+            );
+          })()}
+
+        </div>
       ))}
       <div className={classes.buttonsPanel}>
         <Button
