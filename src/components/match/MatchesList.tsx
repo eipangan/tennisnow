@@ -1,6 +1,6 @@
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from '../../models';
@@ -10,7 +10,6 @@ import MatchPanel from './MatchPanel';
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   matchesPanel: {
-    alignItems: 'center',
     background: theme.highlightColor,
     border: '1px solid lightgray',
     display: 'flex',
@@ -19,6 +18,8 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     padding: '9px 15px',
   },
   buttonsPanel: {
+    display: 'flex',
+    flexDirection: 'column',
     padding: '0px 15px 0px 0px',
   },
 }));
@@ -45,6 +46,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { matches, players, onUpdate, onAdd, onDelete } = props;
+  const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
   return (
     <div className={classes.matchesPanel}>
@@ -57,7 +59,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
             onUpdate={onUpdate}
           />
           {(() => {
-            if (!onDelete) return <></>;
+            if (!onDelete || !isDeleteVisible) return <></>;
             return (
               <div>
                 <div style={{ height: '3px' }} />
@@ -69,12 +71,15 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
                   title={t('deleteMatchConfirm')}
                   onCancel={(e) => {
                     if (e) e.stopPropagation();
+                    setIsDeleteVisible(false);
                   }}
-                  onConfirm={(e) => { onDelete(match); }}
+                  onConfirm={(e) => {
+                    onDelete(match);
+                    setIsDeleteVisible(false);
+                  }}
                 >
                   <Button
-                    // eslint-disable-next-line react/jsx-no-undef
-                    icon={<PlusOutlined />}
+                    icon={<DeleteOutlined />}
                     shape="circle"
                     style={{ background: '#ffffff50', color: 'darkgray' }}
                   />
@@ -82,7 +87,6 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
               </div>
             );
           })()}
-
         </div>
       ))}
       <div className={classes.buttonsPanel}>
@@ -90,9 +94,23 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           data-testid="add-match"
           icon={<PlusOutlined />}
           onClick={onAdd}
-        >
-          {t('newMatch')}
-        </Button>
+          shape="round"
+        />
+        {(() => {
+          if (!onDelete) return <></>;
+          return (
+            <div>
+              <div style={{ height: '3px' }} />
+              <Button
+                data-testid="delete-match"
+                icon={<DeleteOutlined />}
+                onClick={() => setIsDeleteVisible(!isDeleteVisible)}
+                shape="round"
+                style={{ background: '#ffffff50', color: 'darkgray' }}
+              />
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
