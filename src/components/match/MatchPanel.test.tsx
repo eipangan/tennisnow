@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
+import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { getNewEvent, getNextMatch, getNewPlayers } from '../event/EventUtils';
+import { Match, MatchStatus } from '../../models';
+import { getNewEvent, getNewPlayers, getNextMatch } from '../event/EventUtils';
 import { theme } from '../utils/Theme';
 import MatchPanel from './MatchPanel';
 
@@ -10,10 +12,22 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
+const event = getNewEvent();
+
+DataStore.query = jest.fn().mockImplementation(() => [new Match({
+  eventID: event.id,
+  status: MatchStatus.NEW,
+})]);
+
+DataStore.observe = jest.fn().mockImplementation(() => ({
+  subscribe: () => ({
+    unsubscribe: () => { },
+  }),
+}));
+
 test('render new without crashing', async () => {
-  const event = getNewEvent();
   const players = getNewPlayers(event.id, 6);
-  const match = getNextMatch(event.id, players);
+  const match = await getNextMatch(event.id, [], players);
   const matches = [match];
 
   expect(event).toBeDefined();
@@ -35,9 +49,7 @@ test('render new without crashing', async () => {
       </BrowserRouter>,
     );
 
-    expect(screen.getAllByRole('button')).toHaveLength(4);
+    expect(screen.getAllByRole('button')).toHaveLength(3);
     expect(screen.getByText('vs')).toBeInTheDocument();
-
-    // fireEvent.click(screen.getAllByRole('button')[0]);
   }
 });
