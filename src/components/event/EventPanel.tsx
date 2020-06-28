@@ -1,10 +1,7 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event, Match, MatchStatus, Player } from '../../models';
 import MatchesList from '../match/MatchesList';
@@ -42,7 +39,6 @@ type EventPanelProps = {
  * @param props
  */
 const EventPanel = (props: EventPanelProps): JSX.Element => {
-  const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
@@ -80,27 +76,22 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
       <MatchesList
         matches={matches?.sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1)) || []}
         players={players || []}
-        extra={(
-          <Button
-            data-testid="add-match"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              getNextMatch(event.id)
-                .then((newMatch) => {
-                  if (newMatch) {
-                    saveMatch(newMatch);
-                    if (matches) {
-                      setMatches([...matches, newMatch]);
-                    } else {
-                      setMatches([newMatch]);
-                    }
-                  }
-                });
-            }}
-          >
-            {t('newMatch')}
-          </Button>
-        )}
+        onAdd={() => {
+          getNextMatch(event.id)
+            .then((newMatch) => {
+              if (newMatch) {
+                saveMatch(newMatch);
+                if (matches) {
+                  setMatches([...matches, newMatch]);
+                } else {
+                  setMatches([newMatch]);
+                }
+              }
+            });
+        }}
+        onDelete={(myMatch: Match) => {
+          deleteMatch(myMatch);
+        }}
         onUpdate={(myMatch: Match, myStatus: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => {
           if (myMatch.status !== myStatus) {
             saveMatch(Match.copyOf(myMatch, (updated) => {
@@ -108,7 +99,6 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
             }));
           }
         }}
-        onDelete={(myMatch: Match) => deleteMatch(myMatch)}
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary
