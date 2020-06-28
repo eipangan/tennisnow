@@ -1,12 +1,12 @@
-import { render, act } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { DataStore } from 'aws-amplify';
+import { Match, MatchStatus } from '../../models';
 import { theme } from '../utils/Theme';
 import EventPanel from './EventPanel';
 import { getNewEvent } from './EventUtils';
-import { MatchStatus, Match } from '../../models';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
