@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
+import { Match, MatchStatus } from '../../models';
 import { theme } from '../utils/Theme';
 import EventsList from './EventsList';
 import { getNewEvent } from './EventUtils';
@@ -24,6 +26,19 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+const event = getNewEvent();
+
+DataStore.query = jest.fn().mockImplementation(() => [new Match({
+  eventID: event.id,
+  status: MatchStatus.NEW,
+})]);
+
+DataStore.observe = jest.fn().mockImplementation(() => ({
+  subscribe: () => ({
+    unsubscribe: () => {},
+  }),
+}));
+
 test('renders one event without crashing', async () => {
   render(
     <BrowserRouter>
@@ -35,7 +50,6 @@ test('renders one event without crashing', async () => {
     </BrowserRouter>,
   );
 
-  expect(screen.getByText('eventSummary')).toBeInTheDocument();
   expect(screen.getByTestId('delete')).toBeInTheDocument();
   expect(screen.getByTestId('settings')).toBeInTheDocument();
 
