@@ -18,6 +18,9 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     overflowY: 'scroll',
     padding: '9px 15px',
   },
+  buttonsPanel: {
+    padding: '0px 15px 0px 0px',
+  },
 }));
 
 /**
@@ -54,7 +57,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           onDelete={onDelete}
         />
       ))}
-      <div style={{ padding: '0px 15px 0px 0px' }}>
+      <div className={classes.buttonsPanel}>
         <Button
           data-testid="add-match"
           icon={<PlusOutlined />}
