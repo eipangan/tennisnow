@@ -58,6 +58,4 @@ test('renders one event without crashing', async () => {
   expect(screen.getByText('cancel')).toBeInTheDocument();
   expect(screen.getByText('delete')).toBeInTheDocument();
   fireEvent.click(screen.getByText('cancel'));
-
-  fireEvent.click(screen.getByTestId('settings'));
 });
