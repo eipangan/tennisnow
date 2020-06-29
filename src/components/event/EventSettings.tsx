@@ -5,12 +5,11 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { DatePicker } from '..';
 import { Event, Player } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
 import { getNewPlayers, getPlayers } from './EventUtils';
-
-const DatePicker = React.lazy(() => import('../utils/DatePicker'));
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
