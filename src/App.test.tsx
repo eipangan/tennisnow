@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 const App = React.lazy(() => import('./App'));
 
@@ -14,13 +13,11 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-test('renders without crashing', async () => {
+test('renders without crashing', () => {
   render(
-    <BrowserRouter>
-      <Suspense fallback="loading...">
-        <App />
-      </Suspense>
-    </BrowserRouter>,
+    <Suspense fallback="loading...">
+      <App />
+    </Suspense>,
   );
 
   expect(screen.getByText('loading...')).toBeInTheDocument();

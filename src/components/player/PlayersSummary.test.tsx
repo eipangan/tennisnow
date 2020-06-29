@@ -1,9 +1,7 @@
 import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
-import { Event } from '../../models';
-import { getNewEvent } from '../event/EventUtils';
+import { getNewEvent, getNewPlayers } from '../event/EventUtils';
 import { theme } from '../utils/Theme';
 import PlayersSummary from './PlayersSummary';
 
@@ -25,15 +23,17 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-test('renders without crashing', async () => {
-  const event: Event = getNewEvent();
+test('renders without crashing', () => {
+  const event = getNewEvent();
+  const players = getNewPlayers(event.id, 6);
   render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <PlayersSummary event={event} />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
+    <ThemeProvider theme={theme}>
+      <Suspense fallback={null}>
+        <PlayersSummary
+          players={players || []}
+          matches={[]}
+        />
+      </Suspense>
+    </ThemeProvider>,
   );
 });

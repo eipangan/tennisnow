@@ -35,21 +35,19 @@ DataStore.query = jest.fn().mockImplementation(() => [new Match({
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
-    unsubscribe: () => {},
+    unsubscribe: () => { },
   }),
 }));
 
-test('renders without crashing', async () => {
+test('renders without crashing', () => {
   render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <EventSettings
-            event={getNewEvent()}
-          />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
+    <ThemeProvider theme={theme}>
+      <Suspense fallback={null}>
+        <EventSettings
+          event={getNewEvent()}
+        />
+      </Suspense>
+    </ThemeProvider>,
   );
 
   expect(screen.getByText('eventSettings')).toBeInTheDocument();

@@ -16,7 +16,7 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('runs getNewEvent() as expected', async () => {
+test('runs getNewEvent() as expected', () => {
   expect(event).toBeDefined();
   expect(event).not.toBeNull();
 
@@ -118,7 +118,7 @@ test('runs getNextMatch() with 4 players', async () => {
   }
 });
 
-test('runs getPlayers() with eventID parameter', async () => {
+test('runs getPlayers() with eventID parameter', () => {
   const defaultNumPlayers = 6;
   const players = getNewPlayers(event.id);
 
@@ -160,7 +160,7 @@ test('runs getPlayers() with eventID parameter', async () => {
   }
 });
 
-test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
+test('runs getPlayers() with eventID, numPlayers=4 parameter', () => {
   const numPlayers = 4;
   const players = getNewPlayers(event.id, numPlayers);
 
@@ -189,7 +189,7 @@ test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
   expect(players?.find((player) => player.name === '1')).toBeUndefined();
 });
 
-test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', async () => {
+test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', () => {
   const numPlayers = 4;
   const playerNames = ['P1', 'P2', 'P3'];
   const players = getNewPlayers(event.id, numPlayers, playerNames);

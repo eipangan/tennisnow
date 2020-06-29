@@ -38,7 +38,7 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('renders without crashing', async () => {
+test('renders without crashing', () => {
   render(
     <ThemeProvider theme={theme}>
       <Suspense fallback={null}>
@@ -46,4 +46,6 @@ test('renders without crashing', async () => {
       </Suspense>
     </ThemeProvider>,
   );
+
+  expect(event).toBeDefined();
 });
