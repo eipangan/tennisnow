@@ -2,7 +2,6 @@ import { render } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import { Match, MatchStatus } from '../../models';
 import { theme } from '../utils/Theme';
 import EventPanel from './EventPanel';
@@ -35,18 +34,16 @@ DataStore.query = jest.fn().mockImplementation(() => [new Match({
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
-    unsubscribe: () => {},
+    unsubscribe: () => { },
   }),
 }));
 
 test('renders without crashing', async () => {
   render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <EventPanel event={event} />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
+    <ThemeProvider theme={theme}>
+      <Suspense fallback={null}>
+        <EventPanel event={event} />
+      </Suspense>
+    </ThemeProvider>,
   );
 });
