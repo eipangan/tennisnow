@@ -51,7 +51,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   return (
     <div className={classes.matchesPanel}>
       {matches.map((match, index) => (
-        <div>
+        <div key={index.toString()}>
           <MatchPanel
             key={index.toString()}
             match={match}
