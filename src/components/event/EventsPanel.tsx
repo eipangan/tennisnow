@@ -43,32 +43,30 @@ const EventsPanel = (props: EventsPanelProps): JSX.Element => {
   const [activeTab, setActiveTab] = useLocalStorage<string>('activeTab', 'events');
 
   return (
-    <>
-      <Tabs
-        className={classes.eventsPanel}
-        defaultActiveKey={activeTab}
-        onChange={(myActiveKey) => setActiveTab(myActiveKey)}
-        tabBarExtraContent={
-          <EventButtons />
+    <Tabs
+      className={classes.eventsPanel}
+      defaultActiveKey={activeTab}
+      onChange={(myActiveKey) => setActiveTab(myActiveKey)}
+      tabBarExtraContent={
+        <EventButtons />
       }
-      >
-        <TabPane />
-        <TabPane key="events" tab={t('events')}>
-          <EventsList
-            events={events
-              .filter((a: Event) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
-              .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
-          />
-        </TabPane>
-        <TabPane key="finished" tab={t('finished')}>
-          <EventsList
-            events={events
-              .filter((a: Event) => dayjs(a.date).isBefore(dayjs().startOf('day')))
-              .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
-          />
-        </TabPane>
-      </Tabs>
-    </>
+    >
+      <TabPane />
+      <TabPane key="events" tab={t('events')}>
+        <EventsList
+          events={events
+            .filter((a: Event) => dayjs(a.date).isSameOrAfter(dayjs().startOf('day')))
+            .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))}
+        />
+      </TabPane>
+      <TabPane key="finished" tab={t('finished')}>
+        <EventsList
+          events={events
+            .filter((a: Event) => dayjs(a.date).isBefore(dayjs().startOf('day')))
+            .sort((a: Event, b: Event) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))}
+        />
+      </TabPane>
+    </Tabs>
   );
 };
 
