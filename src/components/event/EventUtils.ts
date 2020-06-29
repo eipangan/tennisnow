@@ -12,7 +12,7 @@ dayjs.extend(calendar);
  *
  * @param event
  */
-export const deleteEvent = async (event: Event) => {
+export const deleteEvent = async (event: Event): Promise<void> => {
   await DataStore.delete(event);
 };
 
@@ -21,7 +21,7 @@ export const deleteEvent = async (event: Event) => {
  *
  * @param eventID
  */
-export const getEvent = async (eventID: string) => {
+export const getEvent = async (eventID: string): Promise<Event> => {
   const fetchedEvent = await DataStore.query(Event, eventID);
   return fetchedEvent;
 };
@@ -31,7 +31,7 @@ export const getEvent = async (eventID: string) => {
  *
  * @param eventID
  */
-export const getEvents = async () => {
+export const getEvents = async (): Promise<Event[]> => {
   const fetchedEvents = await DataStore.query(Event);
   return fetchedEvents;
 };
@@ -41,7 +41,7 @@ export const getEvents = async () => {
  *
  * @param eventID
  */
-export const getMatches = async (eventID: string) => {
+export const getMatches = async (eventID: string): Promise<Match[]> => {
   const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eventID));
   return fetchedMatches;
 };
@@ -51,7 +51,7 @@ export const getMatches = async (eventID: string) => {
  *
  * @param eventID
  */
-export const getPlayers = async (eventID: string) => {
+export const getPlayers = async (eventID: string): Promise<Player[]> => {
   const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
   return fetchedPlayers.sort((a, b) => a.index - b.index);
 };
@@ -72,6 +72,8 @@ export const getNewEvent = (): Event => {
  * get next match or undefined if cannot get next match
  *
  * @param eventID
+ * @param matches
+ * @param players
  */
 export const getNextMatch = async (
   eventID: string,
@@ -171,7 +173,7 @@ export const getNewPlayers = (
  *
  * @param event
  */
-export const saveEvent = async (event: Event) => {
+export const saveEvent = async (event: Event): Promise<void> => {
   await DataStore.save(event);
 };
 
@@ -181,7 +183,10 @@ export const saveEvent = async (event: Event) => {
  * @param eventID id of the event
  * @param players players
  */
-export const savePlayers = async (eventID: string, players: Player[]) => {
+export const savePlayers = async (
+  eventID: string,
+  players: Player[],
+): Promise<void> => {
   const currentPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
 
   // remove unneeded players
