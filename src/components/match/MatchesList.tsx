@@ -90,12 +90,20 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
         </div>
       ))}
       <div className={classes.buttonsPanel}>
-        <Button
-          data-testid="add-match"
-          icon={<PlusOutlined />}
-          onClick={onAdd}
-          shape="round"
-        />
+        {(() => {
+          if (!onAdd) return <></>;
+          return (
+            <div>
+              <div style={{ height: '3px' }} />
+              <Button
+                data-testid="add-match"
+                icon={<PlusOutlined />}
+                onClick={onAdd}
+                shape="round"
+              />
+            </div>
+          );
+        })()}
         {(() => {
           if (!onDelete) return <></>;
           return (
