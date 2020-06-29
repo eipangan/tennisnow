@@ -1,10 +1,22 @@
+import { DataStore } from 'aws-amplify';
 import { Match, MatchStatus } from '../../models';
 import { generateUUID } from '../utils/Utils';
-import { getNewEvent, getNextMatch, getNewPlayers } from './EventUtils';
+import { getNewEvent, getNewPlayers, getNextMatch } from './EventUtils';
+
+const event = getNewEvent();
+
+DataStore.query = jest.fn().mockImplementation(() => [new Match({
+  eventID: event.id,
+  status: MatchStatus.NEW,
+})]);
+
+DataStore.observe = jest.fn().mockImplementation(() => ({
+  subscribe: () => ({
+    unsubscribe: () => { },
+  }),
+}));
 
 test('runs getNewEvent() as expected', async () => {
-  const event = getNewEvent();
-
   expect(event).toBeDefined();
   expect(event).not.toBeNull();
 
@@ -26,86 +38,25 @@ test('runs getNewEvent() as expected', async () => {
 });
 
 test('runs getNextMatch() with eventID parameter', async () => {
-  const event = getNewEvent();
-  const nextMatch = getNextMatch(event.id);
+  const nextMatch = await getNextMatch(event.id);
 
   expect(nextMatch).toBeUndefined();
 });
 
 test('runs getNextMatch() with eventID, players[1] parameter', async () => {
-  const event = getNewEvent();
-  const nextMatch = getNextMatch(event.id, getNewPlayers(event.id, 1));
+  const nextMatch = await getNextMatch(event.id, getNewPlayers(event.id, 1));
 
   expect(nextMatch).toBeUndefined();
 });
 
-test('runs getNextMatch() with eventID, players[2] parameter', async () => {
-  const event = getNewEvent();
-  const nextMatch = getNextMatch(event.id, getNewPlayers(event.id, 2));
-
-  expect(nextMatch).toBeDefined();
-  expect(nextMatch).not.toBeNull();
-
-  // id
-  expect(nextMatch?.id).toBeDefined();
-  expect(nextMatch?.id).not.toBeNull();
-  expect(nextMatch?.id.length).toBeGreaterThan(32);
-
-  // eventID
-  expect(nextMatch?.eventID).toBeDefined();
-  expect(nextMatch?.eventID).not.toBeNull();
-  expect(nextMatch?.eventID).toBe(event.id);
-
-  // playerIndices
-  expect(nextMatch?.playerIndices).toBeDefined();
-  expect(nextMatch?.playerIndices).not.toBeNull();
-  expect(nextMatch?.playerIndices?.length).toBe(2);
-
-  // status
-  expect(nextMatch?.status).toBe(MatchStatus.NEW);
-
-  // owner
-  expect(nextMatch?.owner).toBeUndefined();
-});
-
-test('runs getNextMatch() with eventID, players[6] parameter', async () => {
-  const event = getNewEvent();
-  const nextMatch = getNextMatch(event.id, getNewPlayers(event.id, 6));
-
-  expect(nextMatch).toBeDefined();
-  expect(nextMatch).not.toBeNull();
-
-  // id
-  expect(nextMatch?.id).toBeDefined();
-  expect(nextMatch?.id).not.toBeNull();
-  expect(nextMatch?.id.length).toBeGreaterThan(32);
-
-  // eventID
-  expect(nextMatch?.eventID).toBeDefined();
-  expect(nextMatch?.eventID).not.toBeNull();
-  expect(nextMatch?.eventID).toBe(event.id);
-
-  // playerIndices
-  expect(nextMatch?.playerIndices).toBeDefined();
-  expect(nextMatch?.playerIndices).not.toBeNull();
-  expect(nextMatch?.playerIndices?.length).toBe(2);
-
-  // status
-  expect(nextMatch?.status).toBe(MatchStatus.NEW);
-
-  // owner
-  expect(nextMatch?.owner).toBeUndefined();
-});
-
 test('runs getNextMatch() with eventID, players[6], matches[1] parameter', async () => {
-  const event = getNewEvent();
   const match = new Match({
     eventID: event.id,
     playerIndices: [0, 1],
   });
   const matches: Match[] = [match];
   const players = getNewPlayers(event.id, 6);
-  const nextMatch = getNextMatch(event.id, players, matches);
+  const nextMatch = await getNextMatch(event.id, matches, players);
 
   expect(nextMatch).toBeDefined();
   expect(nextMatch).not.toBeNull();
@@ -133,13 +84,12 @@ test('runs getNextMatch() with eventID, players[6], matches[1] parameter', async
 });
 
 test('runs getNextMatch() with 4 players', async () => {
-  const event = getNewEvent();
   const matches: Match[] = [];
   const players = getNewPlayers(event.id, 4);
 
   // round 1
   {
-    const nextMatch = getNextMatch(event.id, players, matches);
+    const nextMatch = await getNextMatch(event.id, matches, players);
     if (nextMatch) {
       expect(nextMatch).toBeDefined();
       expect(nextMatch.playerIndices).toBeDefined();
@@ -154,7 +104,7 @@ test('runs getNextMatch() with 4 players', async () => {
 
   // round 2
   {
-    const nextMatch = getNextMatch(event.id, players, matches);
+    const nextMatch = await getNextMatch(event.id, matches, players);
     if (nextMatch) {
       expect(nextMatch).toBeDefined();
       expect(nextMatch.playerIndices).toBeDefined();
@@ -169,7 +119,6 @@ test('runs getNextMatch() with 4 players', async () => {
 });
 
 test('runs getPlayers() with eventID parameter', async () => {
-  const event = getNewEvent();
   const defaultNumPlayers = 6;
   const players = getNewPlayers(event.id);
 
@@ -212,7 +161,6 @@ test('runs getPlayers() with eventID parameter', async () => {
 });
 
 test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
-  const event = getNewEvent();
   const numPlayers = 4;
   const players = getNewPlayers(event.id, numPlayers);
 
@@ -242,7 +190,6 @@ test('runs getPlayers() with eventID, numPlayers=4 parameter', async () => {
 });
 
 test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', async () => {
-  const event = getNewEvent();
   const numPlayers = 4;
   const playerNames = ['P1', 'P2', 'P3'];
   const players = getNewPlayers(event.id, numPlayers, playerNames);
