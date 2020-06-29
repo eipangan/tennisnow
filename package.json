@@ -17,7 +17,7 @@
     "i18next": "^19.5.1",
     "i18next-browser-languagedetector": "^5.0.0",
     "i18next-xhr-backend": "^3.2.2",
-    "rc-picker": "^1.10.2",
+    "rc-picker": "^1.10.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-ga": "^3.0.0",
