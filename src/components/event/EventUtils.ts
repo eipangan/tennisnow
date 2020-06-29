@@ -27,6 +27,16 @@ export const getEvent = async (eventID: string) => {
 };
 
 /**
+ * get events
+ *
+ * @param eventID
+ */
+export const getEvents = async () => {
+  const fetchedEvents = await DataStore.query(Event);
+  return fetchedEvents;
+};
+
+/**
  * get matches given an eventID
  *
  * @param eventID

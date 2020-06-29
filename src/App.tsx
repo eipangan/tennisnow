@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
+import { getEvents } from './components/event/EventUtils';
 import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
@@ -183,7 +184,7 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      setEvents(await DataStore.query(Event));
+      setEvents(await getEvents());
     };
 
     authenticateUser();
