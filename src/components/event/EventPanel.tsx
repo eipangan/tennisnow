@@ -87,7 +87,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
                   setMatches([newMatch]);
                 }
               }
-            });
+            }, () => { });
         }}
         onDelete={(myMatch: Match) => {
           deleteMatch(myMatch);
