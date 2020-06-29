@@ -77,8 +77,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
-    if (match.status && (match.status !== status)) setStatus(match.status);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (match.status) setStatus(match.status);
   }, [match.status]);
 
   useEffect(() => {
@@ -113,9 +112,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     }
 
     if (onUpdate) onUpdate(match, status);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, match, onUpdate, status, t]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <></>;
 

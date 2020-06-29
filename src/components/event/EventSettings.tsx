@@ -115,8 +115,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     };
 
     fetchPlayers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [event.date, event.id, form]);
 
   /**
    * whenever players change

@@ -61,7 +61,6 @@ const EventRoute = (props: any): JSX.Element => {
 
   useEffect(() => {
     fetchEvent(params.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   if (!event) {

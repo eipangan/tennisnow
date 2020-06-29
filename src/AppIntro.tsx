@@ -35,32 +35,31 @@ const AppIntro = (): JSX.Element => {
   const [matches, setMatches] = useState<Match[]>();
   const players = getNewPlayers(event.id, 6, ['1', '2', '3', '4', '5', '6']);
 
-  const fetchMatches = async () => {
-    const myMatches: Match[] = [];
-    let myNextMatch: Match | undefined;
+  useEffect(() => {
+    const fetchMatches = async () => {
+      const myMatches: Match[] = [];
+      let myNextMatch: Match | undefined;
 
-    const getMyNextMatch = async () => {
-      myNextMatch = await getNextMatch(event.id, myMatches, players);
-      if (myNextMatch) myMatches.push(myNextMatch);
+      const getMyNextMatch = async () => {
+        myNextMatch = await getNextMatch(event.id, myMatches, players);
+        if (myNextMatch) myMatches.push(myNextMatch);
+      };
+
+      await getMyNextMatch();
+      await getMyNextMatch();
+      await getMyNextMatch();
+      await getMyNextMatch();
+      await getMyNextMatch();
+      await getMyNextMatch();
+      await getMyNextMatch();
+      await getMyNextMatch();
+      await getMyNextMatch();
+
+      setMatches(myMatches);
     };
 
-    await getMyNextMatch();
-    await getMyNextMatch();
-    await getMyNextMatch();
-    await getMyNextMatch();
-    await getMyNextMatch();
-    await getMyNextMatch();
-    await getMyNextMatch();
-    await getMyNextMatch();
-    await getMyNextMatch();
-
-    setMatches(myMatches);
-  };
-
-  useEffect(() => {
     fetchMatches();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [event.id, players]);
 
   return (
     <div className={classes.appIntro}>

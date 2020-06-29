@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import { Match, MatchStatus } from '../../models';
 import { theme } from '../utils/Theme';
 import EventSettings from './EventSettings';
