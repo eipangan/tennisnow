@@ -88,7 +88,8 @@ const App = (): JSX.Element => {
 
   const fetchEvents = async () => {
     setIsLoading(true);
-    setEvents(await getEvents());
+    const fetchedEvents = await getEvents();
+    setEvents(fetchedEvents);
     setIsLoading(false);
   };
 
@@ -203,10 +204,10 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     authenticateUser();
-    fetchEvents();
   }, []);
 
   useEffect(() => {
+    fetchEvents();
     const subscription = DataStore.observe(Event,
       (e) => e.owner('eq', user?.getUsername() || ''))
       .subscribe(() => fetchEvents());
