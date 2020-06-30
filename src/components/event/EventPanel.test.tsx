@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -38,14 +38,16 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('renders without crashing', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Suspense fallback={null}>
-        <EventPanel event={event} />
-      </Suspense>
-    </ThemeProvider>,
-  );
+test('renders without crashing', async () => {
+  await act(async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <EventPanel event={event} />
+        </Suspense>
+      </ThemeProvider>,
+    );
+  });
 
   expect(event).toBeDefined();
 });
