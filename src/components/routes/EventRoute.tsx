@@ -54,12 +54,26 @@ const EventRoute = (props: any): JSX.Element => {
   const { match } = props;
   const { params } = match;
 
-  const fetchEvent = async (id: string) => {
-    const myEvent = await getEvent(id);
-    setEvent(myEvent);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  /**
+   * Loader
+   */
+  const Loader = (): JSX.Element => {
+    if (!isLoading) return <></>;
+    return (
+      <div className="loader" />
+    );
   };
 
   useEffect(() => {
+    const fetchEvent = async (id: string) => {
+      setIsLoading(true);
+      const myEvent = await getEvent(id);
+      setEvent(myEvent);
+      setIsLoading(false);
+    };
+
     fetchEvent(params.id);
   }, [params.id]);
 
@@ -75,6 +89,7 @@ const EventRoute = (props: any): JSX.Element => {
 
   return (
     <>
+      <Loader />
       <PageHeader
         className={classes.appHeader}
         onBack={() => history.push('/')}

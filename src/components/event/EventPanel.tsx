@@ -54,7 +54,9 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     };
 
     fetchMatches();
-    const subscription = DataStore.observe(Match).subscribe(() => fetchMatches());
+    const subscription = DataStore.observe(Match,
+      (m) => m.eventID('eq', event.id))
+      .subscribe(() => fetchMatches());
     return () => subscription.unsubscribe();
   }, [event.id]);
 
@@ -66,7 +68,9 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     };
 
     fetchPlayers();
-    const subscription = DataStore.observe(Player).subscribe(() => fetchPlayers());
+    const subscription = DataStore.observe(Player,
+      (p) => p.eventID('eq', event.id))
+      .subscribe(() => fetchPlayers());
     return () => subscription.unsubscribe();
   }, [event.id]);
 

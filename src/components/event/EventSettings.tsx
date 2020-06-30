@@ -58,6 +58,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const minNumPlayers = 4;
   const playerPrefix = 'player';
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   /**
    * get updated Event based on data in the form
    */
@@ -97,6 +99,16 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   };
 
   /**
+   * Loader
+   */
+  const Loader = (): JSX.Element => {
+    if (!isLoading) return <></>;
+    return (
+      <div className="loader" />
+    );
+  };
+
+  /**
    * whenever event changes
    */
   useEffect(() => {
@@ -106,12 +118,14 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     });
 
     const fetchPlayers = async () => {
+      setIsLoading(true);
       let fetchedPlayers = await getPlayers(event.id);
       if (fetchedPlayers.length < minNumPlayers) {
         fetchedPlayers = getNewPlayers(event.id);
       }
       setPlayers(fetchedPlayers);
       setNumPlayers(fetchedPlayers.length);
+      setIsLoading(false);
     };
 
     fetchPlayers();
@@ -140,6 +154,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       visible
       width={324}
     >
+      <Loader />
       <Form
         form={form}
         labelCol={{ span: 0 }}

@@ -84,6 +84,14 @@ const App = (): JSX.Element => {
   const [user, setUser] = useState<CognitoUser>();
   const [events, setEvents] = useState<Event[]>();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const fetchEvents = async () => {
+    setIsLoading(true);
+    setEvents(await getEvents());
+    setIsLoading(false);
+  };
+
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
   ReactGA.pageview(window.location.pathname + window.location.search);
@@ -132,6 +140,17 @@ const App = (): JSX.Element => {
       </a>
     </>
   );
+
+  /**
+   * Loader
+   */
+  const Loader = (): JSX.Element => {
+    if (!user) return <></>;
+    if (!isLoading) return <></>;
+    return (
+      <div className="loader" />
+    );
+  };
 
   /**
    * UserButton Component
@@ -183,17 +202,16 @@ const App = (): JSX.Element => {
    */
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      setEvents(await getEvents());
-    };
-
     authenticateUser();
     fetchEvents();
-    const subscription = DataStore.observe(Event).subscribe(() => {
-      fetchEvents();
-    });
-    return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const subscription = DataStore.observe(Event,
+      (e) => e.owner('eq', user?.getUsername() || ''))
+      .subscribe(() => fetchEvents());
+    return () => subscription.unsubscribe();
+  }, [user]);
 
   useEffect(() => {
     i18n.changeLanguage(navigator.language);
@@ -210,6 +228,7 @@ const App = (): JSX.Element => {
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
+        <Loader />
         <AppContext.Provider value={app}>
           <Switch>
             <Route path="/event/:id" component={EventRoute} />
