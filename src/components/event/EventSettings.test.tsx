@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, act } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -38,16 +38,18 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('renders without crashing', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Suspense fallback={null}>
-        <EventSettings
-          event={getNewEvent()}
-        />
-      </Suspense>
-    </ThemeProvider>,
-  );
+test('renders without crashing', async () => {
+  await act(async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <EventSettings
+            event={getNewEvent()}
+          />
+        </Suspense>
+      </ThemeProvider>,
+    );
+  });
 
   expect(screen.getByText('eventSettings')).toBeInTheDocument();
   expect(screen.getByText('players')).toBeInTheDocument();
@@ -58,7 +60,6 @@ test('renders without crashing', () => {
 
   fireEvent.click(screen.getByTestId('minus'));
 
-  fireEvent.click(screen.getByText('players'));
   fireEvent.click(screen.getByText('clearNames'));
   fireEvent.click(screen.getByText('randomizeOrder'));
   fireEvent.click(screen.getByText('cancel'));
