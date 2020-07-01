@@ -9,7 +9,7 @@
   "event": "Event",
   "events": "Events",
   "eventSettings": "Event Settings",
-  "eventSummary": "{{numPlayers}} players, 1 court, singles",
+  "eventSummary": "{{numPlayers}} players 1 court singles",
   "finished": "Finished",
   "lost": "Lost",
   "name": "Name",
