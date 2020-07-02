@@ -9,7 +9,7 @@
   "event": "イベント",
   "events": "イベント一覧",
   "eventSettings": "イベントの設定",
-  "eventSummary": "{{numPlayers}}人コート1面シングルス",
+  "eventSummary": "{{numPlayers}}人シングルス",
   "finished": "過去",
   "lost": "敗戦",
   "name": "名前",
