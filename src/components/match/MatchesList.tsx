@@ -71,11 +71,10 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
                   title={t('deleteMatchConfirm')}
                   onCancel={(e) => {
                     if (e) e.stopPropagation();
-                    setIsDeleteVisible(false);
                   }}
                   onConfirm={(e) => {
                     onDelete(match);
-                    setIsDeleteVisible(false);
+                    if (e) e.stopPropagation();
                   }}
                 >
                   <Button
