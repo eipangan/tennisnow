@@ -2,10 +2,20 @@ import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined }
 import { Button, Popconfirm } from 'antd';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { Event, Player } from '../../models';
+import { ThemeType } from '../utils/Theme';
 import EventSettings from './EventSettings';
 import { deleteEvent, getNewEvent, saveEvent, savePlayers } from './EventUtils';
+
+// initialize styles
+const useStyles = createUseStyles((theme: ThemeType) => ({
+  buttonsContainer: {
+    display: 'flex',
+    outline: 'none',
+  },
+}));
 
 /**
  * EventButtonsProps
@@ -22,6 +32,9 @@ type EventButtonsProps = {
  */
 const EventButtons = (props: EventButtonsProps): JSX.Element => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const history = useHistory();
   const { event, setEvent } = props;
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
@@ -109,11 +122,11 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
 
   return (
     <div
+      className={classes.buttonsContainer}
       onClick={(e) => e.stopPropagation()}
       onKeyDown={(e) => e.stopPropagation()}
       role="button"
       tabIndex={0}
-      style={{ display: 'flex' }}
     >
       <DeleteButton />
       <div style={{ width: '12px' }} />
