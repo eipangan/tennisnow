@@ -276,10 +276,7 @@ export const schema = {
             "name": "EventType",
             "values": [
                 "SINGLES_ROUND_ROBIN",
-                "DOUBLES_ROUND_ROBIN",
-                "SINGLES_ONE_MATCH",
-                "DOUBLES_ONE_MATCH",
-                "DEFAULT"
+                "SWITCH_DOUBLES_ROUND_ROBIN"
             ]
         },
         "MatchStatus": {

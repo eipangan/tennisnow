@@ -2,10 +2,7 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 export enum EventType {
   SINGLES_ROUND_ROBIN = "SINGLES_ROUND_ROBIN",
-  DOUBLES_ROUND_ROBIN = "DOUBLES_ROUND_ROBIN",
-  SINGLES_ONE_MATCH = "SINGLES_ONE_MATCH",
-  DOUBLES_ONE_MATCH = "DOUBLES_ONE_MATCH",
-  DEFAULT = "DEFAULT"
+  SWITCH_DOUBLES_ROUND_ROBIN = "SWITCH_DOUBLES_ROUND_ROBIN"
 }
 
 export enum MatchStatus {
