@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from '..';
-import { Event, Player } from '../../models';
+import { Event, Player, EventType } from '../../models';
 import { ThemeType } from '../utils/Theme';
 import { getLocaleDateFormat, shuffle } from '../utils/Utils';
 import { getNewPlayers, getPlayers } from './EventUtils';
@@ -47,8 +47,10 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { event, onClose, onOk } = props;
-  const { Panel } = Collapse;
+
+  const { Item } = Form;
   const { Option } = Select;
+  const { Panel } = Collapse;
 
   const [form] = Form.useForm();
   const [players, setPlayers] = useState<Player[]>();
@@ -74,6 +76,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       .set('hour', parseInt(time.toString().substring(0, 2), 10))
       .set('minute', parseInt(time.toString().substring(2, 5), 10))
       .toISOString();
+    updated.type = form.getFieldValue('type');
     updated.summary = t('eventSummary', { numPlayers });
   });
 
@@ -115,6 +118,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     form.setFieldsValue({
       date: dayjs(event.date),
       time: dayjs(event.date).format('HHmm'),
+      type: event.type,
     });
 
     const fetchPlayers = async () => {
@@ -129,7 +133,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     };
 
     fetchPlayers();
-  }, [event.date, event.id, form]);
+  }, [event.date, event.id, event.type, form]);
 
   /**
    * whenever players change
@@ -160,7 +164,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         labelCol={{ span: 0 }}
       >
         <div className={classes.eventSettingsRow}>
-          <Form.Item
+          <Item
             key="date"
             name="date"
           >
@@ -172,15 +176,13 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
               inputReadOnly
               size="large"
             />
-          </Form.Item>
+          </Item>
           <div style={{ width: '3px' }} />
-          <Form.Item
+          <Item
             key="time"
             name="time"
           >
-            <Select
-              size="large"
-            >
+            <Select size="large">
               {(() => {
                 const children: JSX.Element[] = [];
                 let now = dayjs().startOf('day');
@@ -199,7 +201,18 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                 return children;
               })()}
             </Select>
-          </Form.Item>
+          </Item>
+        </div>
+        <div className={classes.eventSettingsRow}>
+          <Item
+            key="type"
+            name="type"
+          >
+            <Select style={{ width: 270 }}>
+              <Option value={EventType.SINGLES_ROUND_ROBIN}>{t('singlesRoundRobin')}</Option>
+              <Option value={EventType.SWITCH_DOUBLES_ROUND_ROBIN}>{t('switchDoublesRoundRobin')}</Option>
+            </Select>
+          </Item>
         </div>
         <div className={classes.eventSettingsRow}>
           <Collapse defaultActiveKey="players">
@@ -239,7 +252,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                   const playerInputBox = [];
                   for (let p = 0; p < numPlayers; p += 1) {
                     playerInputBox.push(
-                      <Form.Item
+                      <Item
                         key={p.toString()}
                         name={`${playerPrefix}${p}`}
                         style={{ margin: '9px 9px' }}
@@ -249,7 +262,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                           placeholder={t('player') + String(p + 1)}
                           size="large"
                         />
-                      </Form.Item>,
+                      </Item>,
                     );
                   }
                   return playerInputBox;
