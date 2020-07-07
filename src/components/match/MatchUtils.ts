@@ -11,12 +11,16 @@ export const deleteMatch = async (match: Match) => {
 };
 
 /**
- * save match
+ * save match. remove duplicate playerIndices
  *
  * @param match
  */
 export const saveMatch = async (match: Match) => {
-  await DataStore.save(Match.copyOf(match, (updated) => {
-    updated.playerIndices = match.playerIndices?.slice(0, 2);
-  }));
+  if (match.playerIndices) {
+    await DataStore.save(Match.copyOf(match, (updated) => {
+      if (match.playerIndices) {
+        updated.playerIndices = match.playerIndices.filter((item, i, ar) => ar.indexOf(item) === i);
+      }
+    }));
+  }
 };
