@@ -83,6 +83,8 @@ export const getNextMatch = async (
   const myMatches = matches || await getMatches(eventID);
   const myPlayers = players || await getPlayers(eventID);
 
+  let nextMatch: Match | undefined;
+
   /**
    * get potential players
    */
@@ -121,14 +123,11 @@ export const getNextMatch = async (
   };
 
   // get next match
-  let nextMatch: Match | undefined;
-
   const potentialPlayers = getPotentialPlayers();
   const potentialMatches = getPotentialMatches();
   const BreakException = {};
   try {
     potentialPlayers.forEach((p1) => {
-      // eslint-disable-next-line consistent-return
       potentialPlayers.forEach((p2) => {
         if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
           nextMatch = new Match({
