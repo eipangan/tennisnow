@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { getNewEvent, getNewPlayers } from '../event/EventUtils';
-import { theme } from '../utils/Theme';
-import PlayersSummary from './PlayersSummary';
+import { getNewEvent, getNewPlayers } from '../EventUtils';
+import { theme } from '../Theme';
+import PlayersSummary from '../PlayersSummary';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),

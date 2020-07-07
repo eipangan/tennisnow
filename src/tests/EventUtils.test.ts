@@ -1,7 +1,7 @@
 import { DataStore } from 'aws-amplify';
-import { Match, MatchStatus } from '../../models';
-import { generateUUID } from '../utils/Utils';
-import { getNewEvent, getNewPlayers, getNextMatch } from './EventUtils';
+import { Match, MatchStatus } from '../models';
+import { generateUUID } from '../Utils';
+import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
 
 const event = getNewEvent();
 

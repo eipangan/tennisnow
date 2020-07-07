@@ -12,15 +12,15 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
-import { getEvents } from './components/event/EventUtils';
-import { ThemeType } from './components/utils/Theme';
+import { getEvents } from './EventUtils';
+import { ThemeType } from './Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
-const EventRoute = React.lazy(() => import('./components/routes/EventRoute'));
-const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
-const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
+const EventRoute = React.lazy(() => import('./EventRoute'));
+const EventsPanel = React.lazy(() => import('./EventsPanel'));
+const UserSettings = React.lazy(() => import('./UserSettings'));
 
 // initialize dayjs
 dayjs.extend(updateLocale);

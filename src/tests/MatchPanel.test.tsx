@@ -3,10 +3,10 @@ import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, MatchStatus } from '../../models';
-import { getNewEvent, getNewPlayers, getNextMatch } from '../event/EventUtils';
-import { theme } from '../utils/Theme';
-import MatchPanel from './MatchPanel';
+import { Match, MatchStatus } from '../models';
+import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
+import { theme } from '../Theme';
+import MatchPanel from '../MatchPanel';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),

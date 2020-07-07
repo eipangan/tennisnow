@@ -4,8 +4,8 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { Event, Player } from '../../models';
-import { ThemeType } from '../utils/Theme';
+import { Event, Player } from './models';
+import { ThemeType } from './Theme';
 import EventSettings from './EventSettings';
 import { deleteEvent, getNewEvent, saveEvent, savePlayers } from './EventUtils';
 

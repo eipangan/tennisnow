@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { theme } from '../utils/Theme';
-import UserSettings from './UserSettings';
+import { theme } from '../Theme';
+import UserSettings from '../UserSettings';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),

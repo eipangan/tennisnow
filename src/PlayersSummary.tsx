@@ -2,8 +2,8 @@ import Table, { ColumnProps } from 'antd/lib/table';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Match, MatchStatus, Player } from '../../models';
-import { ThemeType } from '../utils/Theme';
+import { Match, MatchStatus, Player } from './models';
+import { ThemeType } from './Theme';
 import { getPlayerName } from './PlayerUtils';
 
 // initialize styles

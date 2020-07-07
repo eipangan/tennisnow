@@ -1,5 +1,5 @@
 import { DataStore } from 'aws-amplify';
-import { Player } from '../../models';
+import { Player } from './models';
 
 /**
  * delete player

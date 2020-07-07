@@ -1,11 +1,11 @@
-import { fireEvent, render, screen, act } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { Match, MatchStatus } from '../../models';
-import { theme } from '../utils/Theme';
-import EventSettings from './EventSettings';
-import { getNewEvent } from './EventUtils';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
+import EventPanel from '../EventPanel';
+import { getNewEvent } from '../EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -43,25 +43,11 @@ test('renders without crashing', async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventSettings
-            event={getNewEvent()}
-          />
+          <EventPanel event={event} />
         </Suspense>
       </ThemeProvider>,
     );
   });
 
-  expect(screen.getByText('eventSettings')).toBeInTheDocument();
-  expect(screen.getByText('players')).toBeInTheDocument();
-  expect(screen.getByText('clearNames')).toBeInTheDocument();
-  expect(screen.getByText('randomizeOrder')).toBeInTheDocument();
-  expect(screen.getByText('cancel')).toBeInTheDocument();
-  expect(screen.getByText('ok')).toBeInTheDocument();
-
-  fireEvent.click(screen.getByTestId('minus'));
-
-  fireEvent.click(screen.getByText('clearNames'));
-  fireEvent.click(screen.getByText('randomizeOrder'));
-  fireEvent.click(screen.getByText('cancel'));
-  fireEvent.click(screen.getByText('ok'));
+  expect(event).toBeDefined();
 });

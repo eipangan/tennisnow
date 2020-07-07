@@ -5,10 +5,10 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { DatePicker } from '..';
-import { Event, Player, EventType } from '../../models';
-import { ThemeType } from '../utils/Theme';
-import { getLocaleDateFormat, shuffle } from '../utils/Utils';
+import { DatePicker } from './components';
+import { Event, Player, EventType } from './models';
+import { ThemeType } from './Theme';
+import { getLocaleDateFormat, shuffle } from './Utils';
 import { getNewPlayers, getPlayers } from './EventUtils';
 
 // initialize styles

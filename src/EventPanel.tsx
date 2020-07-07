@@ -3,11 +3,11 @@ import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event, Match, MatchStatus, Player } from '../../models';
-import MatchesList from '../match/MatchesList';
-import { deleteMatch, saveMatch } from '../match/MatchUtils';
-import PlayersSummary from '../player/PlayersSummary';
-import { ThemeType } from '../utils/Theme';
+import { Event, Match, MatchStatus, Player } from './models';
+import MatchesList from './MatchesList';
+import { deleteMatch, saveMatch } from './MatchUtils';
+import PlayersSummary from './PlayersSummary';
+import { ThemeType } from './Theme';
 import { getMatches, getNextMatch, getPlayers } from './EventUtils';
 
 // initialize dayjs

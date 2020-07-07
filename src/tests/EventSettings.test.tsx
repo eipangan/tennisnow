@@ -1,12 +1,11 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, act } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
-import { Match, MatchStatus } from '../../models';
-import { theme } from '../utils/Theme';
-import EventsList from './EventsList';
-import { getNewEvent } from './EventUtils';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
+import EventSettings from '../EventSettings';
+import { getNewEvent } from '../EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -35,27 +34,34 @@ DataStore.query = jest.fn().mockImplementation(() => [new Match({
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
-    unsubscribe: () => {},
+    unsubscribe: () => { },
   }),
 }));
 
-test('renders one event without crashing', () => {
-  render(
-    <BrowserRouter>
+test('renders without crashing', async () => {
+  await act(async () => {
+    render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventsList events={[getNewEvent()]} />
+          <EventSettings
+            event={getNewEvent()}
+          />
         </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
+      </ThemeProvider>,
+    );
+  });
 
-  expect(screen.getByTestId('delete')).toBeInTheDocument();
-  expect(screen.getByTestId('settings')).toBeInTheDocument();
-
-  fireEvent.click(screen.getByTestId('delete'));
-  expect(screen.getByText('deleteEventConfirm')).toBeInTheDocument();
+  expect(screen.getByText('eventSettings')).toBeInTheDocument();
+  expect(screen.getByText('players')).toBeInTheDocument();
+  expect(screen.getByText('clearNames')).toBeInTheDocument();
+  expect(screen.getByText('randomizeOrder')).toBeInTheDocument();
   expect(screen.getByText('cancel')).toBeInTheDocument();
-  expect(screen.getByText('delete')).toBeInTheDocument();
+  expect(screen.getByText('ok')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByTestId('minus'));
+
+  fireEvent.click(screen.getByText('clearNames'));
+  fireEvent.click(screen.getByText('randomizeOrder'));
   fireEvent.click(screen.getByText('cancel'));
+  fireEvent.click(screen.getByText('ok'));
 });

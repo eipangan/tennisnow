@@ -4,7 +4,7 @@ import { Button, Drawer, Popconfirm, Typography } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { ThemeType } from '../utils/Theme';
+import { ThemeType } from './Theme';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({

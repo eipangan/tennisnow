@@ -1,11 +1,12 @@
-import { render, act } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { Match, MatchStatus } from '../../models';
-import { theme } from '../utils/Theme';
-import EventPanel from './EventPanel';
-import { getNewEvent } from './EventUtils';
+import { BrowserRouter } from 'react-router-dom';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
+import EventsList from '../EventsList';
+import { getNewEvent } from '../EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -34,20 +35,27 @@ DataStore.query = jest.fn().mockImplementation(() => [new Match({
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
-    unsubscribe: () => { },
+    unsubscribe: () => {},
   }),
 }));
 
-test('renders without crashing', async () => {
-  await act(async () => {
-    render(
+test('renders one event without crashing', () => {
+  render(
+    <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventPanel event={event} />
+          <EventsList events={[getNewEvent()]} />
         </Suspense>
-      </ThemeProvider>,
-    );
-  });
+      </ThemeProvider>
+    </BrowserRouter>,
+  );
 
-  expect(event).toBeDefined();
+  expect(screen.getByTestId('delete')).toBeInTheDocument();
+  expect(screen.getByTestId('settings')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByTestId('delete'));
+  expect(screen.getByText('deleteEventConfirm')).toBeInTheDocument();
+  expect(screen.getByText('cancel')).toBeInTheDocument();
+  expect(screen.getByText('delete')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('cancel'));
 });

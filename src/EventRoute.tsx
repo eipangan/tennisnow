@@ -2,12 +2,12 @@ import { PageHeader } from 'antd';
 import React, { Suspense, useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { ReactComponent as AppTitle } from '../../images/title.svg';
-import { Event } from '../../models';
-import EventButtons from '../event/EventButtons';
-import EventPanel from '../event/EventPanel';
-import { getEvent } from '../event/EventUtils';
-import { ThemeType } from '../utils/Theme';
+import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
+import EventButtons from './EventButtons';
+import EventPanel from './EventPanel';
+import { getEvent } from './EventUtils';
+import { ThemeType } from './Theme';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({

@@ -1,8 +1,8 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event, Match, MatchStatus, Player } from '../../models';
-import { deletePlayer, savePlayer } from '../player/PlayerUtils';
+import { Event, Match, MatchStatus, Player } from './models';
+import { deletePlayer, savePlayer } from './PlayerUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);

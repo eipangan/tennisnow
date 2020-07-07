@@ -1,7 +1,7 @@
 import React, { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Player } from '../../models';
-import { ThemeType } from '../utils/Theme';
+import { Player } from './models';
+import { ThemeType } from './Theme';
 import { getPlayerName } from './PlayerUtils';
 
 // initialize styles
