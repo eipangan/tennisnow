@@ -1,7 +1,7 @@
 import { DataStore } from 'aws-amplify';
-import { Match, MatchStatus } from '../models';
-import { generateUUID } from '../Utils';
 import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
+import { Event, EventType, Match, MatchStatus } from '../models';
+import { generateUUID } from '../Utils';
 
 const event = getNewEvent();
 
@@ -16,6 +16,10 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
+/**
+ * getNewEvent() tests
+ */
+
 test('runs getNewEvent() as expected', () => {
   expect(event).toBeDefined();
   expect(event).not.toBeNull();
@@ -24,66 +28,48 @@ test('runs getNewEvent() as expected', () => {
   expect(event.id).not.toBeNull();
   expect(event.id.length).toBeGreaterThan(32);
 
+  expect(event.date).toBeDefined();
+  expect(event.date).not.toBeNull();
   expect(event.date).toContain('T');
   expect(event.date).toContain('Z');
 
+  // initially undefined parameters
+  expect(event.place).toBeUndefined();
+  expect(event.type).toBeUndefined();
+  expect(event.summary).toBeUndefined();
+  expect(event.details).toBeUndefined();
   expect(event.matches).toBeUndefined();
   expect(event.players).toBeUndefined();
-
   expect(event.owner).toBeUndefined();
-
-  if (event.players) {
-    expect(event.players).toHaveLength(6);
-  }
 });
 
-test('runs getNextMatch() with eventID parameter', async () => {
-  const nextMatch = await getNextMatch(event.id);
+/**
+ * getNextMatch() tests
+ */
 
+test('runs getNextMatch() with only eventID parameter', async () => {
+  const myEvent = Event.copyOf(event, (updated) => {
+    updated.type = EventType.SINGLES_ROUND_ROBIN;
+  });
+
+  const nextMatch = await getNextMatch(myEvent.id);
+
+  // should be undefined because myEvent doesn't have players
   expect(nextMatch).toBeUndefined();
 });
 
 test('runs getNextMatch() with eventID, players[1] parameter', async () => {
-  const nextMatch = await getNextMatch(event.id, getNewPlayers(event.id, 1));
+  const myEvent = Event.copyOf(event, (updated) => {
+    updated.type = EventType.SINGLES_ROUND_ROBIN;
+  });
 
+  const nextMatch = await getNextMatch(myEvent.id, getNewPlayers(myEvent.id, 1));
+
+  // should be undefined because myEvent only has one player
   expect(nextMatch).toBeUndefined();
 });
 
-test('runs getNextMatch() with eventID, players[6], matches[1] parameter', async () => {
-  const match = new Match({
-    eventID: event.id,
-    playerIndices: [0, 1],
-  });
-  const matches: Match[] = [match];
-  const players = getNewPlayers(event.id, 6);
-  const nextMatch = await getNextMatch(event.id, matches, players);
-
-  expect(nextMatch).toBeDefined();
-  expect(nextMatch).not.toBeNull();
-
-  // id
-  expect(nextMatch?.id).toBeDefined();
-  expect(nextMatch?.id).not.toBeNull();
-  expect(nextMatch?.id.length).toBeGreaterThan(32);
-
-  // eventID
-  expect(nextMatch?.eventID).toBeDefined();
-  expect(nextMatch?.eventID).not.toBeNull();
-  expect(nextMatch?.eventID).toBe(event.id);
-
-  // playerIndices
-  expect(nextMatch?.playerIndices).toBeDefined();
-  expect(nextMatch?.playerIndices).not.toBeNull();
-  expect(nextMatch?.playerIndices?.length).toBe(2);
-
-  // status
-  expect(nextMatch?.status).toBe(MatchStatus.NEW);
-
-  // owner
-  expect(nextMatch?.owner).toBeUndefined();
-});
-
-test('runs getNextMatch() with 4 players', async () => {
+test('runs getNextMatch() with eventID, matches[0], players[4] parameters', async () => {
   const matches: Match[] = [];
   const players = getNewPlayers(event.id, 4);
 
@@ -118,7 +104,45 @@ test('runs getNextMatch() with 4 players', async () => {
   }
 });
 
-test('runs getPlayers() with eventID parameter', () => {
+test('runs getNextMatch() with eventID, matches[1], players[6], parameter', async () => {
+  const match = new Match({
+    eventID: event.id,
+    playerIndices: [0, 1],
+  });
+  const matches: Match[] = [match];
+  const players = getNewPlayers(event.id, 6);
+  const nextMatch = await getNextMatch(event.id, matches, players);
+
+  expect(nextMatch).toBeDefined();
+  expect(nextMatch).not.toBeNull();
+
+  // id
+  expect(nextMatch?.id).toBeDefined();
+  expect(nextMatch?.id).not.toBeNull();
+  expect(nextMatch?.id.length).toBeGreaterThan(32);
+
+  // eventID
+  expect(nextMatch?.eventID).toBeDefined();
+  expect(nextMatch?.eventID).not.toBeNull();
+  expect(nextMatch?.eventID).toBe(event.id);
+
+  // playerIndices
+  expect(nextMatch?.playerIndices).toBeDefined();
+  expect(nextMatch?.playerIndices).not.toBeNull();
+  expect(nextMatch?.playerIndices?.length).toBe(2);
+
+  // status
+  expect(nextMatch?.status).toBe(MatchStatus.NEW);
+
+  // owner
+  expect(nextMatch?.owner).toBeUndefined();
+});
+
+/**
+ * getPlayers() tests
+ */
+
+test('runs getPlayers() with just eventID parameter', () => {
   const defaultNumPlayers = 6;
   const players = getNewPlayers(event.id);
 
