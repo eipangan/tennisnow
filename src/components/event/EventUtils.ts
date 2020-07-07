@@ -83,7 +83,9 @@ export const getNextMatch = async (
   const myMatches = matches || await getMatches(eventID);
   const myPlayers = players || await getPlayers(eventID);
 
-  // get potential players
+  /**
+   * get potential players
+   */
   const getPotentialPlayers = () => {
     const numPlayed = myPlayers.map(() => 0);
     myMatches.forEach((myMatch) => {
@@ -106,7 +108,9 @@ export const getNextMatch = async (
     return potentialPlayers;
   };
 
-  // get potential matches
+  /**
+   * get potential matches
+   */
   const getPotentialMatches = () => {
     const allMatches = myPlayers.flatMap((v, i) => myPlayers.slice(i + 1).map((w) => ([v.index, w.index])));
     const allMatchesDone = myMatches.map((m) => {
