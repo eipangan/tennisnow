@@ -8,7 +8,7 @@ import { deletePlayer, savePlayer } from './PlayerUtils';
 dayjs.extend(calendar);
 
 /**
- * delete event
+ * delete event from DataStore
  *
  * @param event
  */
@@ -17,7 +17,7 @@ export const deleteEvent = async (event: Event): Promise<void> => {
 };
 
 /**
- * get event given an eventID
+ * get event from DataStore, given an eventID
  *
  * @param eventID
  */
@@ -27,7 +27,7 @@ export const getEvent = async (eventID: string): Promise<Event> => {
 };
 
 /**
- * get events
+ * get events from DataStore
  *
  * @param eventID
  */
@@ -37,7 +37,7 @@ export const getEvents = async (): Promise<Event[]> => {
 };
 
 /**
- * get matches given an eventID
+ * get matches from DataStore, given an eventID
  *
  * @param eventID
  */
@@ -47,7 +47,7 @@ export const getMatches = async (eventID: string): Promise<Match[]> => {
 };
 
 /**
- * get players given an eventID
+ * get players from DataStore, given an eventID
  *
  * @param eventID
  */
@@ -69,7 +69,7 @@ export const getNewEvent = (): Event => {
 };
 
 /**
- * get next match or undefined if cannot get next match
+ * get next match
  *
  * @param eventID
  * @param matches
