@@ -1,6 +1,6 @@
 import { DataStore } from 'aws-amplify';
 import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
-import { Event, EventType, Match, MatchStatus } from '../models';
+import { Event, EventType, Match, MatchStatus, Player } from '../models';
 import { generateUUID } from '../Utils';
 
 const event = getNewEvent();
@@ -52,30 +52,73 @@ test('runs getNextMatch() with only eventID parameter', async () => {
     updated.type = EventType.SINGLES_ROUND_ROBIN;
   });
 
-  const nextMatch = await getNextMatch(myEvent.id);
+  const nextMatch = await getNextMatch(myEvent);
 
   // should be undefined because myEvent doesn't have players
   expect(nextMatch).toBeUndefined();
 });
 
-test('runs getNextMatch() with eventID, players[1] parameter', async () => {
+test('runs getNextMatch() for SINGLES_ROUND_ROBIN', async () => {
   const myEvent = Event.copyOf(event, (updated) => {
     updated.type = EventType.SINGLES_ROUND_ROBIN;
   });
 
-  const nextMatch = await getNextMatch(myEvent.id, getNewPlayers(myEvent.id, 1));
-
-  // should be undefined because myEvent only has one player
+  let nextMatch = await getNextMatch(myEvent, [], getNewPlayers(myEvent.id, 1));
   expect(nextMatch).toBeUndefined();
+
+  nextMatch = await getNextMatch(myEvent, [], getNewPlayers(myEvent.id, 2));
+  expect(nextMatch).toBeDefined();
+
+  nextMatch = await getNextMatch(myEvent, [], getNewPlayers(myEvent.id, 3));
+  expect(nextMatch).toBeDefined();
+});
+
+test('runs getNextMatch() for SWITCH_DOUBLES_ROUND_ROBIN', async () => {
+  const myEvent = Event.copyOf(event, (updated) => {
+    updated.type = EventType.SWITCH_DOUBLES_ROUND_ROBIN;
+  });
+
+  let numPlayers: number;
+  let newPlayers: Player[];
+  let nextMatch: Match | undefined;
+
+  numPlayers = 1;
+  newPlayers = getNewPlayers(myEvent.id, numPlayers);
+  nextMatch = await getNextMatch(myEvent, [], newPlayers);
+  expect(nextMatch).toBeUndefined();
+
+  numPlayers = 2;
+  newPlayers = getNewPlayers(myEvent.id, numPlayers);
+  nextMatch = await getNextMatch(myEvent, [], newPlayers);
+  // expect(nextMatch).toBeUndefined();
+
+  numPlayers = 3;
+  newPlayers = getNewPlayers(myEvent.id, numPlayers);
+  nextMatch = await getNextMatch(myEvent, [], newPlayers);
+  // expect(nextMatch).toBeUndefined();
+
+  numPlayers = 4;
+  newPlayers = getNewPlayers(myEvent.id, numPlayers);
+  nextMatch = await getNextMatch(myEvent, [], newPlayers);
+  expect(nextMatch).toBeDefined();
+
+  numPlayers = 5;
+  newPlayers = getNewPlayers(myEvent.id, numPlayers);
+  nextMatch = await getNextMatch(myEvent, [], newPlayers);
+  expect(nextMatch).toBeDefined();
+  expect(nextMatch).not.toBeNull();
 });
 
 test('runs getNextMatch() with eventID, matches[0], players[4] parameters', async () => {
+  const myEvent = Event.copyOf(event, (updated) => {
+    updated.type = EventType.SWITCH_DOUBLES_ROUND_ROBIN;
+  });
   const matches: Match[] = [];
   const players = getNewPlayers(event.id, 4);
 
   // round 1
   {
-    const nextMatch = await getNextMatch(event.id, matches, players);
+    const nextMatch = await getNextMatch(myEvent, matches, players);
     if (nextMatch) {
       expect(nextMatch).toBeDefined();
       expect(nextMatch.playerIndices).toBeDefined();
@@ -90,7 +133,7 @@ test('runs getNextMatch() with eventID, matches[0], players[4] parameters', asyn
 
   // round 2
   {
-    const nextMatch = await getNextMatch(event.id, matches, players);
+    const nextMatch = await getNextMatch(myEvent, matches, players);
     if (nextMatch) {
       expect(nextMatch).toBeDefined();
       expect(nextMatch.playerIndices).toBeDefined();
@@ -105,13 +148,16 @@ test('runs getNextMatch() with eventID, matches[0], players[4] parameters', asyn
 });
 
 test('runs getNextMatch() with eventID, matches[1], players[6], parameter', async () => {
+  const myEvent = Event.copyOf(event, (updated) => {
+    updated.type = EventType.SWITCH_DOUBLES_ROUND_ROBIN;
+  });
   const match = new Match({
     eventID: event.id,
     playerIndices: [0, 1],
   });
   const matches: Match[] = [match];
   const players = getNewPlayers(event.id, 6);
-  const nextMatch = await getNextMatch(event.id, matches, players);
+  const nextMatch = await getNextMatch(myEvent, matches, players);
 
   expect(nextMatch).toBeDefined();
   expect(nextMatch).not.toBeNull();

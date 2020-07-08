@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { getNewEvent, getNewPlayers, getNextMatch } from './EventUtils';
-import MatchesList from './MatchesList';
-import { ThemeType } from './Theme';
 import { ReactComponent as Signup } from './images/signup.svg';
 import { ReactComponent as Tennis } from './images/tennis.svg';
+import MatchesList from './MatchesList';
 import { Match } from './models';
+import { ThemeType } from './Theme';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -41,7 +41,7 @@ const AppIntro = (): JSX.Element => {
       let myNextMatch: Match | undefined;
 
       const getMyNextMatch = async () => {
-        myNextMatch = await getNextMatch(event.id, myMatches, players);
+        myNextMatch = await getNextMatch(event, myMatches, players);
         if (myNextMatch) myMatches.push(myNextMatch);
       };
 
@@ -59,7 +59,7 @@ const AppIntro = (): JSX.Element => {
     };
 
     fetchMatches();
-  }, [event.id, players]);
+  }, [event, players]);
 
   return (
     <div className={classes.appIntro}>

@@ -3,10 +3,10 @@ import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, MatchStatus } from '../models';
 import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
-import { theme } from '../Theme';
 import MatchPanel from '../MatchPanel';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -27,7 +27,7 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
 
 test('render new without crashing', async () => {
   const players = getNewPlayers(event.id, 6);
-  const match = await getNextMatch(event.id, [], players);
+  const match = await getNextMatch(event, [], players);
   const matches = [match];
 
   expect(event).toBeDefined();

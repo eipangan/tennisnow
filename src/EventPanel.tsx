@@ -3,12 +3,12 @@ import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event, Match, MatchStatus, Player } from './models';
+import { getMatches, getNextMatch, getPlayers } from './EventUtils';
 import MatchesList from './MatchesList';
 import { deleteMatch, saveMatch } from './MatchUtils';
+import { Event, Match, MatchStatus, Player } from './models';
 import PlayersSummary from './PlayersSummary';
 import { ThemeType } from './Theme';
-import { getMatches, getNextMatch, getPlayers } from './EventUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -83,7 +83,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         matches={matches?.sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1)) || []}
         players={players || []}
         onAdd={() => {
-          getNextMatch(event.id)
+          getNextMatch(event)
             .then((newMatch) => {
               if (newMatch) {
                 saveMatch(newMatch);

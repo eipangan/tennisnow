@@ -76,12 +76,12 @@ export const getNewEvent = (): Event => {
  * @param players
  */
 export const getNextMatch = async (
-  eventID: string,
+  event: Event,
   matches: Match[] | undefined = undefined,
   players: Player[] | undefined = undefined,
 ): Promise<Match | undefined> => {
-  const myMatches = matches || await getMatches(eventID);
-  const myPlayers = players || await getPlayers(eventID);
+  const myMatches = matches || await getMatches(event.id);
+  const myPlayers = players || await getPlayers(event.id);
 
   let nextMatch: Match | undefined;
 
@@ -127,6 +127,7 @@ export const getNextMatch = async (
   const potentialMatches = getPotentialMatches();
   const BreakException = {};
   try {
+    const eventID = event.id;
     potentialPlayers.forEach((p1) => {
       potentialPlayers.forEach((p2) => {
         if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
@@ -143,6 +144,8 @@ export const getNextMatch = async (
   } catch (e) {
     if (e !== BreakException) throw e;
   }
+
+  // console.log(potentialPlayers, potentialMatches, event.type, nextMatch);
 
   return nextMatch;
 };
