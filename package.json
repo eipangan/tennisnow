@@ -14,7 +14,7 @@
     "antd": "^4.4.1",
     "aws-amplify": "^3.0.19",
     "dayjs": "^1.8.29",
-    "i18next": "^19.5.4",
+    "i18next": "^19.5.5",
     "i18next-browser-languagedetector": "^5.0.0",
     "i18next-xhr-backend": "^3.2.2",
     "rc-picker": "^1.12.1",
