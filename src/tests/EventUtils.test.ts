@@ -33,9 +33,11 @@ test('runs getNewEvent() as expected', () => {
   expect(event.date).toContain('T');
   expect(event.date).toContain('Z');
 
+  expect(event.type).toBeDefined();
+  expect(event.type).toBe(EventType.GENERIC_EVENT);
+
   // initially undefined parameters
   expect(event.place).toBeUndefined();
-  expect(event.type).toBeUndefined();
   expect(event.summary).toBeUndefined();
   expect(event.details).toBeUndefined();
   expect(event.matches).toBeUndefined();

@@ -11,6 +11,8 @@
   "eventSettings": "イベントの設定",
   "eventSummary": "{{numPlayers}}人シングルス",
   "finished": "過去",
+  "fixDoublesRoundRobin": "ダブルス固定ペアラウンドロビン",
+  "genericEvent": "イベントその他",
   "lost": "敗戦",
   "name": "名前",
   "newEvent": "新規イベント",

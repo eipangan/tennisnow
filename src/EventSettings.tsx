@@ -6,10 +6,10 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
-import { Event, Player, EventType } from './models';
+import { getNewPlayers, getPlayers } from './EventUtils';
+import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getLocaleDateFormat, shuffle } from './Utils';
-import { getNewPlayers, getPlayers } from './EventUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -209,7 +209,9 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             name="type"
           >
             <Select style={{ width: 270 }}>
+              <Option value={EventType.GENERIC_EVENT}>{t('genericEvent')}</Option>
               <Option value={EventType.SINGLES_ROUND_ROBIN}>{t('singlesRoundRobin')}</Option>
+              <Option value={EventType.FIX_DOUBLES_ROUND_ROBIN}>{t('fixDoublesRoundRobin')}</Option>
               <Option value={EventType.SWITCH_DOUBLES_ROUND_ROBIN}>{t('switchDoublesRoundRobin')}</Option>
             </Select>
           </Item>

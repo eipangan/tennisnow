@@ -1,7 +1,7 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event, Match, MatchStatus, Player } from './models';
+import { Event, EventType, Match, MatchStatus, Player } from './models';
 import { deletePlayer, savePlayer } from './PlayerUtils';
 
 // initialize dayjs
@@ -63,6 +63,7 @@ export const getNewEvent = (): Event => {
   const event = new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
+    type: EventType.GENERIC_EVENT,
   });
 
   return event;

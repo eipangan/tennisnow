@@ -11,6 +11,8 @@
   "eventSettings": "Event Settings",
   "eventSummary": "{{numPlayers}} singles players",
   "finished": "Finished",
+  "fixDoublesRoundRobin": "Fix Doubles Round Robin",
+  "genericEvent": "Basic Event",
   "lost": "Lost",
   "name": "Name",
   "newEvent": "New Event",
