@@ -98,7 +98,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         onDelete={(myMatch: Match) => {
           deleteMatch(myMatch);
         }}
-        onUpdate={(myMatch: Match, myStatus: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => {
+        onUpdate={(myMatch: Match, myStatus: MatchStatus | keyof typeof MatchStatus | undefined) => {
           if (myMatch.status !== myStatus) {
             saveMatch(Match.copyOf(myMatch, (updated) => {
               updated.status = myStatus;

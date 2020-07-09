@@ -55,7 +55,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 type MatchPanelProps = {
   match: Match;
   players: Player[];
-  onUpdate?: (match: Match, status: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => void;
+  onUpdate?: (match: Match, status: MatchStatus | keyof typeof MatchStatus | undefined) => void;
 };
 
 /**
@@ -69,7 +69,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { match, players, onUpdate } = props;
-  const [status, setStatus] = useState<MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined>(match.status);
+  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus | undefined>(match.status);
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);

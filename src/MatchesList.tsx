@@ -32,7 +32,7 @@ type MatchesListProps = {
   players: Player[];
   onAdd?: () => void;
   onDelete?: (match: Match) => void;
-  onUpdate?: (match: Match, status: MatchStatus | 'NEW' | 'PLAYER1_WON' | 'PLAYER2_WON' | 'DRAW' | undefined) => void;
+  onUpdate?: (match: Match, status: MatchStatus | keyof typeof MatchStatus | undefined) => void;
 }
 
 /**
