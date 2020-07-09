@@ -275,7 +275,9 @@ export const schema = {
         "EventType": {
             "name": "EventType",
             "values": [
+                "GENERIC_EVENT",
                 "SINGLES_ROUND_ROBIN",
+                "FIX_DOUBLES_ROUND_ROBIN",
                 "SWITCH_DOUBLES_ROUND_ROBIN"
             ]
         },

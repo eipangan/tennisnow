@@ -1,7 +1,9 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
 export enum EventType {
+  GENERIC_EVENT = "GENERIC_EVENT",
   SINGLES_ROUND_ROBIN = "SINGLES_ROUND_ROBIN",
+  FIX_DOUBLES_ROUND_ROBIN = "FIX_DOUBLES_ROUND_ROBIN",
   SWITCH_DOUBLES_ROUND_ROBIN = "SWITCH_DOUBLES_ROUND_ROBIN"
 }
 

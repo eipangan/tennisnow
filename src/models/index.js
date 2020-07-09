@@ -3,7 +3,9 @@ import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
 const EventType = {
+  "GENERIC_EVENT": "GENERIC_EVENT",
   "SINGLES_ROUND_ROBIN": "SINGLES_ROUND_ROBIN",
+  "FIX_DOUBLES_ROUND_ROBIN": "FIX_DOUBLES_ROUND_ROBIN",
   "SWITCH_DOUBLES_ROUND_ROBIN": "SWITCH_DOUBLES_ROUND_ROBIN"
 };
 
