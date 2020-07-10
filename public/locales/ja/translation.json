@@ -9,7 +9,7 @@
   "event": "イベント",
   "events": "イベント一覧",
   "eventSettings": "イベントの設定",
-  "eventSummary": "{{numPlayers}}人シングルス",
+  "eventSummary": "{{eventTypeStr}} | {{numPlayers}}人シングルス",
   "finished": "過去",
   "FIX_DOUBLES_ROUND_ROBIN": "ダブルス固定ペアラウンドロビン",
   "GENERIC_EVENT": "イベントその他",

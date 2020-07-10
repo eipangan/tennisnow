@@ -76,8 +76,11 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       .set('hour', parseInt(time.toString().substring(0, 2), 10))
       .set('minute', parseInt(time.toString().substring(2, 5), 10))
       .toISOString();
-    updated.type = form.getFieldValue('type');
-    updated.summary = t('eventSummary', { numPlayers });
+
+    const eventType = form.getFieldValue('type');
+    const eventTypeStr = t(eventType);
+    updated.type = eventType;
+    updated.summary = t('eventSummary', { eventTypeStr, numPlayers });
   });
 
   /**

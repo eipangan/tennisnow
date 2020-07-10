@@ -9,7 +9,7 @@
   "event": "Event",
   "events": "Events",
   "eventSettings": "Event Settings",
-  "eventSummary": "{{numPlayers}} singles players",
+  "eventSummary": "{{eventTypeStr}} | {{numPlayers}} players",
   "finished": "Finished",
   "FIX_DOUBLES_ROUND_ROBIN": "Fix Doubles Round Robin",
   "GENERIC_EVENT": "Basic Event",
