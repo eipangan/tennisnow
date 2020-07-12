@@ -6,7 +6,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { getMatches, getNextMatch, getPlayers } from './EventUtils';
 import MatchesList from './MatchesList';
 import { deleteMatch, saveMatch } from './MatchUtils';
-import { Event, Match, MatchStatus, Player } from './models';
+import { Event, EventType, Match, MatchStatus, Player } from './models';
 import PlayersSummary from './PlayersSummary';
 import { ThemeType } from './Theme';
 
@@ -108,6 +108,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
       />
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary
+          eventType={event.type || EventType.GENERIC_EVENT}
           players={players || []}
           matches={matches || []}
         />

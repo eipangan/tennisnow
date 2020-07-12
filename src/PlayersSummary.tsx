@@ -2,9 +2,9 @@ import Table, { ColumnProps } from 'antd/lib/table';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Match, MatchStatus, Player } from './models';
-import { ThemeType } from './Theme';
+import { EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
+import { ThemeType } from './Theme';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -17,6 +17,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * PlayersSummaryProps
  */
 type PlayersSummaryProps = {
+  eventType: EventType | keyof typeof EventType,
   players: Player[],
   matches: Match[],
 };
@@ -31,7 +32,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { players, matches } = props;
+  const { eventType, players, matches } = props;
 
   if (!players) return <></>;
 
@@ -97,22 +98,36 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
       dataIndex: 'playerName',
       align: 'left',
     },
-    {
-      title: <div>{t('won')}</div>,
-      dataIndex: 'numWon',
-      align: 'center',
-    },
-    {
-      title: <div>{t('lost')}</div>,
-      dataIndex: 'numLost',
-      align: 'center',
-    },
-    {
-      title: <div>{t('draw')}</div>,
-      dataIndex: 'numDraws',
-      align: 'center',
-    },
   ];
+
+  switch (eventType) {
+    case EventType.GENERIC_EVENT:
+      break;
+
+    case EventType.SINGLES_ROUND_ROBIN:
+    case EventType.FIX_DOUBLES_ROUND_ROBIN:
+    case EventType.SWITCH_DOUBLES_ROUND_ROBIN:
+    default:
+      columns.push({
+        title: <div>{t('won')}</div>,
+        dataIndex: 'numWon',
+        align: 'center',
+      });
+
+      columns.push({
+        title: <div>{t('lost')}</div>,
+        dataIndex: 'numLost',
+        align: 'center',
+      });
+
+      columns.push({
+        title: <div>{t('draw')}</div>,
+        dataIndex: 'numDraws',
+        align: 'center',
+      });
+
+      break;
+  }
 
   return (
     <Table
