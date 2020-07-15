@@ -102,6 +102,18 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
 
   switch (eventType) {
     case EventType.GENERIC_EVENT:
+      columns.push({
+        title: '',
+      });
+
+      columns.push({
+        title: '',
+      });
+
+      columns.push({
+        title: '',
+      });
+
       break;
 
     case EventType.SINGLES_ROUND_ROBIN:
