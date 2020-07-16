@@ -46,8 +46,42 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { event } = props;
+  const eventType = event.type;
   const [matches, setMatches] = useState<Match[]>();
   const [players, setPlayers] = useState<Player[]>();
+
+  const EventMatchesList = () => {
+    if (event && eventType === EventType.GENERIC_EVENT) return <></>;
+    return (
+      <MatchesList
+        matches={matches?.sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1)) || []}
+        players={players || []}
+        onAdd={() => {
+          getNextMatch(event)
+            .then((newMatch) => {
+              if (newMatch) {
+                saveMatch(newMatch);
+                if (matches) {
+                  setMatches([...matches, newMatch]);
+                } else {
+                  setMatches([newMatch]);
+                }
+              }
+            }, () => { });
+        }}
+        onDelete={(myMatch: Match) => {
+          deleteMatch(myMatch);
+        }}
+        onUpdate={(myMatch: Match, myStatus: MatchStatus | keyof typeof MatchStatus | undefined) => {
+          if (myMatch.status !== myStatus) {
+            saveMatch(Match.copyOf(myMatch, (updated) => {
+              updated.status = myStatus;
+            }));
+          }
+        }}
+      />
+    );
+  };
 
   // update matches
   useEffect(() => {
@@ -85,33 +119,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         {event.summary}
       </div>
       <div className={classes.eventMatches}>
-        <MatchesList
-          matches={matches?.sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1)) || []}
-          players={players || []}
-          onAdd={() => {
-            getNextMatch(event)
-              .then((newMatch) => {
-                if (newMatch) {
-                  saveMatch(newMatch);
-                  if (matches) {
-                    setMatches([...matches, newMatch]);
-                  } else {
-                    setMatches([newMatch]);
-                  }
-                }
-              }, () => { });
-          }}
-          onDelete={(myMatch: Match) => {
-            deleteMatch(myMatch);
-          }}
-          onUpdate={(myMatch: Match, myStatus: MatchStatus | keyof typeof MatchStatus | undefined) => {
-            if (myMatch.status !== myStatus) {
-              saveMatch(Match.copyOf(myMatch, (updated) => {
-                updated.status = myStatus;
-              }));
-            }
-          }}
-        />
+        <EventMatchesList />
       </div>
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary
