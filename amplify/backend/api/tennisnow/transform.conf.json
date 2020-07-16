@@ -40,6 +40,21 @@
         "SubscriptiononDeletePlayerResolver": "Player",
         "GetAttPlayerTableStreamArn": "Player",
         "GetAttPlayerDataSourceName": "Player",
-        "GetAttPlayerTableName": "Player"
+        "GetAttPlayerTableName": "Player",
+        "MatchTable": "Match",
+        "MatchIAMRole": "Match",
+        "MatchDataSource": "Match",
+        "SyncMatchResolver": "Match",
+        "GetMatchResolver": "Match",
+        "ListMatchResolver": "Match",
+        "CreateMatchResolver": "Match",
+        "UpdateMatchResolver": "Match",
+        "DeleteMatchResolver": "Match",
+        "SubscriptiononCreateMatchResolver": "Match",
+        "SubscriptiononUpdateMatchResolver": "Match",
+        "SubscriptiononDeleteMatchResolver": "Match",
+        "GetAttMatchTableStreamArn": "Match",
+        "GetAttMatchDataSourceName": "Match",
+        "GetAttMatchTableName": "Match"
     }
 }
