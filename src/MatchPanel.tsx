@@ -108,7 +108,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     }
 
     if (onUpdate) onUpdate(match, status);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <></>;

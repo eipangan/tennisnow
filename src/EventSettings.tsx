@@ -136,7 +136,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     };
 
     fetchPlayers();
-  }, [event.date, event.id, event.type, form]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event.date, event.type]);
 
   /**
    * whenever players change
@@ -149,7 +150,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         });
       });
     }
-  }, [players, form]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [players]);
 
   return (
     <Drawer
