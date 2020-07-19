@@ -1,4 +1,3 @@
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import React, { useEffect, useState } from 'react';
@@ -70,7 +69,11 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
             }, () => { });
         }}
         onDelete={(myMatch: Match) => {
-          deleteMatch(myMatch);
+          if (matches) {
+            const newMatches = matches.filter((match) => match.id !== myMatch.id);
+            setMatches(newMatches);
+            deleteMatch(myMatch);
+          }
         }}
         onUpdate={(myMatch: Match, myStatus: MatchStatus | keyof typeof MatchStatus | undefined) => {
           if (myMatch.status !== myStatus) {
@@ -91,10 +94,6 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     };
 
     fetchMatches();
-    const subscription = DataStore.observe(Match,
-      (m) => m.eventID('eq', event.id))
-      .subscribe(() => fetchMatches());
-    return () => subscription.unsubscribe();
   }, [event.id]);
 
   // update players
@@ -105,10 +104,6 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     };
 
     fetchPlayers();
-    const subscription = DataStore.observe(Player,
-      (p) => p.eventID('eq', event.id))
-      .subscribe(() => fetchPlayers());
-    return () => subscription.unsubscribe();
   }, [event.id]);
 
   return (
