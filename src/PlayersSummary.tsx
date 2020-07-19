@@ -34,8 +34,6 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
 
   const { eventType, players, matches } = props;
 
-  if (!players) return <></>;
-
   interface PlayerStatusType {
     playerName: string;
     numWon: number;
