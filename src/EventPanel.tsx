@@ -71,8 +71,8 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         onDelete={(myMatch: Match) => {
           if (matches) {
             const newMatches = matches.filter((match) => match.id !== myMatch.id);
-            setMatches(newMatches);
             deleteMatch(myMatch);
+            setMatches(newMatches);
           }
         }}
         onUpdate={(myMatch: Match, myStatus: MatchStatus | keyof typeof MatchStatus | undefined) => {
