@@ -80,13 +80,13 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
     };
 
     const { numWon, numLost, numDraws } = getStats(index, matches);
-    const data: PlayerStatusType = {
+    const playerStatusType: PlayerStatusType = {
       playerName: getPlayerName(player) || String(index + 1),
       numWon,
       numLost,
       numDraws,
     };
-    dataSource.push(data);
+    dataSource.push(playerStatusType);
   });
 
   const columns: ColumnProps<PlayerStatusType>[] = [
