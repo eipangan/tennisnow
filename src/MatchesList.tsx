@@ -1,11 +1,10 @@
-import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Popconfirm } from 'antd';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import MatchPanel from './MatchPanel';
 import { Match, MatchStatus, Player } from './models';
 import { ThemeType } from './Theme';
-import MatchPanel from './MatchPanel';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -41,7 +40,6 @@ type MatchesListProps = {
  * @param props
  */
 const MatchesList = (props: MatchesListProps): JSX.Element => {
-  const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
@@ -63,26 +61,12 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
             return (
               <div>
                 <div style={{ height: '3px' }} />
-                <Popconfirm
-                  cancelText={t('cancel')}
-                  icon={<QuestionCircleOutlined />}
-                  okText={t('delete')}
-                  placement="bottom"
-                  title={t('deleteMatchConfirm')}
-                  onCancel={(e) => {
-                    if (e) e.stopPropagation();
-                  }}
-                  onConfirm={(e) => {
-                    onDelete(match);
-                    if (e) e.stopPropagation();
-                  }}
-                >
-                  <Button
-                    icon={<DeleteOutlined />}
-                    shape="circle"
-                    style={{ background: '#ffffff50', color: 'darkgray' }}
-                  />
-                </Popconfirm>
+                <Button
+                  icon={<DeleteOutlined />}
+                  shape="circle"
+                  style={{ background: '#ffffff50', color: 'darkgray' }}
+                  onClick={(e) => onDelete(match)}
+                />
               </div>
             );
           })()}

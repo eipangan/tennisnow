@@ -90,6 +90,7 @@ export const getNextMatch = async (
    * get potential players
    */
   const getPotentialPlayers = () => {
+    // calculate number of matches played
     const numPlayed = myPlayers.map(() => 0);
     myMatches.forEach((myMatch) => {
       if (myMatch.playerIndices) {
@@ -99,8 +100,9 @@ export const getNextMatch = async (
       }
     });
 
+    // get potential players
     const potentialPlayers: number[] = [];
-    for (let i = 0; i < myPlayers.length; i += 1) {
+    for (let i = 0; i <= myMatches.length; i += 1) {
       myPlayers.forEach((player) => {
         if (numPlayed[player.index] === i) {
           potentialPlayers.push(player.index);
@@ -108,6 +110,7 @@ export const getNextMatch = async (
       });
     }
 
+    // return potential players
     return potentialPlayers;
   };
 

@@ -70,16 +70,25 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         }}
         onDelete={(myMatch: Match) => {
           if (matches) {
-            const newMatches = matches.filter((match) => match.id !== myMatch.id);
+            const newMatches = matches.filter((m) => m.id !== myMatch.id);
+
             deleteMatch(myMatch);
-            setMatches(newMatches);
+            setMatches([...newMatches]);
           }
         }}
         onUpdate={(myMatch: Match, myStatus: MatchStatus | keyof typeof MatchStatus | undefined) => {
-          if (myMatch.status !== myStatus) {
-            saveMatch(Match.copyOf(myMatch, (updated) => {
+          if (matches && myMatch.status !== myStatus) {
+            const updatedMatch = Match.copyOf(myMatch, (updated) => {
               updated.status = myStatus;
-            }));
+            });
+
+            const index = matches.findIndex((m) => m.id === updatedMatch.id);
+            if (index !== -1) {
+              matches[index] = updatedMatch;
+
+              saveMatch(updatedMatch);
+              setMatches([...matches]);
+            }
           }
         }}
       />
