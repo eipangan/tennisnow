@@ -1,10 +1,11 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import MatchPanel from './MatchPanel';
 import { Match, MatchStatus, Player } from './models';
 import { ThemeType } from './Theme';
+import { useLocalStorage } from './Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -19,7 +20,10 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   buttonsPanel: {
     display: 'flex',
     flexDirection: 'column',
-    padding: '0px 15px 0px 0px',
+    padding: '0px 0px 0px 0px',
+  },
+  matchPanel: {
+    border: '1px solid blue',
   },
 }));
 
@@ -44,34 +48,10 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { matches, players, onUpdate, onAdd, onDelete } = props;
-  const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
 
   return (
     <div className={classes.matchesPanel}>
-      {matches.map((match, index) => (
-        <div key={index.toString()}>
-          <MatchPanel
-            key={index.toString()}
-            match={match}
-            players={players}
-            onUpdate={onUpdate}
-          />
-          {(() => {
-            if (!onDelete || !isDeleteVisible) return <></>;
-            return (
-              <div>
-                <div style={{ height: '3px' }} />
-                <Button
-                  icon={<DeleteOutlined />}
-                  shape="circle"
-                  style={{ background: '#ffffff50', color: 'darkgray' }}
-                  onClick={(e) => onDelete(match)}
-                />
-              </div>
-            );
-          })()}
-        </div>
-      ))}
       <div className={classes.buttonsPanel}>
         {(() => {
           if (!onAdd) return <></>;
@@ -103,6 +83,33 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           );
         })()}
       </div>
+      {matches.slice(0).reverse().map((match, index) => (
+        <div
+          className="matchPanel"
+          key={index.toString()}
+        >
+          <MatchPanel
+            key={index.toString()}
+            match={match}
+            players={players}
+            onUpdate={onUpdate}
+          />
+          {(() => {
+            if (!onDelete || !isDeleteVisible) return <></>;
+            return (
+              <div>
+                <div style={{ height: '3px' }} />
+                <Button
+                  icon={<DeleteOutlined />}
+                  shape="circle"
+                  style={{ background: '#ffffff50', color: 'darkgray' }}
+                  onClick={(e) => onDelete(match)}
+                />
+              </div>
+            );
+          })()}
+        </div>
+      ))}
     </div>
   );
 };

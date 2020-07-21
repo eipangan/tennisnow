@@ -61,7 +61,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
               if (newMatch) {
                 saveMatch(newMatch);
                 if (matches) {
-                  setMatches([...matches, newMatch]);
+                  setMatches([newMatch, ...matches]);
                 } else {
                   setMatches([newMatch]);
                 }
