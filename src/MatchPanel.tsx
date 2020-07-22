@@ -13,7 +13,6 @@ const useStyles = createUseStyles((theme: ThemeType) => {
     height: theme.height,
     lineHeight: theme.height,
     outline: 'none',
-    padding: '0px 12px',
     width: '100%',
   };
 
@@ -27,7 +26,6 @@ const useStyles = createUseStyles((theme: ThemeType) => {
       flexDirection: 'column',
       fontSize: 'large',
       minWidth: '90px',
-      margin: '0px 4px',
     },
     matchWinner: {
       ...matchRowCommon,
