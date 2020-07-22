@@ -14,7 +14,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     border: '1px solid lightgray',
     display: 'flex',
     flexDirection: 'row',
-    overflowY: 'scroll',
     padding: '9px 15px',
   },
   buttonsPanel: {
@@ -22,8 +21,15 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     flexDirection: 'column',
     padding: '0px 0px 0px 0px',
   },
+  matchesList: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflowY: 'scroll',
+    margin: '0px 4px',
+    width: '100%',
+  },
   matchPanel: {
-    border: '1px solid blue',
+    margin: '0px 4px',
   },
 }));
 
@@ -83,33 +89,35 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           );
         })()}
       </div>
-      {matches.slice(0).reverse().map((match, index) => (
-        <div
-          className="matchPanel"
-          key={index.toString()}
-        >
-          <MatchPanel
+      <div className={classes.matchesList}>
+        {matches.slice(0).reverse().map((match, index) => (
+          <div
+            className={classes.matchPanel}
             key={index.toString()}
-            match={match}
-            players={players}
-            onUpdate={onUpdate}
-          />
-          {(() => {
-            if (!onDelete || !isDeleteVisible) return <></>;
-            return (
-              <div>
-                <div style={{ height: '3px' }} />
-                <Button
-                  icon={<DeleteOutlined />}
-                  shape="circle"
-                  style={{ background: '#ffffff50', color: 'darkgray' }}
-                  onClick={(e) => onDelete(match)}
-                />
-              </div>
-            );
-          })()}
-        </div>
-      ))}
+          >
+            <MatchPanel
+              key={index.toString()}
+              match={match}
+              players={players}
+              onUpdate={onUpdate}
+            />
+            {(() => {
+              if (!onDelete || !isDeleteVisible) return <></>;
+              return (
+                <div>
+                  <div style={{ height: '3px' }} />
+                  <Button
+                    icon={<DeleteOutlined />}
+                    shape="circle"
+                    style={{ background: '#ffffff50', color: 'darkgray' }}
+                    onClick={(e) => onDelete(match)}
+                  />
+                </div>
+              );
+            })()}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
