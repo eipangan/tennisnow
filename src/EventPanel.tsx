@@ -87,7 +87,6 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
               matches[index] = updatedMatch;
 
               saveMatch(updatedMatch);
-              setMatches([...matches]);
             }
           }
         }}
@@ -103,7 +102,8 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     };
 
     fetchMatches();
-  }, [event.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // update players
   useEffect(() => {
@@ -113,7 +113,8 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     };
 
     fetchPlayers();
-  }, [event.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={classes.eventPanel}>
