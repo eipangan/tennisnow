@@ -219,7 +219,11 @@ const App = (): JSX.Element => {
   }, [i18n]);
 
   useEffect(() => {
-    dayjs.locale(i18n.language);
+    if (i18n.language.toLowerCase().startsWith('ja')) {
+      dayjs.locale('ja');
+    } else {
+      dayjs.locale('en');
+    }
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 
