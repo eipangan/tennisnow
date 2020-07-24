@@ -45,9 +45,15 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { event } = props;
-  const eventType = event.type;
   const [matches, setMatches] = useState<Match[]>();
   const [players, setPlayers] = useState<Player[]>();
+
+  const eventType = event.type;
+
+  const fetchPlayers = async () => {
+    const fetchedPlayers = await getPlayers(event.id);
+    setPlayers(fetchedPlayers);
+  };
 
   const EventMatchesList = () => {
     if (event && eventType === EventType.GENERIC_EVENT) return <></>;
@@ -87,6 +93,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
               matches[index] = updatedMatch;
 
               saveMatch(updatedMatch);
+              fetchPlayers();
             }
           }
         }}
@@ -94,27 +101,17 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
     );
   };
 
-  // update matches
+  // update matches and players
   useEffect(() => {
     const fetchMatches = async () => {
       const fetchedMatches = await getMatches(event.id);
       setMatches(fetchedMatches);
     };
 
-    fetchMatches();
+    fetchMatches()
+      .then(() => fetchPlayers());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // update players
-  useEffect(() => {
-    const fetchPlayers = async () => {
-      const fetchedPlayers = await getPlayers(event.id);
-      setPlayers(fetchedPlayers);
-    };
-
-    fetchPlayers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [event]);
 
   return (
     <div className={classes.eventPanel}>
