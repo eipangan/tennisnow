@@ -124,11 +124,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         <EventMatchesList />
       </div>
       <div className={classes.eventPlayersSummary}>
-        <PlayersSummary
-          eventType={event.type || EventType.GENERIC_EVENT}
-          players={players || []}
-          matches={matches || []}
-        />
+        <PlayersSummary eventID={event.id} />
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 import Table, { ColumnProps } from 'antd/lib/table';
-import React from 'react';
+import { DataStore } from 'aws-amplify';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { EventType, Match, MatchStatus, Player } from './models';
+import { getEvent, getMatches, getPlayers } from './EventUtils';
+import { Event, EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
 import { ThemeType } from './Theme';
 
@@ -17,9 +19,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * PlayersSummaryProps
  */
 type PlayersSummaryProps = {
-  eventType: EventType | keyof typeof EventType,
-  players: Player[],
-  matches: Match[],
+  eventID: string,
 };
 
 /**
@@ -32,7 +32,11 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventType, players, matches } = props;
+  const { eventID } = props;
+
+  const [event, setEvent] = useState<Event>();
+  const [matches, setMatches] = useState<Match[]>();
+  const [players, setPlayers] = useState<Player[]>();
 
   interface PlayerStatusType {
     playerName: string;
@@ -41,103 +45,153 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
     numDraws: number;
   }
 
-  const dataSource: PlayerStatusType[] | undefined = [];
-  players.forEach((player, index) => {
-    const getStats = (
-      myIndex: number,
-      myMatches: Match[],
-    ) => {
-      let numWon = 0;
-      let numLost = 0;
-      let numDraws = 0;
+  const [dataSource, setDataSource] = useState<PlayerStatusType[]>();
+  const [columns, setColumns] = useState<ColumnProps<PlayerStatusType>[]>();
 
-      myMatches.forEach((match) => {
-        if (match.status && match.playerIndices && match.playerIndices.length >= 2) {
-          const p1 = match.playerIndices[0];
-          const p2 = match.playerIndices[1];
-
-          switch (match.status) {
-            case MatchStatus.PLAYER1_WON:
-              if (index === p1) numWon += 1;
-              if (index === p2) numLost += 1;
-              break;
-            case MatchStatus.DRAW:
-              if (index === p1) numDraws += 1;
-              if (index === p2) numDraws += 1;
-              break;
-            case MatchStatus.PLAYER2_WON:
-              if (index === p1) numLost += 1;
-              if (index === p2) numWon += 1;
-              break;
-            default:
-          }
-        }
-      });
-
-      return { numWon, numLost, numDraws };
+  useEffect(() => {
+    const fetchEvent = async (id: string) => {
+      const fetchedEvent = await getEvent(id);
+      setEvent(fetchedEvent);
     };
 
-    const { numWon, numLost, numDraws } = getStats(index, matches);
-    const playerStatusType: PlayerStatusType = {
-      playerName: getPlayerName(player) || String(index + 1),
-      numWon,
-      numLost,
-      numDraws,
+    fetchEvent(eventID);
+    const subscription = DataStore.observe(Event, eventID)
+      .subscribe(() => fetchEvent(eventID));
+    return () => subscription.unsubscribe();
+  }, [eventID]);
+
+  useEffect(() => {
+    const fetchMatches = async (id: string) => {
+      const fetchedMatches = await getMatches(id);
+      setMatches(fetchedMatches);
     };
-    dataSource.push(playerStatusType);
-  });
 
-  const columns: ColumnProps<PlayerStatusType>[] = [
-    {
-      title: '',
-    },
-    {
-      title: <div>{t('player')}</div>,
-      dataIndex: 'playerName',
-      align: 'left',
-    },
-  ];
+    fetchMatches(eventID);
+    const subscription = DataStore.observe(Match,
+      (m) => m.eventID('eq', eventID))
+      .subscribe(() => fetchMatches(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event]);
 
-  switch (eventType) {
-    case EventType.GENERIC_EVENT:
-      columns.push({
+  useEffect(() => {
+    const fetchPlayers = async (id: string) => {
+      const fetchedPlayers = await getPlayers(id);
+      setPlayers(fetchedPlayers);
+    };
+
+    fetchPlayers(eventID);
+    const subscription = DataStore.observe(Player,
+      (p) => p.eventID('eq', eventID))
+      .subscribe(() => fetchPlayers(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matches]);
+
+  useEffect(() => {
+    if (players) {
+      const myDatasource: PlayerStatusType[] = [];
+      players.forEach((player, index) => {
+        const getStats = (
+          myIndex: number,
+          myMatches: Match[],
+        ) => {
+          let numWon = 0;
+          let numLost = 0;
+          let numDraws = 0;
+
+          myMatches.forEach((match) => {
+            if (match.status && match.playerIndices && match.playerIndices.length >= 2) {
+              const p1 = match.playerIndices[0];
+              const p2 = match.playerIndices[1];
+
+              switch (match.status) {
+                case MatchStatus.PLAYER1_WON:
+                  if (index === p1) numWon += 1;
+                  if (index === p2) numLost += 1;
+                  break;
+                case MatchStatus.DRAW:
+                  if (index === p1) numDraws += 1;
+                  if (index === p2) numDraws += 1;
+                  break;
+                case MatchStatus.PLAYER2_WON:
+                  if (index === p1) numLost += 1;
+                  if (index === p2) numWon += 1;
+                  break;
+                default:
+              }
+            }
+          });
+
+          return { numWon, numLost, numDraws };
+        };
+
+        const { numWon, numLost, numDraws } = getStats(index, matches || []);
+        const playerStatusType: PlayerStatusType = {
+          playerName: getPlayerName(player) || String(index + 1),
+          numWon,
+          numLost,
+          numDraws,
+        };
+        myDatasource.push(playerStatusType);
+      });
+      setDataSource(myDatasource);
+    }
+
+    const myColumns: ColumnProps<PlayerStatusType>[] = [
+      {
         title: '',
-      });
+      },
+      {
+        title: <div>{t('player')}</div>,
+        dataIndex: 'playerName',
+        align: 'left',
+      },
+    ];
 
-      columns.push({
-        title: '',
-      });
+    switch (event?.type) {
+      case EventType.GENERIC_EVENT:
+        myColumns.push({
+          title: '',
+        });
 
-      columns.push({
-        title: '',
-      });
+        myColumns.push({
+          title: '',
+        });
 
-      break;
+        myColumns.push({
+          title: '',
+        });
 
-    case EventType.SINGLES_ROUND_ROBIN:
-    case EventType.FIX_DOUBLES_ROUND_ROBIN:
-    case EventType.SWITCH_DOUBLES_ROUND_ROBIN:
-    default:
-      columns.push({
-        title: <div>{t('won')}</div>,
-        dataIndex: 'numWon',
-        align: 'center',
-      });
+        break;
 
-      columns.push({
-        title: <div>{t('lost')}</div>,
-        dataIndex: 'numLost',
-        align: 'center',
-      });
+      case EventType.SINGLES_ROUND_ROBIN:
+      case EventType.FIX_DOUBLES_ROUND_ROBIN:
+      case EventType.SWITCH_DOUBLES_ROUND_ROBIN:
+      default:
+        myColumns.push({
+          title: <div>{t('won')}</div>,
+          dataIndex: 'numWon',
+          align: 'center',
+        });
 
-      columns.push({
-        title: <div>{t('draw')}</div>,
-        dataIndex: 'numDraws',
-        align: 'center',
-      });
+        myColumns.push({
+          title: <div>{t('lost')}</div>,
+          dataIndex: 'numLost',
+          align: 'center',
+        });
 
-      break;
-  }
+        myColumns.push({
+          title: <div>{t('draw')}</div>,
+          dataIndex: 'numDraws',
+          align: 'center',
+        });
+
+        break;
+    }
+    setColumns(myColumns);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [players]);
 
   return (
     <Table

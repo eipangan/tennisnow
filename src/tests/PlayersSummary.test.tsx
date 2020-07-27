@@ -1,9 +1,11 @@
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
+import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { getNewEvent, getNewPlayers } from '../EventUtils';
-import { theme } from '../Theme';
+import { getNewEvent } from '../EventUtils';
+import { Match, MatchStatus } from '../models';
 import PlayersSummary from '../PlayersSummary';
+import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -23,17 +25,27 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-test('renders without crashing', () => {
-  const event = getNewEvent();
-  const players = getNewPlayers(event.id, 6);
-  render(
-    <ThemeProvider theme={theme}>
-      <Suspense fallback={null}>
-        <PlayersSummary
-          players={players || []}
-          matches={[]}
-        />
-      </Suspense>
-    </ThemeProvider>,
-  );
+const event = getNewEvent();
+
+DataStore.query = jest.fn().mockImplementation(() => [new Match({
+  eventID: event.id,
+  status: MatchStatus.NEW,
+})]);
+
+DataStore.observe = jest.fn().mockImplementation(() => ({
+  subscribe: () => ({
+    unsubscribe: () => { },
+  }),
+}));
+
+test('renders without crashing', async () => {
+  await act(async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <PlayersSummary eventID={event.id} />
+        </Suspense>
+      </ThemeProvider>,
+    );
+  });
 });
