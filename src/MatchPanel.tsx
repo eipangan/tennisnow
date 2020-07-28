@@ -71,7 +71,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   const [eventID, setEventID] = useState<string>('');
   const [match, setMatch] = useState<Match>();
-  const [players, setPlayers] = useState<Player[]>();
+  const [players, setPlayers] = useState<Player[]>([]);
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
@@ -84,8 +84,10 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
       const fetchedMatch = await getMatch(eid);
       setMatch(fetchedMatch);
 
-      setEventID(fetchedMatch.eventID);
-      setStatus(fetchedMatch.status);
+      if (fetchedMatch) {
+        setEventID(fetchedMatch.eventID);
+        setStatus(fetchedMatch.status);
+      }
     };
 
     fetchMatch(matchID);
