@@ -53,7 +53,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { matches, players, onUpdate, onAdd, onDelete } = props;
+  const { matches, onAdd, onDelete } = props;
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
 
   return (
@@ -97,9 +97,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
           >
             <MatchPanel
               key={index.toString()}
-              match={match}
-              players={players}
-              onUpdate={onUpdate}
+              matchID={match.id}
             />
             {(() => {
               if (!onDelete || !isDeleteVisible) return <></>;

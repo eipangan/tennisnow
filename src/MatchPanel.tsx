@@ -1,6 +1,9 @@
+import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { getMatch, getPlayers } from './EventUtils';
+import { saveMatch } from './MatchUtils';
 import { Match, MatchStatus, Player } from './models';
 import PlayerPanel from './PlayerPanel';
 import { ThemeType } from './Theme';
@@ -51,9 +54,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
  * MatchPanelProps
  */
 type MatchPanelProps = {
-  match: Match;
-  players: Player[];
-  onUpdate?: (match: Match, status: MatchStatus | keyof typeof MatchStatus | undefined) => void;
+  matchID: string;
 };
 
 /**
@@ -66,8 +67,12 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { match, players, onUpdate } = props;
-  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus | undefined>(match.status);
+  const { matchID } = props;
+
+  const [eventID, setEventID] = useState<string>('');
+  const [match, setMatch] = useState<Match>();
+  const [players, setPlayers] = useState<Player[]>();
+  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
@@ -75,6 +80,35 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
+    const fetchMatch = async (eid: string) => {
+      const fetchedMatch = await getMatch(eid);
+      setMatch(fetchedMatch);
+
+      setEventID(fetchedMatch.eventID);
+      setStatus(fetchedMatch.status);
+    };
+
+    fetchMatch(matchID);
+    const subscription = DataStore.observe(Match, matchID)
+      .subscribe(() => fetchMatch(matchID));
+    return () => subscription.unsubscribe();
+  }, [matchID]);
+
+  useEffect(() => {
+    const fetchPlayers = async (eid: string) => {
+      const fetchedPlayers = await getPlayers(eid);
+      setPlayers(fetchedPlayers);
+    };
+
+    fetchPlayers(eventID);
+    const subscription = DataStore.observe(Player,
+      (p) => p.eventID('eq', eventID))
+      .subscribe(() => fetchPlayers(eventID));
+    return () => subscription.unsubscribe();
+  }, [eventID]);
+
+  useEffect(() => {
+    // update screen
     switch (status) {
       case MatchStatus.PLAYER1_WON:
         setPlayer1Class(classes.matchWinner);
@@ -105,8 +139,16 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         break;
     }
 
-    if (onUpdate) onUpdate(match, status);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // update datastore
+    if (match && match.status !== status) {
+      const updatedMatch = Match.copyOf(match, (updated) => {
+        updated.status = status;
+      });
+
+      saveMatch(updatedMatch);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <></>;
