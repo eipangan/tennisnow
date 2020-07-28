@@ -37,6 +37,16 @@ export const getEvents = async (): Promise<Event[]> => {
 };
 
 /**
+ * get match from DataStore, given a matchID
+ *
+ * @param matchID
+ */
+export const getMatch = async (matchID: string): Promise<Match> => {
+  const fetchedMatch = await DataStore.query(Match, matchID);
+  return fetchedMatch;
+};
+
+/**
  * get matches from DataStore, given an eventID
  *
  * @param eventID
