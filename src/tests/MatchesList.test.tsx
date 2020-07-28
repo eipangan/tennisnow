@@ -28,8 +28,8 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
 test('render new without crashing', async () => {
   const { players } = event;
 
-  const match1 = await getNextMatch(event.id, [], players);
-  const match2 = await getNextMatch(event.id, [], players);
+  const match1 = await getNextMatch(event, [], players);
+  const match2 = await getNextMatch(event, [], players);
   if (players && match1 && match2) {
     const matches = [match1, match2];
     if (matches) {
@@ -37,10 +37,7 @@ test('render new without crashing', async () => {
         <BrowserRouter>
           <ThemeProvider theme={theme}>
             <Suspense fallback={null}>
-              <MatchesList
-                matches={matches}
-                players={players}
-              />
+              <MatchesList eventID={event.id} />
             </Suspense>
           </ThemeProvider>
         </BrowserRouter>,

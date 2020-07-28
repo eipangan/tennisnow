@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getMatches, getNextMatch, getPlayers } from './EventUtils';
 import MatchesList from './MatchesList';
-import { deleteMatch, saveMatch } from './MatchUtils';
-import { Event, EventType, Match, MatchStatus, Player } from './models';
+import { Event, EventType } from './models';
 import PlayersSummary from './PlayersSummary';
 import { ThemeType } from './Theme';
 
@@ -45,73 +43,15 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { event } = props;
-  const [matches, setMatches] = useState<Match[]>();
-  const [players, setPlayers] = useState<Player[]>();
-
+  const eventID = event.id;
   const eventType = event.type;
-
-  const fetchPlayers = async () => {
-    const fetchedPlayers = await getPlayers(event.id);
-    setPlayers(fetchedPlayers);
-  };
 
   const EventMatchesList = () => {
     if (event && eventType === EventType.GENERIC_EVENT) return <></>;
     return (
-      <MatchesList
-        matches={matches?.sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1)) || []}
-        players={players || []}
-        onAdd={() => {
-          getNextMatch(event)
-            .then((newMatch) => {
-              if (newMatch) {
-                saveMatch(newMatch);
-                if (matches) {
-                  setMatches([newMatch, ...matches]);
-                } else {
-                  setMatches([newMatch]);
-                }
-              }
-            }, () => { });
-        }}
-        onDelete={(myMatch: Match) => {
-          if (matches) {
-            const newMatches = matches.filter((m) => m.id !== myMatch.id);
-
-            deleteMatch(myMatch);
-            setMatches([...newMatches]);
-          }
-        }}
-        onUpdate={(myMatch: Match, myStatus: MatchStatus | keyof typeof MatchStatus | undefined) => {
-          if (matches && myMatch.status !== myStatus) {
-            const updatedMatch = Match.copyOf(myMatch, (updated) => {
-              updated.status = myStatus;
-            });
-
-            const index = matches.findIndex((m) => m.id === updatedMatch.id);
-            if (index !== -1) {
-              matches[index] = updatedMatch;
-
-              saveMatch(updatedMatch);
-              fetchPlayers();
-            }
-          }
-        }}
-      />
+      <MatchesList eventID={eventID} />
     );
   };
-
-  // update matches and players
-  useEffect(() => {
-    const fetchMatches = async () => {
-      const fetchedMatches = await getMatches(event.id);
-      setMatches(fetchedMatches);
-    };
-
-    fetchMatches()
-      .then(() => fetchPlayers());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
 
   return (
     <div className={classes.eventPanel}>
