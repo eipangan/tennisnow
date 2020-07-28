@@ -35,8 +35,8 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const { eventID } = props;
 
   const [event, setEvent] = useState<Event>();
-  const [matches, setMatches] = useState<Match[]>();
-  const [players, setPlayers] = useState<Player[]>();
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   interface PlayerStatusType {
     playerName: string;
@@ -45,7 +45,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
     numDraws: number;
   }
 
-  const [datasource, setDatasource] = useState<PlayerStatusType[]>();
+  const [datasource, setDatasource] = useState<PlayerStatusType[]>([]);
   const [columns, setColumns] = useState<ColumnProps<PlayerStatusType>[]>();
 
   useEffect(() => {
