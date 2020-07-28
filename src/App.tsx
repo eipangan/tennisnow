@@ -13,9 +13,9 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
 import { getEvents } from './EventUtils';
-import { ThemeType } from './Theme';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
+import { ThemeType } from './Theme';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
 const EventRoute = React.lazy(() => import('./EventRoute'));
@@ -82,7 +82,7 @@ const App = (): JSX.Element => {
 
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<CognitoUser>();
-  const [events, setEvents] = useState<Event[]>();
+  const [events, setEvents] = useState<Event[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
