@@ -53,7 +53,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const { Panel } = Collapse;
 
   const [form] = Form.useForm();
-  const [players, setPlayers] = useState<Player[]>();
+  const [players, setPlayers] = useState<Player[]>([]);
   const [numPlayers, setNumPlayers] = useState<number>(6);
 
   const maxNumPlayers = 12;
