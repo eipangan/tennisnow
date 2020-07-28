@@ -45,7 +45,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
     numDraws: number;
   }
 
-  const [dataSource, setDataSource] = useState<PlayerStatusType[]>();
+  const [datasource, setDatasource] = useState<PlayerStatusType[]>();
   const [columns, setColumns] = useState<ColumnProps<PlayerStatusType>[]>();
 
   useEffect(() => {
@@ -61,8 +61,8 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   }, [eventID]);
 
   useEffect(() => {
-    const fetchMatches = async (id: string) => {
-      const fetchedMatches = await getMatches(id);
+    const fetchMatches = async (eid: string) => {
+      const fetchedMatches = await getMatches(eid);
       setMatches(fetchedMatches);
     };
 
@@ -75,8 +75,8 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   }, [event]);
 
   useEffect(() => {
-    const fetchPlayers = async (id: string) => {
-      const fetchedPlayers = await getPlayers(id);
+    const fetchPlayers = async (eid: string) => {
+      const fetchedPlayers = await getPlayers(eid);
       setPlayers(fetchedPlayers);
     };
 
@@ -89,6 +89,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   }, [matches]);
 
   useEffect(() => {
+    // set datasource if players exist
     if (players) {
       const myDatasource: PlayerStatusType[] = [];
       players.forEach((player, index) => {
@@ -135,9 +136,12 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
         };
         myDatasource.push(playerStatusType);
       });
-      setDataSource(myDatasource);
+      if (JSON.stringify(datasource) !== JSON.stringify(myDatasource)) {
+        setDatasource(myDatasource);
+      }
     }
 
+    // set columns
     const myColumns: ColumnProps<PlayerStatusType>[] = [
       {
         title: '',
@@ -189,7 +193,10 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
 
         break;
     }
-    setColumns(myColumns);
+
+    if (JSON.stringify(columns) !== JSON.stringify(myColumns)) {
+      setColumns(myColumns);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [players]);
 
@@ -197,7 +204,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
     <Table
       className={classes.playersSummary}
       columns={columns}
-      dataSource={dataSource}
+      dataSource={datasource}
       pagination={false}
       rowKey="playerName"
       size="small"
