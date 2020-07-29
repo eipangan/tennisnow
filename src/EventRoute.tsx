@@ -97,6 +97,7 @@ const EventRoute = (props: any): JSX.Element => {
         extra={[
           <EventButtons
             key="settings"
+            eventID={event.id}
             event={event}
             setEvent={setEvent}
           />,

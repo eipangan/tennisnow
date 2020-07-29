@@ -1,12 +1,13 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
-import { getNewPlayers, getPlayers } from './EventUtils';
+import { getEvent, getNewEvent, getNewPlayers, getPlayers, saveEvent, savePlayers } from './EventUtils';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getLocaleDateFormat, shuffle } from './Utils';
@@ -31,9 +32,8 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventSettingsProps
  */
 type EventSettingsProps = {
-  event: Event,
-  onClose?: () => void,
-  onOk?: (event: Event, players: Player[]) => void,
+  eventID: string,
+  onClose: () => void,
 }
 
 /**
@@ -46,14 +46,16 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event, onClose, onOk } = props;
+  const { eventID, onClose } = props;
+
+  const [event, setEvent] = useState<Event>();
+  const [players, setPlayers] = useState<Player[]>([]);
 
   const { Item } = Form;
   const { Option } = Select;
   const { Panel } = Collapse;
 
   const [form] = Form.useForm();
-  const [players, setPlayers] = useState<Player[]>([]);
   const [numPlayers, setNumPlayers] = useState<number>(6);
 
   const maxNumPlayers = 12;
@@ -65,30 +67,33 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * get updated Event based on data in the form
    */
-  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
-    // update date and time
-    const date = form.getFieldValue('date');
-    const time = form.getFieldValue('time');
-    updated.date = dayjs(event.date)
-      .set('month', date.get('month'))
-      .set('date', date.get('date'))
-      .set('year', date.get('year'))
-      .set('hour', parseInt(time.toString().substring(0, 2), 10))
-      .set('minute', parseInt(time.toString().substring(2, 5), 10))
-      .toISOString();
+  const getUpdatedEvent = (): Event => {
+    if (!event) return getNewEvent();
+    return Event.copyOf(event, (updated) => {
+      // update date and time
+      const date = form.getFieldValue('date');
+      const time = form.getFieldValue('time');
+      updated.date = dayjs(event.date)
+        .set('month', date.get('month'))
+        .set('date', date.get('date'))
+        .set('year', date.get('year'))
+        .set('hour', parseInt(time.toString().substring(0, 2), 10))
+        .set('minute', parseInt(time.toString().substring(2, 5), 10))
+        .toISOString();
 
-    const eventType = form.getFieldValue('type');
-    const eventTypeStr = t(eventType);
-    updated.type = eventType;
-    updated.summary = t('eventSummary', { eventTypeStr, numPlayers });
-  });
+      const eventType = form.getFieldValue('type');
+      const eventTypeStr = t(eventType);
+      updated.type = eventType;
+      updated.summary = t('eventSummary', { eventTypeStr, numPlayers });
+    });
+  };
 
   /**
    * get updated players
    *
    * @param eventID
    */
-  const getUpdatedPlayers = (eventID: string): Player[] | undefined => {
+  const getUpdatedPlayers = (): Player[] | undefined => {
     // keep default or old names
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
@@ -101,7 +106,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     }
 
     // return update players
-    return getNewPlayers(event.id, numPlayers, oldPlayerNames);
+    return getNewPlayers(eventID, numPlayers, oldPlayerNames);
   };
 
   /**
@@ -115,29 +120,41 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   };
 
   /**
-   * whenever event changes
+   * whenever eventID changes
    */
   useEffect(() => {
-    form.setFieldsValue({
-      date: dayjs(event.date),
-      time: dayjs(event.date).format('HHmm'),
-      type: event.type,
-    });
+    const fetchEvent = async (id: string) => {
+      const fetchedEvent = await getEvent(id);
+      setEvent(fetchedEvent);
 
-    const fetchPlayers = async () => {
-      setIsLoading(true);
-      let fetchedPlayers = await getPlayers(event.id);
-      if (fetchedPlayers.length < minNumPlayers) {
-        fetchedPlayers = getNewPlayers(event.id);
+      if (fetchedEvent) {
+        form.setFieldsValue({
+          date: dayjs(fetchedEvent.date),
+          time: dayjs(fetchedEvent.date).format('HHmm'),
+          type: fetchedEvent.type,
+        });
+
+        const fetchPlayers = async () => {
+          setIsLoading(true);
+          let fetchedPlayers = await getPlayers(fetchedEvent.id);
+          if (fetchedPlayers.length < minNumPlayers) {
+            fetchedPlayers = getNewPlayers(fetchedEvent.id);
+          }
+          setPlayers(fetchedPlayers);
+          setNumPlayers(fetchedPlayers.length);
+          setIsLoading(false);
+        };
+
+        fetchPlayers();
       }
-      setPlayers(fetchedPlayers);
-      setNumPlayers(fetchedPlayers.length);
-      setIsLoading(false);
     };
 
-    fetchPlayers();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event.date, event.type]);
+    fetchEvent(eventID);
+    const subscription = DataStore.observe(Event, eventID)
+      .subscribe(() => fetchEvent(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventID]);
 
   /**
    * whenever players change
@@ -150,7 +167,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
         });
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [players]);
 
   return (
@@ -326,12 +343,12 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             shape="round"
             type="primary"
             onClick={() => {
-              if (onOk) {
-                const okEvent = getUpdatedEvent();
-                const okPlayers = getUpdatedPlayers(okEvent.id);
+              const okEvent = getUpdatedEvent();
+              const okPlayers = getUpdatedPlayers();
 
-                onOk(okEvent, okPlayers || []);
-              }
+              saveEvent(okEvent);
+              savePlayers(okEvent.id, okPlayers || []);
+              onClose();
             }}
           >
             {t('ok')}

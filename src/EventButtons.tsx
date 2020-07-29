@@ -4,10 +4,10 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { Event, Player } from './models';
-import { ThemeType } from './Theme';
 import EventSettings from './EventSettings';
-import { deleteEvent, getNewEvent, saveEvent, savePlayers } from './EventUtils';
+import { deleteEvent } from './EventUtils';
+import { Event } from './models';
+import { ThemeType } from './Theme';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -21,6 +21,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventButtonsProps
  */
 type EventButtonsProps = {
+  eventID?: string,
   event?: Event,
   setEvent?: Dispatch<SetStateAction<Event | undefined>>,
 }
@@ -36,7 +37,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const history = useHistory();
-  const { event, setEvent } = props;
+  const { eventID, event } = props;
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   const DeleteButton = () => {
@@ -102,18 +103,11 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   };
 
   const SettingsDrawer = (): JSX.Element => {
-    if (!isEventSettingsVisible) return <></>;
+    if (!event || !isEventSettingsVisible) return <></>;
     return (
       <EventSettings
-        event={event || getNewEvent()}
+        eventID={eventID || ''}
         onClose={() => {
-          setIsEventSettingsVisible(false);
-        }}
-        onOk={(myEvent: Event, myPlayers: Player[]) => {
-          saveEvent(myEvent);
-          if (setEvent) setEvent(myEvent);
-
-          savePlayers(myEvent.id, myPlayers);
           setIsEventSettingsVisible(false);
         }}
       />
