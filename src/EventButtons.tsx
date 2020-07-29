@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventSettings from './EventSettings';
-import { deleteEvent } from './EventUtils';
+import { deleteEvent, getEvent } from './EventUtils';
 import { Event } from './models';
 import { ThemeType } from './Theme';
 
@@ -22,12 +22,11 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 type EventButtonsProps = {
   eventID?: string,
-  event?: Event,
   setEvent?: Dispatch<SetStateAction<Event | undefined>>,
 }
 
 /**
- * EventButtons component
+ * EventButtons component - delete button and new/settings button
  *
  * @param props
  */
@@ -37,11 +36,11 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const history = useHistory();
-  const { eventID, event } = props;
+  const { eventID } = props;
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   const DeleteButton = () => {
-    if (event) {
+    if (eventID) {
       return (
         <Popconfirm
           cancelText={t('cancel')}
@@ -52,11 +51,10 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
           onCancel={(e) => {
             if (e) e.stopPropagation();
           }}
-          onConfirm={(e) => {
-            if (event) {
-              deleteEvent(event);
-              history.push('/');
-            }
+          onConfirm={async (e) => {
+            const myEvent = await getEvent(eventID);
+            deleteEvent(myEvent);
+            history.push('/');
           }}
         >
           <Button
@@ -73,7 +71,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   };
 
   const SettingsButton = (): JSX.Element => {
-    if (event) {
+    if (eventID) {
       return (
         <Button
           data-testid="settings"
@@ -103,7 +101,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   };
 
   const SettingsDrawer = (): JSX.Element => {
-    if (!event || !isEventSettingsVisible) return <></>;
+    if (!isEventSettingsVisible) return <></>;
     return (
       <EventSettings
         eventID={eventID || ''}

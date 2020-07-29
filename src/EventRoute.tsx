@@ -98,8 +98,6 @@ const EventRoute = (props: any): JSX.Element => {
           <EventButtons
             key="settings"
             eventID={event.id}
-            event={event}
-            setEvent={setEvent}
           />,
         ]}
       />

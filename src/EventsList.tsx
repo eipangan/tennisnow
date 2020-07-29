@@ -74,7 +74,6 @@ const EventsList = (props: EventsListProps): JSX.Element => {
             <EventButtons
               key="settings"
               eventID={myEvent.id}
-              event={myEvent}
             />,
           ]}
         >
