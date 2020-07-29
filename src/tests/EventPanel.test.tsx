@@ -1,11 +1,11 @@
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { Match, MatchStatus } from '../models';
-import { theme } from '../Theme';
 import EventPanel from '../EventPanel';
 import { getNewEvent } from '../EventUtils';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -43,7 +43,7 @@ test('renders without crashing', async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventPanel event={event} />
+          <EventPanel eventID={event.id} />
         </Suspense>
       </ThemeProvider>,
     );

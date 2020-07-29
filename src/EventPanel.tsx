@@ -1,7 +1,9 @@
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
+import { getEvent } from './EventUtils';
 import MatchesList from './MatchesList';
 import { Event, EventType } from './models';
 import PlayersSummary from './PlayersSummary';
@@ -30,7 +32,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventPanelProps
  */
 type EventPanelProps = {
-  event: Event;
+  eventID: string;
 }
 
 /**
@@ -42,17 +44,30 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event } = props;
-  const eventID = event.id;
-  const eventType = event.type;
+  const { eventID } = props;
+
+  const [event, setEvent] = useState<Event>();
+
+  useEffect(() => {
+    const fetchEvent = async (id: string) => {
+      const fetchedEvent = await getEvent(id);
+      setEvent(fetchedEvent);
+    };
+
+    fetchEvent(eventID);
+    const subscription = DataStore.observe(Event, eventID)
+      .subscribe(() => fetchEvent(eventID));
+    return () => subscription.unsubscribe();
+  }, [eventID]);
 
   const EventMatchesList = () => {
-    if (event && eventType === EventType.GENERIC_EVENT) return <></>;
+    if (event && event.type === EventType.GENERIC_EVENT) return <></>;
     return (
       <MatchesList eventID={eventID} />
     );
   };
 
+  if (!event) return <></>;
   return (
     <div className={classes.eventPanel}>
       <div className={classes.eventSummary}>

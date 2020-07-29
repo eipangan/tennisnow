@@ -2,11 +2,11 @@ import { PageHeader } from 'antd';
 import React, { Suspense, useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { ReactComponent as AppTitle } from './images/title.svg';
-import { Event } from './models';
 import EventButtons from './EventButtons';
 import EventPanel from './EventPanel';
 import { getEvent } from './EventUtils';
+import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -103,7 +103,7 @@ const EventRoute = (props: any): JSX.Element => {
         ]}
       />
       <Suspense fallback={<div className="loader" />}>
-        <EventPanel event={event} />
+        <EventPanel eventID={event.id} />
       </Suspense>
     </>
   );
