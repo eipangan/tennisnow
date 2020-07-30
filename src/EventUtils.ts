@@ -63,6 +63,7 @@ export const getMatches = async (eventID: string): Promise<Match[]> => {
  */
 export const getPlayers = async (eventID: string): Promise<Player[]> => {
   const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
+  if (!fetchedPlayers) return [];
   return fetchedPlayers.sort((a, b) => a.index - b.index);
 };
 
@@ -70,13 +71,13 @@ export const getPlayers = async (eventID: string): Promise<Player[]> => {
  * get new event
  */
 export const getNewEvent = (): Event => {
-  const event = new Event({
+  const newEvent = new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
     type: EventType.GENERIC_EVENT,
   });
 
-  return event;
+  return newEvent;
 };
 
 /**
@@ -165,7 +166,7 @@ export const getNextMatch = async (
 };
 
 /**
- * get new players
+ * get new players, return array of players
  *
  * @param eventID
  * @param numPlayers
@@ -177,12 +178,14 @@ export const getNewPlayers = (
   playerNames: string[] = [],
 ): Player[] => {
   const newPlayers: Player[] = [];
-  for (let i = 0; i < numPlayers; i += 1) {
-    newPlayers.push(new Player({
-      eventID,
-      index: i,
-      name: playerNames[i] || '',
-    }));
+  if (eventID && eventID.length > 0) {
+    for (let i = 0; i < numPlayers; i += 1) {
+      newPlayers.push(new Player({
+        eventID,
+        index: i,
+        name: playerNames[i] || '',
+      }));
+    }
   }
 
   return newPlayers;
