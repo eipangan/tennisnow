@@ -7,13 +7,13 @@
     "@aws-amplify/auth": "^3.3.3",
     "@aws-amplify/datastore": "^2.2.8",
     "@types/jest": "^26.0.7",
-    "@types/node": "^14.0.26",
+    "@types/node": "^14.0.27",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
-    "antd": "^4.5.0",
+    "antd": "^4.5.1",
     "aws-amplify": "^3.0.22",
-    "dayjs": "^1.8.30",
+    "dayjs": "^1.8.31",
     "i18next": "^19.6.3",
     "i18next-browser-languagedetector": "^5.0.0",
     "i18next-xhr-backend": "^3.2.2",
@@ -51,12 +51,12 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.1",
+    "@testing-library/jest-dom": "^5.11.2",
     "@testing-library/react": "^10.4.7",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.4",
+    "eslint-plugin-react": "^7.20.5",
     "eslint-plugin-react-hooks": "^4.0.8"
   }
 }
