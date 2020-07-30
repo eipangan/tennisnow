@@ -52,6 +52,13 @@ export const isDateInputSupported = () => {
 export const isDarkMode = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 /**
+ * checks if object is empty
+ *
+ * @param o object
+ */
+export const isEmpty = (o: object): boolean => Object.keys(o).length === 0 && o.constructor === Object;
+
+/**
  * checks if mobile or not
  */
 export const isMobile = () => {

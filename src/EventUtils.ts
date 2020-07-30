@@ -62,9 +62,13 @@ export const getMatches = async (eventID: string): Promise<Match[]> => {
  * @param eventID
  */
 export const getPlayers = async (eventID: string): Promise<Player[]> => {
+  let players: Player[] = [];
   const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
-  if (!fetchedPlayers || !Array.isArray(fetchedPlayers)) return [];
-  return fetchedPlayers.sort((a, b) => a.index - b.index);
+  if (fetchedPlayers && Array.isArray(fetchedPlayers)) {
+    players = fetchedPlayers.sort((a, b) => a.index - b.index);
+  }
+
+  return players;
 };
 
 /**
@@ -213,8 +217,10 @@ export const savePlayers = async (
   const currentPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
 
   // remove unneeded players
-  const toRemovePlayers = currentPlayers.filter((p) => JSON.stringify(players).indexOf(JSON.stringify(p)) === -1);
-  toRemovePlayers.forEach((player) => deletePlayer(player));
+  if (currentPlayers && Array.isArray(currentPlayers)) {
+    const toRemovePlayers = currentPlayers.filter((p) => JSON.stringify(players).indexOf(JSON.stringify(p)) === -1);
+    toRemovePlayers.forEach((player) => deletePlayer(player));
+  }
 
   // save new players
   players.forEach((player) => savePlayer(player));

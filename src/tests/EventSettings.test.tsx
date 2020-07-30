@@ -4,7 +4,6 @@ import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import EventSettings from '../EventSettings';
 import { getNewEvent } from '../EventUtils';
-import { Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
@@ -27,15 +26,16 @@ Object.defineProperty(window, 'matchMedia', {
 
 const event = getNewEvent();
 
-DataStore.query = jest.fn().mockImplementation(() => [new Match({
-  eventID: event.id,
-  status: MatchStatus.NEW,
-})]);
+DataStore.query = jest.fn().mockImplementation(() => ({
+}));
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
     unsubscribe: () => { },
   }),
+}));
+
+DataStore.save = jest.fn().mockImplementation(() => ({
 }));
 
 test('renders without crashing', async () => {
