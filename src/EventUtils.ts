@@ -176,16 +176,16 @@ export const getNewPlayers = (
   numPlayers: number = 6,
   playerNames: string[] = [],
 ): Player[] => {
-  const players: Player[] = [];
+  const newPlayers: Player[] = [];
   for (let i = 0; i < numPlayers; i += 1) {
-    players.push(new Player({
+    newPlayers.push(new Player({
       eventID,
       index: i,
       name: playerNames[i] || '',
     }));
   }
 
-  return players;
+  return newPlayers;
 };
 
 /**
