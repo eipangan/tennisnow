@@ -20,7 +20,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventButtonsProps
  */
 type EventButtonsProps = {
-  eventID?: string
+  eventID: string,
 }
 
 /**
@@ -37,66 +37,69 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   const { eventID } = props;
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
-  const DeleteButton = () => {
-    if (!eventID) return <></>;
-    return (
-      <Popconfirm
-        cancelText={t('cancel')}
-        icon={<QuestionCircleOutlined />}
-        okText={t('delete')}
-        placement="bottom"
-        title={t('deleteEventConfirm')}
-        onCancel={(e) => {
-          if (e) e.stopPropagation();
-        }}
-        onConfirm={async (e) => {
-          const myEvent = await getEvent(eventID);
-          deleteEvent(myEvent);
-          history.push('/');
-        }}
-      >
-        <Button
-          data-testid="delete"
-          icon={<DeleteOutlined />}
-          onClick={(e) => e.stopPropagation()}
-          shape="circle"
-        />
-      </Popconfirm>
-    );
-  };
-
-  const NewEventButton = () => {
-    if (eventID) return <></>;
-    return (
+  /**
+   * DeleteButton
+   */
+  const DeleteButton = () => (
+    <Popconfirm
+      cancelText={t('cancel')}
+      icon={<QuestionCircleOutlined />}
+      okText={t('delete')}
+      placement="bottom"
+      title={t('deleteEventConfirm')}
+      onCancel={(e) => {
+        if (e) e.stopPropagation();
+      }}
+      onConfirm={async (e) => {
+        const myEvent = await getEvent(eventID);
+        deleteEvent(myEvent);
+        history.push('/');
+      }}
+    >
       <Button
-        data-testid="settings"
-        icon={<PlusOutlined />}
-        onClick={(e) => {
-          setIsEventSettingsVisible(true);
-          e.stopPropagation();
-        }}
-        type="primary"
-      >
-        {t('newEvent')}
-      </Button>
-    );
-  };
-
-  const SettingsButton = (): JSX.Element => {
-    if (!eventID) return <></>;
-    return (
-      <Button
-        data-testid="settings"
-        icon={<SettingOutlined />}
+        data-testid="delete"
+        icon={<DeleteOutlined />}
+        onClick={(e) => e.stopPropagation()}
         shape="circle"
-        onClick={(e) => {
-          setIsEventSettingsVisible(true);
-          e.stopPropagation();
-        }}
       />
-    );
-  };
+    </Popconfirm>
+  );
 
+  /**
+   * NewEventButton
+   */
+  const NewEventButton = () => (
+    <Button
+      data-testid="settings"
+      icon={<PlusOutlined />}
+      onClick={(e) => {
+        setIsEventSettingsVisible(true);
+        e.stopPropagation();
+      }}
+      type="primary"
+    >
+      {t('newEvent')}
+    </Button>
+  );
+
+  /**
+   * SettingsButton
+   */
+  const SettingsButton = (): JSX.Element => (
+    <Button
+      data-testid="settings"
+      icon={<SettingOutlined />}
+      shape="circle"
+      onClick={(e) => {
+        setIsEventSettingsVisible(true);
+        e.stopPropagation();
+      }}
+    />
+  );
+
+  /**
+   * SettingsDrawer
+   */
   const SettingsDrawer = (): JSX.Element => {
     if (!isEventSettingsVisible) return <></>;
     return (
@@ -115,13 +118,23 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
       role="button"
       tabIndex={0}
     >
-      <DeleteButton />
-      <div style={{ width: '12px' }} />
-      <SettingsButton />
-      <NewEventButton />
+      {(() => {
+        if (eventID.length <= 0) return <NewEventButton />;
+        return (
+          <>
+            <DeleteButton />
+            <div style={{ width: '12px' }} />
+            <SettingsButton />
+          </>
+        );
+      })()}
       <SettingsDrawer />
     </div>
   );
+};
+
+EventButtons.defaultProps = {
+  eventID: '',
 };
 
 export default EventButtons;
