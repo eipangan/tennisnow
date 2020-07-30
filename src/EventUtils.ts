@@ -63,7 +63,7 @@ export const getMatches = async (eventID: string): Promise<Match[]> => {
  */
 export const getPlayers = async (eventID: string): Promise<Player[]> => {
   const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
-  if (!fetchedPlayers) return [];
+  if (!fetchedPlayers || !Array.isArray(fetchedPlayers)) return [];
   return fetchedPlayers.sort((a, b) => a.index - b.index);
 };
 
