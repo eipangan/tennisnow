@@ -1,12 +1,11 @@
 import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventSettings from './EventSettings';
 import { deleteEvent, getEvent } from './EventUtils';
-import { Event } from './models';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -21,8 +20,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventButtonsProps
  */
 type EventButtonsProps = {
-  eventID?: string,
-  setEvent?: Dispatch<SetStateAction<Event | undefined>>,
+  eventID?: string
 }
 
 /**
@@ -40,51 +38,35 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   const DeleteButton = () => {
-    if (eventID) {
-      return (
-        <Popconfirm
-          cancelText={t('cancel')}
-          icon={<QuestionCircleOutlined />}
-          okText={t('delete')}
-          placement="bottom"
-          title={t('deleteEventConfirm')}
-          onCancel={(e) => {
-            if (e) e.stopPropagation();
-          }}
-          onConfirm={async (e) => {
-            const myEvent = await getEvent(eventID);
-            deleteEvent(myEvent);
-            history.push('/');
-          }}
-        >
-          <Button
-            data-testid="delete"
-            icon={<DeleteOutlined />}
-            onClick={(e) => e.stopPropagation()}
-            shape="circle"
-          />
-        </Popconfirm>
-      );
-    }
-
-    return <></>;
+    if (!eventID) return <></>;
+    return (
+      <Popconfirm
+        cancelText={t('cancel')}
+        icon={<QuestionCircleOutlined />}
+        okText={t('delete')}
+        placement="bottom"
+        title={t('deleteEventConfirm')}
+        onCancel={(e) => {
+          if (e) e.stopPropagation();
+        }}
+        onConfirm={async (e) => {
+          const myEvent = await getEvent(eventID);
+          deleteEvent(myEvent);
+          history.push('/');
+        }}
+      >
+        <Button
+          data-testid="delete"
+          icon={<DeleteOutlined />}
+          onClick={(e) => e.stopPropagation()}
+          shape="circle"
+        />
+      </Popconfirm>
+    );
   };
 
-  const SettingsButton = (): JSX.Element => {
-    if (eventID) {
-      return (
-        <Button
-          data-testid="settings"
-          icon={<SettingOutlined />}
-          shape="circle"
-          onClick={(e) => {
-            setIsEventSettingsVisible(true);
-            e.stopPropagation();
-          }}
-        />
-      );
-    }
-
+  const NewEventButton = () => {
+    if (eventID) return <></>;
     return (
       <Button
         data-testid="settings"
@@ -97,6 +79,21 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
       >
         {t('newEvent')}
       </Button>
+    );
+  };
+
+  const SettingsButton = (): JSX.Element => {
+    if (!eventID) return <></>;
+    return (
+      <Button
+        data-testid="settings"
+        icon={<SettingOutlined />}
+        shape="circle"
+        onClick={(e) => {
+          setIsEventSettingsVisible(true);
+          e.stopPropagation();
+        }}
+      />
     );
   };
 
@@ -123,6 +120,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
       <DeleteButton />
       <div style={{ width: '12px' }} />
       <SettingsButton />
+      <NewEventButton />
       <SettingsDrawer />
     </div>
   );
