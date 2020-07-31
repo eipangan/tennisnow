@@ -222,7 +222,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             key="type"
             name="type"
           >
-            <Select style={{ width: 270 }}>
+            <Select size="large" style={{ width: 270 }}>
               <Option value={EventType.GENERIC_EVENT}>{t(EventType.GENERIC_EVENT)}</Option>
               <Option value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Option>
               {/* <Option value={EventType.FIX_DOUBLES_ROUND_ROBIN}>{t(EventType.FIX_DOUBLES_ROUND_ROBIN)}</Option> */}
