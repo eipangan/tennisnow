@@ -2,7 +2,12 @@
 
 ## 2020.06
 
-### Highlightes
+* Now using server-side state management using AWS Amplify DataStore
+* Added event type to event settings form
+
+## 2020.06
+
+### Highlights
 
 * Added AWS Amplify DataStore to handle events, match, and player data
 * Data has been moved from local to the cloud, and can be accesssed from any device
@@ -11,7 +16,7 @@
 
 ## 2020.05
 
-### Highlightes
+### Highlights
 
 * Added Authentication to allow users to signin
 * Added Homepage, as an introduction to potential new users
