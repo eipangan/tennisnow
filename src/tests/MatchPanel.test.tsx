@@ -1,12 +1,13 @@
 import { render } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
+import { act } from 'react-dom/test-utils';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, MatchStatus } from '../../models';
-import { getNewEvent, getNextMatch } from '../event/EventUtils';
-import { theme } from '../utils/Theme';
-import MatchesList from './MatchesList';
+import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
+import MatchPanel from '../MatchPanel';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -21,30 +22,29 @@ DataStore.query = jest.fn().mockImplementation(() => [new Match({
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
-    unsubscribe: () => {},
+    unsubscribe: () => { },
   }),
 }));
 
 test('render new without crashing', async () => {
-  const { players } = event;
+  const players = getNewPlayers(event.id, 6);
+  const match = await getNextMatch(event, [], players);
 
-  const match1 = await getNextMatch(event.id, [], players);
-  const match2 = await getNextMatch(event.id, [], players);
-  if (players && match1 && match2) {
-    const matches = [match1, match2];
-    if (matches) {
+  expect(event).toBeDefined();
+  expect(players).toBeDefined();
+  expect(match).toBeDefined();
+
+  if (match) {
+    await act(async () => {
       render(
         <BrowserRouter>
           <ThemeProvider theme={theme}>
             <Suspense fallback={null}>
-              <MatchesList
-                matches={matches}
-                players={players}
-              />
+              <MatchPanel matchID={match.id} />
             </Suspense>
           </ThemeProvider>
         </BrowserRouter>,
       );
-    }
+    });
   }
 });

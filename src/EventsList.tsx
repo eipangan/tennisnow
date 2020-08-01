@@ -5,10 +5,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { ReactComponent as Empty } from '../../images/empty.svg';
-import { Event } from '../../models';
-import { ThemeType } from '../utils/Theme';
 import EventButtons from './EventButtons';
+import { ReactComponent as Empty } from './images/empty.svg';
+import { Event } from './models';
+import { ThemeType } from './Theme';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -73,7 +73,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
           extra={[
             <EventButtons
               key="settings"
-              event={myEvent}
+              eventID={myEvent.id}
             />,
           ]}
         >

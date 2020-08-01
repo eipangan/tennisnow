@@ -2,9 +2,9 @@ import { render } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { getNewEvent, getNewPlayers } from '../event/EventUtils';
-import { theme } from '../utils/Theme';
-import PlayerPanel from './PlayerPanel';
+import { getNewEvent, getNewPlayers } from '../EventUtils';
+import { theme } from '../Theme';
+import PlayerPanel from '../PlayerPanel';
 
 test('renders without crashing', () => {
   const event = getNewEvent();

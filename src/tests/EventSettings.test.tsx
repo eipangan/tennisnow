@@ -1,11 +1,10 @@
-import { fireEvent, render, screen, act } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { Match, MatchStatus } from '../../models';
-import { theme } from '../utils/Theme';
-import EventSettings from './EventSettings';
-import { getNewEvent } from './EventUtils';
+import EventSettings from '../EventSettings';
+import { getNewEvent } from '../EventUtils';
+import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -27,10 +26,8 @@ Object.defineProperty(window, 'matchMedia', {
 
 const event = getNewEvent();
 
-DataStore.query = jest.fn().mockImplementation(() => [new Match({
-  eventID: event.id,
-  status: MatchStatus.NEW,
-})]);
+DataStore.query = jest.fn().mockImplementation(() => ({
+}));
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
@@ -38,14 +35,15 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
+DataStore.save = jest.fn().mockImplementation(() => ({
+}));
+
 test('renders without crashing', async () => {
   await act(async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventSettings
-            event={getNewEvent()}
-          />
+          <EventSettings eventID={event.id} onClose={() => { }} />
         </Suspense>
       </ThemeProvider>,
     );
