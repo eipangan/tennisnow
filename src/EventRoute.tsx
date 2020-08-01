@@ -53,6 +53,7 @@ const EventRoute = (props: any): JSX.Element => {
   const [event, setEvent] = useState<Event>();
   const { match } = props;
   const { params } = match;
+  const eventID = params.id;
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -74,8 +75,8 @@ const EventRoute = (props: any): JSX.Element => {
       setIsLoading(false);
     };
 
-    fetchEvent(params.id);
-  }, [params.id]);
+    fetchEvent(eventID);
+  }, [eventID]);
 
   if (!event) {
     return (
@@ -97,12 +98,12 @@ const EventRoute = (props: any): JSX.Element => {
         extra={[
           <EventButtons
             key="settings"
-            eventID={event.id}
+            eventID={eventID}
           />,
         ]}
       />
       <Suspense fallback={<div className="loader" />}>
-        <EventPanel eventID={event.id} />
+        <EventPanel eventID={eventID} />
       </Suspense>
     </>
   );
