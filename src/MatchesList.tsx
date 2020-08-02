@@ -17,19 +17,13 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     border: '1px solid lightgray',
     display: 'flex',
     flexDirection: 'row',
+    overflowY: 'scroll',
     padding: '9px 15px',
   },
   buttonsPanel: {
     display: 'flex',
     flexDirection: 'column',
-    padding: '0px 0px 0px 0px',
-  },
-  matchesList: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflowY: 'scroll',
-    margin: '0px 4px',
-    width: '100%',
+    padding: '0px 15px 0px 0px',
   },
   matchPanel: {
     margin: '0px 4px',
@@ -87,6 +81,33 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
 
   return (
     <div className={classes.matchesPanel}>
+      {matches.map((match, index) => (
+        <div
+          className={classes.matchPanel}
+          key={index.toString()}
+        >
+          <MatchPanel
+            key={match.id}
+            matchID={match.id}
+          />
+          {(() => {
+            if (!isDeleteVisible) return <></>;
+            return (
+              <div>
+                <div style={{ height: '3px' }} />
+                <Button
+                  icon={<DeleteOutlined />}
+                  shape="circle"
+                  style={{ background: '#ffffff50', color: 'darkgray' }}
+                  onClick={(e) => {
+                    deleteMatch(match);
+                  }}
+                />
+              </div>
+            );
+          })()}
+        </div>
+      ))}
       <div className={classes.buttonsPanel}>
         <div>
           <div style={{ height: '3px' }} />
@@ -114,35 +135,6 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
             style={{ background: '#ffffff50', color: 'darkgray' }}
           />
         </div>
-      </div>
-      <div className={classes.matchesList}>
-        {matches.slice(0).reverse().map((match, index) => (
-          <div
-            className={classes.matchPanel}
-            key={index.toString()}
-          >
-            <MatchPanel
-              key={index.toString()}
-              matchID={match.id}
-            />
-            {(() => {
-              if (!isDeleteVisible) return <></>;
-              return (
-                <div>
-                  <div style={{ height: '3px' }} />
-                  <Button
-                    icon={<DeleteOutlined />}
-                    shape="circle"
-                    style={{ background: '#ffffff50', color: 'darkgray' }}
-                    onClick={(e) => {
-                      deleteMatch(match);
-                    }}
-                  />
-                </div>
-              );
-            })()}
-          </div>
-        ))}
       </div>
     </div>
   );
