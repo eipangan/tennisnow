@@ -101,14 +101,15 @@ export const getNextMatch = async (
   const myPlayers = players || await getPlayers(myEvent.id);
 
   /**
-   * get all matches in [p1, p2] format
+   * get all matches in array of [p1, p2] format
   */
-  const getAllMatches = () => myPlayers.flatMap((v, i) => {
-    myPlayers
-      .slice(i + 1)
-      .map((w) => ([v.index, w.index]));
-  });
+  const getAllMatches = () => myPlayers.flatMap((v, i) => myPlayers
+    .slice(i + 1)
+    .map((w) => ([v.index, w.index])));
 
+  /**
+   * get all matches that already done in array of [p1, p2] format
+   */
   const getAllMatchesDone = () => myMatches.map((m) => {
     if (!m.playerIndices) return undefined;
     return ([m.playerIndices[0], m.playerIndices[1]]);
@@ -149,7 +150,7 @@ export const getNextMatch = async (
     const allMatches = getAllMatches();
     const allMatchesDone = getAllMatchesDone();
 
-    const potentialMatches = getAllMatchesDone().filter((m) => JSON
+    const potentialMatches = allMatches.filter((m) => JSON
       .stringify(allMatchesDone)
       .indexOf(JSON.stringify(m)) === -1);
     return potentialMatches;
