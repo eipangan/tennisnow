@@ -1,6 +1,7 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { getEvent, getMatches, getNextMatch } from './EventUtils';
@@ -81,33 +82,35 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
 
   return (
     <div className={classes.matchesPanel}>
-      {matches.map((match, index) => (
-        <div
-          className={classes.matchPanel}
-          key={index.toString()}
-        >
-          <MatchPanel
-            key={match.id}
-            matchID={match.id}
-          />
-          {(() => {
-            if (!isDeleteVisible) return <></>;
-            return (
-              <div>
-                <div style={{ height: '3px' }} />
-                <Button
-                  icon={<DeleteOutlined />}
-                  shape="circle"
-                  style={{ background: '#ffffff50', color: 'darkgray' }}
-                  onClick={(e) => {
-                    deleteMatch(match);
-                  }}
-                />
-              </div>
-            );
-          })()}
-        </div>
-      ))}
+      {matches
+        .sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1))
+        .map((match, index) => (
+          <div
+            className={classes.matchPanel}
+            key={index.toString()}
+          >
+            <MatchPanel
+              key={match.id}
+              matchID={match.id}
+            />
+            {(() => {
+              if (!isDeleteVisible) return <></>;
+              return (
+                <div>
+                  <div style={{ height: '3px' }} />
+                  <Button
+                    icon={<DeleteOutlined />}
+                    shape="circle"
+                    style={{ background: '#ffffff50', color: 'darkgray' }}
+                    onClick={(e) => {
+                      deleteMatch(match);
+                    }}
+                  />
+                </div>
+              );
+            })()}
+          </div>
+        ))}
       <div className={classes.buttonsPanel}>
         <div>
           <div style={{ height: '3px' }} />
