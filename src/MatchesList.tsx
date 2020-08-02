@@ -1,4 +1,4 @@
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MoreOutlined, PlusOutlined, UpOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
@@ -101,7 +101,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
                   <Button
                     icon={<DeleteOutlined />}
                     shape="circle"
-                    style={{ background: '#ffffff50', color: 'darkgray' }}
+                    style={{ background: '#ff696936', color: '#ff696996' }}
                     onClick={(e) => {
                       deleteMatch(match);
                     }}
@@ -131,11 +131,10 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
         <div>
           <div style={{ height: '3px' }} />
           <Button
-            data-testid="delete-match"
-            icon={<DeleteOutlined />}
+            data-testid="more-match"
+            icon={isDeleteVisible ? <UpOutlined /> : <MoreOutlined />}
             onClick={() => setIsDeleteVisible(!isDeleteVisible)}
             shape="round"
-            style={{ background: '#ffffff50', color: 'darkgray' }}
           />
         </div>
       </div>
