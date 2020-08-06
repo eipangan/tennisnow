@@ -66,7 +66,10 @@ const EventRoute = (props: any): JSX.Element => {
           />,
         ]}
       />
-      <EventPanel eventID={eventID} />
+      <EventPanel
+        key={eventID}
+        eventID={eventID}
+      />
     </>
   );
 };
