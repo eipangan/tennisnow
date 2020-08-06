@@ -101,7 +101,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
                   <Button
                     icon={<DeleteOutlined />}
                     shape="circle"
-                    style={{ background: '#ff696936', color: '#ff696996' }}
+                    style={{ background: '#ffffff50', color: '#ff696996' }}
                     onClick={(e) => {
                       deleteMatch(match);
                     }}
