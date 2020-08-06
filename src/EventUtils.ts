@@ -156,39 +156,40 @@ export const getNextMatch = async (
     return potentialMatches;
   };
 
-  // get next match
-  let nextMatch: Match | undefined;
-
   const eventID = myEvent.id;
   const potentialPlayers = getPotentialPlayers();
   const potentialMatches = getPotentialMatches();
+
+  if (potentialPlayers.length === 0) return undefined;
   if (potentialMatches.length === 0 && myMatches.length > 0) {
     // TODO: need to fix this logic
-    nextMatch = new Match({
+    return (new Match({
       eventID,
       createdTime: dayjs().toDate().toISOString(),
       playerIndices: [0, 1],
       status: MatchStatus.NEW,
-    });
-  } else {
-    const BreakException = {};
-    try {
-      potentialPlayers.forEach((p1) => {
-        potentialPlayers.forEach((p2) => {
-          if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
-            nextMatch = new Match({
-              eventID,
-              createdTime: dayjs().toDate().toISOString(),
-              playerIndices: [p1, p2],
-              status: MatchStatus.NEW,
-            });
-            throw BreakException;
-          }
-        });
+    }));
+  }
+
+  // get next match
+  let nextMatch: Match | undefined;
+  const BreakException = {};
+  try {
+    potentialPlayers.forEach((p1) => {
+      potentialPlayers.forEach((p2) => {
+        if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
+          nextMatch = new Match({
+            eventID,
+            createdTime: dayjs().toDate().toISOString(),
+            playerIndices: [p1, p2],
+            status: MatchStatus.NEW,
+          });
+          throw BreakException;
+        }
       });
-    } catch (e) {
-      if (e !== BreakException) throw e;
-    }
+    });
+  } catch (e) {
+    if (e !== BreakException) throw e;
   }
 
   return nextMatch;
