@@ -89,10 +89,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
             className={classes.matchPanel}
             key={index.toString()}
           >
-            <MatchPanel
-              key={match.id}
-              matchID={match.id}
-            />
+            <MatchPanel matchID={match.id} />
             {(() => {
               if (!isDeleteVisible) return <></>;
               return (

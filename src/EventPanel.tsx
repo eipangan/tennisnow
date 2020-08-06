@@ -68,12 +68,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
 
   const EventMatchesList = () => {
     if (event && event.type === EventType.GENERIC_EVENT) return <></>;
-    return (
-      <MatchesList
-        key={eventID}
-        eventID={eventID}
-      />
-    );
+    return <MatchesList eventID={eventID} />;
   };
 
   if (!event) return <></>;
