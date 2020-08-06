@@ -263,7 +263,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                 </ButtonGroup>
               )}
             >
-              <div>
+              <>
                 {(() => {
                   const playerInputBox = [];
                   for (let p = 0; p < numPlayers; p += 1) {
@@ -316,7 +316,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
                     {t('randomizeOrder')}
                   </Button>
                 </div>
-              </div>
+              </>
             </Panel>
           </Collapse>
         </div>

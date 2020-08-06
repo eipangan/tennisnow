@@ -96,7 +96,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
             {(() => {
               if (!isDeleteVisible) return <></>;
               return (
-                <div>
+                <>
                   <div style={{ height: '3px' }} />
                   <Button
                     icon={<DeleteOutlined />}
@@ -106,37 +106,33 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
                       deleteMatch(match);
                     }}
                   />
-                </div>
+                </>
               );
             })()}
           </div>
         ))}
       <div className={classes.buttonsPanel}>
-        <div>
-          <div style={{ height: '3px' }} />
-          <Button
-            data-testid="add-match"
-            icon={<PlusOutlined />}
-            onClick={async () => {
-              if (event) {
-                const newMatch = await getNextMatch(event);
-                if (newMatch) {
-                  saveMatch(newMatch);
-                }
+        <div style={{ height: '3px' }} />
+        <Button
+          data-testid="add-match"
+          icon={<PlusOutlined />}
+          onClick={async () => {
+            if (event) {
+              const newMatch = await getNextMatch(event);
+              if (newMatch) {
+                saveMatch(newMatch);
               }
-            }}
-            shape="round"
-          />
-        </div>
-        <div>
-          <div style={{ height: '3px' }} />
-          <Button
-            data-testid="more-match"
-            icon={isDeleteVisible ? <UpOutlined /> : <MoreOutlined />}
-            onClick={() => setIsDeleteVisible(!isDeleteVisible)}
-            shape="round"
-          />
-        </div>
+            }
+          }}
+          shape="round"
+        />
+        <div style={{ height: '3px' }} />
+        <Button
+          data-testid="more-match"
+          icon={isDeleteVisible ? <UpOutlined /> : <MoreOutlined />}
+          onClick={() => setIsDeleteVisible(!isDeleteVisible)}
+          shape="round"
+        />
       </div>
     </div>
   );
