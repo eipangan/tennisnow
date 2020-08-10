@@ -1,7 +1,7 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Event, EventType, Match, MatchStatus, Player } from './models';
 import { deletePlayer, savePlayer } from './PlayerUtils';
@@ -261,7 +261,10 @@ export const savePlayers = async (
  */
 export const useEvent = (eventID: string) => {
   const history = useHistory();
+
   const [event, setEvent] = useState<Event>();
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
     const fetchEvent = async (id: string) => {
@@ -279,5 +282,33 @@ export const useEvent = (eventID: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventID]);
 
-  return event;
+  useEffect(() => {
+    const fetchMatches = async (eid: string) => {
+      const fetchedMatches = await getMatches(eid);
+      setMatches(fetchedMatches);
+    };
+
+    fetchMatches(eventID);
+    const subscription = DataStore.observe(Match,
+      (m) => m.eventID('eq', eventID))
+      .subscribe(() => fetchMatches(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event]);
+
+  useEffect(() => {
+    const fetchPlayers = async (eid: string) => {
+      const fetchedPlayers = await getPlayers(eid);
+      setPlayers(fetchedPlayers);
+    };
+
+    fetchPlayers(eventID);
+    const subscription = DataStore.observe(Player,
+      (p) => p.eventID('eq', eventID))
+      .subscribe(() => fetchPlayers(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matches]);
+
+  return { event, matches, players };
 };

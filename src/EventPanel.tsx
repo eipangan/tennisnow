@@ -44,7 +44,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { eventID } = props;
-  const event = useEvent(eventID);
+  const { event } = useEvent(eventID);
 
   const EventMatchesList = () => {
     if (event && event.type === EventType.GENERIC_EVENT) return <></>;
