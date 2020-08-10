@@ -1,6 +1,8 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Event, EventType, Match, MatchStatus, Player } from './models';
 import { deletePlayer, savePlayer } from './PlayerUtils';
 
@@ -250,4 +252,32 @@ export const savePlayers = async (
 
   // save new players
   players.forEach((player) => savePlayer(player));
+};
+
+/**
+ * useEvent custom hook
+ *
+ * @param eventID
+ */
+export const useEvent = (eventID: string) => {
+  const history = useHistory();
+  const [event, setEvent] = useState<Event>();
+
+  useEffect(() => {
+    const fetchEvent = async (id: string) => {
+      const fetchedEvent = await getEvent(id);
+      if (!fetchedEvent) {
+        history.push('/');
+      }
+      setEvent(fetchedEvent);
+    };
+
+    fetchEvent(eventID);
+    const subscription = DataStore.observe(Event, eventID)
+      .subscribe(() => fetchEvent(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventID]);
+
+  return event;
 };

@@ -3,8 +3,8 @@ import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getEvent, getMatches, getPlayers } from './EventUtils';
-import { Event, EventType, Match, MatchStatus, Player } from './models';
+import { getMatches, getPlayers, useEvent } from './EventUtils';
+import { EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
 import { ThemeType } from './Theme';
 
@@ -33,8 +33,8 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { eventID } = props;
+  const event = useEvent(eventID);
 
-  const [event, setEvent] = useState<Event>();
   const [matches, setMatches] = useState<Match[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
 
@@ -47,18 +47,6 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
 
   const [datasource, setDatasource] = useState<PlayerStatusType[]>([]);
   const [columns, setColumns] = useState<ColumnProps<PlayerStatusType>[]>();
-
-  useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      const fetchedEvent = await getEvent(id);
-      setEvent(fetchedEvent);
-    };
-
-    fetchEvent(eventID);
-    const subscription = DataStore.observe(Event, eventID)
-      .subscribe(() => fetchEvent(eventID));
-    return () => subscription.unsubscribe();
-  }, [eventID]);
 
   useEffect(() => {
     const fetchMatches = async (eid: string) => {

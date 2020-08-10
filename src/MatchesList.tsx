@@ -4,10 +4,10 @@ import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getEvent, getMatches, getNextMatch } from './EventUtils';
+import { getMatches, getNextMatch, useEvent } from './EventUtils';
 import MatchPanel from './MatchPanel';
 import { deleteMatch, saveMatch } from './MatchUtils';
-import { Event, Match } from './models';
+import { Match } from './models';
 import { ThemeType } from './Theme';
 import { useLocalStorage } from './Utils';
 
@@ -48,23 +48,11 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { eventID } = props;
+  const event = useEvent(eventID);
 
-  const [event, setEvent] = useState<Event>();
   const [matches, setMatches] = useState<Match[]>([]);
 
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
-
-  useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      const fetchedEvent = await getEvent(id);
-      setEvent(fetchedEvent);
-    };
-
-    fetchEvent(eventID);
-    const subscription = DataStore.observe(Event, eventID)
-      .subscribe(() => fetchEvent(eventID));
-    return () => subscription.unsubscribe();
-  }, [eventID]);
 
   useEffect(() => {
     const fetchMatches = async (eid: string) => {
