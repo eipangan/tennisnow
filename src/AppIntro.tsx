@@ -1,13 +1,10 @@
 import { Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getNewEvent, getNewPlayers, getNextMatch } from './components/event/EventUtils';
-import MatchesList from './components/match/MatchesList';
-import { ThemeType } from './components/utils/Theme';
 import { ReactComponent as Signup } from './images/signup.svg';
 import { ReactComponent as Tennis } from './images/tennis.svg';
-import { Match } from './models';
+import { ThemeType } from './Theme';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -31,36 +28,6 @@ const AppIntro = (): JSX.Element => {
 
   const { Title, Text } = Typography;
 
-  const event = getNewEvent();
-  const [matches, setMatches] = useState<Match[]>();
-  const players = getNewPlayers(event.id, 6, ['1', '2', '3', '4', '5', '6']);
-
-  useEffect(() => {
-    const fetchMatches = async () => {
-      const myMatches: Match[] = [];
-      let myNextMatch: Match | undefined;
-
-      const getMyNextMatch = async () => {
-        myNextMatch = await getNextMatch(event.id, myMatches, players);
-        if (myNextMatch) myMatches.push(myNextMatch);
-      };
-
-      await getMyNextMatch();
-      await getMyNextMatch();
-      await getMyNextMatch();
-      await getMyNextMatch();
-      await getMyNextMatch();
-      await getMyNextMatch();
-      await getMyNextMatch();
-      await getMyNextMatch();
-      await getMyNextMatch();
-
-      setMatches(myMatches);
-    };
-
-    fetchMatches();
-  }, [event.id, players]);
-
   return (
     <div className={classes.appIntro}>
       <Title className={classes.title} level={3}>
@@ -78,10 +45,6 @@ const AppIntro = (): JSX.Element => {
       <Text>
         {t('intro.events.body1')}
       </Text>
-      <MatchesList
-        matches={matches || []}
-        players={players || []}
-      />
       <Text>
         {t('intro.events.body2')}
       </Text>

@@ -1,4 +1,4 @@
-import { getNewEvent } from '../event/EventUtils';
+import { getNewEvent } from '../EventUtils';
 
 test('runs getPlayerName() as expected', () => {
   const event = getNewEvent();

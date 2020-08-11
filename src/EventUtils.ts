@@ -1,14 +1,14 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event, Match, MatchStatus, Player } from '../../models';
-import { deletePlayer, savePlayer } from '../player/PlayerUtils';
+import { Event, EventType, Match, MatchStatus, Player } from './models';
+import { deletePlayer, savePlayer } from './PlayerUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
 
 /**
- * delete event
+ * delete event from DataStore
  *
  * @param event
  */
@@ -17,7 +17,7 @@ export const deleteEvent = async (event: Event): Promise<void> => {
 };
 
 /**
- * get event given an eventID
+ * get event from DataStore, given an eventID
  *
  * @param eventID
  */
@@ -27,7 +27,7 @@ export const getEvent = async (eventID: string): Promise<Event> => {
 };
 
 /**
- * get events
+ * get events from DataStore
  *
  * @param eventID
  */
@@ -37,7 +37,17 @@ export const getEvents = async (): Promise<Event[]> => {
 };
 
 /**
- * get matches given an eventID
+ * get match from DataStore, given a matchID
+ *
+ * @param matchID
+ */
+export const getMatch = async (matchID: string): Promise<Match> => {
+  const fetchedMatch = await DataStore.query(Match, matchID);
+  return fetchedMatch;
+};
+
+/**
+ * get matches from DataStore, given an eventID
  *
  * @param eventID
  */
@@ -47,44 +57,55 @@ export const getMatches = async (eventID: string): Promise<Match[]> => {
 };
 
 /**
- * get players given an eventID
+ * get players from DataStore, given an eventID
  *
  * @param eventID
  */
 export const getPlayers = async (eventID: string): Promise<Player[]> => {
+  let players: Player[] = [];
   const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
-  return fetchedPlayers.sort((a, b) => a.index - b.index);
+  if (fetchedPlayers && Array.isArray(fetchedPlayers)) {
+    players = fetchedPlayers.sort((a, b) => a.index - b.index);
+  }
+
+  return players;
 };
 
 /**
  * get new event
  */
 export const getNewEvent = (): Event => {
-  const event = new Event({
+  const newEvent = new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
+    type: EventType.GENERIC_EVENT,
   });
 
-  return event;
+  return newEvent;
 };
 
 /**
- * get next match or undefined if cannot get next match
+ * get next match
  *
  * @param eventID
  * @param matches
  * @param players
  */
 export const getNextMatch = async (
-  eventID: string,
+  event: Event,
   matches: Match[] | undefined = undefined,
   players: Player[] | undefined = undefined,
 ): Promise<Match | undefined> => {
-  const myMatches = matches || await getMatches(eventID);
-  const myPlayers = players || await getPlayers(eventID);
+  const myMatches = matches || await getMatches(event.id);
+  const myPlayers = players || await getPlayers(event.id);
 
-  // get potential players
+  let nextMatch: Match | undefined;
+
+  /**
+   * get potential players
+   */
   const getPotentialPlayers = () => {
+    // calculate number of matches played
     const numPlayed = myPlayers.map(() => 0);
     myMatches.forEach((myMatch) => {
       if (myMatch.playerIndices) {
@@ -94,8 +115,9 @@ export const getNextMatch = async (
       }
     });
 
+    // get potential players
     const potentialPlayers: number[] = [];
-    for (let i = 0; i < myPlayers.length; i += 1) {
+    for (let i = 0; i <= myMatches.length; i += 1) {
       myPlayers.forEach((player) => {
         if (numPlayed[player.index] === i) {
           potentialPlayers.push(player.index);
@@ -103,10 +125,13 @@ export const getNextMatch = async (
       });
     }
 
+    // return potential players
     return potentialPlayers;
   };
 
-  // get potential matches
+  /**
+   * get potential matches
+   */
   const getPotentialMatches = () => {
     const allMatches = myPlayers.flatMap((v, i) => myPlayers.slice(i + 1).map((w) => ([v.index, w.index])));
     const allMatchesDone = myMatches.map((m) => {
@@ -117,14 +142,12 @@ export const getNextMatch = async (
   };
 
   // get next match
-  let nextMatch: Match | undefined;
-
   const potentialPlayers = getPotentialPlayers();
   const potentialMatches = getPotentialMatches();
   const BreakException = {};
   try {
+    const eventID = event.id;
     potentialPlayers.forEach((p1) => {
-      // eslint-disable-next-line consistent-return
       potentialPlayers.forEach((p2) => {
         if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
           nextMatch = new Match({
@@ -141,11 +164,13 @@ export const getNextMatch = async (
     if (e !== BreakException) throw e;
   }
 
+  // console.log(potentialPlayers, potentialMatches, event.type, nextMatch);
+
   return nextMatch;
 };
 
 /**
- * get new players
+ * get new players, return array of players
  *
  * @param eventID
  * @param numPlayers
@@ -156,16 +181,18 @@ export const getNewPlayers = (
   numPlayers: number = 6,
   playerNames: string[] = [],
 ): Player[] => {
-  const players: Player[] = [];
-  for (let i = 0; i < numPlayers; i += 1) {
-    players.push(new Player({
-      eventID,
-      index: i,
-      name: playerNames[i] || '',
-    }));
+  const newPlayers: Player[] = [];
+  if (eventID && eventID.length > 0) {
+    for (let i = 0; i < numPlayers; i += 1) {
+      newPlayers.push(new Player({
+        eventID,
+        index: i,
+        name: playerNames[i] || '',
+      }));
+    }
   }
 
-  return players;
+  return newPlayers;
 };
 
 /**
@@ -190,8 +217,10 @@ export const savePlayers = async (
   const currentPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
 
   // remove unneeded players
-  const toRemovePlayers = currentPlayers.filter((p) => JSON.stringify(players).indexOf(JSON.stringify(p)) === -1);
-  toRemovePlayers.forEach((player) => deletePlayer(player));
+  if (currentPlayers && Array.isArray(currentPlayers)) {
+    const toRemovePlayers = currentPlayers.filter((p) => JSON.stringify(players).indexOf(JSON.stringify(p)) === -1);
+    toRemovePlayers.forEach((player) => deletePlayer(player));
+  }
 
   // save new players
   players.forEach((player) => savePlayer(player));

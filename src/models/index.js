@@ -3,11 +3,10 @@ import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
 const EventType = {
+  "GENERIC_EVENT": "GENERIC_EVENT",
   "SINGLES_ROUND_ROBIN": "SINGLES_ROUND_ROBIN",
-  "DOUBLES_ROUND_ROBIN": "DOUBLES_ROUND_ROBIN",
-  "SINGLES_ONE_MATCH": "SINGLES_ONE_MATCH",
-  "DOUBLES_ONE_MATCH": "DOUBLES_ONE_MATCH",
-  "DEFAULT": "DEFAULT"
+  "FIX_DOUBLES_ROUND_ROBIN": "FIX_DOUBLES_ROUND_ROBIN",
+  "SWITCH_DOUBLES_ROUND_ROBIN": "SWITCH_DOUBLES_ROUND_ROBIN"
 };
 
 const MatchStatus = {

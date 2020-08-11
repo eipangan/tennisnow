@@ -12,15 +12,15 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
 import { AppContext, AppContextType } from './AppContext';
-import { getEvents } from './components/event/EventUtils';
-import { ThemeType } from './components/utils/Theme';
+import { getEvents } from './EventUtils';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
+import { ThemeType } from './Theme';
 
 const AppIntro = React.lazy(() => import('./AppIntro'));
-const EventRoute = React.lazy(() => import('./components/routes/EventRoute'));
-const EventsPanel = React.lazy(() => import('./components/event/EventsPanel'));
-const UserSettings = React.lazy(() => import('./components/user/UserSettings'));
+const EventRoute = React.lazy(() => import('./EventRoute'));
+const EventsPanel = React.lazy(() => import('./EventsPanel'));
+const UserSettings = React.lazy(() => import('./UserSettings'));
 
 // initialize dayjs
 dayjs.extend(updateLocale);
@@ -82,7 +82,7 @@ const App = (): JSX.Element => {
 
   const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
   const [user, setUser] = useState<CognitoUser>();
-  const [events, setEvents] = useState<Event[]>();
+  const [events, setEvents] = useState<Event[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -219,7 +219,11 @@ const App = (): JSX.Element => {
   }, [i18n]);
 
   useEffect(() => {
-    dayjs.locale(i18n.language);
+    if (i18n.language.toLowerCase().startsWith('ja')) {
+      dayjs.locale('ja');
+    } else {
+      dayjs.locale('en');
+    }
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 

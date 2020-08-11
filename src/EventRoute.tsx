@@ -1,13 +1,11 @@
 import { PageHeader } from 'antd';
-import React, { Suspense, useEffect, useState } from 'react';
+import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { ReactComponent as AppTitle } from '../../images/title.svg';
-import { Event } from '../../models';
-import EventButtons from '../event/EventButtons';
-import EventPanel from '../event/EventPanel';
-import { getEvent } from '../event/EventUtils';
-import { ThemeType } from '../utils/Theme';
+import EventButtons from './EventButtons';
+import EventPanel from './EventPanel';
+import { ReactComponent as AppTitle } from './images/title.svg';
+import { ThemeType } from './Theme';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -50,46 +48,13 @@ const EventRoute = (props: any): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const [event, setEvent] = useState<Event>();
+  // get eventID from router
   const { match } = props;
   const { params } = match;
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  /**
-   * Loader
-   */
-  const Loader = (): JSX.Element => {
-    if (!isLoading) return <></>;
-    return (
-      <div className="loader" />
-    );
-  };
-
-  useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      setIsLoading(true);
-      const myEvent = await getEvent(id);
-      setEvent(myEvent);
-      setIsLoading(false);
-    };
-
-    fetchEvent(params.id);
-  }, [params.id]);
-
-  if (!event) {
-    return (
-      <PageHeader
-        className={classes.appHeader}
-        onBack={() => history.push('/')}
-        title={(<AppTitle />)}
-      />
-    );
-  }
+  const eventID = params.id;
 
   return (
     <>
-      <Loader />
       <PageHeader
         className={classes.appHeader}
         onBack={() => history.push('/')}
@@ -97,14 +62,11 @@ const EventRoute = (props: any): JSX.Element => {
         extra={[
           <EventButtons
             key="settings"
-            event={event}
-            setEvent={setEvent}
+            eventID={eventID}
           />,
         ]}
       />
-      <Suspense fallback={<div className="loader" />}>
-        <EventPanel event={event} />
-      </Suspense>
+      <EventPanel eventID={eventID} />
     </>
   );
 };

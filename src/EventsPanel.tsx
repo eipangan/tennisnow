@@ -4,9 +4,9 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event } from '../../models';
-import { ThemeType } from '../utils/Theme';
-import { useLocalStorage } from '../utils/Utils';
+import { Event } from './models';
+import { ThemeType } from './Theme';
+import { useLocalStorage } from './Utils';
 import EventButtons from './EventButtons';
 import EventsList from './EventsList';
 
