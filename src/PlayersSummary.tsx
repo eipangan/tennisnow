@@ -1,9 +1,10 @@
 import Table, { ColumnProps } from 'antd/lib/table';
+import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { useEvent } from './EventUtils';
-import { EventType, Match, MatchStatus } from './models';
+import { getMatches, getPlayers, useEvent } from './EventUtils';
+import { EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
 import { ThemeType } from './Theme';
 
@@ -32,7 +33,37 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { eventID } = props;
-  const { event, matches, players } = useEvent(eventID);
+  const { event } = useEvent(eventID);
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  useEffect(() => {
+    const fetchMatches = async (eid: string) => {
+      const fetchedMatches = await getMatches(eid);
+      setMatches(fetchedMatches);
+    };
+
+    fetchMatches(eventID);
+    const subscription = DataStore.observe(Match,
+      (m) => m.eventID('eq', eventID))
+      .subscribe(() => fetchMatches(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event]);
+
+  useEffect(() => {
+    const fetchPlayers = async (eid: string) => {
+      const fetchedPlayers = await getPlayers(eid);
+      setPlayers(fetchedPlayers);
+    };
+
+    fetchPlayers(eventID);
+    const subscription = DataStore.observe(Player,
+      (p) => p.eventID('eq', eventID))
+      .subscribe(() => fetchPlayers(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matches]);
 
   interface PlayerStatusType {
     playerName: string;

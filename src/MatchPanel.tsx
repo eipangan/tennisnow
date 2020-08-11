@@ -16,6 +16,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
     height: theme.height,
     lineHeight: theme.height,
     outline: 'none',
+    padding: '0px 9px',
     width: '100%',
   };
 

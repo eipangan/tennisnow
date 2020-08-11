@@ -1,9 +1,10 @@
 import { DeleteOutlined, MoreOutlined, PlusOutlined, UpOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getNextMatch, useEvent } from './EventUtils';
+import { getMatches, getNextMatch, useEvent } from './EventUtils';
 import MatchPanel from './MatchPanel';
 import { deleteMatch, saveMatch } from './MatchUtils';
 import { Match } from './models';
@@ -47,9 +48,24 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { eventID } = props;
-  const { event, matches } = useEvent(eventID);
+  const { event } = useEvent(eventID);
+  const [matches, setMatches] = useState<Match[]>([]);
 
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
+
+  useEffect(() => {
+    const fetchMatches = async (eid: string) => {
+      const fetchedMatches = await getMatches(eid);
+      setMatches(fetchedMatches);
+    };
+
+    fetchMatches(eventID);
+    const subscription = DataStore.observe(Match,
+      (m) => m.eventID('eq', eventID))
+      .subscribe(() => fetchMatches(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event]);
 
   return (
     <div className={classes.matchesPanel}>
