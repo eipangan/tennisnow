@@ -6,7 +6,7 @@ import { getNewEvent, getNewPlayers } from '../EventUtils';
 import { theme } from '../Theme';
 import PlayerPanel from '../PlayerPanel';
 
-test('renders without crashing', () => {
+test('renders without crashing', async () => {
   const event = getNewEvent();
   const players = getNewPlayers(event.id, 6);
   if (players) {
