@@ -1,10 +1,14 @@
 import { PageHeader } from 'antd';
-import React from 'react';
+import { DataStore } from 'aws-amplify';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
+import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
+import { getEvent } from './EventUtils';
 import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -52,9 +56,28 @@ const EventRoute = (props: any): JSX.Element => {
   const { match } = props;
   const { params } = match;
   const eventID = params.id;
+  const [event, setEvent] = useState<Event>();
+
+  useEffect(() => {
+    const fetchEvent = async (id: string) => {
+      const fetchedEvent = await getEvent(id);
+      if (!fetchedEvent) history.push('/');
+      setEvent(fetchedEvent);
+    };
+
+    fetchEvent(eventID);
+    const subscription = DataStore.observe(Event, eventID)
+      .subscribe(() => fetchEvent(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventID]);
 
   return (
-    <>
+    <EventContext.Provider value={{
+      eventID,
+      event,
+    }}
+    >
       <PageHeader
         className={classes.appHeader}
         onBack={() => history.push('/')}
@@ -66,8 +89,8 @@ const EventRoute = (props: any): JSX.Element => {
           />,
         ]}
       />
-      <EventPanel eventID={eventID} />
-    </>
+      <EventPanel />
+    </EventContext.Provider>
   );
 };
 

@@ -1,12 +1,10 @@
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { useHistory } from 'react-router-dom';
-import { getEvent } from './EventUtils';
+import { EventContext } from './EventContext';
 import MatchesList from './MatchesList';
-import { Event, EventType } from './models';
+import { EventType } from './models';
 import PlayersSummary from './PlayersSummary';
 import { ThemeType } from './Theme';
 
@@ -30,38 +28,15 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * EventPanelProps
- */
-type EventPanelProps = {
-  eventID: string;
-}
-
-/**
  * EventPanel
  *
  * @param props
  */
-const EventPanel = (props: EventPanelProps): JSX.Element => {
-  const history = useHistory();
+const EventPanel = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventID } = props;
-  const [event, setEvent] = useState<Event>();
-
-  useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      const fetchedEvent = await getEvent(id);
-      if (!fetchedEvent) history.push('/');
-      setEvent(fetchedEvent);
-    };
-
-    fetchEvent(eventID);
-    const subscription = DataStore.observe(Event, eventID)
-      .subscribe(() => fetchEvent(eventID));
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventID]);
+  const { eventID, event } = useContext(EventContext);
 
   const EventMatchesList = () => {
     if (event && event.type === EventType.GENERIC_EVENT) return <></>;
@@ -80,7 +55,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
         <EventMatchesList />
       </div>
       <div className={classes.eventPlayersSummary}>
-        <PlayersSummary eventID={event.id} />
+        <PlayersSummary />
       </div>
     </div>
   );

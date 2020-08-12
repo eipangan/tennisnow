@@ -1,11 +1,11 @@
 import Table, { ColumnProps } from 'antd/lib/table';
 import { DataStore } from 'aws-amplify';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { useHistory } from 'react-router-dom';
-import { getEvent, getMatches, getPlayers } from './EventUtils';
-import { Event, EventType, Match, MatchStatus, Player } from './models';
+import { EventContext } from './EventContext';
+import { getMatches, getPlayers } from './EventUtils';
+import { EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
 import { ThemeType } from './Theme';
 
@@ -17,41 +17,18 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * PlayersSummaryProps
- */
-type PlayersSummaryProps = {
-  eventID: string,
-};
-
-/**
  * PlayersSummary
  *
  * @param props
  */
-const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
+const PlayersSummary = (): JSX.Element => {
   const { t } = useTranslation();
-  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventID } = props;
-  const [event, setEvent] = useState<Event>();
+  const { eventID, event } = useContext(EventContext);
   const [matches, setMatches] = useState<Match[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
-
-  useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      const fetchedEvent = await getEvent(id);
-      if (!fetchedEvent) history.push('/');
-      setEvent(fetchedEvent);
-    };
-
-    fetchEvent(eventID);
-    const subscription = DataStore.observe(Event, eventID)
-      .subscribe(() => fetchEvent(eventID));
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventID]);
 
   useEffect(() => {
     const fetchMatches = async (eid: string) => {

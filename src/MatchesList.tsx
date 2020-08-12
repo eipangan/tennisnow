@@ -2,13 +2,13 @@ import { DeleteOutlined, MoreOutlined, PlusOutlined, UpOutlined } from '@ant-des
 import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { useHistory } from 'react-router-dom';
-import { getEvent, getMatches, getNextMatch } from './EventUtils';
+import { EventContext } from './EventContext';
+import { getMatches, getNextMatch } from './EventUtils';
 import MatchPanel from './MatchPanel';
 import { deleteMatch, saveMatch } from './MatchUtils';
-import { Event, Match } from './models';
+import { Match } from './models';
 import { ThemeType } from './Theme';
 import { useLocalStorage } from './Utils';
 
@@ -45,29 +45,13 @@ type MatchesListProps = {
  * @param props
  */
 const MatchesList = (props: MatchesListProps): JSX.Element => {
-  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventID } = props;
-  const [event, setEvent] = useState<Event>();
+  const { eventID, event } = useContext(EventContext);
   const [matches, setMatches] = useState<Match[]>([]);
 
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
-
-  useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      const fetchedEvent = await getEvent(id);
-      if (!fetchedEvent) history.push('/');
-      setEvent(fetchedEvent);
-    };
-
-    fetchEvent(eventID);
-    const subscription = DataStore.observe(Event, eventID)
-      .subscribe(() => fetchEvent(eventID));
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventID]);
 
   useEffect(() => {
     const fetchMatches = async (eid: string) => {
