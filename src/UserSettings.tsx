@@ -1,9 +1,10 @@
 import { LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import Auth, { CognitoUser } from '@aws-amplify/auth';
+import Auth from '@aws-amplify/auth';
 import { Button, Drawer, Popconfirm, Typography } from 'antd';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { AppContext } from './AppContext';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -17,7 +18,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * UserSettingsProps
  */
 type UserSettingsProps = {
-  user?: CognitoUser;
   onClose?: () => void,
 };
 
@@ -31,7 +31,8 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { user, onClose } = props;
+  const { onClose } = props;
+  const { username } = useContext(AppContext);
 
   return (
     <Drawer
@@ -43,7 +44,7 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
       visible
     >
       <Typography>
-        {user?.getUsername()}
+        {username}
       </Typography>
       <Popconfirm
         cancelText={t('cancel')}
