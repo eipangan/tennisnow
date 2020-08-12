@@ -73,20 +73,19 @@ const EventRoute = (props: any): JSX.Element => {
   }, [eventID]);
 
   return (
-    <EventContext.Provider value={{
-      eventID,
-      event,
-    }}
+    <EventContext.Provider
+      key={eventID}
+      value={{
+        eventID,
+        event,
+      }}
     >
       <PageHeader
         className={classes.appHeader}
         onBack={() => history.push('/')}
         title={(<AppTitle />)}
         extra={[
-          <EventButtons
-            key="settings"
-            eventID={eventID}
-          />,
+          <EventButtons key={eventID} />,
         ]}
       />
       <EventPanel />

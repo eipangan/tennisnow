@@ -111,11 +111,15 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     const fetchEvent = async (id: string) => {
       let myEvent: Event;
 
-      const fetchedEvent = await getEvent(id);
-      if (!fetchedEvent || isEmpty(fetchedEvent)) {
+      if (!id) {
         myEvent = getNewEvent();
       } else {
-        myEvent = fetchedEvent;
+        const fetchedEvent = await getEvent(id);
+        if (!fetchedEvent || isEmpty(fetchedEvent)) {
+          myEvent = getNewEvent();
+        } else {
+          myEvent = fetchedEvent;
+        }
       }
 
       setEvent(myEvent);

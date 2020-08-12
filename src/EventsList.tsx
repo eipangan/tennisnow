@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
+import { EventContext } from './EventContext';
 import { ReactComponent as Empty } from './images/empty.svg';
 import { Event } from './models';
 import { ThemeType } from './Theme';
@@ -71,10 +72,15 @@ const EventsList = (props: EventsListProps): JSX.Element => {
             e.stopPropagation();
           }}
           extra={[
-            <EventButtons
-              key="settings"
-              eventID={myEvent.id}
-            />,
+            <EventContext.Provider
+              key={myEvent.id}
+              value={{
+                eventID: myEvent.id,
+                event: myEvent,
+              }}
+            >
+              <EventButtons />
+            </EventContext.Provider>,
           ]}
         >
           <List.Item.Meta
