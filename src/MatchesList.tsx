@@ -1,8 +1,10 @@
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MoreOutlined, PlusOutlined, UpOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
+import { useHistory } from 'react-router-dom';
 import { getEvent, getMatches, getNextMatch } from './EventUtils';
 import MatchPanel from './MatchPanel';
 import { deleteMatch, saveMatch } from './MatchUtils';
@@ -17,19 +19,13 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     border: '1px solid lightgray',
     display: 'flex',
     flexDirection: 'row',
+    overflowY: 'scroll',
     padding: '9px 15px',
   },
   buttonsPanel: {
     display: 'flex',
     flexDirection: 'column',
-    padding: '0px 0px 0px 0px',
-  },
-  matchesList: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflowY: 'scroll',
-    margin: '0px 4px',
-    width: '100%',
+    padding: '0px 15px 0px 0px',
   },
   matchPanel: {
     margin: '0px 4px',
@@ -49,11 +45,11 @@ type MatchesListProps = {
  * @param props
  */
 const MatchesList = (props: MatchesListProps): JSX.Element => {
+  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
   const { eventID } = props;
-
   const [event, setEvent] = useState<Event>();
   const [matches, setMatches] = useState<Match[]>([]);
 
@@ -62,6 +58,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   useEffect(() => {
     const fetchEvent = async (id: string) => {
       const fetchedEvent = await getEvent(id);
+      if (!fetchedEvent) history.push('/');
       setEvent(fetchedEvent);
     };
 
@@ -69,6 +66,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
     const subscription = DataStore.observe(Event, eventID)
       .subscribe(() => fetchEvent(eventID));
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventID]);
 
   useEffect(() => {
@@ -87,62 +85,54 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
 
   return (
     <div className={classes.matchesPanel}>
-      <div className={classes.buttonsPanel}>
-        <div>
-          <div style={{ height: '3px' }} />
-          <Button
-            data-testid="add-match"
-            icon={<PlusOutlined />}
-            onClick={async () => {
-              if (event) {
-                const newMatch = await getNextMatch(event);
-                if (newMatch) {
-                  saveMatch(newMatch);
-                }
-              }
-            }}
-            shape="round"
-          />
-        </div>
-        <div>
-          <div style={{ height: '3px' }} />
-          <Button
-            data-testid="delete-match"
-            icon={<DeleteOutlined />}
-            onClick={() => setIsDeleteVisible(!isDeleteVisible)}
-            shape="round"
-            style={{ background: '#ffffff50', color: 'darkgray' }}
-          />
-        </div>
-      </div>
-      <div className={classes.matchesList}>
-        {matches.slice(0).reverse().map((match, index) => (
+      {matches
+        .sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1))
+        .map((match, index) => (
           <div
             className={classes.matchPanel}
             key={index.toString()}
           >
-            <MatchPanel
-              key={index.toString()}
-              matchID={match.id}
-            />
+            <MatchPanel matchID={match.id} />
             {(() => {
               if (!isDeleteVisible) return <></>;
               return (
-                <div>
+                <>
                   <div style={{ height: '3px' }} />
                   <Button
                     icon={<DeleteOutlined />}
                     shape="circle"
-                    style={{ background: '#ffffff50', color: 'darkgray' }}
+                    style={{ background: '#ffffff50', color: '#ff696996' }}
                     onClick={(e) => {
                       deleteMatch(match);
                     }}
                   />
-                </div>
+                </>
               );
             })()}
           </div>
         ))}
+      <div className={classes.buttonsPanel}>
+        <div style={{ height: '3px' }} />
+        <Button
+          data-testid="add-match"
+          icon={<PlusOutlined />}
+          onClick={async () => {
+            if (event) {
+              const newMatch = await getNextMatch(event);
+              if (newMatch) {
+                saveMatch(newMatch);
+              }
+            }
+          }}
+          shape="round"
+        />
+        <div style={{ height: '3px' }} />
+        <Button
+          data-testid="more-match"
+          icon={isDeleteVisible ? <UpOutlined /> : <MoreOutlined />}
+          onClick={() => setIsDeleteVisible(!isDeleteVisible)}
+          shape="round"
+        />
       </div>
     </div>
   );

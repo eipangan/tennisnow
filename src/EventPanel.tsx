@@ -47,15 +47,12 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
   const classes = useStyles({ theme });
 
   const { eventID } = props;
-
   const [event, setEvent] = useState<Event>();
 
   useEffect(() => {
     const fetchEvent = async (id: string) => {
       const fetchedEvent = await getEvent(id);
-      if (!fetchedEvent) {
-        history.push('/');
-      }
+      if (!fetchedEvent) history.push('/');
       setEvent(fetchedEvent);
     };
 
@@ -68,9 +65,7 @@ const EventPanel = (props: EventPanelProps): JSX.Element => {
 
   const EventMatchesList = () => {
     if (event && event.type === EventType.GENERIC_EVENT) return <></>;
-    return (
-      <MatchesList eventID={eventID} />
-    );
+    return <MatchesList eventID={eventID} />;
   };
 
   if (!event) return <></>;

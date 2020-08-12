@@ -96,13 +96,27 @@ export const getNextMatch = async (
   matches: Match[] | undefined = undefined,
   players: Player[] | undefined = undefined,
 ): Promise<Match | undefined> => {
-  const myMatches = matches || await getMatches(event.id);
-  const myPlayers = players || await getPlayers(event.id);
-
-  let nextMatch: Match | undefined;
+  const myEvent = event;
+  const myMatches = matches || await getMatches(myEvent.id);
+  const myPlayers = players || await getPlayers(myEvent.id);
 
   /**
-   * get potential players
+   * get all matches in array of [p1, p2] format
+  */
+  const getAllMatches = () => myPlayers.flatMap((v, i) => myPlayers
+    .slice(i + 1)
+    .map((w) => ([v.index, w.index])));
+
+  /**
+   * get all matches that already done in array of [p1, p2] format
+   */
+  const getAllMatchesDone = () => myMatches.map((m) => {
+    if (!m.playerIndices) return undefined;
+    return ([m.playerIndices[0], m.playerIndices[1]]);
+  });
+
+  /**
+   * get potential players, size is always equal to number of players
    */
   const getPotentialPlayers = () => {
     // calculate number of matches played
@@ -133,20 +147,34 @@ export const getNextMatch = async (
    * get potential matches
    */
   const getPotentialMatches = () => {
-    const allMatches = myPlayers.flatMap((v, i) => myPlayers.slice(i + 1).map((w) => ([v.index, w.index])));
-    const allMatchesDone = myMatches.map((m) => {
-      if (!m.playerIndices) return undefined;
-      return ([m.playerIndices[0], m.playerIndices[1]]);
-    });
-    return allMatches.filter((m) => JSON.stringify(allMatchesDone).indexOf(JSON.stringify(m)) === -1);
+    const allMatches = getAllMatches();
+    const allMatchesDone = getAllMatchesDone();
+
+    const potentialMatches = allMatches.filter((m) => JSON
+      .stringify(allMatchesDone)
+      .indexOf(JSON.stringify(m)) === -1);
+    return potentialMatches;
   };
 
-  // get next match
+  const eventID = myEvent.id;
   const potentialPlayers = getPotentialPlayers();
   const potentialMatches = getPotentialMatches();
+
+  if (potentialPlayers.length === 0) return undefined;
+  if (potentialMatches.length === 0 && myMatches.length > 0) {
+    // TODO: need to fix this logic
+    return (new Match({
+      eventID,
+      createdTime: dayjs().toDate().toISOString(),
+      playerIndices: [0, 1],
+      status: MatchStatus.NEW,
+    }));
+  }
+
+  // get next match
+  let nextMatch: Match | undefined;
   const BreakException = {};
   try {
-    const eventID = event.id;
     potentialPlayers.forEach((p1) => {
       potentialPlayers.forEach((p2) => {
         if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
@@ -163,8 +191,6 @@ export const getNextMatch = async (
   } catch (e) {
     if (e !== BreakException) throw e;
   }
-
-  // console.log(potentialPlayers, potentialMatches, event.type, nextMatch);
 
   return nextMatch;
 };

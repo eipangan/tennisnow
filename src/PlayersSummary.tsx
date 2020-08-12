@@ -3,6 +3,7 @@ import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { useHistory } from 'react-router-dom';
 import { getEvent, getMatches, getPlayers } from './EventUtils';
 import { Event, EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
@@ -29,28 +30,19 @@ type PlayersSummaryProps = {
  */
 const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const { t } = useTranslation();
+  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
   const { eventID } = props;
-
   const [event, setEvent] = useState<Event>();
   const [matches, setMatches] = useState<Match[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
 
-  interface PlayerStatusType {
-    playerName: string;
-    numWon: number;
-    numLost: number;
-    numDraws: number;
-  }
-
-  const [datasource, setDatasource] = useState<PlayerStatusType[]>([]);
-  const [columns, setColumns] = useState<ColumnProps<PlayerStatusType>[]>();
-
   useEffect(() => {
     const fetchEvent = async (id: string) => {
       const fetchedEvent = await getEvent(id);
+      if (!fetchedEvent) history.push('/');
       setEvent(fetchedEvent);
     };
 
@@ -58,6 +50,7 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
     const subscription = DataStore.observe(Event, eventID)
       .subscribe(() => fetchEvent(eventID));
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventID]);
 
   useEffect(() => {
@@ -87,6 +80,16 @@ const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches]);
+
+  interface PlayerStatusType {
+    playerName: string;
+    numWon: number;
+    numLost: number;
+    numDraws: number;
+  }
+
+  const [datasource, setDatasource] = useState<PlayerStatusType[]>([]);
+  const [columns, setColumns] = useState<ColumnProps<PlayerStatusType>[]>();
 
   useEffect(() => {
     // set datasource if players exist
