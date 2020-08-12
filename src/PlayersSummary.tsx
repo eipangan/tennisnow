@@ -3,8 +3,9 @@ import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getMatches, getPlayers, useEvent } from './EventUtils';
-import { EventType, Match, MatchStatus, Player } from './models';
+import { useHistory } from 'react-router-dom';
+import { getEvent, getMatches, getPlayers } from './EventUtils';
+import { Event, EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
 import { ThemeType } from './Theme';
 
@@ -29,13 +30,28 @@ type PlayersSummaryProps = {
  */
 const PlayersSummary = (props: PlayersSummaryProps): JSX.Element => {
   const { t } = useTranslation();
+  const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
   const { eventID } = props;
-  const { event } = useEvent(eventID);
+  const [event, setEvent] = useState<Event>();
   const [matches, setMatches] = useState<Match[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
+
+  useEffect(() => {
+    const fetchEvent = async (id: string) => {
+      const fetchedEvent = await getEvent(id);
+      if (!fetchedEvent) history.push('/');
+      setEvent(fetchedEvent);
+    };
+
+    fetchEvent(eventID);
+    const subscription = DataStore.observe(Event, eventID)
+      .subscribe(() => fetchEvent(eventID));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventID]);
 
   useEffect(() => {
     const fetchMatches = async (eid: string) => {
