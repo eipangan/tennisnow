@@ -72,6 +72,7 @@ const EventRoute = (props: any): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventID]);
 
+  if (!event) return <></>;
   return (
     <EventContext.Provider
       key={eventID}
