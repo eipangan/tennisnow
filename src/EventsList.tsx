@@ -74,10 +74,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
           extra={[
             <EventContext.Provider
               key={myEvent.id}
-              value={{
-                eventID: myEvent.id,
-                event: myEvent,
-              }}
+              value={{ event: myEvent }}
             >
               <EventButtons />
             </EventContext.Provider>,

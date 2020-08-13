@@ -36,11 +36,11 @@ const EventPanel = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventID, event } = useContext(EventContext);
+  const { event } = useContext(EventContext);
 
   const EventMatchesList = () => {
     if (event && event.type === EventType.GENERIC_EVENT) return <></>;
-    return <MatchesList eventID={eventID} />;
+    return <MatchesList eventID={event.id} />;
   };
 
   if (!event) return <></>;

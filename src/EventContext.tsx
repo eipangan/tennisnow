@@ -5,7 +5,6 @@ import { Event } from './models';
  * EventContextType
  */
 export interface EventContextType {
-    eventID: string,
     event: Event,
 }
 

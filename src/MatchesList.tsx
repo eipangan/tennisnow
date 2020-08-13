@@ -48,7 +48,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventID, event } = useContext(EventContext);
+  const { event } = useContext(EventContext);
   const [matches, setMatches] = useState<Match[]>([]);
 
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
@@ -59,10 +59,10 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
       setMatches(fetchedMatches);
     };
 
-    fetchMatches(eventID);
+    fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
-      (m) => m.eventID('eq', eventID))
-      .subscribe(() => fetchMatches(eventID));
+      (m) => m.eventID('eq', event.id))
+      .subscribe(() => fetchMatches(event.id));
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);

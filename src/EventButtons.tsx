@@ -28,7 +28,7 @@ const EventButtons = (): JSX.Element => {
   const classes = useStyles({ theme });
 
   const history = useHistory();
-  const { eventID, event } = useContext(EventContext);
+  const { event } = useContext(EventContext);
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   /**
@@ -97,8 +97,8 @@ const EventButtons = (): JSX.Element => {
     if (!isEventSettingsVisible) return <></>;
     return (
       <EventSettings
-        key={eventID}
-        eventID={eventID}
+        key={event?.id}
+        eventID={event?.id}
         onClose={() => setIsEventSettingsVisible(false)}
       />
     );
@@ -113,7 +113,7 @@ const EventButtons = (): JSX.Element => {
       tabIndex={0}
     >
       {(() => {
-        if (!eventID || eventID.length <= 0) return <NewEventButton />;
+        if (!event) return <NewEventButton />;
         return (
           <>
             <DeleteButton />

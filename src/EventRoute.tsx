@@ -76,10 +76,7 @@ const EventRoute = (props: any): JSX.Element => {
   return (
     <EventContext.Provider
       key={eventID}
-      value={{
-        eventID,
-        event,
-      }}
+      value={{ event }}
     >
       <PageHeader
         className={classes.appHeader}
