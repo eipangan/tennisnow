@@ -63,26 +63,26 @@ const EventsList = (props: EventsListProps): JSX.Element => {
       className={classes.eventsList}
       dataSource={events}
       locale={{ emptyText: <EmptyEvents /> }}
-      renderItem={(myEvent: Event) => (
+      renderItem={(event: Event) => (
         <List.Item
           className={classes.event}
-          key={myEvent.id}
+          key={event.id}
           onClick={(e) => {
-            history.push(`/event/${myEvent.id}`);
+            history.push(`/event/${event.id}`);
             e.stopPropagation();
           }}
           extra={[
             <EventContext.Provider
-              key={myEvent.id}
-              value={{ event: myEvent }}
+              key={event.id}
+              value={{ event }}
             >
               <EventButtons />
             </EventContext.Provider>,
           ]}
         >
           <List.Item.Meta
-            description={myEvent.summary}
-            title={dayjs(myEvent.date).calendar()}
+            description={event.summary}
+            title={dayjs(event.date).calendar()}
           />
         </List.Item>
       )}
