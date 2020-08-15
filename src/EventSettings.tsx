@@ -138,19 +138,19 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
   // whenever event changes
   useEffect(() => {
-    if (event) {
-      const fetchPlayers = async () => {
-        let fetchedPlayers = await getPlayers(event.id);
-        if (fetchedPlayers.length < minNumPlayers) {
-          fetchedPlayers = getNewPlayers(event.id);
-        }
+    if (!event) return () => { };
+    const fetchPlayers = async () => {
+      let fetchedPlayers = await getPlayers(event.id);
+      if (fetchedPlayers.length < minNumPlayers) {
+        fetchedPlayers = getNewPlayers(event.id);
+      }
 
-        setPlayers(fetchedPlayers);
-        setNumPlayers(fetchedPlayers.length);
-      };
+      setPlayers(fetchedPlayers);
+      setNumPlayers(fetchedPlayers.length);
+    };
 
-      fetchPlayers();
-    }
+    fetchPlayers();
+    return () => { };
   }, [event]);
 
   /**

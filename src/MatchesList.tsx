@@ -33,18 +33,11 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * MatchesListProps
- */
-type MatchesListProps = {
-  eventID: string,
-}
-
-/**
  * MatchesList Component
  *
  * @param props
  */
-const MatchesList = (props: MatchesListProps): JSX.Element => {
+const MatchesList = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
@@ -59,6 +52,7 @@ const MatchesList = (props: MatchesListProps): JSX.Element => {
       setMatches(fetchedMatches);
     };
 
+    if (!event) return () => { };
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))

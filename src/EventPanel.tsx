@@ -40,7 +40,7 @@ const EventPanel = (): JSX.Element => {
 
   const EventMatchesList = () => {
     if (event && event.type === EventType.GENERIC_EVENT) return <></>;
-    return <MatchesList eventID={event.id} />;
+    return <MatchesList />;
   };
 
   if (!event) return <></>;

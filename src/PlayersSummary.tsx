@@ -36,6 +36,7 @@ const PlayersSummary = (): JSX.Element => {
       setMatches(fetchedMatches);
     };
 
+    if (!event) return () => {};
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
@@ -50,6 +51,7 @@ const PlayersSummary = (): JSX.Element => {
       setPlayers(fetchedPlayers);
     };
 
+    if (!event) return () => {};
     fetchPlayers(event.id);
     const subscription = DataStore.observe(Player,
       (p) => p.eventID('eq', event.id))
