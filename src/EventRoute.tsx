@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
 import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
-import { getEvent } from './EventUtils';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
 import { ThemeType } from './Theme';
@@ -60,7 +59,7 @@ const EventRoute = (props: any): JSX.Element => {
 
   useEffect(() => {
     const fetchEvent = async (id: string) => {
-      const fetchedEvent = await getEvent(id);
+      const fetchedEvent = await DataStore.query(Event, id);
       if (!fetchedEvent) history.push('/');
       setEvent(fetchedEvent);
     };
