@@ -2,14 +2,15 @@ import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
-import { getEvent, getNewEvent, getNewPlayers, getPlayers, saveEvent, savePlayers } from './EventUtils';
+import { EventContext } from './EventContext';
+import { getNewEvent, getNewPlayers, getPlayers, saveEvent, savePlayers } from './EventUtils';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getLocaleDateFormat, isEmpty, shuffle } from './Utils';
+import { getLocaleDateFormat, shuffle } from './Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -31,7 +32,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventSettingsProps
  */
 type EventSettingsProps = {
-  eventID: string,
   onClose: () => void,
 }
 
@@ -45,9 +45,9 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventID, onClose } = props;
+  const { onClose } = props;
+  const { event } = useContext(EventContext);
 
-  const [event, setEvent] = useState<Event>();
   const [players, setPlayers] = useState<Player[]>([]);
 
   const { Item } = Form;
@@ -105,36 +105,21 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   };
 
   /**
-   * whenever eventID changes
+   * whenever event changes
    */
   useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      let myEvent: Event;
-
-      if (!id) {
-        myEvent = getNewEvent();
-      } else {
-        const fetchedEvent = await getEvent(id);
-        if (!fetchedEvent || isEmpty(fetchedEvent)) {
-          myEvent = getNewEvent();
-        } else {
-          myEvent = fetchedEvent;
-        }
-      }
-
-      setEvent(myEvent);
-      if (myEvent) {
-        form.setFieldsValue({
-          date: dayjs(myEvent.date),
-          time: dayjs(myEvent.date).format('HHmm'),
-          type: myEvent.type,
-        });
-      }
+    const fetchEvent = async () => {
+      const myEvent: Event = event || getNewEvent();
+      form.setFieldsValue({
+        date: dayjs(myEvent.date),
+        time: dayjs(myEvent.date).format('HHmm'),
+        type: myEvent.type,
+      });
     };
 
-    fetchEvent(eventID);
+    fetchEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventID]);
+  }, [event]);
 
   // whenever event changes
   useEffect(() => {
