@@ -64,7 +64,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * get updated Event based on data in the form
    */
-  const getUpdatedEvent = (): Event => Event.copyOf(event || getNewEvent(), (updated) => {
+  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
     // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
