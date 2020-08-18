@@ -17,16 +17,6 @@ export const deleteEvent = async (event: Event): Promise<void> => {
 };
 
 /**
- * get event from DataStore, given an eventID
- *
- * @param eventID
- */
-export const getEvent = async (eventID: string): Promise<Event> => {
-  const fetchedEvent = await DataStore.query(Event, eventID);
-  return fetchedEvent;
-};
-
-/**
  * get events from DataStore
  *
  * @param eventID
@@ -34,16 +24,6 @@ export const getEvent = async (eventID: string): Promise<Event> => {
 export const getEvents = async (): Promise<Event[]> => {
   const fetchedEvents = await DataStore.query(Event);
   return fetchedEvents;
-};
-
-/**
- * get match from DataStore, given a matchID
- *
- * @param matchID
- */
-export const getMatch = async (matchID: string): Promise<Match> => {
-  const fetchedMatch = await DataStore.query(Match, matchID);
-  return fetchedMatch;
 };
 
 /**

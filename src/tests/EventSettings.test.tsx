@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
+import { EventContext } from '../EventContext';
 import EventSettings from '../EventSettings';
 import { getNewEvent } from '../EventUtils';
 import { theme } from '../Theme';
@@ -24,8 +25,6 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-const event = getNewEvent();
-
 DataStore.query = jest.fn().mockImplementation(() => ({
 }));
 
@@ -43,7 +42,9 @@ test('renders without crashing', async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventSettings eventID={event.id} onClose={() => { }} />
+          <EventContext.Provider value={{ event: getNewEvent() }}>
+            <EventSettings onClose={() => { }} />
+          </EventContext.Provider>
         </Suspense>
       </ThemeProvider>,
     );

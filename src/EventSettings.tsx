@@ -2,14 +2,15 @@ import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
-import { getEvent, getNewEvent, getNewPlayers, getPlayers, saveEvent, savePlayers } from './EventUtils';
+import { EventContext } from './EventContext';
+import { getNewEvent, getNewPlayers, getPlayers, saveEvent, savePlayers } from './EventUtils';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getLocaleDateFormat, isEmpty, shuffle } from './Utils';
+import { getLocaleDateFormat, shuffle } from './Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -31,7 +32,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventSettingsProps
  */
 type EventSettingsProps = {
-  eventID: string,
   onClose: () => void,
 }
 
@@ -45,9 +45,9 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { eventID, onClose } = props;
+  const { onClose } = props;
+  const { event } = useContext(EventContext);
 
-  const [event, setEvent] = useState<Event>();
   const [players, setPlayers] = useState<Player[]>([]);
 
   const { Item } = Form;
@@ -64,7 +64,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * get updated Event based on data in the form
    */
-  const getUpdatedEvent = (): Event => Event.copyOf(event || getNewEvent(), (updated) => {
+  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
     // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
@@ -105,48 +105,37 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   };
 
   /**
-   * whenever eventID changes
+   * whenever event changes
    */
   useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      let myEvent: Event;
-
-      const fetchedEvent = await getEvent(id);
-      if (!fetchedEvent || isEmpty(fetchedEvent)) {
-        myEvent = getNewEvent();
-      } else {
-        myEvent = fetchedEvent;
-      }
-
-      setEvent(myEvent);
-      if (myEvent) {
-        form.setFieldsValue({
-          date: dayjs(myEvent.date),
-          time: dayjs(myEvent.date).format('HHmm'),
-          type: myEvent.type,
-        });
-      }
+    const fetchEvent = async () => {
+      const myEvent: Event = event || getNewEvent();
+      form.setFieldsValue({
+        date: dayjs(myEvent.date),
+        time: dayjs(myEvent.date).format('HHmm'),
+        type: myEvent.type,
+      });
     };
 
-    fetchEvent(eventID);
+    fetchEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventID]);
+  }, [event]);
 
   // whenever event changes
   useEffect(() => {
-    if (event) {
-      const fetchPlayers = async () => {
-        let fetchedPlayers = await getPlayers(event.id);
-        if (fetchedPlayers.length < minNumPlayers) {
-          fetchedPlayers = getNewPlayers(event.id);
-        }
+    if (!event) return () => { };
+    const fetchPlayers = async () => {
+      let fetchedPlayers = await getPlayers(event.id);
+      if (fetchedPlayers.length < minNumPlayers) {
+        fetchedPlayers = getNewPlayers(event.id);
+      }
 
-        setPlayers(fetchedPlayers);
-        setNumPlayers(fetchedPlayers.length);
-      };
+      setPlayers(fetchedPlayers);
+      setNumPlayers(fetchedPlayers.length);
+    };
 
-      fetchPlayers();
-    }
+    fetchPlayers();
+    return () => { };
   }, [event]);
 
   /**
@@ -225,8 +214,8 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             <Select size="large" style={{ width: 270 }}>
               <Option value={EventType.GENERIC_EVENT}>{t(EventType.GENERIC_EVENT)}</Option>
               <Option value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Option>
-              {/* <Option value={EventType.FIX_DOUBLES_ROUND_ROBIN}>{t(EventType.FIX_DOUBLES_ROUND_ROBIN)}</Option> */}
-              {/* <Option value={EventType.SWITCH_DOUBLES_ROUND_ROBIN}>{t(EventType.SWITCH_DOUBLES_ROUND_ROBIN)}</Option> */}
+              <Option value={EventType.FIX_DOUBLES_ROUND_ROBIN}>{t(EventType.FIX_DOUBLES_ROUND_ROBIN)}</Option>
+              <Option value={EventType.SWITCH_DOUBLES_ROUND_ROBIN}>{t(EventType.SWITCH_DOUBLES_ROUND_ROBIN)}</Option>
             </Select>
           </Item>
         </div>

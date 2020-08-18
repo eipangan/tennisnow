@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
+import { EventContext } from './EventContext';
 import { ReactComponent as Empty } from './images/empty.svg';
 import { Event } from './models';
 import { ThemeType } from './Theme';
@@ -62,24 +63,26 @@ const EventsList = (props: EventsListProps): JSX.Element => {
       className={classes.eventsList}
       dataSource={events}
       locale={{ emptyText: <EmptyEvents /> }}
-      renderItem={(myEvent: Event) => (
+      renderItem={(event: Event) => (
         <List.Item
           className={classes.event}
-          key={myEvent.id}
+          key={event.id}
           onClick={(e) => {
-            history.push(`/event/${myEvent.id}`);
+            history.push(`/event/${event.id}`);
             e.stopPropagation();
           }}
           extra={[
-            <EventButtons
-              key="settings"
-              eventID={myEvent.id}
-            />,
+            <EventContext.Provider
+              key={event.id}
+              value={{ event }}
+            >
+              <EventButtons />
+            </EventContext.Provider>,
           ]}
         >
           <List.Item.Meta
-            description={myEvent.summary}
-            title={dayjs(myEvent.date).calendar()}
+            description={event.summary}
+            title={dayjs(event.date).calendar()}
           />
         </List.Item>
       )}

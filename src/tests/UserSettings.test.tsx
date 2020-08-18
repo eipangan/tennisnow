@@ -9,7 +9,7 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
-test('renders without crashing', () => {
+test('renders without crashing', async () => {
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>

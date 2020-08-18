@@ -2,7 +2,7 @@ import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getMatch, getPlayers } from './EventUtils';
+import { getPlayers } from './EventUtils';
 import { saveMatch } from './MatchUtils';
 import { Match, MatchStatus, Player } from './models';
 import PlayerPanel from './PlayerPanel';
@@ -82,7 +82,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   useEffect(() => {
     const fetchMatch = async (eid: string) => {
-      const fetchedMatch = await getMatch(eid);
+      const fetchedMatch = await DataStore.query(Match, eid);
       setMatch(fetchedMatch);
 
       if (fetchedMatch) {

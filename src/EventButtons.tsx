@@ -1,11 +1,12 @@
 import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
+import { EventContext } from './EventContext';
 import EventSettings from './EventSettings';
-import { deleteEvent, getEvent } from './EventUtils';
+import { deleteEvent } from './EventUtils';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -17,24 +18,17 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 /**
- * EventButtonsProps
- */
-type EventButtonsProps = {
-  eventID: string,
-}
-
-/**
  * EventButtons component - delete button and new/settings button
  *
  * @param props
  */
-const EventButtons = (props: EventButtonsProps): JSX.Element => {
+const EventButtons = (): JSX.Element => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
 
   const history = useHistory();
-  const { eventID } = props;
+  const { event } = useContext(EventContext);
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   /**
@@ -51,8 +45,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
         if (e) e.stopPropagation();
       }}
       onConfirm={async (e) => {
-        const myEvent = await getEvent(eventID);
-        deleteEvent(myEvent);
+        if (event) deleteEvent(event);
         history.push('/');
       }}
     >
@@ -104,8 +97,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
     if (!isEventSettingsVisible) return <></>;
     return (
       <EventSettings
-        key={eventID}
-        eventID={eventID}
+        key={event?.id}
         onClose={() => setIsEventSettingsVisible(false)}
       />
     );
@@ -120,7 +112,7 @@ const EventButtons = (props: EventButtonsProps): JSX.Element => {
       tabIndex={0}
     >
       {(() => {
-        if (eventID.length <= 0) return <NewEventButton />;
+        if (!event) return <NewEventButton />;
         return (
           <>
             <DeleteButton />

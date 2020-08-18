@@ -39,7 +39,7 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('renders one event without crashing', () => {
+test('renders one event without crashing', async () => {
   render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>

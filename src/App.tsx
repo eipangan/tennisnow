@@ -11,7 +11,7 @@ import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
-import { AppContext, AppContextType } from './AppContext';
+import { AppContext } from './AppContext';
 import { getEvents } from './EventUtils';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
@@ -188,7 +188,6 @@ const App = (): JSX.Element => {
   /**
    * authenticateUser
    */
-  const app: AppContextType = { username: String(user?.getUsername()) };
   const authenticateUser = async () => {
     try {
       const myUser = await Auth.currentAuthenticatedUser();
@@ -234,7 +233,7 @@ const App = (): JSX.Element => {
     <div className={classes.app}>
       <div className={classes.appContent}>
         <Loader />
-        <AppContext.Provider value={app}>
+        <AppContext.Provider value={{ username: String(user?.getUsername()) }}>
           <Switch>
             <Route path="/event/:id" component={EventRoute} />
             <Route path="/">
@@ -250,20 +249,17 @@ const App = (): JSX.Element => {
               </Suspense>
             </Route>
           </Switch>
+          <Suspense fallback={<div className="loader" />}>
+            {(() => {
+              if (!isUserSettingsVisible || !user) return <></>;
+              return (
+                <UserSettings
+                  onClose={() => setIsUserSettingsVisible(false)}
+                />
+              );
+            })()}
+          </Suspense>
         </AppContext.Provider>
-        <Suspense fallback={<div className="loader" />}>
-          {(() => {
-            if (!isUserSettingsVisible || !user) return <></>;
-            return (
-              <UserSettings
-                user={user}
-                onClose={() => {
-                  setIsUserSettingsVisible(false);
-                }}
-              />
-            );
-          })()}
-        </Suspense>
       </div>
       <div className={classes.appFooter}>
         <AppCopyright />
