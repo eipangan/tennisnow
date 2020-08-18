@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { EventContext } from './EventContext';
-import { getMatches, getNextMatch } from './EventUtils';
+import { getMatches } from './EventUtils';
 import MatchPanel from './MatchPanel';
 import { deleteMatch, saveMatch } from './MatchUtils';
 import { Match } from './models';
@@ -41,7 +41,7 @@ const MatchesList = (): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { event } = useContext(EventContext);
+  const { event, getNextMatch } = useContext(EventContext);
   const [matches, setMatches] = useState<Match[]>([]);
 
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
@@ -95,8 +95,8 @@ const MatchesList = (): JSX.Element => {
           data-testid="add-match"
           icon={<PlusOutlined />}
           onClick={async () => {
-            if (event) {
-              const newMatch = await getNextMatch(event);
+            if (event && getNextMatch) {
+              const newMatch = await getNextMatch();
               if (newMatch) {
                 saveMatch(newMatch);
               }
