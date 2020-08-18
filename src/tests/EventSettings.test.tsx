@@ -25,8 +25,6 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-const event = getNewEvent();
-
 DataStore.query = jest.fn().mockImplementation(() => ({
 }));
 
@@ -44,7 +42,7 @@ test('renders without crashing', async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventContext.Provider value={{ event }}>
+          <EventContext.Provider value={{ event: getNewEvent() }}>
             <EventSettings onClose={() => { }} />
           </EventContext.Provider>
         </Suspense>
