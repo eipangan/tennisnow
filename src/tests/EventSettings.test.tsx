@@ -37,7 +37,7 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
 DataStore.save = jest.fn().mockImplementation(() => ({
 }));
 
-test('renders without crashing', async () => {
+test('renders without crashing when EventContext is availabe', async () => {
   await act(async () => {
     render(
       <ThemeProvider theme={theme}>
@@ -45,6 +45,32 @@ test('renders without crashing', async () => {
           <EventContext.Provider value={{ event: getNewEvent() }}>
             <EventSettings onClose={() => { }} />
           </EventContext.Provider>
+        </Suspense>
+      </ThemeProvider>,
+    );
+  });
+
+  expect(screen.getByText('eventSettings')).toBeInTheDocument();
+  expect(screen.getByText('players')).toBeInTheDocument();
+  expect(screen.getByText('clearNames')).toBeInTheDocument();
+  expect(screen.getByText('randomizeOrder')).toBeInTheDocument();
+  expect(screen.getByText('cancel')).toBeInTheDocument();
+  expect(screen.getByText('ok')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByTestId('minus'));
+
+  fireEvent.click(screen.getByText('clearNames'));
+  fireEvent.click(screen.getByText('randomizeOrder'));
+  fireEvent.click(screen.getByText('cancel'));
+  fireEvent.click(screen.getByText('ok'));
+});
+
+test('renders without crashing when EventContext is NOT availabe', async () => {
+  await act(async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <EventSettings onClose={() => { }} />
         </Suspense>
       </ThemeProvider>,
     );
