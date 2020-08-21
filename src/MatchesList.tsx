@@ -52,14 +52,13 @@ const MatchesList = (): JSX.Element => {
       setMatches(fetchedMatches);
     };
 
-    if (!event) return () => { };
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
       .subscribe(() => fetchMatches(event.id));
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
+  }, [event.id]);
 
   return (
     <div className={classes.matchesPanel}>

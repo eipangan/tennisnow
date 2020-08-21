@@ -70,7 +70,6 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   const { matchID } = props;
 
-  const [eventID, setEventID] = useState<string>('');
   const [match, setMatch] = useState<Match>();
   const [players, setPlayers] = useState<Player[]>([]);
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
@@ -86,7 +85,6 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
       setMatch(fetchedMatch);
 
       if (fetchedMatch) {
-        setEventID(fetchedMatch.eventID);
         setStatus(fetchedMatch.status);
       }
     };
@@ -103,12 +101,14 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
       setPlayers(fetchedPlayers);
     };
 
-    fetchPlayers(eventID);
+    if (!match) return () => { };
+    fetchPlayers(match.eventID);
     const subscription = DataStore.observe(Player,
-      (p) => p.eventID('eq', eventID))
-      .subscribe(() => fetchPlayers(eventID));
+      (p) => p.eventID('eq', match.eventID))
+      .subscribe(() => fetchPlayers(match.eventID));
     return () => subscription.unsubscribe();
-  }, [eventID]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [match?.eventID]);
 
   useEffect(() => {
     // update screen
