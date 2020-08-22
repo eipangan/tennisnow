@@ -1,4 +1,4 @@
-import { act, render, screen, fireEvent } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -49,17 +49,20 @@ test('render MatchesList with EventContext', async () => {
 });
 
 test('render MatchesList without EventContext', async () => {
-  render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <MatchesList />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
+  await act(async () => {
+    render(
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>
+            <MatchesList />
+          </Suspense>
+        </ThemeProvider>
+      </BrowserRouter>,
+    );
+  });
 
   expect(screen.getByTestId('add-match')).toBeInTheDocument();
   expect(screen.getByTestId('more')).toBeInTheDocument();
+
   fireEvent.click(screen.getByTestId('more'));
 });

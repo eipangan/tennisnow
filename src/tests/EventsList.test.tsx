@@ -1,12 +1,12 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, MatchStatus } from '../models';
-import { theme } from '../Theme';
 import EventsList from '../EventsList';
 import { getNewEvent } from '../EventUtils';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -35,20 +35,22 @@ DataStore.query = jest.fn().mockImplementation(() => [new Match({
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
-    unsubscribe: () => {},
+    unsubscribe: () => { },
   }),
 }));
 
 test('renders one event without crashing', async () => {
-  render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <EventsList events={[getNewEvent()]} />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
-  );
+  await act(async () => {
+    render(
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>
+            <EventsList events={[getNewEvent()]} />
+          </Suspense>
+        </ThemeProvider>
+      </BrowserRouter>,
+    );
+  });
 
   expect(screen.getByTestId('delete')).toBeInTheDocument();
   expect(screen.getByTestId('settings')).toBeInTheDocument();

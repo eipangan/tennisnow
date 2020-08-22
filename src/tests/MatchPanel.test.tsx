@@ -1,4 +1,5 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { fail } from 'assert';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { act } from 'react-dom/test-utils';
@@ -26,6 +27,9 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
+DataStore.save = jest.fn().mockImplementation(() => ({
+}));
+
 test('render new without crashing', async () => {
   const players = getNewPlayers(event.id, 6);
   const match = await getNextMatch(event, [], players);
@@ -34,17 +38,24 @@ test('render new without crashing', async () => {
   expect(players).toBeDefined();
   expect(match).toBeDefined();
 
-  if (match) {
-    await act(async () => {
-      render(
-        <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <Suspense fallback={null}>
-              <MatchPanel matchID={match.id} />
-            </Suspense>
-          </ThemeProvider>
-        </BrowserRouter>,
-      );
-    });
-  }
+  if (!match) fail('match undefined.');
+  await act(async () => {
+    render(
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>
+            <MatchPanel matchID={match.id} match={match} />
+          </Suspense>
+        </ThemeProvider>
+      </BrowserRouter>,
+    );
+  });
+
+  expect(screen.getByTestId('player1')).toBeInTheDocument();
+  expect(screen.getByTestId('middle')).toBeInTheDocument();
+  expect(screen.getByTestId('player2')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByTestId('player1'));
+  fireEvent.click(screen.getByTestId('middle'));
+  fireEvent.click(screen.getByTestId('player2'));
 });
