@@ -31,15 +31,13 @@ test('render MatchesList with EventContext', async () => {
 
   await act(async () => {
     render(
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <EventContext.Provider value={{ event }}>
-              <MatchesList />
-            </EventContext.Provider>
-          </Suspense>
-        </ThemeProvider>
-      </BrowserRouter>,
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <EventContext.Provider value={{ event }}>
+            <MatchesList />
+          </EventContext.Provider>
+        </Suspense>
+      </ThemeProvider>,
     );
   });
 
@@ -51,13 +49,11 @@ test('render MatchesList with EventContext', async () => {
 test('render MatchesList without EventContext', async () => {
   await act(async () => {
     render(
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <MatchesList />
-          </Suspense>
-        </ThemeProvider>
-      </BrowserRouter>,
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <MatchesList />
+        </Suspense>
+      </ThemeProvider>,
     );
   });
 

@@ -1,8 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { fail } from 'assert';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
-import { act } from 'react-dom/test-utils';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';

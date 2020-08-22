@@ -2,6 +2,7 @@ import { act, render } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
+import { EventContext } from '../EventContext';
 import EventPanel from '../EventPanel';
 import { getNewEvent } from '../EventUtils';
 import { Match, MatchStatus } from '../models';
@@ -38,16 +39,30 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('renders without crashing', async () => {
+test('renders without with EventContext', async () => {
+  expect(event).toBeDefined();
+
   await act(async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventPanel eventID={event.id} />
+          <EventContext.Provider value={{ event }}>
+            <EventPanel />
+          </EventContext.Provider>
         </Suspense>
       </ThemeProvider>,
     );
   });
+});
 
-  expect(event).toBeDefined();
+test('renders without without EventContext', async () => {
+  await act(async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <EventPanel />
+        </Suspense>
+      </ThemeProvider>,
+    );
+  });
 });
