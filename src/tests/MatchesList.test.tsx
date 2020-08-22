@@ -1,12 +1,13 @@
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
-import { Match, MatchStatus } from '../models';
-import { getNewEvent, getNextMatch } from '../EventUtils';
-import { theme } from '../Theme';
+import { EventContext } from '../EventContext';
+import { getNewEvent } from '../EventUtils';
 import MatchesList from '../MatchesList';
+import { Match, MatchStatus } from '../models';
+import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
@@ -25,23 +26,30 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('render new without crashing', async () => {
-  const { players } = event;
+test('render MatchesList with EventContext', async () => {
+  await act(async () => {
+    render(
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>
+            <EventContext.Provider value={{ event }}>
+              <MatchesList />
+            </EventContext.Provider>
+          </Suspense>
+        </ThemeProvider>
+      </BrowserRouter>,
+    );
+  });
+});
 
-  const match1 = await getNextMatch(event, [], players);
-  const match2 = await getNextMatch(event, [], players);
-  if (players && match1 && match2) {
-    const matches = [match1, match2];
-    if (matches) {
-      render(
-        <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <Suspense fallback={null}>
-              <MatchesList eventID={event.id} />
-            </Suspense>
-          </ThemeProvider>
-        </BrowserRouter>,
-      );
-    }
-  }
+test('render MatchesList without EventContext', async () => {
+  render(
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <MatchesList />
+        </Suspense>
+      </ThemeProvider>
+    </BrowserRouter>,
+  );
 });
