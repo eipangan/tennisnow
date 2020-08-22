@@ -29,8 +29,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 
 /**
  * EventPanel
- *
- * @param props
  */
 const EventPanel = (): JSX.Element => {
   const theme = useTheme();
