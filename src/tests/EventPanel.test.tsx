@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -53,6 +53,8 @@ test('renders without with EventContext', async () => {
       </ThemeProvider>,
     );
   });
+
+  expect(screen.getByText('player')).toBeInTheDocument();
 });
 
 test('renders without without EventContext', async () => {
