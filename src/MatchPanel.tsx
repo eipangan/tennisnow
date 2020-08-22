@@ -56,6 +56,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
  */
 type MatchPanelProps = {
   matchID: string;
+  match?: Match;
 };
 
 /**
@@ -68,8 +69,6 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-  const { matchID } = props;
-
   const [match, setMatch] = useState<Match>();
   const [players, setPlayers] = useState<Player[]>([]);
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
@@ -80,6 +79,11 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
+    if (props.match) {
+      setMatch(props.match);
+      return () => { };
+    }
+
     const fetchMatch = async (eid: string) => {
       const fetchedMatch = await DataStore.query(Match, eid);
       setMatch(fetchedMatch);
@@ -89,11 +93,11 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
       }
     };
 
-    fetchMatch(matchID);
-    const subscription = DataStore.observe(Match, matchID)
-      .subscribe(() => fetchMatch(matchID));
+    fetchMatch(props.matchID);
+    const subscription = DataStore.observe(Match, props.matchID)
+      .subscribe(() => fetchMatch(props.matchID));
     return () => subscription.unsubscribe();
-  }, [matchID]);
+  }, [props]);
 
   useEffect(() => {
     const fetchPlayers = async (eid: string) => {
@@ -162,6 +166,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
   return (
     <div className={classes.match}>
       <div
+        data-testid="player1"
         className={player1Class}
         onClick={() => { setStatus(status === MatchStatus.PLAYER1_WON ? MatchStatus.NEW : MatchStatus.PLAYER1_WON); }}
         onKeyDown={() => { }}
@@ -171,6 +176,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         <PlayerPanel player={player1} />
       </div>
       <div
+        data-testid="middle"
         className={middleClass}
         onClick={() => { setStatus(status === MatchStatus.DRAW ? MatchStatus.NEW : MatchStatus.DRAW); }}
         onKeyDown={() => { }}
@@ -180,6 +186,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
         {middleText}
       </div>
       <div
+        data-testid="player2"
         className={player2Class}
         onClick={() => { setStatus(status === MatchStatus.PLAYER2_WON ? MatchStatus.NEW : MatchStatus.PLAYER2_WON); }}
         onKeyDown={() => { }}
@@ -190,6 +197,10 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
       </div>
     </div>
   );
+};
+
+MatchPanel.defaultProps = {
+  match: undefined,
 };
 
 export default MatchPanel;
