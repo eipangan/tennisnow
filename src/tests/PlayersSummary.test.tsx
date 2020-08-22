@@ -1,7 +1,8 @@
-import { render, act } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
+import { EventContext } from '../EventContext';
 import { getNewEvent } from '../EventUtils';
 import { Match, MatchStatus } from '../models';
 import PlayersSummary from '../PlayersSummary';
@@ -38,14 +39,37 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
   }),
 }));
 
-test('renders without crashing', async () => {
+test('renders without crashing with EventContext', async () => {
+  expect(event).toBeDefined();
+
   await act(async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <PlayersSummary eventID={event.id} />
+          <EventContext.Provider value={{ event }}>
+            <PlayersSummary />
+          </EventContext.Provider>
         </Suspense>
       </ThemeProvider>,
     );
   });
+
+  expect(screen.getByText('player')).toBeInTheDocument();
+});
+
+test('renders without crashing without EventContext', async () => {
+  await act(async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <PlayersSummary />
+        </Suspense>
+      </ThemeProvider>,
+    );
+  });
+
+  expect(screen.getByText('player')).toBeInTheDocument();
+  expect(screen.getByText('won')).toBeInTheDocument();
+  expect(screen.getByText('lost')).toBeInTheDocument();
+  expect(screen.getByText('draw')).toBeInTheDocument();
 });
