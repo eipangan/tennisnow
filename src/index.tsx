@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 import awsconfig from './aws-exports';
-import { theme } from './Theme';
 import './i18n';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import { theme } from './Theme';
 
 const App = React.lazy(() => import('./App'));
 
