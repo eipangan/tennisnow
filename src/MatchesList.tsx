@@ -77,6 +77,7 @@ const MatchesList = (): JSX.Element => {
                 <>
                   <div style={{ height: '3px' }} />
                   <Button
+                    data-testid="delete-match"
                     icon={<DeleteOutlined />}
                     shape="circle"
                     style={{ background: '#ffffff50', color: '#ff696996' }}
@@ -106,7 +107,7 @@ const MatchesList = (): JSX.Element => {
         />
         <div style={{ height: '3px' }} />
         <Button
-          data-testid="more-match"
+          data-testid="more"
           icon={isDeleteVisible ? <UpOutlined /> : <MoreOutlined />}
           onClick={() => setIsDeleteVisible(!isDeleteVisible)}
           shape="round"

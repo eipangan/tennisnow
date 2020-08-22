@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -22,11 +22,13 @@ DataStore.query = jest.fn().mockImplementation(() => [new Match({
 
 DataStore.observe = jest.fn().mockImplementation(() => ({
   subscribe: () => ({
-    unsubscribe: () => {},
+    unsubscribe: () => { },
   }),
 }));
 
 test('render MatchesList with EventContext', async () => {
+  expect(event).toBeDefined();
+
   await act(async () => {
     render(
       <BrowserRouter>
@@ -40,6 +42,10 @@ test('render MatchesList with EventContext', async () => {
       </BrowserRouter>,
     );
   });
+
+  expect(screen.getByTestId('add-match')).toBeInTheDocument();
+  expect(screen.getByTestId('more')).toBeInTheDocument();
+  fireEvent.click(screen.getByTestId('more'));
 });
 
 test('render MatchesList without EventContext', async () => {
@@ -52,4 +58,8 @@ test('render MatchesList without EventContext', async () => {
       </ThemeProvider>
     </BrowserRouter>,
   );
+
+  expect(screen.getByTestId('add-match')).toBeInTheDocument();
+  expect(screen.getByTestId('more')).toBeInTheDocument();
+  fireEvent.click(screen.getByTestId('more'));
 });
