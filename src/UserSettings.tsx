@@ -72,4 +72,8 @@ const UserSettings = (props: UserSettingsProps): JSX.Element => {
   );
 };
 
+UserSettings.defaultProps = {
+  onClose: () => { },
+};
+
 export default UserSettings;
