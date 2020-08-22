@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import { theme } from '../Theme';
 import UserSettings from '../UserSettings';
 
@@ -11,13 +10,11 @@ jest.mock('react-i18next', () => ({
 
 test('renders without crashing', async () => {
   render(
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <UserSettings />
-        </Suspense>
-      </ThemeProvider>
-    </BrowserRouter>,
+    <ThemeProvider theme={theme}>
+      <Suspense fallback={null}>
+        <UserSettings />
+      </Suspense>
+    </ThemeProvider>,
   );
 
   expect(screen.getByText('userSettings')).toBeInTheDocument();

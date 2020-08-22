@@ -2,7 +2,6 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import { EventContext } from '../EventContext';
 import { getNewEvent } from '../EventUtils';
 import MatchesList from '../MatchesList';

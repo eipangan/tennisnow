@@ -2,7 +2,6 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import EventsList from '../EventsList';
 import { getNewEvent } from '../EventUtils';
 import { Match, MatchStatus } from '../models';
@@ -42,13 +41,11 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
 test('renders one event without crashing', async () => {
   await act(async () => {
     render(
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <EventsList events={[getNewEvent()]} />
-          </Suspense>
-        </ThemeProvider>
-      </BrowserRouter>,
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <EventsList events={[getNewEvent()]} />
+        </Suspense>
+      </ThemeProvider>,
     );
   });
 

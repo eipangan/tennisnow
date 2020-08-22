@@ -3,7 +3,6 @@ import { fail } from 'assert';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
 import MatchPanel from '../MatchPanel';
 import { Match, MatchStatus } from '../models';
@@ -40,13 +39,11 @@ test('render new without crashing', async () => {
   if (!match) fail('match undefined.');
   await act(async () => {
     render(
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <MatchPanel matchID={match.id} match={match} />
-          </Suspense>
-        </ThemeProvider>
-      </BrowserRouter>,
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <MatchPanel matchID={match.id} match={match} />
+        </Suspense>
+      </ThemeProvider>,
     );
   });
 

@@ -2,7 +2,6 @@ import { act, render } from '@testing-library/react';
 import { fail } from 'assert';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import { getNewEvent, getNewPlayers } from '../EventUtils';
 import PlayerPanel from '../PlayerPanel';
 import { theme } from '../Theme';
@@ -21,15 +20,13 @@ test('renders without crashing', async () => {
 
   await act(async () => {
     render(
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <PlayerPanel
-              player={player}
-            />
-          </Suspense>
-        </ThemeProvider>
-      </BrowserRouter>,
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <PlayerPanel
+            player={player}
+          />
+        </Suspense>
+      </ThemeProvider>,
     );
   });
 });
