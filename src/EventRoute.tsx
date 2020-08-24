@@ -3,8 +3,9 @@ import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
-import { EventContext, useEvent } from './EventContext';
+import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
+import { useEvent } from './EventUtils';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { ThemeType } from './Theme';
 
