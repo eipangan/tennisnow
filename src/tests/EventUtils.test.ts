@@ -1,7 +1,6 @@
 import { DataStore } from 'aws-amplify';
 import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
 import { Event, EventType, Match, MatchStatus, Player } from '../models';
-import { generateUUID } from '../Utils';
 
 const event = getNewEvent();
 
@@ -62,8 +61,8 @@ test('runs getPlayers() with just eventID parameter', () => {
   expect(players?.find((player) => player.eventID === event.id)).toBeDefined();
   expect(players?.filter((player) => player.eventID === event.id)).toHaveLength(defaultNumPlayers);
 
-  expect(players?.find((player) => player.eventID === generateUUID())).toBeUndefined();
-  expect(players?.filter((player) => player.eventID === generateUUID())).toHaveLength(0);
+  expect(players?.find((player) => player.eventID === 'ABC')).toBeUndefined();
+  expect(players?.filter((player) => player.eventID === 'DEF')).toHaveLength(0);
 
   // index --- required
   expect(players?.find((player) => player.index === 0)).toBeDefined();
@@ -104,8 +103,8 @@ test('runs getPlayers() with eventID, numPlayers=4 parameter', () => {
   expect(players?.find((player) => player.eventID === event.id)).toBeDefined();
   expect(players?.filter((player) => player.eventID === event.id)).toHaveLength(numPlayers);
 
-  expect(players?.find((player) => player.eventID === generateUUID())).toBeUndefined();
-  expect(players?.filter((player) => player.eventID === generateUUID())).toHaveLength(0);
+  expect(players?.find((player) => player.eventID === 'ABC')).toBeUndefined();
+  expect(players?.filter((player) => player.eventID === 'DEF')).toHaveLength(0);
 
   // index --- required
   expect(players?.find((player) => player.index === 0)).toBeDefined();
@@ -134,8 +133,8 @@ test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', () 
   expect(players?.find((player) => player.eventID === event.id)).toBeDefined();
   expect(players?.filter((player) => player.eventID === event.id)).toHaveLength(numPlayers);
 
-  expect(players?.find((player) => player.eventID === generateUUID())).toBeUndefined();
-  expect(players?.filter((player) => player.eventID === generateUUID())).toHaveLength(0);
+  expect(players?.find((player) => player.eventID === 'ABC')).toBeUndefined();
+  expect(players?.filter((player) => player.eventID === 'DEF')).toHaveLength(0);
 
   // index --- required
   expect(players?.find((player) => player.index === 0)).toBeDefined();
