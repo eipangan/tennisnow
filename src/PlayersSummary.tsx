@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { EventContext } from './EventContext';
-import { getMatches, getPlayers } from './EventUtils';
+import { getPlayers } from './EventUtils';
 import { EventType, Match, MatchStatus, Player } from './models';
 import { getPlayerName } from './PlayerUtils';
 import { ThemeType } from './Theme';
@@ -32,11 +32,11 @@ const PlayersSummary = (): JSX.Element => {
 
   useEffect(() => {
     const fetchMatches = async (eid: string) => {
-      const fetchedMatches = await getMatches(eid);
+      const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
       setMatches(fetchedMatches);
     };
 
-    if (!event) return () => {};
+    if (!event) return () => { };
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
@@ -51,7 +51,7 @@ const PlayersSummary = (): JSX.Element => {
       setPlayers(fetchedPlayers);
     };
 
-    if (!event) return () => {};
+    if (!event) return () => { };
     fetchPlayers(event.id);
     const subscription = DataStore.observe(Player,
       (p) => p.eventID('eq', event.id))

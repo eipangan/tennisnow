@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
 import { AppContext } from './AppContext';
-import { getEvents } from './EventUtils';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
 import { ThemeType } from './Theme';
@@ -88,7 +87,7 @@ const App = (): JSX.Element => {
 
   const fetchEvents = async () => {
     setIsLoading(true);
-    const fetchedEvents = await getEvents();
+    const fetchedEvents = await DataStore.query(Event);
     setEvents(fetchedEvents);
     setIsLoading(false);
   };

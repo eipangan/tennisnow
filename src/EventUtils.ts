@@ -10,35 +10,6 @@ import { deletePlayer, savePlayer } from './PlayerUtils';
 dayjs.extend(calendar);
 
 /**
- * delete event from DataStore
- *
- * @param event
- */
-export const deleteEvent = async (event: Event): Promise<void> => {
-  await DataStore.delete(event);
-};
-
-/**
- * get events from DataStore
- *
- * @param eventID
- */
-export const getEvents = async (): Promise<Event[]> => {
-  const fetchedEvents = await DataStore.query(Event);
-  return fetchedEvents;
-};
-
-/**
- * get matches from DataStore, given an eventID
- *
- * @param eventID
- */
-export const getMatches = async (eventID: string): Promise<Match[]> => {
-  const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eventID));
-  return fetchedMatches;
-};
-
-/**
  * get players from DataStore, given an eventID
  *
  * @param eventID
@@ -93,15 +64,6 @@ export const getNewPlayers = (
 };
 
 /**
- * save event
- *
- * @param event
- */
-export const saveEvent = async (event: Event): Promise<void> => {
-  await DataStore.save(event);
-};
-
-/**
  * save players for an event
  *
  * @param eventID id of the event
@@ -136,7 +98,7 @@ export const useEvent = (eventID: string) => {
     const myEvent = event;
     if (!myEvent) return undefined;
 
-    const myMatches = await getMatches(myEvent.id);
+    const myMatches = await DataStore.query(Match, (m) => m.eventID('eq', myEvent.id));
     const myPlayers = await getPlayers(myEvent.id);
 
     // get all matches in array of [p1, p2] format

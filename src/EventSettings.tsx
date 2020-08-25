@@ -1,13 +1,14 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
 import { EventContext } from './EventContext';
-import { getNewEvent, getNewPlayers, getPlayers, saveEvent, savePlayers } from './EventUtils';
+import { getNewEvent, getNewPlayers, getPlayers, savePlayers } from './EventUtils';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getLocaleDateFormat, shuffle } from './Utils';
@@ -325,7 +326,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             type="primary"
             onClick={() => {
               const okEvent = getUpdatedEvent();
-              saveEvent(okEvent)
+              DataStore.save(okEvent)
                 .then(() => {
                   const okPlayers = getUpdatedPlayers(okEvent.id);
                   savePlayers(okEvent.id, okPlayers || []);

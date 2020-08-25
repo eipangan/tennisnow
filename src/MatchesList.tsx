@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { EventContext } from './EventContext';
-import { getMatches } from './EventUtils';
 import MatchPanel from './MatchPanel';
 import { deleteMatch, saveMatch } from './MatchUtils';
 import { Match } from './models';
@@ -48,11 +47,11 @@ const MatchesList = (): JSX.Element => {
 
   useEffect(() => {
     const fetchMatches = async (eid: string) => {
-      const fetchedMatches = await getMatches(eid);
+      const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
       setMatches(fetchedMatches);
     };
 
-    if (!event) return () => {};
+    if (!event) return () => { };
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
