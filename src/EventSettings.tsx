@@ -324,14 +324,11 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => {
+            onClick={async () => {
               const okEvent = getUpdatedEvent();
-              DataStore.save(okEvent)
-                .then(() => {
-                  const okPlayers = getUpdatedPlayers(okEvent.id);
-                  savePlayers(okEvent.id, okPlayers || []);
-                });
-
+              await DataStore.save(okEvent);
+              const okPlayers = getUpdatedPlayers(okEvent.id);
+              savePlayers(okEvent.id, okPlayers || []);
               onClose();
             }}
           >
