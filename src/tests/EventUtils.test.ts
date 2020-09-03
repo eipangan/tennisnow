@@ -1,6 +1,7 @@
 import { DataStore } from 'aws-amplify';
-import { getNewEvent, getNewPlayers } from '../EventUtils';
+import { getNewEvent, getNewPlayers, useEvent } from '../EventUtils';
 import { EventType, Match, MatchStatus } from '../models';
+import { renderHook } from '@testing-library/react-hooks';
 
 const event = getNewEvent();
 
@@ -157,4 +158,18 @@ test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', () 
   expect(players?.filter((player) => player.name === 'P3')).toHaveLength(1);
 
   expect(players?.find((player) => player.name === 'P4')).toBeUndefined();
+});
+
+test('test useEvent() with empty parameter', () => {
+  const { result } = renderHook(() => useEvent());
+
+  expect(result.current.event).toBeDefined();
+  expect(result.current.getNextMatch).toBeDefined();
+});
+
+test('test useEvent() with event parameter', () => {
+  const { result } = renderHook(() => useEvent(getNewEvent()));
+
+  expect(result.current.event).toBeDefined();
+  expect(result.current.getNextMatch).toBeDefined();
 });

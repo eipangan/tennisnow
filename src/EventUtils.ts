@@ -1,8 +1,6 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Event, EventType, Match, MatchStatus, Player } from './models';
 import { deletePlayer, savePlayer } from './PlayerUtils';
 
@@ -90,10 +88,10 @@ export const savePlayers = async (
  *
  * @param eventID
  */
-export const useEvent = (eventID: string) => {
-  const history = useHistory();
-  const [event, setEvent] = useState<Event>();
+export const useEvent = (event?: Event) => {
+  event = event || getNewEvent();
 
+  // get next match
   const getNextMatch = async (): Promise<Match | undefined> => {
     const myEvent = event;
     if (!myEvent) return undefined;
@@ -173,7 +171,7 @@ export const useEvent = (eventID: string) => {
         potentialPlayers.forEach((p2) => {
           if (JSON.stringify(potentialMatches).indexOf(JSON.stringify([p1, p2])) !== -1) {
             nextMatch = new Match({
-              eventID,
+              eventID: myEvent.id,
               createdTime: dayjs().toDate().toISOString(),
               playerIndices: [p1, p2],
               status: MatchStatus.NEW,
@@ -188,20 +186,6 @@ export const useEvent = (eventID: string) => {
 
     return nextMatch;
   };
-
-  useEffect(() => {
-    const fetchEvent = async (id: string) => {
-      const fetchedEvent = await DataStore.query(Event, id);
-      if (!fetchedEvent) history.push('/');
-      setEvent(fetchedEvent);
-    };
-
-    fetchEvent(eventID);
-    const subscription = DataStore.observe(Event, eventID)
-      .subscribe(() => fetchEvent(eventID));
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventID]);
 
   return { event, getNextMatch };
 };

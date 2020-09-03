@@ -1,5 +1,6 @@
 import { PageHeader } from 'antd';
-import React from 'react';
+import { DataStore } from 'aws-amplify';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
@@ -7,7 +8,9 @@ import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
 import { useEvent } from './EventUtils';
 import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
 import { ThemeType } from './Theme';
+
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -53,7 +56,23 @@ const EventRoute = (props: any): JSX.Element => {
   // get event
   const { match } = props;
   const { params } = match;
-  const { event, getNextMatch } = useEvent(params.id);
+  const { id } = params;
+  const [event, setEvent] = useState<Event>();
+  const { getNextMatch } = useEvent(id);
+
+  useEffect(() => {
+    const fetchEvent = async (id: string) => {
+      const fetchedEvent = await DataStore.query(Event, id);
+      if (!fetchedEvent) history.push('/');
+      setEvent(fetchedEvent);
+    };
+
+    fetchEvent(id);
+    const subscription = DataStore.observe(Event, id)
+      .subscribe(() => fetchEvent(id));
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   if (!event) return <></>;
   return (
