@@ -1,9 +1,9 @@
-import { DataStore } from 'aws-amplify';
-import { getNewEvent, getNewPlayers, useEvent } from '../EventUtils';
-import { EventType, Match, MatchStatus } from '../models';
 import { renderHook } from '@testing-library/react-hooks';
+import { DataStore } from 'aws-amplify';
+import { getNewPlayers, useEvent } from '../EventUtils';
+import { EventType, Match, MatchStatus } from '../models';
 
-const event = getNewEvent();
+const { event } = useEvent();
 
 DataStore.query = jest.fn().mockImplementation(() => [new Match({
   eventID: event.id,
@@ -15,35 +15,6 @@ DataStore.observe = jest.fn().mockImplementation(() => ({
     unsubscribe: () => { },
   }),
 }));
-
-/**
- * getNewEvent() tests
- */
-
-test('runs getNewEvent() as expected', () => {
-  expect(event).toBeDefined();
-  expect(event).not.toBeNull();
-
-  expect(event.id).toBeDefined();
-  expect(event.id).not.toBeNull();
-  expect(event.id.length).toBeGreaterThan(32);
-
-  expect(event.date).toBeDefined();
-  expect(event.date).not.toBeNull();
-  expect(event.date).toContain('T');
-  expect(event.date).toContain('Z');
-
-  expect(event.type).toBeDefined();
-  expect(event.type).toBe(EventType.GENERIC_EVENT);
-
-  // initially undefined parameters
-  expect(event.place).toBeUndefined();
-  expect(event.summary).toBeUndefined();
-  expect(event.details).toBeUndefined();
-  expect(event.matches).toBeUndefined();
-  expect(event.players).toBeUndefined();
-  expect(event.owner).toBeUndefined();
-});
 
 /**
  * getPlayers() tests
@@ -165,11 +136,27 @@ test('test useEvent() with empty parameter', () => {
 
   expect(result.current.event).toBeDefined();
   expect(result.current.getNextMatch).toBeDefined();
-});
-
-test('test useEvent() with event parameter', () => {
-  const { result } = renderHook(() => useEvent(getNewEvent()));
 
   expect(result.current.event).toBeDefined();
-  expect(result.current.getNextMatch).toBeDefined();
+  expect(result.current.event).not.toBeNull();
+
+  expect(result.current.event.id).toBeDefined();
+  expect(result.current.event.id).not.toBeNull();
+  expect(result.current.event.id.length).toBeGreaterThan(32);
+
+  expect(result.current.event.date).toBeDefined();
+  expect(result.current.event.date).not.toBeNull();
+  expect(result.current.event.date).toContain('T');
+  expect(result.current.event.date).toContain('Z');
+
+  expect(result.current.event.type).toBeDefined();
+  expect(result.current.event.type).toBe(EventType.GENERIC_EVENT);
+
+  // initially undefined parameters
+  expect(result.current.event.place).toBeUndefined();
+  expect(result.current.event.summary).toBeUndefined();
+  expect(result.current.event.details).toBeUndefined();
+  expect(result.current.event.matches).toBeUndefined();
+  expect(result.current.event.players).toBeUndefined();
+  expect(result.current.event.owner).toBeUndefined();
 });

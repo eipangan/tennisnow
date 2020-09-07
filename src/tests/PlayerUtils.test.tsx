@@ -1,5 +1,5 @@
-import { getNewEvent } from '../EventUtils';
+import { useEvent } from '../EventUtils';
 
 test('runs getPlayerName() as expected', () => {
-  const event = getNewEvent();
+  const { event } = useEvent();
 });

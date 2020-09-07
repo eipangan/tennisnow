@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { EventContext } from '../EventContext';
 import EventSettings from '../EventSettings';
-import { getNewEvent } from '../EventUtils';
+import { useEvent } from '../EventUtils';
 import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
@@ -38,11 +38,12 @@ DataStore.save = jest.fn().mockImplementation(() => ({
 }));
 
 test('renders without crashing when EventContext is availabe', async () => {
+  const { event } = useEvent();
   await act(async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
-          <EventContext.Provider value={{ event: getNewEvent() }}>
+          <EventContext.Provider value={{ event }}>
             <EventSettings onClose={() => { }} />
           </EventContext.Provider>
         </Suspense>

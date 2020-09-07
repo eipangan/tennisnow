@@ -1,9 +1,8 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import { fail } from 'assert';
+import { act, render } from '@testing-library/react';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { getNewEvent, getNewPlayers, getNextMatch } from '../EventUtils';
+import { getNewPlayers, useEvent } from '../EventUtils';
 import MatchPanel from '../MatchPanel';
 import { Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
@@ -12,7 +11,7 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
-const event = getNewEvent();
+const { event } = useEvent();
 
 DataStore.query = jest.fn().mockImplementation(() => [new Match({
   eventID: event.id,

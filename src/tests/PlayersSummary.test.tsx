@@ -3,7 +3,7 @@ import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { EventContext } from '../EventContext';
-import { getNewEvent } from '../EventUtils';
+import { useEvent } from '../EventUtils';
 import { Match, MatchStatus } from '../models';
 import PlayersSummary from '../PlayersSummary';
 import { theme } from '../Theme';
@@ -26,7 +26,7 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-const event = getNewEvent();
+const { event } = useEvent();
 
 DataStore.query = jest.fn().mockImplementation(() => [new Match({
   eventID: event.id,

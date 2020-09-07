@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
 import { EventContext } from './EventContext';
-import { getNewEvent, getNewPlayers, getPlayers, savePlayers } from './EventUtils';
+import { getNewPlayers, getPlayers, savePlayers } from './EventUtils';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getLocaleDateFormat, shuffle } from './Utils';
@@ -65,7 +65,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * get updated Event based on data in the form
    */
-  const getUpdatedEvent = (): Event => Event.copyOf(event || getNewEvent(), (updated) => {
+  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
     // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
@@ -110,7 +110,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
    */
   useEffect(() => {
     const fetchEvent = async () => {
-      const myEvent: Event = event || getNewEvent();
+      const myEvent: Event = event;
       form.setFieldsValue({
         date: dayjs(myEvent.date),
         time: dayjs(myEvent.date).format('HHmm'),

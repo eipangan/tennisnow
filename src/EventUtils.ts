@@ -23,19 +23,6 @@ export const getPlayers = async (eventID: string): Promise<Player[]> => {
 };
 
 /**
- * get new event
- */
-export const getNewEvent = (): Event => {
-  const newEvent = new Event({
-    date: dayjs().add(1, 'hour').startOf('hour').toDate()
-      .toISOString(),
-    type: EventType.GENERIC_EVENT,
-  });
-
-  return newEvent;
-};
-
-/**
  * get new players, return array of players
  *
  * @param eventID
@@ -89,6 +76,18 @@ export const savePlayers = async (
  * @param eventID
  */
 export const useEvent = (event?: Event) => {
+
+  // get new event
+  const getNewEvent = (): Event => {
+    const newEvent = new Event({
+      date: dayjs().add(1, 'hour').startOf('hour').toDate()
+        .toISOString(),
+      type: EventType.GENERIC_EVENT,
+    });
+
+    return newEvent;
+  };
+
   event = event || getNewEvent();
 
   // get next match

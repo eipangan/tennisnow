@@ -2,12 +2,12 @@ import { act, render } from '@testing-library/react';
 import { fail } from 'assert';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { getNewEvent, getNewPlayers } from '../EventUtils';
+import { getNewPlayers, useEvent } from '../EventUtils';
 import PlayerPanel from '../PlayerPanel';
 import { theme } from '../Theme';
 
 test('renders without crashing', async () => {
-  const event = getNewEvent();
+  const { event } = useEvent();
   const players = getNewPlayers(event.id, 6);
 
   expect(event).toBeDefined();
