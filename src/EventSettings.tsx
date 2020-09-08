@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
 import { EventContext } from './EventContext';
-import { getNewPlayers, getPlayers, savePlayers } from './EventUtils';
+import { getNewPlayers, getPlayers, savePlayers, useEvent } from './EventUtils';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getLocaleDateFormat, shuffle } from './Utils';
@@ -48,6 +48,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
   const { onClose } = props;
   const { event } = useContext(EventContext);
+  const { event: newEvent } = useEvent();
 
   const [players, setPlayers] = useState<Player[]>([]);
 
@@ -65,7 +66,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
   /**
    * get updated Event based on data in the form
    */
-  const getUpdatedEvent = (): Event => Event.copyOf(event, (updated) => {
+  const getUpdatedEvent = (): Event => Event.copyOf(event || newEvent, (updated) => {
     // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
@@ -107,6 +108,18 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
 
   // whenever event changes
   useEffect(() => {
+    const myEvent = event || newEvent;
+
+    // initialize screen
+    form.setFieldsValue({
+      date: dayjs(myEvent.date),
+      time: dayjs(myEvent.date).format('HHmm'),
+      type: myEvent.type,
+    });
+  }, [event, newEvent, form]);
+
+  // whenever event changes
+  useEffect(() => {
     if (!event) return () => { };
     const fetchPlayers = async () => {
       let fetchedPlayers = await getPlayers(event.id);
@@ -118,17 +131,9 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       setNumPlayers(fetchedPlayers.length);
     };
 
-    // initialize settings
-    form.setFieldsValue({
-      date: dayjs(event.date),
-      time: dayjs(event.date).format('HHmm'),
-      type: event.type,
-    });
-
     // initialize players
     fetchPlayers();
     return () => { };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   /**
