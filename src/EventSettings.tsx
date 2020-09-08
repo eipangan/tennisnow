@@ -105,23 +105,6 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
     return updatedPlayers;
   };
 
-  /**
-   * whenever event changes
-   */
-  useEffect(() => {
-    const fetchEvent = async () => {
-      const myEvent: Event = event;
-      form.setFieldsValue({
-        date: dayjs(myEvent.date),
-        time: dayjs(myEvent.date).format('HHmm'),
-        type: myEvent.type,
-      });
-    };
-
-    fetchEvent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event]);
-
   // whenever event changes
   useEffect(() => {
     if (!event) return () => { };
@@ -135,8 +118,17 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
       setNumPlayers(fetchedPlayers.length);
     };
 
+    // initialize settings
+    form.setFieldsValue({
+      date: dayjs(event.date),
+      time: dayjs(event.date).format('HHmm'),
+      type: event.type,
+    });
+
+    // initialize players
     fetchPlayers();
     return () => { };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   /**
