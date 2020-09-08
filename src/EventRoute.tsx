@@ -58,7 +58,7 @@ const EventRoute = (props: any): JSX.Element => {
   const { params } = match;
   const { id } = params;
   const [event, setEvent] = useState<Event>();
-  const { getNextMatch } = useEvent(id);
+  const { getNextMatch } = useEvent(event);
 
   useEffect(() => {
     const fetchEvent = async (id: string) => {
