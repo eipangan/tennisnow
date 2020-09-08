@@ -134,9 +134,7 @@ test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', () 
 test('test useEvent() with empty parameter', () => {
   const { result } = renderHook(() => useEvent());
 
-  expect(result.current.event).toBeDefined();
-  expect(result.current.getNextMatch).toBeDefined();
-
+  // check event
   expect(result.current.event).toBeDefined();
   expect(result.current.event).not.toBeNull();
 
@@ -152,11 +150,14 @@ test('test useEvent() with empty parameter', () => {
   expect(result.current.event.type).toBeDefined();
   expect(result.current.event.type).toBe(EventType.GENERIC_EVENT);
 
-  // initially undefined parameters
+  // check event - initially undefined parameters
   expect(result.current.event.place).toBeUndefined();
   expect(result.current.event.summary).toBeUndefined();
   expect(result.current.event.details).toBeUndefined();
   expect(result.current.event.matches).toBeUndefined();
   expect(result.current.event.players).toBeUndefined();
   expect(result.current.event.owner).toBeUndefined();
+
+  // check getNextMatch
+  expect(result.current.getNextMatch).toBeDefined();
 });
