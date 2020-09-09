@@ -85,13 +85,6 @@ const App = (): JSX.Element => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const fetchEvents = async () => {
-    setIsLoading(true);
-    const fetchedEvents = await DataStore.query(Event);
-    setEvents(fetchedEvents);
-    setIsLoading(false);
-  };
-
   // initialize google-analytics
   ReactGA.initialize('UA-320746-14');
   ReactGA.pageview(window.location.pathname + window.location.search);
@@ -205,11 +198,24 @@ const App = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+    const fetchEvents = async () => {
+      setIsLoading(true);
+      const fetchedEvents = await DataStore.query(Event);
+      if (mounted) {
+        setEvents(fetchedEvents);
+      }
+      setIsLoading(false);
+    };
+
     fetchEvents();
     const subscription = DataStore.observe(Event,
       (e) => e.owner('eq', user?.getUsername() || ''))
       .subscribe(() => fetchEvents());
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, [user]);
 
   useEffect(() => {

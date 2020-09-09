@@ -31,9 +31,12 @@ const PlayersSummary = (): JSX.Element => {
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
+    let mounted = true;
     const fetchMatches = async (eid: string) => {
       const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
-      setMatches(fetchedMatches);
+      if (mounted) {
+        setMatches(fetchedMatches);
+      }
     };
 
     if (!event) return () => { };
@@ -41,14 +44,20 @@ const PlayersSummary = (): JSX.Element => {
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
       .subscribe(() => fetchMatches(event.id));
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe()
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   useEffect(() => {
+    let mounted = true;
     const fetchPlayers = async (eid: string) => {
       const fetchedPlayers = await getPlayers(eid);
-      setPlayers(fetchedPlayers);
+      if (mounted) {
+        setPlayers(fetchedPlayers);
+      }
     };
 
     if (!event) return () => { };
@@ -56,7 +65,10 @@ const PlayersSummary = (): JSX.Element => {
     const subscription = DataStore.observe(Player,
       (p) => p.eventID('eq', event.id))
       .subscribe(() => fetchPlayers(event.id));
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches]);
 

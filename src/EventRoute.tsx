@@ -61,16 +61,20 @@ const EventRoute = (props: any): JSX.Element => {
   const { getNextMatch } = useEvent(event);
 
   useEffect(() => {
+    let mounted = true;
     const fetchEvent = async (id: string) => {
       const fetchedEvent = await DataStore.query(Event, id);
-      if (!fetchedEvent) history.push('/');
+      if (!fetchedEvent || !mounted) history.push('/');
       setEvent(fetchedEvent);
     };
 
     fetchEvent(id);
     const subscription = DataStore.observe(Event, id)
       .subscribe(() => fetchEvent(id));
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 

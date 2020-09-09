@@ -84,25 +84,34 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
       return () => { };
     }
 
+    let mounted = true;
     const fetchMatch = async (eid: string) => {
       const fetchedMatch = await DataStore.query(Match, eid);
-      setMatch(fetchedMatch);
+      if (mounted) {
+        setMatch(fetchedMatch);
 
-      if (fetchedMatch) {
-        setStatus(fetchedMatch.status);
+        if (fetchedMatch) {
+          setStatus(fetchedMatch.status);
+        }
       }
     };
 
     fetchMatch(props.matchID);
     const subscription = DataStore.observe(Match, props.matchID)
       .subscribe(() => fetchMatch(props.matchID));
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, [props]);
 
   useEffect(() => {
+    let mounted = true;
     const fetchPlayers = async (eid: string) => {
       const fetchedPlayers = await getPlayers(eid);
-      setPlayers(fetchedPlayers);
+      if (mounted) {
+        setPlayers(fetchedPlayers);
+      }
     };
 
     if (!match) return () => { };
@@ -110,7 +119,10 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
     const subscription = DataStore.observe(Player,
       (p) => p.eventID('eq', match.eventID))
       .subscribe(() => fetchPlayers(match.eventID));
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.eventID]);
 

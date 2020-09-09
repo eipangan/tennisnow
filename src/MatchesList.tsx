@@ -46,9 +46,12 @@ const MatchesList = (): JSX.Element => {
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
 
   useEffect(() => {
+    let mounted = true;
     const fetchMatches = async (eid: string) => {
       const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
-      setMatches(fetchedMatches);
+      if (mounted) {
+        setMatches(fetchedMatches);
+      }
     };
 
     if (!event) return () => { };
@@ -56,7 +59,10 @@ const MatchesList = (): JSX.Element => {
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
       .subscribe(() => fetchMatches(event.id));
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
