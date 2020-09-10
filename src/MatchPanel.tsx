@@ -2,11 +2,11 @@ import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getPlayers } from './EventUtils';
-import { saveMatch } from './MatchUtils';
 import { Match, MatchStatus, Player } from './models';
 import PlayerPanel from './PlayerPanel';
 import { ThemeType } from './Theme';
+import { getPlayers } from './utils/EventUtils';
+import { saveMatch } from './utils/MatchUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => {

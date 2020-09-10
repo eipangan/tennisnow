@@ -8,10 +8,11 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
 import { EventContext } from './EventContext';
-import { getNewPlayers, getPlayers, savePlayers, useEvent } from './EventUtils';
+import { useEvent } from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getLocaleDateFormat, shuffle } from './Utils';
+import { getNewPlayers, getPlayers, savePlayers } from './utils/EventUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({

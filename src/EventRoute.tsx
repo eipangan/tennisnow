@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
 import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
-import { useEvent } from './EventUtils';
+import { useEvent } from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
 import { ThemeType } from './Theme';

@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { EventContext } from '../EventContext';
 import EventSettings from '../EventSettings';
-import { useEvent } from '../EventUtils';
+import { useEvent } from '../hooks/useEvent';
 import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({

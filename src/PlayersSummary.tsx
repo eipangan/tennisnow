@@ -4,10 +4,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { EventContext } from './EventContext';
-import { getPlayers } from './EventUtils';
 import { EventType, Match, MatchStatus, Player } from './models';
-import { getPlayerName } from './PlayerUtils';
 import { ThemeType } from './Theme';
+import { getPlayers } from './utils/EventUtils';
+import { getPlayerName } from './utils/PlayerUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({

@@ -1,5 +1,5 @@
 import { DataStore } from 'aws-amplify';
-import { Match } from './models';
+import { Match } from '../models';
 
 /**
  * delete match

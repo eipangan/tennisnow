@@ -3,7 +3,7 @@ import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { EventContext } from '../EventContext';
-import { useEvent } from '../EventUtils';
+import { useEvent } from '../hooks/useEvent';
 import { Match, MatchStatus } from '../models';
 import PlayersSummary from '../PlayersSummary';
 import { theme } from '../Theme';

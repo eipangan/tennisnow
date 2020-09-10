@@ -2,9 +2,10 @@ import { act, render } from '@testing-library/react';
 import { fail } from 'assert';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { getNewPlayers, useEvent } from '../EventUtils';
+import { useEvent } from '../hooks/useEvent';
 import PlayerPanel from '../PlayerPanel';
 import { theme } from '../Theme';
+import { getNewPlayers } from '../utils/EventUtils';
 
 test('renders without crashing', async () => {
   const { event } = useEvent();

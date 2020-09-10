@@ -6,10 +6,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { EventContext } from './EventContext';
 import MatchPanel from './MatchPanel';
-import { deleteMatch, saveMatch } from './MatchUtils';
 import { Match } from './models';
 import { ThemeType } from './Theme';
 import { useLocalStorage } from './Utils';
+import { deleteMatch, saveMatch } from './utils/MatchUtils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
