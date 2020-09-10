@@ -1,7 +1,7 @@
 import { DataStore } from 'aws-amplify';
-import { useEvent } from '../hooks/useEvent';
-import { Match, MatchStatus } from '../models';
-import { getNewPlayers } from './EventUtils';
+import { useEvent } from '../../hooks/useEvent';
+import { Match, MatchStatus } from '../../models';
+import { getNewPlayers } from '../EventUtils';
 
 const { event } = useEvent();
 

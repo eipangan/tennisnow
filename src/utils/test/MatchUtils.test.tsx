@@ -1,4 +1,4 @@
-import { useEvent } from "../hooks/useEvent";
+import { useEvent } from "../../hooks/useEvent";
 
 test('runs deleteMatch() as expected', () => {
   const { event } = useEvent();

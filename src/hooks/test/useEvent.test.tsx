@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { DataStore } from 'aws-amplify';
-import { useEvent } from './useEvent';
-import { EventType, Match, MatchStatus } from '../models';
+import { useEvent } from '../useEvent';
+import { EventType, Match, MatchStatus } from '../../models';
 
 const { event } = useEvent();
 

@@ -8,8 +8,8 @@ import { EventContext } from './EventContext';
 import MatchPanel from './MatchPanel';
 import { Match } from './models';
 import { ThemeType } from './Theme';
-import { useLocalStorage } from './Utils';
 import { deleteMatch, saveMatch } from './utils/MatchUtils';
+import { useLocalStorage } from './utils/Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -59,6 +59,7 @@ const MatchesList = (): JSX.Element => {
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
       .subscribe(() => fetchMatches(event.id));
+
     return () => {
       mounted = false;
       subscription.unsubscribe();

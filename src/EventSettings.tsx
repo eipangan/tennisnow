@@ -11,8 +11,8 @@ import { EventContext } from './EventContext';
 import { useEvent } from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getLocaleDateFormat, shuffle } from './Utils';
 import { getNewPlayers, getPlayers, savePlayers } from './utils/EventUtils';
+import { getLocaleDateFormat, shuffle } from './utils/Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
