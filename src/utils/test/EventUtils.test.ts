@@ -1,26 +1,26 @@
 import { DataStore } from 'aws-amplify';
-import { useEvent } from '../../hooks/useEvent';
+import useEvent from '../../hooks/useEvent';
 import { Match, MatchStatus } from '../../models';
 import { getNewPlayers } from '../EventUtils';
-
-const { event } = useEvent();
-
-DataStore.query = jest.fn().mockImplementation(() => [new Match({
-  eventID: event.id,
-  status: MatchStatus.NEW,
-})]);
-
-DataStore.observe = jest.fn().mockImplementation(() => ({
-  subscribe: () => ({
-    unsubscribe: () => { },
-  }),
-}));
 
 /**
  * getPlayers() tests
  */
 
 test('runs getPlayers() with just eventID parameter', () => {
+  const { event } = useEvent();
+
+  DataStore.query = jest.fn().mockImplementation(() => [new Match({
+    eventID: event.id,
+    status: MatchStatus.NEW,
+  })]);
+
+  DataStore.observe = jest.fn().mockImplementation(() => ({
+    subscribe: () => ({
+      unsubscribe: () => { },
+    }),
+  }));
+
   const defaultNumPlayers = 6;
   const players = getNewPlayers(event.id);
 
@@ -63,6 +63,19 @@ test('runs getPlayers() with just eventID parameter', () => {
 });
 
 test('runs getPlayers() with eventID, numPlayers=4 parameter', () => {
+  const { event } = useEvent();
+
+  DataStore.query = jest.fn().mockImplementation(() => [new Match({
+    eventID: event.id,
+    status: MatchStatus.NEW,
+  })]);
+
+  DataStore.observe = jest.fn().mockImplementation(() => ({
+    subscribe: () => ({
+      unsubscribe: () => { },
+    }),
+  }));
+
   const numPlayers = 4;
   const players = getNewPlayers(event.id, numPlayers);
 
@@ -92,6 +105,19 @@ test('runs getPlayers() with eventID, numPlayers=4 parameter', () => {
 });
 
 test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', () => {
+  const { event } = useEvent();
+
+  DataStore.query = jest.fn().mockImplementation(() => [new Match({
+    eventID: event.id,
+    status: MatchStatus.NEW,
+  })]);
+
+  DataStore.observe = jest.fn().mockImplementation(() => ({
+    subscribe: () => ({
+      unsubscribe: () => { },
+    }),
+  }));
+
   const numPlayers = 4;
   const playerNames = ['P1', 'P2', 'P3'];
   const players = getNewPlayers(event.id, numPlayers, playerNames);

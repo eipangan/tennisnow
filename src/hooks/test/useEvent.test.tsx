@@ -1,22 +1,22 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { DataStore } from 'aws-amplify';
-import { useEvent } from '../useEvent';
 import { EventType, Match, MatchStatus } from '../../models';
-
-const { event } = useEvent();
-
-DataStore.query = jest.fn().mockImplementation(() => [new Match({
-  eventID: event.id,
-  status: MatchStatus.NEW,
-})]);
-
-DataStore.observe = jest.fn().mockImplementation(() => ({
-  subscribe: () => ({
-    unsubscribe: () => { },
-  }),
-}));
+import useEvent from '../useEvent';
 
 test('test useEvent() with empty parameter', () => {
+  const { event } = useEvent();
+
+  DataStore.query = jest.fn().mockImplementation(() => [new Match({
+    eventID: event.id,
+    status: MatchStatus.NEW,
+  })]);
+
+  DataStore.observe = jest.fn().mockImplementation(() => ({
+    subscribe: () => ({
+      unsubscribe: () => { },
+    }),
+  }));
+
   const { result } = renderHook(() => useEvent());
 
   // check event

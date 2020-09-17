@@ -6,11 +6,10 @@ import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
 import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
-import { useEvent } from './hooks/useEvent';
+import useEvent from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
 import { ThemeType } from './Theme';
-
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -62,8 +61,8 @@ const EventRoute = (props: any): JSX.Element => {
 
   useEffect(() => {
     let mounted = true;
-    const fetchEvent = async (id: string) => {
-      const fetchedEvent = await DataStore.query(Event, id);
+    const fetchEvent = async (myID: string) => {
+      const fetchedEvent = await DataStore.query(Event, myID);
       if (!fetchedEvent || !mounted) history.push('/');
       setEvent(fetchedEvent);
     };
@@ -74,7 +73,7 @@ const EventRoute = (props: any): JSX.Element => {
     return () => {
       mounted = false;
       subscription.unsubscribe();
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 

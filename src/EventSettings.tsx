@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { DatePicker } from './components';
 import { EventContext } from './EventContext';
-import { useEvent } from './hooks/useEvent';
+import useEvent from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getNewPlayers, getPlayers, savePlayers } from './utils/EventUtils';

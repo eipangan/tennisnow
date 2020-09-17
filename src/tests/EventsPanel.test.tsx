@@ -3,7 +3,7 @@ import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import EventsPanel from '../EventsPanel';
-import { useEvent } from '../hooks/useEvent';
+import useEvent from '../hooks/useEvent';
 import { Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
 
@@ -25,20 +25,20 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-const { event } = useEvent();
-
-DataStore.query = jest.fn().mockImplementation(() => [new Match({
-  eventID: event.id,
-  status: MatchStatus.NEW,
-})]);
-
-DataStore.observe = jest.fn().mockImplementation(() => ({
-  subscribe: () => ({
-    unsubscribe: () => { },
-  }),
-}));
-
 test('renders one event without crashing', async () => {
+  const { event } = useEvent();
+
+  DataStore.query = jest.fn().mockImplementation(() => [new Match({
+    eventID: event.id,
+    status: MatchStatus.NEW,
+  })]);
+
+  DataStore.observe = jest.fn().mockImplementation(() => ({
+    subscribe: () => ({
+      unsubscribe: () => { },
+    }),
+  }));
+
   render(
     <ThemeProvider theme={theme}>
       <Suspense fallback={null}>
