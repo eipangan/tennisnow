@@ -1,10 +1,9 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { DataStore } from 'aws-amplify';
+import { renderHook } from '@testing-library/react-hooks';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import EventsList from '../EventsList';
 import useEvent from '../hooks/useEvent';
-import { Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
@@ -26,18 +25,9 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 test('renders one event without crashing', async () => {
-  const { event } = useEvent();
-
-  DataStore.query = jest.fn().mockImplementation(() => [new Match({
-    eventID: event.id,
-    status: MatchStatus.NEW,
-  })]);
-
-  DataStore.observe = jest.fn().mockImplementation(() => ({
-    subscribe: () => ({
-      unsubscribe: () => { },
-    }),
-  }));
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
 
   await act(async () => {
     render(

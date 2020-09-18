@@ -1,6 +1,7 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
+import { useEffect, useState } from 'react';
 import { Event, EventType, Match, MatchStatus } from '../models';
 import { getPlayers } from '../utils/EventUtils';
 
@@ -12,9 +13,8 @@ dayjs.extend(calendar);
  *
  * @param eventID
  */
-const useEvent = (event?: Event) => {
-  // get new event
-  const getNewEvent = (): Event => {
+const useEvent = (id?: string) => {
+  const [event, setEvent] = useState<Event>((): Event => {
     const newEvent = new Event({
       date: dayjs().add(1, 'hour').startOf('hour').toDate()
         .toISOString(),
@@ -22,9 +22,20 @@ const useEvent = (event?: Event) => {
     });
 
     return newEvent;
-  };
+  });
 
-  event = event || getNewEvent();
+  // useEffect
+  useEffect(() => {
+    let mounted = true;
+    const fetchEvent = async (myID: string) => {
+      const fetchedEvent = await DataStore.query(Event, myID);
+      if (fetchedEvent && mounted) setEvent(fetchedEvent);
+    };
+
+    if (id) { fetchEvent(id); }
+
+    return () => { mounted = false; };
+  }, [id]);
 
   // get next match
   const getNextMatch = async (): Promise<Match | undefined> => {

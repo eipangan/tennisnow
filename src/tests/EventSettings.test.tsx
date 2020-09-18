@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { DataStore } from 'aws-amplify';
+import { renderHook } from '@testing-library/react-hooks';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { EventContext } from '../EventContext';
@@ -25,20 +25,11 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-DataStore.query = jest.fn().mockImplementation(() => ({
-}));
-
-DataStore.observe = jest.fn().mockImplementation(() => ({
-  subscribe: () => ({
-    unsubscribe: () => { },
-  }),
-}));
-
-DataStore.save = jest.fn().mockImplementation(() => ({
-}));
-
 test('renders without crashing when EventContext is availabe', async () => {
-  const { event } = useEvent();
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
+
   await act(async () => {
     render(
       <ThemeProvider theme={theme}>

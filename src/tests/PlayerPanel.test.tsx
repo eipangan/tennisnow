@@ -1,4 +1,5 @@
 import { act, render } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
 import { fail } from 'assert';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -8,7 +9,10 @@ import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
 
 test('renders without crashing', async () => {
-  const { event } = useEvent();
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
+
   const players = getNewPlayers(event.id, 6);
 
   expect(event).toBeDefined();

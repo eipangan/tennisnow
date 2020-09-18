@@ -46,7 +46,7 @@ const PlayersSummary = (): JSX.Element => {
       .subscribe(() => fetchMatches(event.id));
     return () => {
       mounted = false;
-      subscription.unsubscribe()
+      subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);

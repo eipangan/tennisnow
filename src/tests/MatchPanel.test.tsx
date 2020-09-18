@@ -1,10 +1,10 @@
 import { act, render } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
 import { DataStore } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import useEvent from '../hooks/useEvent';
 import MatchPanel from '../MatchPanel';
-import { Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
 
@@ -16,18 +16,9 @@ DataStore.save = jest.fn().mockImplementation(() => ({
 }));
 
 test('render new without crashing', async () => {
-  const { event } = useEvent();
-
-  DataStore.query = jest.fn().mockImplementation(() => [new Match({
-    eventID: event.id,
-    status: MatchStatus.NEW,
-  })]);
-
-  DataStore.observe = jest.fn().mockImplementation(() => ({
-    subscribe: () => ({
-      unsubscribe: () => { },
-    }),
-  }));
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
 
   const players = getNewPlayers(event.id, 6);
 

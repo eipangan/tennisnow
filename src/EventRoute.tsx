@@ -1,6 +1,5 @@
 import { PageHeader } from 'antd';
-import { DataStore } from 'aws-amplify';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
@@ -8,7 +7,6 @@ import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
 import useEvent from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
-import { Event } from './models';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -56,26 +54,7 @@ const EventRoute = (props: any): JSX.Element => {
   const { match } = props;
   const { params } = match;
   const { id } = params;
-  const [event, setEvent] = useState<Event>();
-  const { getNextMatch } = useEvent(event);
-
-  useEffect(() => {
-    let mounted = true;
-    const fetchEvent = async (myID: string) => {
-      const fetchedEvent = await DataStore.query(Event, myID);
-      if (!fetchedEvent || !mounted) history.push('/');
-      setEvent(fetchedEvent);
-    };
-
-    fetchEvent(id);
-    const subscription = DataStore.observe(Event, id)
-      .subscribe(() => fetchEvent(id));
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  const { event, getNextMatch } = useEvent(id);
 
   if (!event) return <></>;
   return (

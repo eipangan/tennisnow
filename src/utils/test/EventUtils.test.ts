@@ -1,6 +1,5 @@
-import { DataStore } from 'aws-amplify';
+import { renderHook } from '@testing-library/react-hooks';
 import useEvent from '../../hooks/useEvent';
-import { Match, MatchStatus } from '../../models';
 import { getNewPlayers } from '../EventUtils';
 
 /**
@@ -8,18 +7,9 @@ import { getNewPlayers } from '../EventUtils';
  */
 
 test('runs getPlayers() with just eventID parameter', () => {
-  const { event } = useEvent();
-
-  DataStore.query = jest.fn().mockImplementation(() => [new Match({
-    eventID: event.id,
-    status: MatchStatus.NEW,
-  })]);
-
-  DataStore.observe = jest.fn().mockImplementation(() => ({
-    subscribe: () => ({
-      unsubscribe: () => { },
-    }),
-  }));
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
 
   const defaultNumPlayers = 6;
   const players = getNewPlayers(event.id);
@@ -63,18 +53,9 @@ test('runs getPlayers() with just eventID parameter', () => {
 });
 
 test('runs getPlayers() with eventID, numPlayers=4 parameter', () => {
-  const { event } = useEvent();
-
-  DataStore.query = jest.fn().mockImplementation(() => [new Match({
-    eventID: event.id,
-    status: MatchStatus.NEW,
-  })]);
-
-  DataStore.observe = jest.fn().mockImplementation(() => ({
-    subscribe: () => ({
-      unsubscribe: () => { },
-    }),
-  }));
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
 
   const numPlayers = 4;
   const players = getNewPlayers(event.id, numPlayers);
@@ -105,18 +86,9 @@ test('runs getPlayers() with eventID, numPlayers=4 parameter', () => {
 });
 
 test('runs getPlayers() with eventID, numPlayers=4, playersNames parameter', () => {
-  const { event } = useEvent();
-
-  DataStore.query = jest.fn().mockImplementation(() => [new Match({
-    eventID: event.id,
-    status: MatchStatus.NEW,
-  })]);
-
-  DataStore.observe = jest.fn().mockImplementation(() => ({
-    subscribe: () => ({
-      unsubscribe: () => { },
-    }),
-  }));
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
 
   const numPlayers = 4;
   const playerNames = ['P1', 'P2', 'P3'];

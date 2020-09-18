@@ -1,11 +1,10 @@
 import { act, render, screen } from '@testing-library/react';
-import { DataStore } from 'aws-amplify';
+import { renderHook } from '@testing-library/react-hooks';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
 import { EventContext } from '../EventContext';
 import EventPanel from '../EventPanel';
 import useEvent from '../hooks/useEvent';
-import { Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
 
 jest.mock('react-i18next', () => ({
@@ -27,18 +26,9 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 test('renders without with EventContext', async () => {
-  const { event } = useEvent();
-
-  DataStore.query = jest.fn().mockImplementation(() => [new Match({
-    eventID: event.id,
-    status: MatchStatus.NEW,
-  })]);
-
-  DataStore.observe = jest.fn().mockImplementation(() => ({
-    subscribe: () => ({
-      unsubscribe: () => { },
-    }),
-  }));
+  const { result } = renderHook(() => useEvent());
+  const { current } = result;
+  const { event } = current;
 
   expect(event).toBeDefined();
 
