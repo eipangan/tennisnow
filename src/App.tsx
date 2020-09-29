@@ -1,6 +1,6 @@
 import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
 import Auth, { CognitoUser } from '@aws-amplify/auth';
-import { Button, PageHeader, Tag } from 'antd';
+import { Alert, Button, PageHeader, Tag } from 'antd';
 import { DataStore, Hub } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -250,6 +250,7 @@ const App = (): JSX.Element => {
                 ]}
               />
               <Suspense fallback={<div className="loader" />}>
+                <Alert message="BETA!!!" type="error" />
                 <AppBody />
               </Suspense>
             </Route>
