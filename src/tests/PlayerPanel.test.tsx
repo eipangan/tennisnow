@@ -31,26 +31,28 @@ beforeAll(() => {
   expect(player).toBeDefined();
 });
 
-it('should render without crashing', async () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <PlayerPanel
-        player={player}
-      />
-    </ThemeProvider>,
-  );
+describe('renders a PlayerPanel', () => {
+  it('should return a valid DOM', async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <PlayerPanel
+          player={player}
+        />
+      </ThemeProvider>,
+    );
 
-  expect(prettyDOM()).toBeDefined();
-});
+    expect(prettyDOM()).toBeDefined();
+  });
 
-it('should show player name properly', async () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <PlayerPanel
-        player={player}
-      />
-    </ThemeProvider>,
-  );
+  it('should show player name properly', async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <PlayerPanel
+          player={player}
+        />
+      </ThemeProvider>,
+    );
 
-  expect(screen.getByText(playerName)).toBeInTheDocument();
+    expect(screen.getByText(playerName)).toBeInTheDocument();
+  });
 });
