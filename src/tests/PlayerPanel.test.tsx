@@ -1,4 +1,4 @@
-import { prettyDOM, render } from '@testing-library/react';
+import { prettyDOM, render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { fail } from 'assert';
 import React from 'react';
@@ -10,6 +10,7 @@ import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
 
 let player: Player;
+const playerName = 'MyPlayer';
 
 beforeAll(() => {
   const { result } = renderHook(() => useEvent());
@@ -22,12 +23,15 @@ beforeAll(() => {
   expect(players).toBeDefined();
 
   if (!players) fail('players undefined');
-  [player] = players;
+  const [myPlayer] = players;
+  player = Player.copyOf(myPlayer, (updated) => {
+    updated.name = playerName;
+  });
 
   expect(player).toBeDefined();
 });
 
-test('renders without crashing', async () => {
+it('should render without crashing', async () => {
   render(
     <ThemeProvider theme={theme}>
       <PlayerPanel
@@ -37,4 +41,16 @@ test('renders without crashing', async () => {
   );
 
   expect(prettyDOM()).toBeDefined();
+});
+
+it('should show player name properly', async () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <PlayerPanel
+        player={player}
+      />
+    </ThemeProvider>,
+  );
+
+  expect(screen.getByText(playerName)).toBeInTheDocument();
 });
