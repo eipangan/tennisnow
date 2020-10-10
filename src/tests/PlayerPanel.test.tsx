@@ -1,14 +1,17 @@
-import { act, render } from '@testing-library/react';
+import { prettyDOM, render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { fail } from 'assert';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { ThemeProvider } from 'react-jss';
 import useEvent from '../hooks/useEvent';
+import { Player } from '../models';
 import PlayerPanel from '../PlayerPanel';
 import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
 
-test('renders without crashing', async () => {
+let player: Player;
+
+beforeAll(() => {
   const { result } = renderHook(() => useEvent());
   const { current } = result;
   const { event } = current;
@@ -19,19 +22,19 @@ test('renders without crashing', async () => {
   expect(players).toBeDefined();
 
   if (!players) fail('players undefined');
-  const player = players[0];
+  [player] = players;
 
   expect(player).toBeDefined();
+});
 
-  await act(async () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={null}>
-          <PlayerPanel
-            player={player}
-          />
-        </Suspense>
-      </ThemeProvider>,
-    );
-  });
+test('renders without crashing', async () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <PlayerPanel
+        player={player}
+      />
+    </ThemeProvider>,
+  );
+
+  expect(prettyDOM()).toBeDefined();
 });
