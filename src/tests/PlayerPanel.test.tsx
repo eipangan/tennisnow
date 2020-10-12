@@ -10,7 +10,6 @@ import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
 
 let player: Player;
-const playerName = 'MyPlayer';
 
 beforeAll(() => {
   const { result } = renderHook(() => useEvent());
@@ -23,15 +22,11 @@ beforeAll(() => {
   expect(players).toBeDefined();
 
   if (!players) fail('players undefined');
-  const [myPlayer] = players;
-  player = Player.copyOf(myPlayer, (updated) => {
-    updated.name = playerName;
-  });
-
+  [player] = players;
   expect(player).toBeDefined();
 });
 
-describe('renders a PlayerPanel', () => {
+describe('PlayerPanel', () => {
   it('should return a valid DOM', async () => {
     render(
       <ThemeProvider theme={theme}>
@@ -44,11 +39,31 @@ describe('renders a PlayerPanel', () => {
     expect(prettyDOM()).toBeDefined();
   });
 
-  it('should show player name properly', async () => {
+  it('should handle empty player name', async () => {
+    const myPlayer = Player.copyOf(player, (updated) => {
+    });
+
     render(
       <ThemeProvider theme={theme}>
         <PlayerPanel
-          player={player}
+          player={myPlayer}
+        />
+      </ThemeProvider>,
+    );
+
+    expect(prettyDOM()).toBeDefined();
+  });
+
+  it('should show player name if defined in player object', async () => {
+    const playerName = 'MyPlayer';
+    const myPlayer = Player.copyOf(player, (updated) => {
+      updated.name = playerName;
+    });
+
+    render(
+      <ThemeProvider theme={theme}>
+        <PlayerPanel
+          player={myPlayer}
         />
       </ThemeProvider>,
     );
