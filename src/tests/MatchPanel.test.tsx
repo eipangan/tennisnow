@@ -12,18 +12,21 @@ jest.mock('../PlayerPanel', () => ({
   PlayerPanel: jest.fn(),
 }));
 
-beforeAll(() => {
-  const { result } = renderHook(() => useEvent());
-  const { current } = result;
-  const { event } = current;
-
-  const players = getNewPlayers(event.id, 6);
-
-  expect(event).toBeDefined();
-  expect(players).toBeDefined();
-});
-
 describe('MatchPanel', () => {
+  describe('empty matchID', () => {
+    it('should render without crashing', () => {
+      render(
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>
+            <MatchPanel matchID="" />
+          </Suspense>
+        </ThemeProvider>,
+      );
+
+      expect(prettyDOM()).toBeDefined();
+    });
+  });
+
   describe('invalid matchID', () => {
     it('should render without crashing', () => {
       render(
@@ -35,6 +38,19 @@ describe('MatchPanel', () => {
       );
 
       expect(prettyDOM()).toBeDefined();
+    });
+  });
+
+  describe('valid matchID', () => {
+    beforeAll(() => {
+      const { result } = renderHook(() => useEvent());
+      const { current } = result;
+      const { event } = current;
+
+      const players = getNewPlayers(event.id, 6);
+
+      expect(event).toBeDefined();
+      expect(players).toBeDefined();
     });
   });
 });
