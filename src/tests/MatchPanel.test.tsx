@@ -52,5 +52,17 @@ describe('MatchPanel', () => {
       expect(event).toBeDefined();
       expect(players).toBeDefined();
     });
+
+    it('should render without crashing', () => {
+      render(
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>
+            <MatchPanel matchID="ABC" />
+          </Suspense>
+        </ThemeProvider>,
+      );
+
+      expect(prettyDOM()).toBeDefined();
+    });
   });
 });
