@@ -64,7 +64,7 @@ type MatchPanelProps = {
  *
  * @param props
  */
-const MatchPanel = (props: MatchPanelProps): JSX.Element => {
+const MatchPanel = (props: MatchPanelProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -75,7 +75,7 @@ const MatchPanel = (props: MatchPanelProps): JSX.Element => {
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
-  const [middleText, setMiddleText] = useState<JSX.Element>();
+  const [middleText, setMiddleText] = useState<any>();
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {

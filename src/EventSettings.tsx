@@ -42,7 +42,7 @@ type EventSettingsProps = {
  *
  * @param props
  */
-const EventSettings = (props: EventSettingsProps): JSX.Element => {
+const EventSettings = (props: EventSettingsProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -186,7 +186,7 @@ const EventSettings = (props: EventSettingsProps): JSX.Element => {
           >
             <Select size="large">
               {(() => {
-                const children: JSX.Element[] = [];
+                const children: any[] = [];
                 let now = dayjs().startOf('day');
                 const end = dayjs().add(1, 'day').startOf('day');
 

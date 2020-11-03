@@ -41,7 +41,7 @@ type EventsListProps = {
  *
  * @param props
  */
-const EventsList = (props: EventsListProps): JSX.Element => {
+const EventsList = (props: EventsListProps) => {
   const { t } = useTranslation();
   const history = useHistory();
   const theme = useTheme();
@@ -49,7 +49,7 @@ const EventsList = (props: EventsListProps): JSX.Element => {
 
   const { events } = props;
 
-  const EmptyEvents = (): JSX.Element => (
+  const EmptyEvents = () => (
     <>
       <Empty width="60%" height="80%" style={{ maxWidth: 300 }} />
       <Typography>

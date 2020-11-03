@@ -21,7 +21,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 /**
  * AppIntro
  */
-const AppIntro = (): JSX.Element => {
+const AppIntro = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });

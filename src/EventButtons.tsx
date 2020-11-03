@@ -22,7 +22,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  *
  * @param props
  */
-const EventButtons = (): JSX.Element => {
+const EventButtons = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -78,7 +78,7 @@ const EventButtons = (): JSX.Element => {
   /**
    * SettingsButton
    */
-  const SettingsButton = (): JSX.Element => (
+  const SettingsButton = () => (
     <Button
       data-testid="settings"
       icon={<SettingOutlined />}
@@ -93,7 +93,7 @@ const EventButtons = (): JSX.Element => {
   /**
    * SettingsDrawer
    */
-  const SettingsDrawer = (): JSX.Element => {
+  const SettingsDrawer = () => {
     if (!isEventSettingsVisible) return <></>;
     return (
       <EventSettings

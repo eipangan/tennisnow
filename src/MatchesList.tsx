@@ -36,7 +36,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  *
  * @param props
  */
-const MatchesList = (): JSX.Element => {
+const MatchesList = () => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 

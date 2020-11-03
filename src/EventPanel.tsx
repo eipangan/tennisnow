@@ -30,7 +30,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 /**
  * EventPanel
  */
-const EventPanel = (): JSX.Element => {
+const EventPanel = () => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 

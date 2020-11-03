@@ -23,7 +23,7 @@ type PlayerPanelProps = {
  *
  * @param props
  */
-const PlayerPanel = (props: PlayerPanelProps): JSX.Element => {
+const PlayerPanel = (props: PlayerPanelProps) => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 

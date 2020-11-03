@@ -32,7 +32,7 @@ type EventsPanelProps = {
  *
  * @param props
  */
-const EventsPanel = (props: EventsPanelProps): JSX.Element => {
+const EventsPanel = (props: EventsPanelProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });

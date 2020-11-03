@@ -21,7 +21,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  *
  * @param props
  */
-const PlayersSummary = (): JSX.Element => {
+const PlayersSummary = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });

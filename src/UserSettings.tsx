@@ -26,7 +26,7 @@ type UserSettingsProps = {
  *
  * @param props
  */
-const UserSettings = (props: UserSettingsProps): JSX.Element => {
+const UserSettings = (props: UserSettingsProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });

@@ -45,7 +45,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  *
  * @param props
  */
-const EventRoute = (props: any): JSX.Element => {
+const EventRoute = (props: any) => {
   const history = useHistory();
   const theme = useTheme();
   const classes = useStyles({ theme });

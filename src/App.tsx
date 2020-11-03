@@ -74,7 +74,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 /**
  * App
  */
-const App = (): JSX.Element => {
+const App = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -107,7 +107,7 @@ const App = (): JSX.Element => {
   /**
    * AppBody Component
    */
-  const AppBody = (): JSX.Element => {
+  const AppBody = () => {
     if (user) return <EventsPanel events={events || []} />;
     return <AppIntro />;
   };
@@ -115,7 +115,7 @@ const App = (): JSX.Element => {
   /**
    * AppCopyright Component
    */
-  const AppCopyright = (): JSX.Element => (
+  const AppCopyright = () => (
     <>
       {t('title')}
       {' '}
@@ -137,7 +137,7 @@ const App = (): JSX.Element => {
   /**
    * Loader
    */
-  const Loader = (): JSX.Element => {
+  const Loader = () => {
     if (!user) return <></>;
     if (!isLoading) return <></>;
     return (
@@ -148,7 +148,7 @@ const App = (): JSX.Element => {
   /**
    * UserButton Component
    */
-  const UserButton = (): JSX.Element => {
+  const UserButton = () => {
     if (user) {
       return (
         <Button
