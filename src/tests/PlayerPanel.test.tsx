@@ -11,22 +11,22 @@ import { getNewPlayers } from '../utils/EventUtils';
 
 let player: Player;
 
-beforeAll(() => {
-  const { result } = renderHook(() => useEvent());
-  const { current } = result;
-  const { event } = current;
-
-  const players = getNewPlayers(event.id, 6);
-
-  expect(event).toBeDefined();
-  expect(players).toBeDefined();
-
-  if (!players) fail('players undefined');
-  [player] = players;
-  expect(player).toBeDefined();
-});
-
 describe('PlayerPanel', () => {
+  beforeAll(() => {
+    const { result } = renderHook(() => useEvent());
+    const { current } = result;
+    const { event } = current;
+
+    const players = getNewPlayers(event.id, 6);
+
+    expect(event).toBeDefined();
+    expect(players).toBeDefined();
+
+    if (!players) fail('players undefined');
+    [player] = players;
+    expect(player).toBeDefined();
+  });
+
   it('should return a valid DOM', async () => {
     render(
       <ThemeProvider theme={theme}>
