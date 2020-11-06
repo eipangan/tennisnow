@@ -56,7 +56,6 @@ const useStyles = createUseStyles((theme: ThemeType) => {
  */
 type MatchPanelProps = {
   matchID: string;
-  match?: Match;
 };
 
 /**
@@ -79,11 +78,6 @@ const MatchPanel = (props: MatchPanelProps) => {
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
   useEffect(() => {
-    if (props.match) {
-      setMatch(props.match);
-      return () => { };
-    }
-
     let mounted = true;
     const fetchMatch = async (eid: string) => {
       const fetchedMatch = await DataStore.query(Match, eid);
@@ -97,11 +91,8 @@ const MatchPanel = (props: MatchPanelProps) => {
     };
 
     fetchMatch(props.matchID);
-    const subscription = DataStore.observe(Match, props.matchID)
-      .subscribe(() => fetchMatch(props.matchID));
     return () => {
       mounted = false;
-      subscription.unsubscribe();
     };
   }, [props]);
 
@@ -116,12 +107,8 @@ const MatchPanel = (props: MatchPanelProps) => {
 
     if (!match) return () => { };
     fetchPlayers(match.eventID);
-    const subscription = DataStore.observe(Player,
-      (p) => p.eventID('eq', match.eventID))
-      .subscribe(() => fetchPlayers(match.eventID));
     return () => {
       mounted = false;
-      subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.eventID]);
@@ -209,10 +196,6 @@ const MatchPanel = (props: MatchPanelProps) => {
       </div>
     </div>
   );
-};
-
-MatchPanel.defaultProps = {
-  match: undefined,
 };
 
 export default MatchPanel;
