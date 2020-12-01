@@ -23,8 +23,8 @@ export declare class Event {
   readonly type?: EventType | keyof typeof EventType;
   readonly summary?: string;
   readonly details?: string;
-  readonly matches?: Match[];
-  readonly players?: Player[];
+  readonly matches?: (Match | null)[];
+  readonly players?: (Player | null)[];
   readonly owner?: string;
   constructor(init: ModelInit<Event>);
   static copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
@@ -34,7 +34,7 @@ export declare class Match {
   readonly id: string;
   readonly eventID: string;
   readonly createdTime?: string;
-  readonly playerIndices?: number[];
+  readonly playerIndices?: (number | null)[];
   readonly status?: MatchStatus | keyof typeof MatchStatus;
   readonly owner?: string;
   constructor(init: ModelInit<Match>);

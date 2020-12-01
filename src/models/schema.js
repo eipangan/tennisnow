@@ -55,6 +55,7 @@ export const schema = {
                     },
                     "isRequired": false,
                     "attributes": [],
+                    "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "eventID"
@@ -68,6 +69,7 @@ export const schema = {
                     },
                     "isRequired": false,
                     "attributes": [],
+                    "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "eventID"
@@ -138,7 +140,8 @@ export const schema = {
                     "isArray": true,
                     "type": "Int",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "status": {
                     "name": "status",
