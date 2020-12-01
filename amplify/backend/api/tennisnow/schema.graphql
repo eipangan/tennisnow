@@ -1,16 +1,20 @@
-type Event @model @auth(rules: [{ allow: owner }]) {
+type Event
+  @model
+  @auth(rules: [{allow: owner}])
+{
   id: ID!
   date: AWSDateTime!
   place: String
   type: EventType
   summary: String
   details: String
-  matches: [Match] @connection(keyName: "byEvent", fields: ["id"])
-  players: [Player] @connection(keyName: "byEvent", fields: ["id"])
+  matches: [Match] @connection(keyName: "byEvent", fields:["id"])
+  players: [Player] @connection(keyName: "byEvent", fields:["id"])
   owner: String
 }
 
-enum EventType {
+enum EventType
+{
   GENERIC_EVENT
   SINGLES_ROUND_ROBIN
   FIX_DOUBLES_ROUND_ROBIN
@@ -19,8 +23,9 @@ enum EventType {
 
 type Match
   @model
-  @auth(rules: [{ allow: owner }])
-  @key(name: "byEvent", fields: ["eventID"]) {
+  @auth(rules: [{allow: owner}])
+  @key(name: "byEvent", fields: ["eventID"])
+{
   id: ID!
   eventID: ID!
   createdTime: AWSDateTime
@@ -29,7 +34,8 @@ type Match
   owner: String
 }
 
-enum MatchStatus {
+enum MatchStatus
+{
   NEW
   PLAYER1_WON
   PLAYER2_WON
@@ -38,8 +44,9 @@ enum MatchStatus {
 
 type Player
   @model
-  @auth(rules: [{ allow: owner }])
-  @key(name: "byEvent", fields: ["eventID"]) {
+  @auth(rules: [{allow: owner}])
+  @key(name: "byEvent", fields: ["eventID"])
+{
   id: ID!
   eventID: ID!
   index: Int!
