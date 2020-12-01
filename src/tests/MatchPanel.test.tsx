@@ -98,7 +98,6 @@ describe('MatchPanel', () => {
         );
       });
 
-      screen.debug();
       expect(prettyDOM()).toBeDefined();
     });
   });
