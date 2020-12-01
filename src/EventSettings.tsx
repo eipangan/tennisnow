@@ -222,6 +222,7 @@ const EventSettings = (props: EventSettingsProps) => {
           <Collapse defaultActiveKey="players">
             <Panel
               className={classes.eventSettingsPlayers}
+              collapsible="disabled"
               key="players"
               header={(
                 <Button type="link" size="large">
