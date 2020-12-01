@@ -63,7 +63,7 @@ const useEvent = (id?: string) => {
       myMatches.forEach((myMatch) => {
         if (myMatch.playerIndices) {
           myMatch.playerIndices.forEach((playerIndex) => {
-            numPlayed[playerIndex] += 1;
+            if (playerIndex) numPlayed[playerIndex] += 1;
           });
         }
       });
