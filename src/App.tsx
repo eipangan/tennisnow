@@ -7,7 +7,6 @@ import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import React, { Suspense, useEffect, useState } from 'react';
-import ReactGA from 'react-ga';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
@@ -84,10 +83,6 @@ const App = () => {
   const [events, setEvents] = useState<Event[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // initialize google-analytics
-  ReactGA.initialize('UA-320746-14');
-  ReactGA.pageview(window.location.pathname + window.location.search);
 
   // initialize amplify hub
   Hub.listen('auth', (data) => {
