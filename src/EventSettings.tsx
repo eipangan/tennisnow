@@ -44,7 +44,7 @@ type EventSettingsProps = {
  */
 const EventSettings = (props: EventSettingsProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { onClose } = props;

@@ -37,7 +37,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * @param props
  */
 const MatchesList = () => {
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { event, getNextMatch } = useContext(EventContext);

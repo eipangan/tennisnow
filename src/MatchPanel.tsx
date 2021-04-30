@@ -65,7 +65,7 @@ type MatchPanelProps = {
  */
 const MatchPanel = (props: MatchPanelProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const [match, setMatch] = useState<Match>();

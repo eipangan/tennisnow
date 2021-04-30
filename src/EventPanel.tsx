@@ -31,7 +31,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * EventPanel
  */
 const EventPanel = () => {
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { event } = useContext(EventContext);

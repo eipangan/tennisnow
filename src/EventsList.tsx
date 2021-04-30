@@ -44,7 +44,7 @@ type EventsListProps = {
 const EventsList = (props: EventsListProps) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { events } = props;

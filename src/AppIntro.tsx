@@ -23,7 +23,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 const AppIntro = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { Title, Text } = Typography;

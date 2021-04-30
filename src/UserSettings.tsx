@@ -28,7 +28,7 @@ type UserSettingsProps = {
  */
 const UserSettings = (props: UserSettingsProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { onClose } = props;

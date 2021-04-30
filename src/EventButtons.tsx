@@ -24,7 +24,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 const EventButtons = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const history = useHistory();

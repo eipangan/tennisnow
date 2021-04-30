@@ -34,7 +34,7 @@ type EventsPanelProps = {
  */
 const EventsPanel = (props: EventsPanelProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { events } = props;

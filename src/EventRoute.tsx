@@ -47,7 +47,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 const EventRoute = (props: any) => {
   const history = useHistory();
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   // get event

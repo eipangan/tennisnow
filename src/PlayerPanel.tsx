@@ -24,7 +24,7 @@ type PlayerPanelProps = {
  * @param props
  */
 const PlayerPanel = (props: PlayerPanelProps) => {
-  const theme = useTheme();
+  const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
   const { player } = props;
