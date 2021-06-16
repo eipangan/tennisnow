@@ -1,7 +1,6 @@
-import { CopyrightCircleOutlined, LoginOutlined, TwitterOutlined, UserOutlined } from '@ant-design/icons';
-import Auth, { CognitoUser } from '@aws-amplify/auth';
-import { Alert, Button, PageHeader, Tag } from 'antd';
-import { DataStore, Hub } from 'aws-amplify';
+import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
+import { PageHeader, Tag } from 'antd';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -10,15 +9,12 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
-import { AppContext } from './AppContext';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
 import { ThemeType } from './Theme';
 
-const AppIntro = React.lazy(() => import('./AppIntro'));
 const EventRoute = React.lazy(() => import('./EventRoute'));
 const EventsPanel = React.lazy(() => import('./EventsPanel'));
-const UserSettings = React.lazy(() => import('./UserSettings'));
 
 // initialize dayjs
 dayjs.extend(updateLocale);
@@ -58,10 +54,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     margin: '0px',
     padding: '0px',
   },
-  appIntro: {
-    background: 'white',
-    height: '160px',
-  },
   appFooter: {
     background: 'transparent',
     fontSize: 'small',
@@ -77,35 +69,13 @@ const App = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
-
-  const [isUserSettingsVisible, setIsUserSettingsVisible] = useState<boolean>(false);
-  const [user, setUser] = useState<CognitoUser>();
   const [events, setEvents] = useState<Event[]>([]);
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // initialize amplify hub
-  Hub.listen('auth', (data) => {
-    switch (data.payload.event) {
-      case 'signIn':
-      case 'signIn_failure':
-      case 'signOut':
-        setUser(data.payload.data);
-        break;
-      case 'cognitoHostedUI':
-      case 'oAuthSignOut':
-      default:
-        break;
-    }
-  });
 
   /**
    * AppBody Component
    */
-  const AppBody = () => {
-    if (user) return <EventsPanel events={events || []} />;
-    return <AppIntro />;
-  };
+  const AppBody = () => <EventsPanel events={events || []} />;
 
   /**
    * AppCopyright Component
@@ -129,68 +99,12 @@ const App = () => {
     </>
   );
 
-  /**
-   * Loader
-   */
   const Loader = () => {
-    if (!user) return <></>;
     if (!isLoading) return <></>;
     return (
       <div className="loader" />
     );
   };
-
-  /**
-   * UserButton Component
-   */
-  const UserButton = () => {
-    if (user) {
-      return (
-        <Button
-          icon={<UserOutlined />}
-          key="user"
-          onClick={() => { setIsUserSettingsVisible(true); }}
-          shape="round"
-          style={{ background: '#ffffff50' }}
-          type="default"
-        >
-          {user.getUsername()}
-        </Button>
-      );
-    }
-    return (
-      <Button
-        icon={<LoginOutlined />}
-        key="user"
-        onClick={() => { Auth.federatedSignIn(); }}
-        shape="round"
-        style={{}}
-        type="primary"
-      >
-        {t('signin')}
-      </Button>
-    );
-  };
-
-  /**
-   * authenticateUser
-   */
-  const authenticateUser = async () => {
-    try {
-      const myUser = await Auth.currentAuthenticatedUser();
-      setUser(myUser);
-    } catch (error) {
-      // ignore
-    }
-  };
-
-  /**
-   * useEffect Section
-   */
-
-  useEffect(() => {
-    authenticateUser();
-  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -205,13 +119,13 @@ const App = () => {
 
     fetchEvents();
     const subscription = DataStore.observe(Event,
-      (e) => e.owner('eq', user?.getUsername() || ''))
+      (e) => e.owner('eq', ''))
       .subscribe(() => fetchEvents());
     return () => {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     i18n.changeLanguage(navigator.language);
@@ -233,34 +147,18 @@ const App = () => {
     <div className={classes.app}>
       <div className={classes.appContent}>
         <Loader />
-        <AppContext.Provider value={{ username: String(user?.getUsername()) }}>
-          <Switch>
-            <Route path="/event/:id" component={EventRoute} />
-            <Route path="/">
-              <PageHeader
-                className={classes.appHeader}
-                title={(<AppTitle />)}
-                extra={[
-                  <UserButton key="user" />,
-                ]}
-              />
-              <Suspense fallback={<div className="loader" />}>
-                <Alert message="BETA!!!" type="error" />
-                <AppBody />
-              </Suspense>
-            </Route>
-          </Switch>
-          <Suspense fallback={<div className="loader" />}>
-            {(() => {
-              if (!isUserSettingsVisible || !user) return <></>;
-              return (
-                <UserSettings
-                  onClose={() => setIsUserSettingsVisible(false)}
-                />
-              );
-            })()}
-          </Suspense>
-        </AppContext.Provider>
+        <Switch>
+          <Route path="/event/:id" component={EventRoute} />
+          <Route path="/">
+            <PageHeader
+              className={classes.appHeader}
+              title={(<AppTitle />)}
+            />
+            <Suspense fallback={<div className="loader" />}>
+              <AppBody />
+            </Suspense>
+          </Route>
+        </Switch>
       </div>
       <div className={classes.appFooter}>
         <AppCopyright />
