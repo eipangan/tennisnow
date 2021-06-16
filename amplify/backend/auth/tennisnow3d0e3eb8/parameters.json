@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "tennisnow918c11b0_identitypool_918c11b0",
+    "identityPoolName": "tennisnow3d0e3eb8_identitypool_3d0e3eb8",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "tennis918c11b0",
-    "userPoolName": "tennisnow918c11b0_userpool_918c11b0",
+    "resourceNameTruncated": "tennis3d0e3eb8",
+    "userPoolName": "tennisnow3d0e3eb8_userpool_3d0e3eb8",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,7 +20,7 @@
     "requiredAttributes": [
         "email"
     ],
-    "userpoolClientGenerateSecret": true,
+    "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
         "email"
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "tennis918c11b0_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "tennis3d0e3eb8_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "918c11b0",
-    "resourceName": "tennisnow918c11b0",
+    "sharedId": "3d0e3eb8",
+    "resourceName": "tennisnow3d0e3eb8",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,11 +46,16 @@
         ]
     },
     "useDefault": "defaultSocial",
+    "usernameAttributes": [
+        "email"
+    ],
     "userPoolGroupList": [],
+    "serviceName": "Cognito",
     "dependsOn": [],
     "hostedUI": true,
-    "hostedUIDomainName": "tennisnowc8f9f6ba-c8f9f6ba",
+    "hostedUIDomainName": "tennisnow23b2f9c0-23b2f9c0",
     "authProvidersUserPool": [],
     "hostedUIProviderMeta": "[]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://beta.tennisnow.net/\",\"https://www.tennisnow.net/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://beta.tennisnow.net/\",\"https://www.tennisnow.net/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://beta.tennisnow.net/\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"https://beta.tennisnow.net/\",\"http://localhost:3000/\"]}",
+    "authProviders": []
 }
