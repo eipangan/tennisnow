@@ -8,7 +8,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createUseStyles, DefaultTheme, useTheme } from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
 import { AppContext } from './AppContext';
 import { ReactComponent as AppTitle } from './images/title.svg';
