@@ -67,7 +67,6 @@ const App = () => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
   const [events, setEvents] = useState<Event[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const AppCopyright = () => (
     <>
@@ -88,22 +87,13 @@ const App = () => {
     </>
   );
 
-  const Loader = () => {
-    if (!isLoading) return <></>;
-    return (
-      <div className="loader" />
-    );
-  };
-
   useEffect(() => {
     let mounted = true;
     const fetchEvents = async () => {
-      setIsLoading(true);
       const fetchedEvents = await DataStore.query(Event);
       if (mounted) {
         setEvents(fetchedEvents);
       }
-      setIsLoading(false);
     };
 
     fetchEvents();
@@ -132,7 +122,6 @@ const App = () => {
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
-        <Loader />
         <Switch>
           <Route path="/event/:id" component={EventRoute} />
           <Route path="/">
