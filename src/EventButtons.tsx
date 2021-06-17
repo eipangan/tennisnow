@@ -9,7 +9,6 @@ import { EventContext } from './EventContext';
 import EventSettings from './EventSettings';
 import { ThemeType } from './Theme';
 
-// initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
   buttonsContainer: {
     display: 'flex',
@@ -17,11 +16,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-/**
- * EventButtons component - delete button and new/settings button
- *
- * @param props
- */
 const EventButtons = () => {
   const { t } = useTranslation();
   const theme = useTheme<ThemeType>();
@@ -31,9 +25,6 @@ const EventButtons = () => {
   const { event } = useContext(EventContext);
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
-  /**
-   * DeleteButton
-   */
   const DeleteButton = () => (
     <Popconfirm
       cancelText={t('cancel')}
@@ -58,9 +49,6 @@ const EventButtons = () => {
     </Popconfirm>
   );
 
-  /**
-   * NewEventButton
-   */
   const NewEventButton = () => (
     <Button
       data-testid="settings"
@@ -75,9 +63,6 @@ const EventButtons = () => {
     </Button>
   );
 
-  /**
-   * SettingsButton
-   */
   const SettingsButton = () => (
     <Button
       data-testid="settings"
@@ -90,9 +75,6 @@ const EventButtons = () => {
     />
   );
 
-  /**
-   * SettingsDrawer
-   */
   const SettingsDrawer = () => {
     if (!isEventSettingsVisible) return <></>;
     return (
