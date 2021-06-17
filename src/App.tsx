@@ -62,9 +62,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-/**
- * App
- */
 const App = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme<ThemeType>();
@@ -72,14 +69,8 @@ const App = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  /**
-   * AppBody Component
-   */
   const AppBody = () => <EventsPanel events={events || []} />;
 
-  /**
-   * AppCopyright Component
-   */
   const AppCopyright = () => (
     <>
       {t('title')}
@@ -140,9 +131,6 @@ const App = () => {
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 
-  /**
-   * return Section
-   */
   return (
     <div className={classes.app}>
       <div className={classes.appContent}>
