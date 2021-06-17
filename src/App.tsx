@@ -4,11 +4,13 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, { Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import EventButtons from './EventButtons';
+import { EventContext } from './EventContext';
+import EventPanel from './EventPanel';
 import useEvent from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { ThemeType } from './Theme';
@@ -63,9 +65,10 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 
 const App = () => {
   const { t, i18n } = useTranslation();
+  const history = useHistory();
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
-  const { event } = useEvent();
+  const { event, getNextMatch } = useEvent();
 
   const AppCopyright = () => (
     <>
@@ -105,13 +108,22 @@ const App = () => {
         <Switch>
           <Route path="/event/:id" component={EventRoute} />
           <Route path="/">
-            <PageHeader
-              className={classes.appHeader}
-              title={(<AppTitle />)}
-            />
-            <Suspense fallback={<div className="loader" />}>
-              <EventButtons />
-            </Suspense>
+            <EventContext.Provider
+              key={event.id}
+              value={{
+                event,
+                getNextMatch,
+              }}
+            >
+              <PageHeader
+                className={classes.appHeader}
+                title={(<AppTitle />)}
+                extra={[
+                  <EventButtons key={event.id} />,
+                ]}
+              />
+              <EventPanel />
+            </EventContext.Provider>
           </Route>
         </Switch>
       </div>
