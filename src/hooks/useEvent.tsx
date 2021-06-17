@@ -18,7 +18,7 @@ const useEvent = (id?: string) => {
     const newEvent = new Event({
       date: dayjs().add(1, 'hour').startOf('hour').toDate()
         .toISOString(),
-      type: EventType.GENERIC_EVENT,
+      type: EventType.SINGLES_ROUND_ROBIN,
     });
 
     return newEvent;
