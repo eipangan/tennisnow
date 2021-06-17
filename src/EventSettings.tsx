@@ -167,46 +167,6 @@ const EventSettings = (props: EventSettingsProps) => {
       >
         <div className={classes.eventSettingsRow}>
           <Item
-            key="date"
-            name="date"
-          >
-            <DatePicker
-              allowClear={false}
-              disabledDate={(current) => current && current < dayjs().add(1, 'hour').startOf('day')}
-              format={getLocaleDateFormat()}
-              hideDisabledOptions
-              inputReadOnly
-              size="large"
-            />
-          </Item>
-          <div style={{ width: '3px' }} />
-          <Item
-            key="time"
-            name="time"
-          >
-            <Select size="large">
-              {(() => {
-                const children: any[] = [];
-                let now = dayjs().startOf('day');
-                const end = dayjs().add(1, 'day').startOf('day');
-
-                for (now; now.isBefore(end); now = now.add(30, 'minute')) {
-                  children.push(
-                    <Option
-                      key={now.format('HHmm')}
-                      value={now.format('HHmm')}
-                    >
-                      {now.format('LT')}
-                    </Option>,
-                  );
-                }
-                return children;
-              })()}
-            </Select>
-          </Item>
-        </div>
-        <div className={classes.eventSettingsRow}>
-          <Item
             key="type"
             name="type"
           >
