@@ -1,20 +1,19 @@
 import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
 import { PageHeader, Tag } from 'antd';
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
+import EventButtons from './EventButtons';
+import useEvent from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
-import { Event } from './models';
 import { ThemeType } from './Theme';
 
 const EventRoute = React.lazy(() => import('./EventRoute'));
-const EventsPanel = React.lazy(() => import('./EventsPanel'));
 
 // initialize dayjs
 dayjs.extend(updateLocale);
@@ -66,7 +65,7 @@ const App = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
-  const [events, setEvents] = useState<Event[]>([]);
+  const { event } = useEvent();
 
   const AppCopyright = () => (
     <>
@@ -86,25 +85,6 @@ const App = () => {
       </a>
     </>
   );
-
-  useEffect(() => {
-    let mounted = true;
-    const fetchEvents = async () => {
-      const fetchedEvents = await DataStore.query(Event);
-      if (mounted) {
-        setEvents(fetchedEvents);
-      }
-    };
-
-    fetchEvents();
-    const subscription = DataStore.observe(Event,
-      (e) => e.owner('eq', ''))
-      .subscribe(() => fetchEvents());
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     i18n.changeLanguage(navigator.language);
@@ -130,7 +110,7 @@ const App = () => {
               title={(<AppTitle />)}
             />
             <Suspense fallback={<div className="loader" />}>
-              <EventsPanel events={events || []} />
+              <EventButtons />
             </Suspense>
           </Route>
         </Switch>
