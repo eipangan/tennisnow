@@ -29,7 +29,7 @@ const EventButtons = () => {
 
   const history = useHistory();
   const { event } = useContext(EventContext);
-  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(true);
+  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   /**
    * DeleteButton

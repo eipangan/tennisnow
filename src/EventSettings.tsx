@@ -6,13 +6,12 @@ import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { DatePicker } from './components';
 import { EventContext } from './EventContext';
 import useEvent from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getNewPlayers, getPlayers, savePlayers } from './utils/EventUtils';
-import { getLocaleDateFormat, shuffle } from './utils/Utils';
+import { shuffle } from './utils/Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
