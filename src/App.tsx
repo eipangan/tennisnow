@@ -69,8 +69,6 @@ const App = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const AppBody = () => <EventsPanel events={events || []} />;
-
   const AppCopyright = () => (
     <>
       {t('title')}
@@ -143,7 +141,7 @@ const App = () => {
               title={(<AppTitle />)}
             />
             <Suspense fallback={<div className="loader" />}>
-              <AppBody />
+              <EventsPanel events={events || []} />
             </Suspense>
           </Route>
         </Switch>
