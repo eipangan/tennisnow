@@ -21,7 +21,7 @@ test('test useEvent() with empty parameter', () => {
   expect(event.date).toContain('Z');
 
   expect(event.type).toBeDefined();
-  expect(event.type).toBe(EventType.GENERIC_EVENT);
+  expect(event.type).toBe(EventType.SINGLES_ROUND_ROBIN);
 
   // check event - initially undefined parameters
   expect(event.place).toBeUndefined();
