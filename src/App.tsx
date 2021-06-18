@@ -102,7 +102,7 @@ const App = () => {
     <div className={classes.app}>
       <div className={classes.appContent}>
         <EventContext.Provider
-          key={event.id}
+          key={0}
           value={{
             event,
             getNextMatch,
@@ -112,7 +112,7 @@ const App = () => {
             className={classes.appHeader}
             title={(<AppTitle />)}
             extra={[
-              <EventButtons key={event.id} />,
+              <EventButtons key={0} />,
             ]}
           />
           <EventPanel />
