@@ -99,15 +99,15 @@ const App = () => {
   }, [i18n.language, t]);
 
   return (
-    <div className={classes.app}>
-      <div className={classes.appContent}>
-        <EventContext.Provider
-          key={0}
-          value={{
-            event,
-            getNextMatch,
-          }}
-        >
+    <EventContext.Provider
+      key={0}
+      value={{
+        event,
+        getNextMatch,
+      }}
+    >
+      <div className={classes.app}>
+        <div className={classes.appHeader}>
           <PageHeader
             className={classes.appHeader}
             title={(<AppTitle />)}
@@ -115,13 +115,15 @@ const App = () => {
               <EventButtons key={0} />,
             ]}
           />
+        </div>
+        <div className={classes.appContent}>
           <EventPanel />
-        </EventContext.Provider>
+        </div>
+        <div className={classes.appFooter}>
+          <AppCopyright />
+        </div>
       </div>
-      <div className={classes.appFooter}>
-        <AppCopyright />
-      </div>
-    </div>
+    </EventContext.Provider>
   );
 };
 
