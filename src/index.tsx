@@ -2,7 +2,6 @@ import Amplify from 'aws-amplify';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'react-jss';
-import { BrowserRouter } from 'react-router-dom';
 import awsconfig from './aws-exports';
 import './i18n';
 import './index.css';
@@ -21,13 +20,11 @@ Amplify.configure(awsconfig);
 
 // render App
 ReactDOM.render(
-  <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <Suspense fallback={<div className="loader" />}>
-        <App />
-      </Suspense>
-    </ThemeProvider>
-  </BrowserRouter>,
+  <ThemeProvider theme={theme}>
+    <Suspense fallback={<div className="loader" />}>
+      <App />
+    </Suspense>
+  </ThemeProvider>,
   document.getElementById('root'),
 );
 

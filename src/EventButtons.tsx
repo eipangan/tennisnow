@@ -4,7 +4,6 @@ import { DataStore } from 'aws-amplify';
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { useHistory } from 'react-router-dom';
 import { EventContext } from './EventContext';
 import EventSettings from './EventSettings';
 import { ThemeType } from './Theme';
@@ -21,7 +20,6 @@ const EventButtons = () => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const history = useHistory();
   const { event } = useContext(EventContext);
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
@@ -37,7 +35,6 @@ const EventButtons = () => {
       }}
       onConfirm={async (e) => {
         if (event) DataStore.delete(event);
-        history.push('/');
       }}
     >
       <Button
