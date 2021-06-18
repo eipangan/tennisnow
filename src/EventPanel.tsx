@@ -16,9 +16,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   eventPanel: {
     background: 'transparent',
   },
-  eventSummary: {
-    background: 'transparent',
-  },
   eventMatches: {
     background: 'transparent',
   },
@@ -44,11 +41,6 @@ const EventPanel = () => {
   if (!event) return <></>;
   return (
     <div className={classes.eventPanel}>
-      <div className={classes.eventSummary}>
-        <strong>{dayjs(event.date).calendar()}</strong>
-        <br />
-        {event.summary}
-      </div>
       <div className={classes.eventMatches}>
         <EventMatchesList />
       </div>
