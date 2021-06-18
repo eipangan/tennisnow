@@ -4,7 +4,6 @@ import React, { useContext } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { EventContext } from './EventContext';
 import MatchesList from './MatchesList';
-import { EventType } from './models';
 import PlayersSummary from './PlayersSummary';
 import { ThemeType } from './Theme';
 
@@ -32,11 +31,7 @@ const EventPanel = () => {
   const classes = useStyles({ theme });
 
   const { event } = useContext(EventContext);
-
-  const EventMatchesList = () => {
-    if (event && event.type === EventType.GENERIC_EVENT) return <></>;
-    return <MatchesList />;
-  };
+  const EventMatchesList = () => <MatchesList />;
 
   if (!event) return <></>;
   return (
