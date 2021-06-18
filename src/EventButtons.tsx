@@ -1,6 +1,5 @@
-import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Popconfirm } from 'antd';
-import { DataStore } from 'aws-amplify';
+import { SettingOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -23,48 +22,11 @@ const EventButtons = () => {
   const { event } = useContext(EventContext);
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
-  const DeleteButton = () => (
-    <Popconfirm
-      cancelText={t('cancel')}
-      icon={<QuestionCircleOutlined />}
-      okText={t('delete')}
-      placement="bottom"
-      title={t('deleteEventConfirm')}
-      onCancel={(e) => {
-        if (e) e.stopPropagation();
-      }}
-      onConfirm={async (e) => {
-        if (event) DataStore.delete(event);
-      }}
-    >
-      <Button
-        data-testid="delete"
-        icon={<DeleteOutlined />}
-        onClick={(e) => e.stopPropagation()}
-        shape="circle"
-      />
-    </Popconfirm>
-  );
-
-  const NewEventButton = () => (
-    <Button
-      data-testid="settings"
-      icon={<PlusOutlined />}
-      onClick={(e) => {
-        setIsEventSettingsVisible(true);
-        e.stopPropagation();
-      }}
-      type="primary"
-    >
-      {t('newEvent')}
-    </Button>
-  );
-
   const SettingsButton = () => (
     <Button
       data-testid="settings"
       icon={<SettingOutlined />}
-      shape="circle"
+      shape="round"
       onClick={(e) => {
         setIsEventSettingsVisible(true);
         e.stopPropagation();
@@ -90,16 +52,7 @@ const EventButtons = () => {
       role="button"
       tabIndex={0}
     >
-      {(() => {
-        if (!event) return <NewEventButton />;
-        return (
-          <>
-            <DeleteButton />
-            <div style={{ width: '12px' }} />
-            <SettingsButton />
-          </>
-        );
-      })()}
+      <SettingsButton />
       <SettingsDrawer />
     </div>
   );
