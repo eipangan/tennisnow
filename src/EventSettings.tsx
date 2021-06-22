@@ -11,7 +11,7 @@ import useEvent from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getNewPlayers, getPlayers, savePlayers } from './utils/EventUtils';
-import { shuffle } from './utils/Utils';
+import { shuffle, useLocalStorage } from './utils/Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -47,7 +47,9 @@ const EventSettings = (props: EventSettingsProps) => {
   const classes = useStyles({ theme });
 
   const { onClose } = props;
-  const { event } = useContext(EventContext);
+  const { event, getNextMatch } = useContext(EventContext);
+
+  const [eventID, setEventID] = useLocalStorage<string>('eventID', '');
   const { event: newEvent } = useEvent();
 
   const [players, setPlayers] = useState<Player[]>([]);
@@ -286,6 +288,7 @@ const EventSettings = (props: EventSettingsProps) => {
               await DataStore.save(okEvent);
               const okPlayers = getUpdatedPlayers(okEvent.id);
               savePlayers(okEvent.id, okPlayers || []);
+              setEventID(okEvent.id);
               onClose();
             }}
           >

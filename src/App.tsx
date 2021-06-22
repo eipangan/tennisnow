@@ -13,6 +13,7 @@ import EventPanel from './EventPanel';
 import useEvent from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { ThemeType } from './Theme';
+import { useLocalStorage } from './utils/Utils';
 
 // initialize dayjs
 dayjs.extend(updateLocale);
@@ -64,7 +65,9 @@ const App = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
-  const { event, getNextMatch } = useEvent();
+
+  const [eventID, setEventID] = useLocalStorage<string>('eventID', '');
+  const { event, getNextMatch } = useEvent(eventID);
 
   const AppCopyright = () => (
     <>
@@ -97,6 +100,25 @@ const App = () => {
     }
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
+
+  if (!eventID) {
+    return (
+      <div className={classes.app}>
+        <div className={classes.appHeader}>
+          <PageHeader
+            className={classes.appHeader}
+            title={(<AppTitle />)}
+            extra={[
+              <EventButtons key={0} />,
+            ]}
+          />
+        </div>
+        <div className={classes.appFooter}>
+          <AppCopyright />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <EventContext.Provider
