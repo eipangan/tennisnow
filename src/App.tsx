@@ -103,7 +103,7 @@ const App = () => {
       {' '}
       <CopyrightCircleOutlined />
       {' '}
-      2020
+      2020-2021
       {' '}
       <a href="https://twitter.com/tennisnownet">
         <Tag
