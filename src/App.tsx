@@ -48,10 +48,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   appHeader: {
     background: 'transparent',
   },
-  buttonsContainer: {
-    display: 'flex',
-    outline: 'none',
-  },
   appContent: {
     background: 'transparent',
     margin: '0px',
@@ -143,16 +139,7 @@ const App = () => {
             className={classes.appHeader}
             title={(<AppTitle />)}
             extra={[
-              <div
-                className={classes.buttonsContainer}
-                onClick={(e) => e.stopPropagation()}
-                onKeyDown={(e) => e.stopPropagation()}
-                role="button"
-                tabIndex={0}
-              >
-                <SettingsButton />
-                <SettingsDrawer />
-              </div>,
+              <SettingsButton />,
             ]}
           />
         </div>
@@ -165,6 +152,7 @@ const App = () => {
         )}
         <div className={classes.appFooter}>
           <AppCopyright />
+          <SettingsDrawer />
         </div>
       </div>
     </EventContext.Provider>
