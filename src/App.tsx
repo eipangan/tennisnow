@@ -1,15 +1,15 @@
-import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
-import { PageHeader, Tag } from 'antd';
+import { CopyrightCircleOutlined, SettingOutlined, TwitterOutlined } from '@ant-design/icons';
+import { Button, PageHeader, Tag } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import EventButtons from './EventButtons';
 import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
+import EventSettings from './EventSettings';
 import useEvent from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { ThemeType } from './Theme';
@@ -48,6 +48,10 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   appHeader: {
     background: 'transparent',
   },
+  buttonsContainer: {
+    display: 'flex',
+    outline: 'none',
+  },
   appContent: {
     background: 'transparent',
     margin: '0px',
@@ -68,6 +72,30 @@ const App = () => {
 
   const [eventID, setEventID] = useLocalStorage<string>('eventID', '');
   const { event, getNextMatch } = useEvent(eventID);
+
+  const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
+
+  const SettingsButton = () => (
+    <Button
+      data-testid="settings"
+      icon={<SettingOutlined />}
+      shape="round"
+      onClick={(e) => {
+        setIsEventSettingsVisible(true);
+        e.stopPropagation();
+      }}
+    />
+  );
+
+  const SettingsDrawer = () => {
+    if (!isEventSettingsVisible) return <></>;
+    return (
+      <EventSettings
+        key={event?.id}
+        onClose={() => setIsEventSettingsVisible(false)}
+      />
+    );
+  };
 
   const AppCopyright = () => (
     <>
@@ -115,7 +143,16 @@ const App = () => {
             className={classes.appHeader}
             title={(<AppTitle />)}
             extra={[
-              <EventButtons key={0} />,
+              <div
+                className={classes.buttonsContainer}
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                role="button"
+                tabIndex={0}
+              >
+                <SettingsButton />
+                <SettingsDrawer />
+              </div>,
             ]}
           />
         </div>
