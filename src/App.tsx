@@ -101,25 +101,6 @@ const App = () => {
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 
-  if (!eventID) {
-    return (
-      <div className={classes.app}>
-        <div className={classes.appHeader}>
-          <PageHeader
-            className={classes.appHeader}
-            title={(<AppTitle />)}
-            extra={[
-              <EventButtons key={0} />,
-            ]}
-          />
-        </div>
-        <div className={classes.appFooter}>
-          <AppCopyright />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <EventContext.Provider
       key={0}
@@ -138,9 +119,13 @@ const App = () => {
             ]}
           />
         </div>
-        <div className={classes.appContent}>
-          <EventPanel />
-        </div>
+        {eventID ? (
+          <div className={classes.appContent}>
+            <EventPanel />
+          </div>
+        ) : (
+          <></>
+        )}
         <div className={classes.appFooter}>
           <AppCopyright />
         </div>
