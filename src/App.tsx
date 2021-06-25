@@ -131,6 +131,7 @@ const App = () => {
         key={0}
         value={{
           event,
+          setEventID,
           getNextMatch,
         }}
       >

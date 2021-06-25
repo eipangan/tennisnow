@@ -6,6 +6,7 @@ import { Event, Match } from './models';
  */
 export interface EventContextType {
   event: Event,
+  setEventID: (id: string) => void,
   getNextMatch?: () => Promise<Match | undefined>,
 }
 
