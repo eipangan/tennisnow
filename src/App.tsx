@@ -126,14 +126,14 @@ const App = () => {
   }, [i18n.language, t]);
 
   return (
-    <EventContext.Provider
-      key={0}
-      value={{
-        event,
-        getNextMatch,
-      }}
-    >
-      <div className={classes.app}>
+    <div className={classes.app}>
+      <EventContext.Provider
+        key={0}
+        value={{
+          event,
+          getNextMatch,
+        }}
+      >
         <div className={classes.appHeader}>
           <PageHeader
             className={classes.appHeader}
@@ -154,8 +154,8 @@ const App = () => {
           <AppCopyright />
           <SettingsDrawer />
         </div>
-      </div>
-    </EventContext.Provider>
+      </EventContext.Provider>
+    </div>
   );
 };
 
