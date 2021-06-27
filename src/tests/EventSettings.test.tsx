@@ -20,16 +20,18 @@ describe('EventSettings', () => {
     }));
   });
 
-  it('renders without crashing when EventContext is availabe', async () => {
+  it('should render without crashing when EventContext is availabe', async () => {
     const { result } = renderHook(() => useEvent());
     const { current } = result;
     const { event } = current;
+
+    const setEventID = jest.fn((id: string) => { });
 
     await act(async () => {
       render(
         <ThemeProvider theme={theme}>
           <Suspense fallback={null}>
-            <EventContext.Provider value={{ event }}>
+            <EventContext.Provider value={{ event, setEventID }}>
               <EventSettings onClose={() => { }} />
             </EventContext.Provider>
           </Suspense>
@@ -52,7 +54,7 @@ describe('EventSettings', () => {
     fireEvent.click(screen.getByText('ok'));
   });
 
-  it('renders without crashing when EventContext is NOT availabe', async () => {
+  it('should render without crashing when EventContext is NOT availabe', async () => {
     await act(async () => {
       render(
         <ThemeProvider theme={theme}>
