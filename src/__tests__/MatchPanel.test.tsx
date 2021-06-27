@@ -1,4 +1,4 @@
-import { act, prettyDOM, render, screen } from '@testing-library/react';
+import { act, prettyDOM, render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
@@ -18,7 +18,7 @@ jest.mock('aws-amplify');
 
 describe('MatchPanel', () => {
   describe('invalid matchID', () => {
-    it('should render without crashing', () => {
+    it('should render without crashing', async () => {
       render(
         <ThemeProvider theme={theme}>
           <Suspense fallback={null}>
@@ -30,7 +30,7 @@ describe('MatchPanel', () => {
       expect(prettyDOM()).toBeDefined();
     });
 
-    it('should render without crashing', () => {
+    it('should render without crashing', async () => {
       render(
         <ThemeProvider theme={theme}>
           <Suspense fallback={null}>
@@ -55,7 +55,7 @@ describe('MatchPanel', () => {
       expect(players).toBeDefined();
     });
 
-    it('should render without crashing', () => {
+    it('should render without crashing', async () => {
       render(
         <ThemeProvider theme={theme}>
           <Suspense fallback={null}>

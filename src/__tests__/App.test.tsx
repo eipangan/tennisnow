@@ -13,14 +13,16 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-test('renders without crashing', async () => {
-  await act(async () => {
-    render(
-      <Suspense fallback="loading...">
-        <App />
-      </Suspense>,
-    );
-  });
+describe('App', () => {
+  it('should render without crashing', async () => {
+    await act(async () => {
+      render(
+        <Suspense fallback="loading...">
+          <App />
+        </Suspense>,
+      );
+    });
 
-  expect(screen.getByText('loading...')).toBeInTheDocument();
+    expect(screen.getByText('loading...')).toBeInTheDocument();
+  });
 });

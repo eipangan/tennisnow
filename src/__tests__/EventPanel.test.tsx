@@ -20,10 +20,12 @@ describe('EventPanel', () => {
     }));
   });
 
-  it('renders without with EventContext', async () => {
+  it('should render without with EventContext', async () => {
     const { result } = renderHook(() => useEvent());
     const { current } = result;
     const { event } = current;
+
+    const setEventID = jest.fn((id: string) => { });
 
     expect(event).toBeDefined();
 
@@ -31,7 +33,7 @@ describe('EventPanel', () => {
       render(
         <ThemeProvider theme={theme}>
           <Suspense fallback={null}>
-            <EventContext.Provider value={{ event }}>
+            <EventContext.Provider value={{ event, setEventID }}>
               <EventPanel />
             </EventContext.Provider>
           </Suspense>
@@ -42,7 +44,7 @@ describe('EventPanel', () => {
     expect(screen.getByText('player')).toBeInTheDocument();
   });
 
-  it('renders without without EventContext', async () => {
+  it('should render without without EventContext', async () => {
     await act(async () => {
       render(
         <ThemeProvider theme={theme}>
