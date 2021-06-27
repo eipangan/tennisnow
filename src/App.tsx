@@ -140,7 +140,7 @@ const App = () => {
             className={classes.appHeader}
             title={(<AppTitle />)}
             extra={[
-              <SettingsButton />,
+              <SettingsButton key={0} />,
             ]}
           />
         </div>
