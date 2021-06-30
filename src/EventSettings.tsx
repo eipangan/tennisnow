@@ -1,7 +1,6 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +9,7 @@ import { EventContext } from './EventContext';
 import useEvent from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getNewPlayers, getPlayers, savePlayers } from './utils/EventUtils';
+import { getNewPlayers, getPlayers, saveEvent, savePlayers } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
 
 // initialize styles
@@ -284,7 +283,7 @@ const EventSettings = (props: EventSettingsProps) => {
             type="primary"
             onClick={async () => {
               const okEvent = getUpdatedEvent();
-              await DataStore.save(okEvent);
+              saveEvent(okEvent);
               const okPlayers = getUpdatedPlayers(okEvent.id);
               savePlayers(okEvent.id, okPlayers || []);
               setEventID(okEvent.id);

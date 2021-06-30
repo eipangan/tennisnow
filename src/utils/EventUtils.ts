@@ -1,11 +1,20 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Player } from '../models';
+import { Event, Player } from '../models';
 import { deletePlayer, savePlayer } from './PlayerUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
+
+/**
+ * save event to datastore
+ *
+ * @param event
+ */
+export const saveEvent = async (event: Event) => {
+  await DataStore.save(event);
+};
 
 /**
  * get players from DataStore, given an eventID
