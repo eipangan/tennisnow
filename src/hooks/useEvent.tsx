@@ -24,7 +24,7 @@ const useEvent = (id?: string) => {
     return newEvent;
   });
 
-  // useEffect
+  // useEffect for "id"
   useEffect(() => {
     let mounted = true;
     const fetchEvent = async (myID: string) => {
@@ -33,7 +33,6 @@ const useEvent = (id?: string) => {
     };
 
     if (id) { fetchEvent(id); }
-
     return () => { mounted = false; };
   }, [id]);
 
