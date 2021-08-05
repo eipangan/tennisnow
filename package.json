@@ -6,7 +6,7 @@
     "@ant-design/icons": "^4.6.2",
     "@aws-amplify/datastore": "^3.1.2",
     "@types/jest": "^26.0.23",
-    "@types/node": "^15.12.5",
+    "@types/node": "^16.4.12",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
     "antd": "^4.16.6",
