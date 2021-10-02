@@ -12,7 +12,7 @@
     "antd": "^4.16.6",
     "aws-amplify": "^4.1.2",
     "dayjs": "^1.10.5",
-    "i18next": "^20.3.2",
+    "i18next": "^21.2.3",
     "i18next-browser-languagedetector": "^6.1.2",
     "i18next-xhr-backend": "^3.2.2",
     "rc-picker": "^2.5.14",
