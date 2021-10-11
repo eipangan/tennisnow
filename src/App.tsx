@@ -144,13 +144,9 @@ const App = () => {
             ]}
           />
         </div>
-        {eventID ? (
-          <div className={classes.appContent}>
-            <EventPanel />
-          </div>
-        ) : (
-          <></>
-        )}
+        <div className={classes.appContent}>
+          {eventID ? <EventPanel /> : <></>}
+        </div>
         <div className={classes.appFooter}>
           <AppCopyright />
           <SettingsDrawer />
