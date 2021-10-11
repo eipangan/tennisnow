@@ -83,16 +83,6 @@ const App = () => {
     />
   );
 
-  const SettingsDrawer = () => {
-    if (!isEventSettingsVisible) return <></>;
-    return (
-      <EventSettings
-        key={event?.id}
-        onClose={() => setIsEventSettingsVisible(false)}
-      />
-    );
-  };
-
   const AppCopyright = () => (
     <>
       {t('title')}
@@ -149,7 +139,12 @@ const App = () => {
         </div>
         <div className={classes.appFooter}>
           <AppCopyright />
-          <SettingsDrawer />
+          {isEventSettingsVisible || !eventID ? (
+            <EventSettings
+              key={event?.id}
+              onClose={() => setIsEventSettingsVisible(false)}
+            />
+          ) : <></>}
         </div>
       </EventContext.Provider>
     </div>
