@@ -33,7 +33,6 @@ describe('MatchesList', () => {
       );
     });
 
-    expect(screen.getByTestId('add-match')).toBeInTheDocument();
     expect(screen.getByTestId('more')).toBeInTheDocument();
     fireEvent.click(screen.getByTestId('more'));
   });
@@ -49,7 +48,6 @@ describe('MatchesList', () => {
       );
     });
 
-    expect(screen.getByTestId('add-match')).toBeInTheDocument();
     expect(screen.getByTestId('more')).toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId('more'));

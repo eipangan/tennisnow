@@ -5,6 +5,6 @@ describe('PlayerUtils', () => {
   it('should runs getPlayerName() as expected', async () => {
     const { result } = renderHook(() => useEvent());
     const { current } = result;
-    const { event, getNextMatch } = current;
+    const { event } = current;
   });
 });

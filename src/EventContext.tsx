@@ -1,5 +1,5 @@
 import React from 'react';
-import { Event, Match } from './models';
+import { Event } from './models';
 
 /**
  * EventContextType
@@ -7,7 +7,6 @@ import { Event, Match } from './models';
 export interface EventContextType {
   event: Event,
   setEventID: (id: string) => void,
-  getNextMatch?: () => Promise<Match | undefined>,
 }
 
 export const EventContext = React.createContext({} as EventContextType);

@@ -5,7 +5,7 @@ import useEvent from '../useEvent';
 it('should work with empty parameter', async () => {
   const { result } = renderHook(() => useEvent());
   const { current } = result;
-  const { event, getNextMatch } = current;
+  const { event } = current;
 
   // check event
   expect(event).toBeDefined();
@@ -30,7 +30,4 @@ it('should work with empty parameter', async () => {
   expect(event.matches).toBeUndefined();
   expect(event.players).toBeUndefined();
   expect(event.owner).toBeUndefined();
-
-  // check getNextMatch
-  expect(getNextMatch).toBeDefined();
 });

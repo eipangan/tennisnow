@@ -67,7 +67,7 @@ const App = () => {
   const classes = useStyles({ theme });
 
   const [eventID, setEventID] = useLocalStorage<string>('eventID', '');
-  const { event, getNextMatch } = useEvent(eventID);
+  const { event } = useEvent(eventID);
 
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
@@ -122,7 +122,6 @@ const App = () => {
         value={{
           event,
           setEventID,
-          getNextMatch,
         }}
       >
         <div className={classes.appHeader}>

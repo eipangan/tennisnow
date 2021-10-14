@@ -132,7 +132,7 @@ const useEvent = (id?: string) => {
     return nextMatch;
   };
 
-  return { event, getNextMatch };
+  return { event };
 };
 
 export default useEvent;

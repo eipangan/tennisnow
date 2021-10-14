@@ -1,4 +1,4 @@
-import { DeleteOutlined, MoreOutlined, PlusOutlined, UpOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MoreOutlined, UpOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import { EventContext } from './EventContext';
 import MatchPanel from './MatchPanel';
 import { Match } from './models';
 import { ThemeType } from './Theme';
-import { deleteMatch, saveMatch } from './utils/MatchUtils';
+import { deleteMatch } from './utils/MatchUtils';
 import { useLocalStorage } from './utils/Utils';
 
 // initialize styles
@@ -40,7 +40,7 @@ const MatchesList = () => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { event, getNextMatch } = useContext(EventContext);
+  const { event } = useContext(EventContext);
   const [matches, setMatches] = useState<Match[]>([]);
 
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
@@ -97,20 +97,6 @@ const MatchesList = () => {
           </div>
         ))}
       <div className={classes.buttonsPanel}>
-        <div style={{ height: '3px' }} />
-        <Button
-          data-testid="add-match"
-          icon={<PlusOutlined />}
-          onClick={async () => {
-            if (event && getNextMatch) {
-              const newMatch = await getNextMatch();
-              if (newMatch) {
-                saveMatch(newMatch);
-              }
-            }
-          }}
-          shape="round"
-        />
         <div style={{ height: '3px' }} />
         <Button
           data-testid="more"

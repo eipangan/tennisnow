@@ -46,7 +46,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const classes = useStyles({ theme });
 
   const { onClose } = props;
-  const { event, setEventID, getNextMatch } = useContext(EventContext);
+  const { event, setEventID } = useContext(EventContext);
 
   const { event: newEvent } = useEvent();
 
