@@ -45,7 +45,10 @@ const MatchesList = () => {
 
   const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
 
+  // whenever event change, re-fetch/re-initalize matches
   useEffect(() => {
+    if (!event) return () => { };
+
     let mounted = true;
     const fetchMatches = async (eid: string) => {
       const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
@@ -54,7 +57,6 @@ const MatchesList = () => {
       }
     };
 
-    if (!event) return () => { };
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))

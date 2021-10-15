@@ -52,6 +52,8 @@ const PlayersSummary = () => {
   }, [event]);
 
   useEffect(() => {
+    if (!event) return () => { };
+
     let mounted = true;
     const fetchPlayers = async (eid: string) => {
       const fetchedPlayers = await getPlayers(eid);
@@ -60,7 +62,6 @@ const PlayersSummary = () => {
       }
     };
 
-    if (!event) return () => { };
     fetchPlayers(event.id);
     const subscription = DataStore.observe(Player,
       (p) => p.eventID('eq', event.id))

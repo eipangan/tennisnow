@@ -97,6 +97,8 @@ const MatchPanel = (props: MatchPanelProps) => {
   }, [props]);
 
   useEffect(() => {
+    if (!match) return () => { };
+
     let mounted = true;
     const fetchPlayers = async (eid: string) => {
       const fetchedPlayers = await getPlayers(eid);
@@ -105,7 +107,6 @@ const MatchPanel = (props: MatchPanelProps) => {
       }
     };
 
-    if (!match) return () => { };
     fetchPlayers(match.eventID);
     return () => {
       mounted = false;
