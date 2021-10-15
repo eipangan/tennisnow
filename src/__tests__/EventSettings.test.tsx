@@ -41,15 +41,11 @@ describe('EventSettings', () => {
 
     expect(screen.getByText('eventSettings')).toBeInTheDocument();
     expect(screen.getByText('players')).toBeInTheDocument();
-    expect(screen.getByText('clearNames')).toBeInTheDocument();
-    expect(screen.getByText('randomizeOrder')).toBeInTheDocument();
     expect(screen.getByText('cancel')).toBeInTheDocument();
     expect(screen.getByText('ok')).toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId('minus'));
-
-    fireEvent.click(screen.getByText('clearNames'));
-    fireEvent.click(screen.getByText('randomizeOrder'));
+    fireEvent.click(screen.getByTestId('plus'));
     fireEvent.click(screen.getByText('cancel'));
     fireEvent.click(screen.getByText('ok'));
   });
@@ -67,15 +63,11 @@ describe('EventSettings', () => {
 
     expect(screen.getByText('eventSettings')).toBeInTheDocument();
     expect(screen.getByText('players')).toBeInTheDocument();
-    expect(screen.getByText('clearNames')).toBeInTheDocument();
-    expect(screen.getByText('randomizeOrder')).toBeInTheDocument();
     expect(screen.getByText('cancel')).toBeInTheDocument();
     expect(screen.getByText('ok')).toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId('minus'));
-
-    fireEvent.click(screen.getByText('clearNames'));
-    fireEvent.click(screen.getByText('randomizeOrder'));
+    fireEvent.click(screen.getByTestId('plus'));
     fireEvent.click(screen.getByText('cancel'));
     fireEvent.click(screen.getByText('ok'));
   });
