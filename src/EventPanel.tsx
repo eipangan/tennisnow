@@ -31,13 +31,12 @@ const EventPanel = () => {
   const classes = useStyles({ theme });
 
   const { event } = useContext(EventContext);
-  const EventMatchesList = () => <MatchesList />;
 
   if (!event) return <></>;
   return (
     <div className={classes.eventPanel}>
       <div className={classes.eventMatches}>
-        <EventMatchesList />
+        <MatchesList />
       </div>
       <div className={classes.eventPlayersSummary}>
         <PlayersSummary />
