@@ -45,9 +45,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     touchAction: 'manipulation',
     width: '100%',
   },
-  appHeader: {
-    background: 'transparent',
-  },
   appContent: {
     background: 'transparent',
     margin: '0px',
@@ -84,15 +81,12 @@ const App = () => {
   );
 
   const AppHeader = () => (
-    <div className={classes.appHeader}>
-      <PageHeader
-        className={classes.appHeader}
-        title={(<AppTitle />)}
-        extra={[
-          <SettingsButton key={0} />,
-        ]}
-      />
-    </div>
+    <PageHeader
+      title={(<AppTitle />)}
+      extra={[
+        <SettingsButton key={0} />,
+      ]}
+    />
   );
 
   const AppFooter = () => (
@@ -111,12 +105,6 @@ const App = () => {
           @tennisnownet
         </Tag>
       </a>
-      {isEventSettingsVisible || !eventID ? (
-        <EventSettings
-          key={event?.id}
-          onClose={() => setIsEventSettingsVisible(false)}
-        />
-      ) : <></>}
     </div>
   );
 
@@ -144,7 +132,15 @@ const App = () => {
       >
         <AppHeader />
         <div className={classes.appContent}>
-          {eventID ? <EventPanel /> : <></>}
+          {isEventSettingsVisible || !eventID ? (
+            <EventSettings
+              key={event?.id}
+              onClose={() => setIsEventSettingsVisible(false)}
+            />
+          ) : <></>}
+          {eventID ? (
+            <EventPanel />
+          ) : <></>}
         </div>
         <AppFooter />
       </EventContext.Provider>
