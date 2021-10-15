@@ -64,7 +64,9 @@ const EventSettings = (props: EventSettingsProps) => {
   const playerPrefix = 'player';
 
   /**
-   * get updated Event based on data in the form
+   * gets updated Event
+   *
+   * @returns updated Event based on the data in the form
    */
   const getUpdatedEvent = (): Event => Event.copyOf(event || newEvent, (updated) => {
     // update date and time
@@ -85,12 +87,12 @@ const EventSettings = (props: EventSettingsProps) => {
   });
 
   /**
-   * get updated players
+   * gets updated Players
    *
-   * @param eventID
+   * @param myEventID event ID
+   * @returns updated players based on the data in the form
    */
   const getUpdatedPlayers = (myEventID: string): Player[] | undefined => {
-    // keep default or old names
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
       const newPlayerName = form.getFieldValue(`${playerPrefix}${p}`);
@@ -101,16 +103,14 @@ const EventSettings = (props: EventSettingsProps) => {
       }
     }
 
-    // return update players
     const updatedPlayers = getNewPlayers(myEventID, numPlayers, oldPlayerNames);
     return updatedPlayers;
   };
 
-  // whenever event changes
+  // whenever event/form changes, initialize screen
   useEffect(() => {
     const myEvent = event || newEvent;
 
-    // initialize screen
     form.setFieldsValue({
       date: dayjs(myEvent.date),
       time: dayjs(myEvent.date).format('HHmm'),
@@ -118,9 +118,10 @@ const EventSettings = (props: EventSettingsProps) => {
     });
   }, [event, newEvent, form]);
 
-  // whenever event changes
+  // whenever event changes, re-fetch players
   useEffect(() => {
     if (!event) return () => { };
+
     const fetchPlayers = async () => {
       let fetchedPlayers = await getPlayers(event.id);
       if (fetchedPlayers.length < minNumPlayers) {
@@ -131,14 +132,11 @@ const EventSettings = (props: EventSettingsProps) => {
       setNumPlayers(fetchedPlayers.length);
     };
 
-    // initialize players
     fetchPlayers();
     return () => { };
   }, [event]);
 
-  /**
-   * whenever players change
-   */
+  // whenever players change, update player names
   useEffect(() => {
     if (players) {
       players.forEach((player, index) => {
