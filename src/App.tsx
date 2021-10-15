@@ -83,8 +83,20 @@ const App = () => {
     />
   );
 
-  const AppCopyright = () => (
-    <>
+  const AppHeader = () => (
+    <div className={classes.appHeader}>
+      <PageHeader
+        className={classes.appHeader}
+        title={(<AppTitle />)}
+        extra={[
+          <SettingsButton key={0} />,
+        ]}
+      />
+    </div>
+  );
+
+  const AppFooter = () => (
+    <div className={classes.appFooter}>
       {t('title')}
       {' '}
       <CopyrightCircleOutlined />
@@ -99,7 +111,13 @@ const App = () => {
           @tennisnownet
         </Tag>
       </a>
-    </>
+      {isEventSettingsVisible || !eventID ? (
+        <EventSettings
+          key={event?.id}
+          onClose={() => setIsEventSettingsVisible(false)}
+        />
+      ) : <></>}
+    </div>
   );
 
   useEffect(() => {
@@ -124,27 +142,11 @@ const App = () => {
           setEventID,
         }}
       >
-        <div className={classes.appHeader}>
-          <PageHeader
-            className={classes.appHeader}
-            title={(<AppTitle />)}
-            extra={[
-              <SettingsButton key={0} />,
-            ]}
-          />
-        </div>
+        <AppHeader />
         <div className={classes.appContent}>
           {eventID ? <EventPanel /> : <></>}
         </div>
-        <div className={classes.appFooter}>
-          <AppCopyright />
-          {isEventSettingsVisible || !eventID ? (
-            <EventSettings
-              key={event?.id}
-              onClose={() => setIsEventSettingsVisible(false)}
-            />
-          ) : <></>}
-        </div>
+        <AppFooter />
       </EventContext.Provider>
     </div>
   );
