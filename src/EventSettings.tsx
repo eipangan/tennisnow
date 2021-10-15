@@ -175,7 +175,7 @@ const EventSettings = (props: EventSettingsProps) => {
           </Item>
         </div>
         <div className={classes.eventSettingsRow}>
-          <Collapse defaultActiveKey="players" style={{ width: 270 }}>
+          <Collapse style={{ width: 270 }}>
             <Panel
               className={classes.eventSettingsPlayers}
               collapsible="disabled"
