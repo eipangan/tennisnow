@@ -107,7 +107,7 @@ const EventSettings = (props: EventSettingsProps) => {
     return updatedPlayers;
   };
 
-  // whenever event/form changes, initialize screen
+  // initialize screen (called only once)
   useEffect(() => {
     const myEvent = event || newEvent;
 
@@ -118,7 +118,7 @@ const EventSettings = (props: EventSettingsProps) => {
     });
   }, [event, newEvent, form]);
 
-  // whenever event changes, re-fetch players
+  // fetch players (called only once)
   useEffect(() => {
     if (!event) return () => { };
 
