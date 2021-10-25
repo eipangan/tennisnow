@@ -9,7 +9,7 @@ import { EventContext } from './EventContext';
 import useEvent from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getNewPlayers, getPlayers, saveEvent, savePlayers } from './utils/EventUtils';
+import { getNewPlayers, getPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
 
 // initialize styles
@@ -283,6 +283,7 @@ const EventSettings = (props: EventSettingsProps) => {
               saveEvent(okEvent);
               const okPlayers = getUpdatedPlayers(okEvent.id);
               savePlayers(okEvent.id, okPlayers || []);
+              saveMatches(okEvent.id);
               setEventID(okEvent.id);
               onClose();
             }}
