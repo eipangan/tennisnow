@@ -1,7 +1,8 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event, Player } from '../models';
+import { Event, Match, Player } from '../models';
+import { deleteMatch } from './MatchUtils';
 import { deletePlayer, savePlayer } from './PlayerUtils';
 
 // initialize dayjs
@@ -75,6 +76,19 @@ export const savePlayers = async (
     toRemovePlayers.forEach((player) => deletePlayer(player));
   }
 
-  // save new players
+  // add new players
   players.forEach((player) => savePlayer(player));
+};
+
+export const saveMatches = async (
+  eventID: string,
+): Promise<void> => {
+  const currentMatches = await DataStore.query(Match, (m) => m.eventID('eq', eventID));
+
+  // remove old matches
+  if (currentMatches && Array.isArray(currentMatches)) {
+    currentMatches.forEach((match) => deleteMatch(match));
+  }
+
+  // add new matches
 };
