@@ -43,8 +43,6 @@ const MatchesPanel = () => {
   const { event } = useContext(EventContext);
   const [matches, setMatches] = useState<Match[]>([]);
 
-  const [isDeleteVisible, setIsDeleteVisible] = useLocalStorage<boolean>('isDeleteVisible', false);
-
   const MatchesList = () => (
     <>
       {
@@ -56,39 +54,10 @@ const MatchesPanel = () => {
               key={index.toString()}
             >
               <MatchPanel matchID={match.id} />
-              {(() => {
-                if (!isDeleteVisible) return <></>;
-                return (
-                  <>
-                    <div style={{ height: '3px' }} />
-                    <Button
-                      data-testid="delete-match"
-                      icon={<DeleteOutlined />}
-                      shape="circle"
-                      style={{ background: '#ffffff50', color: '#ff696996' }}
-                      onClick={(e) => {
-                        deleteMatch(match);
-                      }}
-                    />
-                  </>
-                );
-              })()}
             </div>
           ))
       }
     </>
-  );
-
-  const ButtonsPanel = () => (
-    <div className={classes.buttonsPanel}>
-      <div style={{ height: '3px' }} />
-      <Button
-        data-testid="more"
-        icon={isDeleteVisible ? <UpOutlined /> : <MoreOutlined />}
-        onClick={() => setIsDeleteVisible(!isDeleteVisible)}
-        shape="round"
-      />
-    </div>
   );
 
   // whenever event change, re-fetch/re-initalize matches
@@ -118,7 +87,6 @@ const MatchesPanel = () => {
   return (
     <div className={classes.matchesPanel}>
       <MatchesList />
-      <ButtonsPanel />
     </div>
   );
 };
