@@ -2,7 +2,7 @@ import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import { Event, Match, Player } from '../models';
-import { deleteMatch } from './MatchUtils';
+import { deleteMatch, saveMatch } from './MatchUtils';
 import { deletePlayer, savePlayer } from './PlayerUtils';
 
 // initialize dayjs
@@ -90,5 +90,28 @@ export const saveMatches = async (
     currentMatches.forEach((match) => deleteMatch(match));
   }
 
+  const singlesRoundRobin6 = [
+    [0, 1],
+    [2, 3],
+    [4, 5],
+    [0, 3],
+    [1, 5],
+    [2, 4],
+    [0, 5],
+    [3, 4],
+    [1, 2],
+    [0, 4],
+    [5, 2],
+    [3, 1],
+  ];
+
   // add new matches
+  if (eventID && eventID.length > 0) {
+    singlesRoundRobin6.forEach((i) => {
+      saveMatch(new Match({
+        eventID,
+        playerIndices: i,
+      }));
+    });
+  }
 };
