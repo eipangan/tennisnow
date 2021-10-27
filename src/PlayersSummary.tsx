@@ -31,6 +31,9 @@ const PlayersSummary = () => {
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
+    if (!event) return () => { };
+
+    // fetch matches when event changes
     let mounted = true;
     const fetchMatches = async (eid: string) => {
       const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
@@ -39,18 +42,20 @@ const PlayersSummary = () => {
       }
     };
 
-    if (!event) return () => { };
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
-      .subscribe(() => fetchMatches(event.id));
+      .subscribe(() => {
+        fetchMatches(event.id);
+      });
+
     return () => {
       mounted = false;
       subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
+  // fetch players when event and/or matches changes
   useEffect(() => {
     if (!event) return () => { };
 
@@ -65,13 +70,15 @@ const PlayersSummary = () => {
     fetchPlayers(event.id);
     const subscription = DataStore.observe(Player,
       (p) => p.eventID('eq', event.id))
-      .subscribe(() => fetchPlayers(event.id));
+      .subscribe(() => {
+        fetchPlayers(event.id);
+      });
+
     return () => {
       mounted = false;
       subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matches]);
+  }, [event]);
 
   interface PlayerStatusType {
     playerName: string;
@@ -83,8 +90,8 @@ const PlayersSummary = () => {
   const [datasource, setDatasource] = useState<PlayerStatusType[]>([]);
   const [columns, setColumns] = useState<ColumnProps<PlayerStatusType>[]>();
 
+  // recalculate statistics if players changes
   useEffect(() => {
-    // set datasource if players exist
     if (players) {
       const myDatasource: PlayerStatusType[] = [];
       players.forEach((player, index) => {
@@ -193,7 +200,7 @@ const PlayersSummary = () => {
       setColumns(myColumns);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [players]);
+  }, [event, matches, players]);
 
   return (
     <Table
