@@ -77,6 +77,7 @@ const MatchPanel = (props: MatchPanelProps) => {
   const [middleText, setMiddleText] = useState<any>();
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
+  // initialize match only once
   useEffect(() => {
     let mounted = true;
     const fetchMatch = async (eid: string) => {
@@ -96,6 +97,7 @@ const MatchPanel = (props: MatchPanelProps) => {
     };
   }, [props]);
 
+  // initialize players only once
   useEffect(() => {
     if (!match) return () => { };
 
@@ -114,6 +116,7 @@ const MatchPanel = (props: MatchPanelProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match?.eventID]);
 
+  // update match when status changes
   useEffect(() => {
     // update screen
     switch (status) {
@@ -147,7 +150,7 @@ const MatchPanel = (props: MatchPanelProps) => {
     }
 
     // update datastore
-    if (match && match.status !== status) {
+    if (match) {
       const updatedMatch = Match.copyOf(match, (updated) => {
         updated.status = status;
       });
