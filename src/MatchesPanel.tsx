@@ -1,5 +1,3 @@
-import { DeleteOutlined, MoreOutlined, UpOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
@@ -8,8 +6,6 @@ import { EventContext } from './EventContext';
 import MatchPanel from './MatchPanel';
 import { Match } from './models';
 import { ThemeType } from './Theme';
-import { deleteMatch } from './utils/MatchUtils';
-import { useLocalStorage } from './utils/Utils';
 
 // initialize styles
 const useStyles = createUseStyles((theme: ThemeType) => ({
@@ -75,13 +71,14 @@ const MatchesPanel = () => {
     fetchMatches(event.id);
     const subscription = DataStore.observe(Match,
       (m) => m.eventID('eq', event.id))
-      .subscribe(() => fetchMatches(event.id));
+      .subscribe(() => {
+        fetchMatches(event.id);
+      });
 
     return () => {
       mounted = false;
       subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   return (
