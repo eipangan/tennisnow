@@ -113,8 +113,7 @@ const MatchPanel = (props: MatchPanelProps) => {
     return () => {
       mounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match?.eventID]);
+  }, [match]);
 
   // update match when status changes
   useEffect(() => {
@@ -157,9 +156,7 @@ const MatchPanel = (props: MatchPanelProps) => {
 
       saveMatch(updatedMatch);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, match, status, t]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <></>;
 
