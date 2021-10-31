@@ -33,6 +33,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  */
 type EventSettingsProps = {
   onClose: () => void,
+  setEventID: (eventID: string) => void,
 }
 
 /**
@@ -45,8 +46,8 @@ const EventSettings = (props: EventSettingsProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { onClose } = props;
-  const { event, setEventID } = useContext(EventContext);
+  const { onClose, setEventID } = props;
+  const { event } = useContext(EventContext);
 
   const { event: newEvent } = useEvent();
 

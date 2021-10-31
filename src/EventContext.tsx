@@ -6,7 +6,6 @@ import { Event } from './models';
  */
 export interface EventContextType {
   event: Event,
-  setEventID: (id: string) => void,
 }
 
 export const EventContext = React.createContext({} as EventContextType);

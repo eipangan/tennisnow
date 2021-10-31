@@ -127,15 +127,15 @@ const App = () => {
         key={0}
         value={{
           event,
-          setEventID,
         }}
       >
         <AppHeader />
         <div className={classes.appContent}>
           {isEventSettingsVisible || !eventID ? (
             <EventSettings
-              key={event?.id}
+              key={eventID}
               onClose={() => setIsEventSettingsVisible(false)}
+              setEventID={setEventID}
             />
           ) : <></>}
           {eventID ? (
