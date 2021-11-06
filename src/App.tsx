@@ -1,5 +1,6 @@
 import { CopyrightCircleOutlined, SettingOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Button, PageHeader, Tag } from 'antd';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -7,13 +8,10 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { EventContext } from './EventContext';
-import EventPanel from './EventPanel';
 import EventSettings from './EventSettings';
-import useEvent from './hooks/useEvent';
 import { ReactComponent as AppTitle } from './images/title.svg';
+import { Event } from './models';
 import { ThemeType } from './Theme';
-import { useLocalStorage } from './utils/Utils';
 
 // initialize dayjs
 dayjs.extend(updateLocale);
@@ -63,31 +61,8 @@ const App = () => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const [eventID, setEventID] = useLocalStorage<string>('eventID', '');
-  const { event } = useEvent(eventID);
-
+  const [event, setEvent] = useState<Event>();
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
-
-  const SettingsButton = () => (
-    <Button
-      data-testid="settings"
-      icon={<SettingOutlined />}
-      shape="round"
-      onClick={(e) => {
-        setIsEventSettingsVisible(true);
-        e.stopPropagation();
-      }}
-    />
-  );
-
-  const AppHeader = () => (
-    <PageHeader
-      title={(<AppTitle />)}
-      extra={[
-        <SettingsButton key={0} />,
-      ]}
-    />
-  );
 
   const AppFooter = () => (
     <div className={classes.appFooter}>
@@ -121,29 +96,55 @@ const App = () => {
     document.title = `${t('title')} | ${t('slogan')}`;
   }, [i18n.language, t]);
 
+  useEffect(() => {
+    if (event) {
+      localStorage.setItem('eventID', event.id);
+    }
+  }, [event]);
+
+  useEffect(() => {
+    const eventID = localStorage.getItem('eventID');
+    if (eventID) {
+      const fetchEvent = async (myID: string) => {
+        const fetchedEvent = await DataStore.query(Event, myID);
+        if (fetchedEvent) {
+          setEvent(fetchedEvent);
+        } else {
+          setIsEventSettingsVisible(true);
+        }
+      };
+      fetchEvent(eventID);
+    } else {
+      setIsEventSettingsVisible(true);
+    }
+  }, []);
+
   return (
     <div className={classes.app}>
-      <EventContext.Provider
-        key={0}
-        value={{
-          event,
-        }}
-      >
-        <AppHeader />
-        <div className={classes.appContent}>
-          {isEventSettingsVisible || !eventID ? (
-            <EventSettings
-              key={eventID}
-              onClose={() => setIsEventSettingsVisible(false)}
-              setEventID={setEventID}
-            />
-          ) : <></>}
-          {eventID ? (
-            <EventPanel />
-          ) : <></>}
-        </div>
-        <AppFooter />
-      </EventContext.Provider>
+      <PageHeader
+        title={(<AppTitle />)}
+        extra={[
+          <Button
+            data-testid="settings"
+            icon={<SettingOutlined />}
+            shape="round"
+            onClick={(e) => {
+              setIsEventSettingsVisible(true);
+              e.stopPropagation();
+            }}
+          />,
+        ]}
+      />
+      <div className={classes.appContent}>
+        {isEventSettingsVisible ? (
+          <EventSettings
+            event={event}
+            setEvent={setEvent}
+            onClose={() => setIsEventSettingsVisible(false)}
+          />
+        ) : <></>}
+      </div>
+      <AppFooter />
     </div>
   );
 };
