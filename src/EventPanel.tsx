@@ -1,24 +1,22 @@
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import React, { useContext } from 'react';
-import { EventContext } from './EventContext';
+import React from 'react';
 import MatchesPanel from './MatchesPanel';
-import PlayersSummary from './PlayersSummary';
+import { Event } from './models';
 
 // initialize dayjs
 dayjs.extend(calendar);
 
-/**
- * EventPanel
- */
-const EventPanel = () => {
-  const { event } = useContext(EventContext);
+type EventPanelProps = {
+  event: Event | undefined,
+}
 
-  if (!event) return <></>;
+const EventPanel = (props: EventPanelProps) => {
+  const { event } = props;
+
   return (
     <div>
-      <MatchesPanel />
-      <PlayersSummary />
+      <MatchesPanel event={event} />
     </div>
   );
 };

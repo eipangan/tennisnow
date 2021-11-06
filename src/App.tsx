@@ -8,6 +8,7 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import EventPanel from './EventPanel';
 import EventSettings from './EventSettings';
 import { ReactComponent as AppTitle } from './images/title.svg';
 import { Event } from './models';
@@ -143,6 +144,7 @@ const App = () => {
             onClose={() => setIsEventSettingsVisible(false)}
           />
         ) : <></>}
+        <EventPanel event={event} />
       </div>
       <AppFooter />
     </div>

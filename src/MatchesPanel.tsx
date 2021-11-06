@@ -1,10 +1,9 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
-import { EventContext } from './EventContext';
 import MatchPanel from './MatchPanel';
-import { Match } from './models';
+import { Event, Match } from './models';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -27,16 +26,15 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-/**
- * MatchesPanel Component
- *
- * @param props
- */
-const MatchesPanel = () => {
+type MatchesPanelProps = {
+  event: Event | undefined,
+}
+
+const MatchesPanel = (props: MatchesPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { event } = useContext(EventContext);
+  const { event } = props;
   const [matches, setMatches] = useState<Match[]>([]);
 
   const MatchesList = () => (
