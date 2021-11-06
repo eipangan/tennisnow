@@ -1,4 +1,3 @@
-import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -51,24 +50,17 @@ const useStyles = createUseStyles((theme: ThemeType) => {
   });
 });
 
-/**
- * MatchPanelProps
- */
 type MatchPanelProps = {
-  matchID: string;
+  match: Match;
 };
 
-/**
- * MatchPanel
- *
- * @param props
- */
 const MatchPanel = (props: MatchPanelProps) => {
   const { t } = useTranslation();
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const [match, setMatch] = useState<Match>();
+  const { match } = props;
+
   const [players, setPlayers] = useState<Player[]>([]);
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
 
@@ -76,26 +68,6 @@ const MatchPanel = (props: MatchPanelProps) => {
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
   const [middleText, setMiddleText] = useState<any>();
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
-
-  // initialize match only once
-  useEffect(() => {
-    let mounted = true;
-    const fetchMatch = async (eid: string) => {
-      const fetchedMatch = await DataStore.query(Match, eid);
-      if (mounted) {
-        setMatch(fetchedMatch);
-
-        if (fetchedMatch) {
-          setStatus(fetchedMatch.status);
-        }
-      }
-    };
-
-    fetchMatch(props.matchID);
-    return () => {
-      mounted = false;
-    };
-  }, [props]);
 
   // initialize players only once
   useEffect(() => {

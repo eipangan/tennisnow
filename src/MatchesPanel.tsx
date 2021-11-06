@@ -1,6 +1,5 @@
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import MatchPanel from './MatchPanel';
 import { Event, Match } from './models';
@@ -28,14 +27,14 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 
 type MatchesPanelProps = {
   event: Event | undefined,
+  matches: Match[],
 }
 
 const MatchesPanel = (props: MatchesPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { event } = props;
-  const [matches, setMatches] = useState<Match[]>([]);
+  const { event, matches } = props;
 
   const MatchesList = () => (
     <>
@@ -47,37 +46,12 @@ const MatchesPanel = (props: MatchesPanelProps) => {
               className={classes.matchPanel}
               key={index.toString()}
             >
-              <MatchPanel matchID={match.id} />
+              <MatchPanel match={match} />
             </div>
           ))
       }
     </>
   );
-
-  // whenever event change, re-fetch/re-initalize matches
-  useEffect(() => {
-    if (!event) return () => { };
-
-    let mounted = true;
-    const fetchMatches = async (eid: string) => {
-      const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
-      if (mounted) {
-        setMatches(fetchedMatches);
-      }
-    };
-
-    fetchMatches(event.id);
-    const subscription = DataStore.observe(Match,
-      (m) => m.eventID('eq', event.id))
-      .subscribe(() => {
-        fetchMatches(event.id);
-      });
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, [event]);
 
   return (
     <div className={classes.matchesPanel}>
