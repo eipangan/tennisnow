@@ -4,7 +4,6 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from './models';
 import PlayerPanel from './PlayerPanel';
 import { ThemeType } from './Theme';
-import { getPlayers } from './utils/EventUtils';
 import { saveMatch } from './utils/MatchUtils';
 
 // initialize styles
@@ -52,6 +51,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 
 type MatchPanelProps = {
   match: Match;
+  players: Player[];
 };
 
 const MatchPanel = (props: MatchPanelProps) => {
@@ -59,33 +59,14 @@ const MatchPanel = (props: MatchPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { match } = props;
+  const { match, players } = props;
 
-  const [players, setPlayers] = useState<Player[]>([]);
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
   const [middleText, setMiddleText] = useState<any>();
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
-
-  // initialize players only once
-  useEffect(() => {
-    if (!match) return () => { };
-
-    let mounted = true;
-    const fetchPlayers = async (eid: string) => {
-      const fetchedPlayers = await getPlayers(eid);
-      if (mounted) {
-        setPlayers(fetchedPlayers);
-      }
-    };
-
-    fetchPlayers(match.eventID);
-    return () => {
-      mounted = false;
-    };
-  }, [match]);
 
   // update match when status changes
   useEffect(() => {
