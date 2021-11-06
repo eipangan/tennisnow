@@ -56,7 +56,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const playerPrefix = 'player';
 
   const getUpdatedEvent = (): Event => Event.copyOf(event || newEvent, (updated) => {
-    // update date and time
+    // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
     updated.date = dayjs()
