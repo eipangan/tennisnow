@@ -27,20 +27,12 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-/**
- * EventSettingsProps
- */
 type EventSettingsProps = {
   event: Event | undefined,
   setEvent: (event: Event) => void,
   onClose: () => void,
 }
 
-/**
- * EventSettings
- *
- * @param props
- */
 const EventSettings = (props: EventSettingsProps) => {
   const { t } = useTranslation();
   const theme = useTheme<ThemeType>();
@@ -63,11 +55,6 @@ const EventSettings = (props: EventSettingsProps) => {
   const minNumPlayers = 2;
   const playerPrefix = 'player';
 
-  /**
-   * gets updated Event
-   *
-   * @returns updated Event based on the data in the form
-   */
   const getUpdatedEvent = (): Event => Event.copyOf(event || newEvent, (updated) => {
     // update date and time
     const date = form.getFieldValue('date');
@@ -86,12 +73,6 @@ const EventSettings = (props: EventSettingsProps) => {
     updated.summary = t('eventSummary', { eventTypeStr, numPlayers });
   });
 
-  /**
-   * gets updated Players
-   *
-   * @param myEventID event ID
-   * @returns updated players based on the data in the form
-   */
   const getUpdatedPlayers = (myEventID: string): Player[] | undefined => {
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
