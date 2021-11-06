@@ -16,11 +16,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-/**
- * PlayersSummary
- *
- * @param props
- */
 const PlayersSummary = () => {
   const { t } = useTranslation();
   const theme = useTheme<ThemeType>();
