@@ -5,10 +5,9 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import useEvent from './hooks/useEvent';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getNewPlayers, getPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
+import { getNewPlayers, getPlayers, saveEvent, saveMatches } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
 
 // initialize styles
@@ -40,7 +39,11 @@ const EventSettings = (props: EventSettingsProps) => {
 
   const { event, setEvent, onClose } = props;
 
-  const { event: newEvent } = useEvent();
+  const [myEvent, setMyEvent] = useState<Event>(event || new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.SINGLES_ROUND_ROBIN,
+  }));
 
   const [players, setPlayers] = useState<Player[]>([]);
 
@@ -55,7 +58,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const minNumPlayers = 2;
   const playerPrefix = 'player';
 
-  const getUpdatedEvent = (): Event => Event.copyOf(event || newEvent, (updated) => {
+  const getUpdatedEvent = (): Event => Event.copyOf(myEvent, (updated) => {
     // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
@@ -90,29 +93,25 @@ const EventSettings = (props: EventSettingsProps) => {
 
   // initialize screen (called only once)
   useEffect(() => {
-    const myEvent = event || newEvent;
     form.setFieldsValue({
       date: dayjs(myEvent.date),
       time: dayjs(myEvent.date).format('HHmm'),
       type: myEvent.type,
     });
 
-    if (event) {
-      const fetchPlayers = async () => {
-        let fetchedPlayers = await getPlayers(event.id);
-        if (fetchedPlayers.length < minNumPlayers) {
-          fetchedPlayers = getNewPlayers(event.id);
-        }
+    const fetchPlayers = async () => {
+      let fetchedPlayers = await getPlayers(myEvent.id);
+      if (fetchedPlayers.length < minNumPlayers) {
+        fetchedPlayers = getNewPlayers(myEvent.id);
+      }
 
-        setPlayers(fetchedPlayers);
-        setNumPlayers(fetchedPlayers.length);
-      };
+      setPlayers(fetchedPlayers);
+      setNumPlayers(fetchedPlayers.length);
+    };
 
-      fetchPlayers();
-    }
-
+    fetchPlayers();
     return () => { };
-  }, [event, newEvent, form]);
+  }, [myEvent, form]);
 
   // whenever players change, update player names
   useEffect(() => {
@@ -259,8 +258,8 @@ const EventSettings = (props: EventSettingsProps) => {
             onClick={async () => {
               const okEvent = getUpdatedEvent();
               saveEvent(okEvent);
-              const okPlayers = getUpdatedPlayers(okEvent.id);
-              savePlayers(okEvent.id, okPlayers || []);
+              // const okPlayers = getUpdatedPlayers(okEvent.id);
+              // savePlayers(okEvent.id, okPlayers || []);
               saveMatches(okEvent.id);
               setEvent(okEvent);
               onClose();

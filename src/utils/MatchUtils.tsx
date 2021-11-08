@@ -2,15 +2,6 @@ import { DataStore } from 'aws-amplify';
 import { Match } from '../models';
 
 /**
- * delete match
- *
- * @param match
- */
-export const deleteMatch = async (match: Match) => {
-  await DataStore.delete(match);
-};
-
-/**
  * save match. remove duplicate playerIndices
  *
  * @param match
@@ -24,3 +15,5 @@ export const saveMatch = async (match: Match) => {
     }));
   }
 };
+
+export default saveMatch;

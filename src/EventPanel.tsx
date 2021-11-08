@@ -31,15 +31,8 @@ const EventPanel = (props: EventPanelProps) => {
     };
 
     fetchMatches(event.id);
-    const subscription = DataStore.observe(Match,
-      (m) => m.eventID('eq', event.id))
-      .subscribe(() => {
-        fetchMatches(event.id);
-      });
-
     return () => {
       mounted = false;
-      subscription.unsubscribe();
     };
   }, [event]);
 
