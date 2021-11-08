@@ -11,11 +11,6 @@ import { theme } from './Theme';
 const App = React.lazy(() => import('./App'));
 
 // initialize amplify
-if (awsconfig.oauth.domain.includes('master')) {
-  awsconfig.oauth.domain = 'auth.tennisnow.net';
-}
-awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
-awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 Amplify.configure(awsconfig);
 
 // render App

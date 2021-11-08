@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import MatchPanel from './MatchPanel';
-import { Event, Match, Player } from './models';
+import { Match } from './models';
 import { ThemeType } from './Theme';
 
 // initialize styles
@@ -26,16 +26,14 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 type MatchesPanelProps = {
-  event: Event | undefined,
   matches: Match[],
-  players: Player[],
 }
 
 const MatchesPanel = (props: MatchesPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { event, matches, players } = props;
+  const { matches } = props;
 
   const MatchesList = () => (
     <>
@@ -49,7 +47,6 @@ const MatchesPanel = (props: MatchesPanelProps) => {
             >
               <MatchPanel
                 match={match}
-                players={players}
               />
             </div>
           ))

@@ -10,17 +10,6 @@
       "StackName": "amplify-tennisnow-develop-213320",
       "StackId": "arn:aws:cloudformation:us-east-1:651151937914:stack/amplify-tennisnow-develop-213320/760f2da0-92ba-11ea-927b-0e4a688d3275",
       "AmplifyAppId": "d3rzxqf6swku6l"
-    },
-    "categories": {
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d3rzxqf6swku6l",
-          "type": "cicd"
-        }
-      },
-      "auth": {
-        "tennisnow3d0e3eb8": {}
-      }
     }
   },
   "master": {

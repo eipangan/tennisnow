@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Match, MatchStatus, Player } from './models';
-import PlayerPanel from './PlayerPanel';
+import { Match, MatchStatus } from './models';
 import { ThemeType } from './Theme';
 import { saveMatch } from './utils/MatchUtils';
 
@@ -51,7 +50,6 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 
 type MatchPanelProps = {
   match: Match;
-  players: Player[];
 };
 
 const MatchPanel = (props: MatchPanelProps) => {
@@ -59,7 +57,7 @@ const MatchPanel = (props: MatchPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { match, players } = props;
+  const { match } = props;
 
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
 
@@ -111,10 +109,7 @@ const MatchPanel = (props: MatchPanelProps) => {
     }
   }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, match, status, t]);
 
-  if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <></>;
-
-  const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
-  const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
+  if (!match || !match.playerIndices || match.playerIndices.length < 2) return <></>;
 
   return (
     <div className={classes.match}>
@@ -126,7 +121,7 @@ const MatchPanel = (props: MatchPanelProps) => {
         role="button"
         tabIndex={0}
       >
-        <PlayerPanel player={player1} />
+        {match.playerIndices[0] !== null ? match.playerIndices[0] + 1 : -1}
       </div>
       <div
         data-testid="middle"
@@ -146,7 +141,7 @@ const MatchPanel = (props: MatchPanelProps) => {
         role="button"
         tabIndex={0}
       >
-        <PlayerPanel player={player2} />
+        {match.playerIndices[1] !== null ? match.playerIndices[1] + 1 : -1}
       </div>
     </div>
   );

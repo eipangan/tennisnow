@@ -126,6 +126,7 @@ const App = () => {
         title={(<AppTitle />)}
         extra={[
           <Button
+            key={0}
             data-testid="settings"
             icon={<SettingOutlined />}
             shape="round"
