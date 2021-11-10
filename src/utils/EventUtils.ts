@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import { Event, Match, Player } from '../models';
 import { saveMatch } from './MatchUtils';
-import { deletePlayer, savePlayer } from './PlayerUtils';
+import { deletePlayer } from './PlayerUtils';
 
 // initialize dayjs
 dayjs.extend(calendar);
@@ -77,7 +77,9 @@ export const savePlayers = async (
   }
 
   // add new players
-  players.forEach((player) => savePlayer(player));
+  players.forEach(async (player) => {
+    await DataStore.save(player);
+  });
 };
 
 export const saveMatches = async (
@@ -87,7 +89,9 @@ export const saveMatches = async (
 
   // remove old matches
   if (currentMatches && Array.isArray(currentMatches)) {
-    currentMatches.forEach((match) => DataStore.delete(match));
+    currentMatches.forEach(async (match) => {
+      await DataStore.delete(match);
+    });
   }
 
   const singlesRoundRobin6 = [
