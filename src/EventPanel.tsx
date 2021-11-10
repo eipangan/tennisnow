@@ -29,10 +29,18 @@ const EventPanel = (props: EventPanelProps) => {
     };
 
     fetchMatches(event.id);
+    const subscription = DataStore.observe(Match,
+      (m) => m.eventID('eq', event.id))
+      .subscribe(() => {
+        fetchMatches(event.id);
+      });
+
     return () => {
       mounted = false;
+      subscription.unsubscribe();
     };
-  }, [event]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event?.id]);
 
   return (
     <div>
