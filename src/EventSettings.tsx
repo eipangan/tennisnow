@@ -270,9 +270,7 @@ const EventSettings = (props: EventSettingsProps) => {
               savePlayers(okEvent.id, okPlayers);
               setPlayers(okPlayers);
 
-              await DataStore.delete(Match, (m) => m.eventID('eq', okEvent.id));
               saveMatches(okEvent.id);
-
               onClose();
             }}
           >
