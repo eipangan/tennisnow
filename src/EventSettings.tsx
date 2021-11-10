@@ -5,9 +5,9 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event, EventType, Player } from './models';
+import { Event, EventType, Match, Player } from './models';
 import { ThemeType } from './Theme';
-import { getNewPlayers, getPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
+import { deleteMatches, getNewPlayers, getPlayers, saveEvent, savePlayers } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
 
 // initialize styles
@@ -29,6 +29,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 type EventSettingsProps = {
   event: Event | undefined,
   setEvent: (event: Event) => void,
+  setMatches: (matches: Match[]) => void,
   onClose: () => void,
 }
 
@@ -37,9 +38,9 @@ const EventSettings = (props: EventSettingsProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { event, setEvent, onClose } = props;
+  const { event, setEvent, setMatches, onClose } = props;
 
-  const [myEvent, setMyEvent] = useState<Event>(event || new Event({
+  const [myEvent, _] = useState<Event>(event || new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
     type: EventType.SINGLES_ROUND_ROBIN,
@@ -76,7 +77,7 @@ const EventSettings = (props: EventSettingsProps) => {
     updated.summary = t('eventSummary', { eventTypeStr, numPlayers });
   });
 
-  const getUpdatedPlayers = (myEventID: string): Player[] | undefined => {
+  const getUpdatedPlayers = (myEventID: string): Player[] => {
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
       const newPlayerName = form.getFieldValue(`${playerPrefix}${p}`);
@@ -89,6 +90,11 @@ const EventSettings = (props: EventSettingsProps) => {
 
     const updatedPlayers = getNewPlayers(myEventID, numPlayers, oldPlayerNames);
     return updatedPlayers;
+  };
+
+  const getUpdatedMatches = (myEventID: string): Match[] => {
+    const updatedMatches: Match[] = [];
+    return updatedMatches;
   };
 
   // initialize screen (called only once)
@@ -255,13 +261,19 @@ const EventSettings = (props: EventSettingsProps) => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={async () => {
+            onClick={() => {
               const okEvent = getUpdatedEvent();
               saveEvent(okEvent);
-              const okPlayers = getUpdatedPlayers(okEvent.id);
-              savePlayers(okEvent.id, okPlayers || []);
-              saveMatches(okEvent.id);
               setEvent(okEvent);
+
+              const okPlayers = getUpdatedPlayers(okEvent.id);
+              savePlayers(okEvent.id, okPlayers);
+
+              deleteMatches(okEvent.id);
+              const okMatches = getUpdatedMatches(okEvent.id) || [];
+              setMatches(okMatches);
+              // saveMatches(okEvent.id);
+
               onClose();
             }}
           >

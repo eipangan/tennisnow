@@ -11,7 +11,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import EventPanel from './EventPanel';
 import EventSettings from './EventSettings';
 import { ReactComponent as AppTitle } from './images/title.svg';
-import { Event } from './models';
+import { Event, Match, Player } from './models';
 import { ThemeType } from './Theme';
 
 // initialize dayjs
@@ -63,6 +63,9 @@ const App = () => {
   const classes = useStyles({ theme });
 
   const [event, setEvent] = useState<Event>();
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
+
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
   const AppFooter = () => (
@@ -120,6 +123,58 @@ const App = () => {
     }
   }, []);
 
+  // initalize matches
+  useEffect(() => {
+    if (!event) return () => { };
+
+    let mounted = true;
+    const fetchMatches = async (eid: string) => {
+      const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
+      if (mounted) {
+        setMatches(fetchedMatches);
+      }
+    };
+
+    fetchMatches(event.id);
+    const subscription = DataStore.observe(Match,
+      (m) => m.eventID('eq', event.id))
+      .subscribe(() => {
+        fetchMatches(event.id);
+      });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event]);
+
+  // initialize players
+  useEffect(() => {
+    if (!event) return () => { };
+
+    let mounted = true;
+    const fetchPlayers = async (eid: string) => {
+      const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eid));
+      if (mounted) {
+        setPlayers(fetchedPlayers);
+      }
+    };
+
+    fetchPlayers(event.id);
+    const subscription = DataStore.observe(Player,
+      (p) => p.eventID('eq', event.id))
+      .subscribe(() => {
+        fetchPlayers(event.id);
+      });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event]);
+
   return (
     <div className={classes.app}>
       <PageHeader
@@ -142,10 +197,15 @@ const App = () => {
           <EventSettings
             event={event}
             setEvent={setEvent}
+            setMatches={setMatches}
             onClose={() => setIsEventSettingsVisible(false)}
           />
         ) : <></>}
-        <EventPanel event={event} />
+        <EventPanel
+          event={event}
+          matches={matches}
+          players={players}
+        />
       </div>
       <AppFooter />
     </div>
