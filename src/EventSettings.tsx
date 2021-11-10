@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getNewPlayers, getPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
+import { getNewPlayers, getPlayers, saveEvent, saveMatches } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
 
 // initialize styles
@@ -258,8 +258,6 @@ const EventSettings = (props: EventSettingsProps) => {
             onClick={async () => {
               const okEvent = getUpdatedEvent();
               saveEvent(okEvent);
-              // const okPlayers = getUpdatedPlayers(okEvent.id);
-              // savePlayers(okEvent.id, okPlayers || []);
               saveMatches(okEvent.id);
               setEvent(okEvent);
               onClose();
