@@ -58,8 +58,7 @@ const MatchPanel = (props: MatchPanelProps) => {
   const classes = useStyles({ theme });
 
   const { match } = props;
-
-  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>();
+  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status || MatchStatus.NEW);
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
   const [middleClass, setMiddleClass] = useState(classes.matchVs);
@@ -101,13 +100,12 @@ const MatchPanel = (props: MatchPanelProps) => {
 
     // update datastore
     if (match) {
-      const updatedMatch = Match.copyOf(match, (updated) => {
+      saveMatch(Match.copyOf(match, (updated) => {
         updated.status = status;
-      });
-
-      saveMatch(updatedMatch);
+      }));
     }
-  }, [classes.matchLoser, classes.matchNeutral, classes.matchVs, classes.matchWinner, match, status, t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [match, status]);
 
   if (!match || !match.playerIndices || match.playerIndices.length < 2) return <></>;
 
