@@ -94,6 +94,7 @@ export const saveMatches = async (
     });
   }
 
+  // add new matches
   const singlesRoundRobin6 = [
     [0, 1],
     [2, 3],
@@ -109,7 +110,6 @@ export const saveMatches = async (
     [3, 1],
   ];
 
-  // add new matches
   if (eventID && eventID.length > 0) {
     singlesRoundRobin6.forEach((i) => {
       saveMatch(new Match({

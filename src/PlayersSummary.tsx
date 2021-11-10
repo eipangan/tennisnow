@@ -1,12 +1,9 @@
 import Table, { ColumnProps } from 'antd/lib/table';
-import { DataStore } from 'aws-amplify';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { EventContext } from './EventContext';
-import { EventType, Match, MatchStatus, Player } from './models';
+import { Match, MatchStatus, Player } from './models';
 import { ThemeType } from './Theme';
-import { getPlayers } from './utils/EventUtils';
 import { getPlayerName } from './utils/PlayerUtils';
 
 // initialize styles
@@ -16,64 +13,17 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
   },
 }));
 
-const PlayersSummary = () => {
+type PlayersSummaryProps = {
+  matches: Match[],
+  players: Player[],
+}
+
+const PlayersSummary = (props: PlayersSummaryProps) => {
   const { t } = useTranslation();
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { event } = useContext(EventContext);
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [players, setPlayers] = useState<Player[]>([]);
-
-  useEffect(() => {
-    if (!event) return () => { };
-
-    // fetch matches when event changes
-    let mounted = true;
-    const fetchMatches = async (eid: string) => {
-      const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
-      if (mounted) {
-        setMatches(fetchedMatches);
-      }
-    };
-
-    fetchMatches(event.id);
-    const subscription = DataStore.observe(Match,
-      (m) => m.eventID('eq', event.id))
-      .subscribe(() => {
-        fetchMatches(event.id);
-      });
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, [event]);
-
-  // fetch players when event and/or matches changes
-  useEffect(() => {
-    if (!event) return () => { };
-
-    let mounted = true;
-    const fetchPlayers = async (eid: string) => {
-      const fetchedPlayers = await getPlayers(eid);
-      if (mounted) {
-        setPlayers(fetchedPlayers);
-      }
-    };
-
-    fetchPlayers(event.id);
-    const subscription = DataStore.observe(Player,
-      (p) => p.eventID('eq', event.id))
-      .subscribe(() => {
-        fetchPlayers(event.id);
-      });
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, [event]);
+  const { matches, players } = props;
 
   interface PlayerStatusType {
     playerName: string;
@@ -150,52 +100,29 @@ const PlayersSummary = () => {
       },
     ];
 
-    switch (event?.type) {
-      case EventType.GENERIC_EVENT:
-        myColumns.push({
-          title: '',
-        });
+    myColumns.push({
+      title: <div>{t('won')}</div>,
+      dataIndex: 'numWon',
+      align: 'center',
+    });
 
-        myColumns.push({
-          title: '',
-        });
+    myColumns.push({
+      title: <div>{t('lost')}</div>,
+      dataIndex: 'numLost',
+      align: 'center',
+    });
 
-        myColumns.push({
-          title: '',
-        });
-
-        break;
-
-      case EventType.SINGLES_ROUND_ROBIN:
-      case EventType.FIX_DOUBLES_ROUND_ROBIN:
-      case EventType.SWITCH_DOUBLES_ROUND_ROBIN:
-      default:
-        myColumns.push({
-          title: <div>{t('won')}</div>,
-          dataIndex: 'numWon',
-          align: 'center',
-        });
-
-        myColumns.push({
-          title: <div>{t('lost')}</div>,
-          dataIndex: 'numLost',
-          align: 'center',
-        });
-
-        myColumns.push({
-          title: <div>{t('draw')}</div>,
-          dataIndex: 'numDraws',
-          align: 'center',
-        });
-
-        break;
-    }
+    myColumns.push({
+      title: <div>{t('draw')}</div>,
+      dataIndex: 'numDraws',
+      align: 'center',
+    });
 
     if (JSON.stringify(columns) !== JSON.stringify(myColumns)) {
       setColumns(myColumns);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event, matches, players]);
+  }, [matches, players]);
 
   return (
     <Table
