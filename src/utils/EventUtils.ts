@@ -82,28 +82,13 @@ export const savePlayers = async (
   });
 };
 
-export const deleteMatches = async (
-  eventID: string,
-): Promise<void> => {
-  // remove old matches
-  const currentMatches = await DataStore.query(Match, (m) => m.eventID('eq', eventID));
-  if (currentMatches && Array.isArray(currentMatches)) {
-    currentMatches.forEach(async (match) => {
-      DataStore.delete(match);
-    });
-  }
-
-  const afterMatches = await DataStore.query(Match, (m) => m.eventID('eq', eventID));
-  console.log(`after delete ${eventID} ${afterMatches.length}`);
-};
-
 export const saveMatches = async (
   eventID: string,
 ): Promise<void> => {
   const singlesRoundRobin6 = [
     [0, 1],
-    // [2, 3],
-    // [4, 5],
+    [2, 3],
+    [4, 5],
     // [0, 3],
     // [1, 5],
     // [2, 4],

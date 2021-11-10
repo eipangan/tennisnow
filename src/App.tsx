@@ -1,4 +1,4 @@
-import { CopyrightCircleOutlined, SettingOutlined, TwitterOutlined } from '@ant-design/icons';
+import { CloseOutlined, CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Button, PageHeader, Tag } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
@@ -183,7 +183,7 @@ const App = () => {
           <Button
             key={0}
             data-testid="settings"
-            icon={<SettingOutlined />}
+            icon={<CloseOutlined />}
             shape="round"
             onClick={(e) => {
               setIsEventSettingsVisible(true);
@@ -195,9 +195,9 @@ const App = () => {
       <div className={classes.appContent}>
         {isEventSettingsVisible ? (
           <EventSettings
-            event={event}
             setEvent={setEvent}
-            setMatches={setMatches}
+            players={players}
+            setPlayers={setPlayers}
             onClose={() => setIsEventSettingsVisible(false)}
           />
         ) : <></>}

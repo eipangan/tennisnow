@@ -1,13 +1,14 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
+import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event, EventType, Match, Player } from './models';
 import { ThemeType } from './Theme';
-import { deleteMatches, getNewPlayers, getPlayers, saveEvent, savePlayers } from './utils/EventUtils';
+import { getNewPlayers, getPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
 
 // initialize styles
@@ -27,9 +28,9 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 type EventSettingsProps = {
-  event: Event | undefined,
   setEvent: (event: Event) => void,
-  setMatches: (matches: Match[]) => void,
+  players: Player[],
+  setPlayers: (players: Player[]) => void,
   onClose: () => void,
 }
 
@@ -38,15 +39,13 @@ const EventSettings = (props: EventSettingsProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { event, setEvent, setMatches, onClose } = props;
+  const { setEvent, players, setPlayers, onClose } = props;
 
-  const [myEvent, _] = useState<Event>(event || new Event({
+  const [myEvent, _] = useState<Event>(new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
     type: EventType.SINGLES_ROUND_ROBIN,
   }));
-
-  const [players, setPlayers] = useState<Player[]>([]);
 
   const { Item } = Form;
   const { Option } = Select;
@@ -117,6 +116,7 @@ const EventSettings = (props: EventSettingsProps) => {
 
     fetchPlayers();
     return () => { };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myEvent, form]);
 
   // whenever players change, update player names
@@ -261,18 +261,17 @@ const EventSettings = (props: EventSettingsProps) => {
             icon={<CheckOutlined />}
             shape="round"
             type="primary"
-            onClick={() => {
+            onClick={async () => {
               const okEvent = getUpdatedEvent();
               saveEvent(okEvent);
               setEvent(okEvent);
 
               const okPlayers = getUpdatedPlayers(okEvent.id);
               savePlayers(okEvent.id, okPlayers);
+              setPlayers(okPlayers);
 
-              deleteMatches(okEvent.id);
-              const okMatches = getUpdatedMatches(okEvent.id) || [];
-              setMatches(okMatches);
-              // saveMatches(okEvent.id);
+              await DataStore.delete(Match, (m) => m.eventID('eq', okEvent.id));
+              saveMatches(okEvent.id);
 
               onClose();
             }}
