@@ -96,6 +96,17 @@ export const saveMatches = async (
 
   const singlesRoundRobin6 = [
     [0, 1],
+    [2, 3],
+    [4, 5],
+    [0, 3],
+    [1, 5],
+    [2, 4],
+    [0, 5],
+    [3, 4],
+    [1, 2],
+    [0, 4],
+    [5, 2],
+    [3, 1],
   ];
 
   // add new matches
