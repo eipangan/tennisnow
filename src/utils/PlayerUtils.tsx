@@ -22,12 +22,3 @@ export const getPlayerName = (player: Player, maxLength: number = Number.MAX_VAL
 
   return undefined;
 };
-
-/**
- * save player
- *
- * @param player
- */
-export const savePlayer = async (player: Player) => {
-  await DataStore.save(player);
-};
