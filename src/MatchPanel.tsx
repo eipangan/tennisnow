@@ -99,13 +99,12 @@ const MatchPanel = (props: MatchPanelProps) => {
     }
 
     // update datastore
-    if (match) {
-      saveMatch(Match.copyOf(match, (updated) => {
-        updated.status = status;
-      }));
-    }
+    saveMatch(Match.copyOf(match, (updated) => {
+      updated.status = status;
+    }));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match, status]);
+  }, [status]);
 
   if (!match || !match.playerIndices || match.playerIndices.length < 2) return <></>;
 
