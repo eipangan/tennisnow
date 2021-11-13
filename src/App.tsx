@@ -123,42 +123,25 @@ const App = () => {
     }
   }, []);
 
-  // initalize matches
+  const fetchMatches = async (eid: string) => {
+    const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
+    setMatches(fetchedMatches);
+  };
+
+  // fetch matches
   useEffect(() => {
-    if (!event) return () => { };
-
-    let mounted = true;
-    const fetchMatches = async (eid: string) => {
-      const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
-      if (mounted) {
-        setMatches(fetchedMatches);
-      }
-    };
-
-    fetchMatches(event.id);
-    const subscription = DataStore.observe(Match,
-      (m) => m.eventID('eq', event.id))
-      .subscribe(() => {
-        fetchMatches(event.id);
-      });
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (event) {
+      fetchMatches(event.id);
+    }
+    return () => { };
   }, [event]);
 
-  // initialize players
+  // fetch players
   useEffect(() => {
     if (!event) return () => { };
 
-    let mounted = true;
     const fetchPlayers = async (eid: string) => {
-      const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eid));
-      if (mounted) {
-        setPlayers(fetchedPlayers);
-      }
+      setPlayers(await DataStore.query(Player, (p) => p.eventID('eq', eid)));
     };
 
     fetchPlayers(event.id);
@@ -169,10 +152,8 @@ const App = () => {
       });
 
     return () => {
-      mounted = false;
       subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   return (
