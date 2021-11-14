@@ -185,6 +185,7 @@ const App = () => {
         <EventPanel
           event={event}
           matches={matches}
+          fetchMatches={fetchMatches}
           players={players}
         />
       </div>

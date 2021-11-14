@@ -11,16 +11,18 @@ dayjs.extend(calendar);
 type EventPanelProps = {
   event: Event | undefined,
   matches: Match[],
+  fetchMatches: (eventID: string) => void;
   players: Player[],
 }
 
 const EventPanel = (props: EventPanelProps) => {
-  const { event, matches, players } = props;
+  const { event, matches, fetchMatches, players } = props;
 
   return (
     <div>
       <MatchesPanel
         matches={matches}
+        fetchMatches={fetchMatches}
       />
       <PlayersSummary
         matches={matches}

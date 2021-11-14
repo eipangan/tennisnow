@@ -50,6 +50,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 
 type MatchPanelProps = {
   match: Match;
+  fetchMatches: (eventID: string) => void;
 };
 
 const MatchPanel = (props: MatchPanelProps) => {
@@ -57,7 +58,7 @@ const MatchPanel = (props: MatchPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { match } = props;
+  const { match, fetchMatches } = props;
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status || MatchStatus.NEW);
 
   const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
@@ -99,9 +100,12 @@ const MatchPanel = (props: MatchPanelProps) => {
     }
 
     // update datastore
-    saveMatch(Match.copyOf(match, (updated) => {
-      updated.status = status;
-    }));
+    if (match.status !== status) {
+      saveMatch(Match.copyOf(match, (updated) => {
+        updated.status = status;
+      }));
+      fetchMatches(match.eventID);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
