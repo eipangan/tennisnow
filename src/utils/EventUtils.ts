@@ -1,7 +1,7 @@
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
-import { Event, Match, Player } from '../models';
+import { Event, Match, MatchStatus, Player } from '../models';
 import { saveMatch } from './MatchUtils';
 import { deletePlayer } from './PlayerUtils';
 
@@ -104,7 +104,9 @@ export const saveMatches = async (
     singlesRoundRobin6.forEach((i) => {
       saveMatch(new Match({
         eventID,
+        createdTime: dayjs().toDate().toISOString(),
         playerIndices: i,
+        status: MatchStatus.NEW,
       }));
     });
   }
