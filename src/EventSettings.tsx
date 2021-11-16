@@ -1,7 +1,6 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
-import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,8 +53,8 @@ const EventSettings = (props: EventSettingsProps) => {
   const [form] = Form.useForm();
   const [numPlayers, setNumPlayers] = useState<number>(6);
 
-  const maxNumPlayers = 12;
-  const minNumPlayers = 2;
+  const maxNumPlayers = 8;
+  const minNumPlayers = 4;
   const playerPrefix = 'player';
 
   const getUpdatedEvent = (): Event => Event.copyOf(myEvent, (updated) => {
@@ -270,7 +269,7 @@ const EventSettings = (props: EventSettingsProps) => {
               savePlayers(okEvent.id, okPlayers);
               setPlayers(okPlayers);
 
-              saveMatches(okEvent.id);
+              saveMatches(okEvent.id, okPlayers);
               onClose();
             }}
           >

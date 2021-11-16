@@ -84,24 +84,17 @@ export const savePlayers = async (
 
 export const saveMatches = async (
   eventID: string,
+  players: Player[],
 ): Promise<void> => {
-  const singlesRoundRobin6 = [
-    [0, 1],
-    [2, 3],
-    [4, 5],
-    [0, 3],
-    [1, 5],
-    [2, 4],
-    [0, 5],
-    [3, 4],
-    [1, 2],
-    [0, 4],
-    [5, 2],
-    [3, 1],
-  ];
+  const matches = new Map();
+  matches.set(4, [[0, 1], [2, 3], [0, 2], [1, 3], [0, 3], [0, 1], [2, 3], [0, 2], [1, 3], [0, 3], [0, 1], [2, 3]]);
+  matches.set(5, [[0, 1], [2, 3], [0, 4], [1, 3], [2, 4], [0, 1], [2, 3], [0, 4], [1, 3], [2, 4], [0, 1], [2, 3]]);
+  matches.set(6, [[0, 1], [2, 3], [4, 5], [0, 3], [1, 5], [2, 4], [0, 5], [3, 4], [1, 2], [0, 4], [5, 2], [3, 1]]);
+  matches.set(7, [[0, 1], [2, 3], [4, 5], [0, 6], [1, 3], [2, 5], [4, 6], [0, 3], [1, 5], [2, 6], [0, 4], [3, 5]]);
+  matches.set(8, [[0, 1], [2, 3], [4, 5], [6, 7], [0, 3], [1, 5], [2, 7], [4, 6], [0, 5], [3, 7], [1, 6], [2, 4]]);
 
   if (eventID && eventID.length > 0) {
-    singlesRoundRobin6.forEach((i) => {
+    matches.get(players.length).forEach((i: number[]) => {
       saveMatch(new Match({
         eventID,
         createdTime: dayjs().toDate().toISOString(),
