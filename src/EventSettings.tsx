@@ -109,7 +109,6 @@ const EventSettings = (props: EventSettingsProps) => {
         fetchedPlayers = getNewPlayers(myEvent.id);
       }
 
-      setPlayers(fetchedPlayers);
       setNumPlayers(fetchedPlayers.length);
     };
 
