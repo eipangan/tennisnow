@@ -1,7 +1,7 @@
 {
   "short_name": "Tennisnow.net",
   "name": "Tennisnow.net",
-  "description": "Doubles pair random combination generator web app.",
+  "description": "Web app to keep track of matches in small tennis events!",
   "icons": [
     {
       "src": "favicon.ico",
