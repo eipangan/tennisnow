@@ -66,9 +66,7 @@ const MatchPanel = (props: MatchPanelProps) => {
   const [middleText, setMiddleText] = useState<any>();
   const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
 
-  // update match when status changes
-  useEffect(() => {
-    // update screen
+  const drawPanel = () => {
     switch (status) {
       case MatchStatus.PLAYER1_WON:
         setPlayer1Class(classes.matchWinner);
@@ -98,15 +96,16 @@ const MatchPanel = (props: MatchPanelProps) => {
         setPlayer2Class(classes.matchNeutral);
         break;
     }
+  };
 
-    // update datastore
+  useEffect(() => {
+    drawPanel();
     if (match.status !== status) {
       saveMatch(Match.copyOf(match, (updated) => {
         updated.status = status;
       }));
       fetchMatches(match.eventID);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
