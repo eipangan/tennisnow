@@ -50,7 +50,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const { Option } = Select;
   const { Panel } = Collapse;
 
-  const minNumPlayers = 4;
+  const minNumPlayers = 2;
   const maxNumPlayers = 8;
   const playerPrefix = 'player';
 
