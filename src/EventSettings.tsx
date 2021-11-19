@@ -50,12 +50,12 @@ const EventSettings = (props: EventSettingsProps) => {
   const { Option } = Select;
   const { Panel } = Collapse;
 
-  const [form] = Form.useForm();
-  const [numPlayers, setNumPlayers] = useState<number>(6);
-
-  const maxNumPlayers = 8;
   const minNumPlayers = 4;
+  const maxNumPlayers = 8;
   const playerPrefix = 'player';
+
+  const [form] = Form.useForm();
+  const [numPlayers, setNumPlayers] = useState<number>(players.length >= minNumPlayers && players.length <= maxNumPlayers ? players.length : 6);
 
   const getUpdatedEvent = (): Event => Event.copyOf(myEvent, (updated) => {
     // update date and time
@@ -106,7 +106,7 @@ const EventSettings = (props: EventSettingsProps) => {
     const fetchPlayers = async () => {
       let fetchedPlayers = await getPlayers(myEvent.id);
       if (fetchedPlayers.length < minNumPlayers) {
-        fetchedPlayers = getNewPlayers(myEvent.id);
+        fetchedPlayers = getNewPlayers(myEvent.id, numPlayers);
       }
 
       setNumPlayers(fetchedPlayers.length);
