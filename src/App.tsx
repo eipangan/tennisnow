@@ -1,4 +1,4 @@
-import { CloseOutlined, CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
+import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Button, PageHeader, Tag } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
@@ -164,13 +164,14 @@ const App = () => {
           <Button
             key={0}
             data-testid="settings"
-            icon={<CloseOutlined />}
             shape="round"
             onClick={(e) => {
               setIsEventSettingsVisible(true);
               e.stopPropagation();
             }}
-          />,
+          >
+            {t('newEvent')}
+          </Button>,
         ]}
       />
       <div className={classes.appContent}>
