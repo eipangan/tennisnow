@@ -61,45 +61,42 @@ const MatchPanel = (props: MatchPanelProps) => {
   const { match, fetchMatches } = props;
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status || MatchStatus.NEW);
 
-  const [player1Class, setPlayer1Class] = useState(classes.matchNeutral);
-  const [middleClass, setMiddleClass] = useState(classes.matchVs);
-  const [middleText, setMiddleText] = useState<any>();
-  const [player2Class, setPlayer2Class] = useState(classes.matchNeutral);
+  let player1Class: string;
+  let middleClass: string;
+  let middleText: string;
+  let player2Class: string;
 
-  const drawPanel = () => {
-    switch (status) {
-      case MatchStatus.PLAYER1_WON:
-        setPlayer1Class(classes.matchWinner);
-        setMiddleClass(classes.matchLoser);
-        setMiddleText(t('draw'));
-        setPlayer2Class(classes.matchLoser);
-        break;
+  switch (match.status) {
+    case MatchStatus.PLAYER1_WON:
+      player1Class = classes.matchWinner;
+      middleClass = classes.matchLoser;
+      middleText = t('draw');
+      player2Class = classes.matchLoser;
+      break;
 
-      case MatchStatus.DRAW:
-        setPlayer1Class(classes.matchNeutral);
-        setMiddleClass(classes.matchWinner);
-        setMiddleText(t('draw'));
-        setPlayer2Class(classes.matchNeutral);
-        break;
+    case MatchStatus.DRAW:
+      player1Class = classes.matchNeutral;
+      middleClass = classes.matchWinner;
+      middleText = t('draw');
+      player2Class = classes.matchNeutral;
+      break;
 
-      case MatchStatus.PLAYER2_WON:
-        setPlayer1Class(classes.matchLoser);
-        setMiddleClass(classes.matchLoser);
-        setMiddleText(t('draw'));
-        setPlayer2Class(classes.matchWinner);
-        break;
+    case MatchStatus.PLAYER2_WON:
+      player1Class = classes.matchLoser;
+      middleClass = classes.matchLoser;
+      middleText = t('draw');
+      player2Class = classes.matchWinner;
+      break;
 
-      default:
-        setPlayer1Class(classes.matchNeutral);
-        setMiddleClass(classes.matchVs);
-        setMiddleText(t('vs'));
-        setPlayer2Class(classes.matchNeutral);
-        break;
-    }
-  };
+    default:
+      player1Class = classes.matchNeutral;
+      middleClass = classes.matchVs;
+      middleText = t('vs');
+      player2Class = classes.matchNeutral;
+      break;
+  }
 
   useEffect(() => {
-    drawPanel();
     if (match.status !== status) {
       saveMatch(Match.copyOf(match, (updated) => {
         updated.status = status;
