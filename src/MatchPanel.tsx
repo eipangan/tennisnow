@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Match, MatchStatus } from './models';
+import { Match, MatchStatus, Player } from './models';
+import PlayerPanel from './PlayerPanel';
 import { ThemeType } from './Theme';
 import { saveMatch } from './utils/MatchUtils';
 
@@ -51,6 +52,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 type MatchPanelProps = {
   match: Match;
   fetchMatches: (eventID: string) => void;
+  players: Player[];
 };
 
 const MatchPanel = (props: MatchPanelProps) => {
@@ -58,7 +60,7 @@ const MatchPanel = (props: MatchPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { match, fetchMatches } = props;
+  const { match, fetchMatches, players } = props;
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status || MatchStatus.NEW);
 
   let player1Class: string;
@@ -106,7 +108,9 @@ const MatchPanel = (props: MatchPanelProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
-  if (!match || !match.playerIndices || match.playerIndices.length < 2) return <></>;
+  if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <></>;
+  const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
+  const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
 
   return (
     <div className={classes.match}>
@@ -118,7 +122,7 @@ const MatchPanel = (props: MatchPanelProps) => {
         role="button"
         tabIndex={0}
       >
-        {match.playerIndices[0] !== null ? match.playerIndices[0] + 1 : -1}
+        <PlayerPanel player={player1} />
       </div>
       <div
         data-testid="middle"
@@ -138,7 +142,7 @@ const MatchPanel = (props: MatchPanelProps) => {
         role="button"
         tabIndex={0}
       >
-        {match.playerIndices[1] !== null ? match.playerIndices[1] + 1 : -1}
+        <PlayerPanel player={player2} />
       </div>
     </div>
   );

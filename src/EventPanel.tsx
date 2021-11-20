@@ -23,6 +23,7 @@ const EventPanel = (props: EventPanelProps) => {
       <MatchesPanel
         matches={matches}
         fetchMatches={fetchMatches}
+        players={players}
       />
       <PlayersSummary
         matches={matches}
