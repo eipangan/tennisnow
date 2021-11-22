@@ -96,11 +96,12 @@ export const saveMatches = async (
   matches.set(8, [[0, 1], [2, 3], [4, 5], [6, 7], [0, 3], [1, 5], [2, 7], [4, 6], [0, 5], [3, 7], [1, 6], [2, 4]]);
 
   if (eventID && eventID.length > 0) {
-    matches.get(players.length).forEach((i: number[]) => {
+    matches.get(players.length).forEach((value: number[], i: number) => {
+      // TODO: replace createdTime with index
       saveMatch(new Match({
         eventID,
         createdTime: dayjs().toDate().toISOString(),
-        playerIndices: i,
+        playerIndices: value,
         status: MatchStatus.NEW,
       }));
     });
