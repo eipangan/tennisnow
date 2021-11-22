@@ -61,7 +61,7 @@ const MatchPanel = (props: MatchPanelProps) => {
   const classes = useStyles({ theme });
 
   const { match, fetchMatches, players } = props;
-  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status || MatchStatus.NEW);
+  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status);
 
   let player1Class: string;
   let middleClass: string;

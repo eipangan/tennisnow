@@ -149,7 +149,7 @@ export const schema = {
                     "type": {
                         "enum": "MatchStatus"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "owner": {

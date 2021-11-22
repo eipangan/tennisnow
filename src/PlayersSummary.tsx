@@ -49,7 +49,7 @@ const PlayersSummary = (props: PlayersSummaryProps) => {
           let numDraws = 0;
 
           myMatches.forEach((match) => {
-            if (match.status && match.playerIndices && match.playerIndices.length >= 2) {
+            if (match.playerIndices && match.playerIndices.length >= 2) {
               const p1 = match.playerIndices[0];
               const p2 = match.playerIndices[1];
 
