@@ -128,11 +128,11 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "createdTime": {
-                    "name": "createdTime",
+                "orderID": {
+                    "name": "orderID",
                     "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
+                    "type": "Int",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "playerIndices": {

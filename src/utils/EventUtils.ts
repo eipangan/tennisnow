@@ -97,10 +97,9 @@ export const saveMatches = async (
 
   if (eventID && eventID.length > 0) {
     matches.get(players.length).forEach((value: number[], i: number) => {
-      // TODO: replace createdTime with index
       saveMatch(new Match({
         eventID,
-        createdTime: dayjs().toDate().toISOString(),
+        orderID: i,
         playerIndices: value,
         status: MatchStatus.NEW,
       }));

@@ -1,4 +1,4 @@
-import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel } from "@aws-amplify/datastore";
 
 export enum EventType {
   GENERIC_EVENT = "GENERIC_EVENT",
@@ -33,7 +33,7 @@ export declare class Event {
 export declare class Match {
   readonly id: string;
   readonly eventID: string;
-  readonly createdTime?: string;
+  readonly orderID: number;
   readonly playerIndices?: (number | null)[];
   readonly status?: MatchStatus | keyof typeof MatchStatus;
   readonly owner?: string;

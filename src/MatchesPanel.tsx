@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import MatchPanel from './MatchPanel';
@@ -41,7 +40,7 @@ const MatchesPanel = (props: MatchesPanelProps) => {
     <>
       {
         matches
-          .sort((a: Match, b: Match) => (dayjs(a.createdTime).isBefore(dayjs(b.createdTime)) ? -1 : 1))
+          .sort((a: Match, b: Match) => (a.orderID < b.orderID ? -1 : 1))
           .map((match, index) => (
             <div
               className={classes.matchPanel}
