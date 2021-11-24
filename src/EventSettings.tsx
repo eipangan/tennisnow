@@ -138,13 +138,14 @@ const EventSettings = (props: EventSettingsProps) => {
       <Form
         form={form}
         labelCol={{ span: 0 }}
+        initialValues={{ eventType: myEvent.type }}
       >
         <div className={classes.eventSettingsRow}>
           <Item
             key="type"
             name="type"
           >
-            <Select size="large" style={{ width: 270 }} defaultValue={myEvent.type}>
+            <Select size="large" style={{ width: 270 }}>
               <Option value={EventType.DOUBLES_ROUND_ROBIN}>{t(EventType.DOUBLES_ROUND_ROBIN)}</Option>
               <Option value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Option>
             </Select>
