@@ -14,11 +14,6 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
     overflowY: 'scroll',
     padding: '9px 15px',
   },
-  buttonsPanel: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '0px 15px 0px 0px',
-  },
   matchPanel: {
     margin: '0px 4px',
   },
