@@ -267,7 +267,7 @@ const EventSettings = (props: EventSettingsProps) => {
               savePlayers(okEvent.id, okPlayers);
               setPlayers(okPlayers);
 
-              saveMatches(okEvent.id, okPlayers);
+              saveMatches(okEvent, okPlayers);
               onClose();
             }}
           >

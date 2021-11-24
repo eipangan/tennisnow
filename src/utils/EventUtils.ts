@@ -83,7 +83,7 @@ export const savePlayers = async (
 };
 
 export const saveMatches = async (
-  eventID: string,
+  event: Event,
   players: Player[],
 ): Promise<void> => {
   const matches = new Map();
@@ -95,10 +95,10 @@ export const saveMatches = async (
   matches.set(7, [[0, 1], [2, 3], [4, 5], [0, 6], [1, 3], [2, 5], [4, 6], [0, 3], [1, 5], [2, 6], [0, 4], [3, 5]]);
   matches.set(8, [[0, 1], [2, 3], [4, 5], [6, 7], [0, 3], [1, 5], [2, 7], [4, 6], [0, 5], [3, 7], [1, 6], [2, 4]]);
 
-  if (eventID && eventID.length > 0) {
+  if (event.id && event.id.length > 0) {
     matches.get(players.length).forEach((value: number[], i: number) => {
       saveMatch(new Match({
-        eventID,
+        eventID: event.id,
         orderID: i,
         playerIndices: value,
         status: MatchStatus.NEW,

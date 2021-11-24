@@ -30,7 +30,7 @@ export const schema = {
                     "type": {
                         "enum": "EventType"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "summary": {

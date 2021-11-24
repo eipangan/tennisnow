@@ -20,7 +20,7 @@ export declare class Event {
   readonly id: string;
   readonly date: string;
   readonly place?: string;
-  readonly type?: EventType | keyof typeof EventType;
+  readonly type: EventType | keyof typeof EventType;
   readonly summary?: string;
   readonly details?: string;
   readonly matches?: (Match | null)[];
