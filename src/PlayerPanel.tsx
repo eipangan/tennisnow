@@ -36,7 +36,7 @@ const PlayerPanel = (props: PlayerPanelProps) => {
       <div
         className={classes.player}
       >
-        {getPlayerName(player, 3)}
+        {getPlayerName(player, 9)}
       </div>
     </StrictMode>
   );

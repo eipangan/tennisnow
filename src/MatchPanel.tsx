@@ -26,8 +26,9 @@ const useStyles = createUseStyles((theme: ThemeType) => {
       display: 'flex',
       flex: 'none',
       flexDirection: 'column',
-      fontSize: 'large',
+      fontSize: 'medium',
       minWidth: '90px',
+      whiteSpace: 'nowrap',
     },
     matchWinner: {
       ...matchRowCommon,

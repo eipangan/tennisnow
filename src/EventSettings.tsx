@@ -154,7 +154,6 @@ const EventSettings = (props: EventSettingsProps) => {
           <Collapse style={{ width: 270 }}>
             <Panel
               className={classes.eventSettingsPlayers}
-              collapsible="disabled"
               showArrow={false}
               key="players"
               header={(
