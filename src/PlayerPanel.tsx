@@ -29,7 +29,7 @@ const PlayerPanel = (props: PlayerPanelProps) => {
 
   const { player } = props;
 
-  if (!player) return <></>;
+  if (!player) return <div />;
 
   return (
     <StrictMode>

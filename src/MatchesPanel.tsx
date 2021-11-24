@@ -36,8 +36,8 @@ const MatchesPanel = (props: MatchesPanelProps) => {
 
   const { matches, players, fetchMatches } = props;
 
-  const MatchesList = () => (
-    <>
+  return (
+    <div className={classes.matchesPanel}>
       {
         matches
           .sort((a: Match, b: Match) => (a.orderID < b.orderID ? -1 : 1))
@@ -54,12 +54,6 @@ const MatchesPanel = (props: MatchesPanelProps) => {
             </div>
           ))
       }
-    </>
-  );
-
-  return (
-    <div className={classes.matchesPanel}>
-      <MatchesList />
     </div>
   );
 };

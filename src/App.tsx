@@ -68,25 +68,6 @@ const App = () => {
 
   const [isEventSettingsVisible, setIsEventSettingsVisible] = useState<boolean>(false);
 
-  const AppFooter = () => (
-    <div className={classes.appFooter}>
-      {t('title')}
-      {' '}
-      <CopyrightCircleOutlined />
-      {' '}
-      2020-2021
-      {' '}
-      <a href="https://twitter.com/tennisnownet">
-        <Tag
-          icon={<TwitterOutlined />}
-          style={{ border: '0', background: 'transparent' }}
-        >
-          @tennisnownet
-        </Tag>
-      </a>
-    </div>
-  );
-
   useEffect(() => {
     i18n.changeLanguage(navigator.language);
   }, [i18n]);
@@ -145,8 +126,10 @@ const App = () => {
     };
 
     fetchPlayers(event.id);
-    const subscription = DataStore.observe(Player,
-      (p) => p.eventID('eq', event.id))
+    const subscription = DataStore.observe(
+      Player,
+      (p) => p.eventID('eq', event.id),
+    )
       .subscribe(() => {
         fetchPlayers(event.id);
       });
@@ -182,7 +165,7 @@ const App = () => {
             setPlayers={setPlayers}
             onClose={() => setIsEventSettingsVisible(false)}
           />
-        ) : <></>}
+        ) : <div />}
         <EventPanel
           event={event}
           matches={matches}
@@ -190,7 +173,22 @@ const App = () => {
           players={players}
         />
       </div>
-      <AppFooter />
+      <div className={classes.appFooter}>
+        {t('title')}
+        {' '}
+        <CopyrightCircleOutlined />
+        {' '}
+        2020-2021
+        {' '}
+        <a href="https://twitter.com/tennisnownet">
+          <Tag
+            icon={<TwitterOutlined />}
+            style={{ border: '0', background: 'transparent' }}
+          >
+            @tennisnownet
+          </Tag>
+        </a>
+      </div>
     </div>
   );
 };
