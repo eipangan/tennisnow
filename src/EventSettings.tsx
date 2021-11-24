@@ -44,7 +44,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const [myEvent, _] = useState<Event>(new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
-    type: EventType.SINGLES_ROUND_ROBIN,
+    type: EventType.DOUBLES_ROUND_ROBIN,
   }));
 
   const { Item } = Form;
@@ -145,8 +145,8 @@ const EventSettings = (props: EventSettingsProps) => {
             name="type"
           >
             <Select size="large" style={{ width: 270 }} defaultValue={myEvent.type}>
-              <Option value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Option>
               <Option value={EventType.DOUBLES_ROUND_ROBIN}>{t(EventType.DOUBLES_ROUND_ROBIN)}</Option>
+              <Option value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Option>
             </Select>
           </Item>
         </div>
