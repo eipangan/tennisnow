@@ -281,7 +281,7 @@ export const schema = {
                 "GENERIC_EVENT",
                 "SINGLES_ROUND_ROBIN",
                 "FIX_DOUBLES_ROUND_ROBIN",
-                "SWITCH_DOUBLES_ROUND_ROBIN"
+                "DOUBLES_ROUND_ROBIN"
             ]
         },
         "MatchStatus": {

@@ -102,7 +102,7 @@ export const saveMatches = async (
     FIX_DOUBLES_ROUND_ROBIN: {
 
     },
-    SWITCH_DOUBLES_ROUND_ROBIN: {
+    DOUBLES_ROUND_ROBIN: {
 
     },
   };
