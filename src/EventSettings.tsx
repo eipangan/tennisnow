@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
-import { Event, EventType, Match, Player } from './models';
+import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
 import { getNewPlayers, getPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
@@ -27,6 +27,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
 }));
 
 type EventSettingsProps = {
+  event: Event | undefined,
   setEvent: (event: Event) => void,
   players: Player[],
   setPlayers: (players: Player[]) => void,
@@ -38,7 +39,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { setEvent, players, setPlayers, onClose } = props;
+  const { event, setEvent, players, setPlayers, onClose } = props;
 
   const [myEvent, _] = useState<Event>(new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
@@ -90,17 +91,12 @@ const EventSettings = (props: EventSettingsProps) => {
     return updatedPlayers;
   };
 
-  const getUpdatedMatches = (myEventID: string): Match[] => {
-    const updatedMatches: Match[] = [];
-    return updatedMatches;
-  };
-
   // initialize screen (called only once)
   useEffect(() => {
     form.setFieldsValue({
       date: dayjs(myEvent.date),
       time: dayjs(myEvent.date).format('HHmm'),
-      type: myEvent.type,
+      type: event ? event.type : myEvent.type,
     });
 
     const fetchPlayers = async () => {
@@ -148,8 +144,9 @@ const EventSettings = (props: EventSettingsProps) => {
             key="type"
             name="type"
           >
-            <Select size="large" style={{ width: 270 }}>
+            <Select size="large" style={{ width: 270 }} defaultValue={myEvent.type}>
               <Option value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Option>
+              <Option value={EventType.DOUBLES_ROUND_ROBIN}>{t(EventType.DOUBLES_ROUND_ROBIN)}</Option>
             </Select>
           </Item>
         </div>

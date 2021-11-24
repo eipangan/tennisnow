@@ -49,24 +49,49 @@ const PlayersSummary = (props: PlayersSummaryProps) => {
           let numDraws = 0;
 
           myMatches.forEach((match) => {
-            if (match.playerIndices && match.playerIndices.length >= 2) {
-              const p1 = match.playerIndices[0];
-              const p2 = match.playerIndices[1];
+            if (match.playerIndices) {
+              if (match.playerIndices.length === 2) {
+                // singles
 
-              switch (match.status) {
-                case MatchStatus.PLAYER1_WON:
-                  if (index === p1) numWon += 1;
-                  if (index === p2) numLost += 1;
-                  break;
-                case MatchStatus.DRAW:
-                  if (index === p1) numDraws += 1;
-                  if (index === p2) numDraws += 1;
-                  break;
-                case MatchStatus.PLAYER2_WON:
-                  if (index === p1) numLost += 1;
-                  if (index === p2) numWon += 1;
-                  break;
-                default:
+                const p1 = match.playerIndices[0];
+                const p2 = match.playerIndices[1];
+
+                switch (match.status) {
+                  case MatchStatus.PLAYER1_WON:
+                    if (index === p1) numWon += 1;
+                    if (index === p2) numLost += 1;
+                    break;
+                  case MatchStatus.DRAW:
+                    if (index === p1) numDraws += 1;
+                    if (index === p2) numDraws += 1;
+                    break;
+                  case MatchStatus.PLAYER2_WON:
+                    if (index === p1) numLost += 1;
+                    if (index === p2) numWon += 1;
+                    break;
+                  default:
+                }
+              } else if (match.playerIndices.length === 4) {
+                // doubles
+
+                const p1 = [match.playerIndices[0], match.playerIndices[1]];
+                const p2 = [match.playerIndices[2], match.playerIndices[3]];
+
+                switch (match.status) {
+                  case MatchStatus.PLAYER1_WON:
+                    if (p1.includes(index)) numWon += 1;
+                    if (p2.includes(index)) numLost += 1;
+                    break;
+                  case MatchStatus.DRAW:
+                    if (p1.includes(index)) numDraws += 1;
+                    if (p2.includes(index)) numDraws += 1;
+                    break;
+                  case MatchStatus.PLAYER2_WON:
+                    if (p1.includes(index)) numLost += 1;
+                    if (p2.includes(index)) numWon += 1;
+                    break;
+                  default:
+                }
               }
             }
           });

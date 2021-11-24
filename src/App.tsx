@@ -160,6 +160,7 @@ const App = () => {
       <div className={classes.appContent}>
         {isEventSettingsVisible ? (
           <EventSettings
+            event={event}
             setEvent={setEvent}
             players={players}
             setPlayers={setPlayers}

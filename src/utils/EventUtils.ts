@@ -103,12 +103,12 @@ export const saveMatches = async (
 
     },
     DOUBLES_ROUND_ROBIN: {
-
+      4: [[0, 1, 2, 3], [1, 2, 3, 0], [0, 2, 1, 3], [2, 0, 3, 1], [0, 3, 2, 1], [1, 0, 3, 2], [0, 1, 3, 2], [1, 3, 2, 0], [0, 3, 1, 2], [2, 1, 3, 0], [0, 2, 3, 1], [1, 0, 2, 3]],
     },
   };
 
   if (event.id && event.id.length > 0) {
-    matches[event.type][players.length].forEach((value: number[], i: number) => {
+    matches[event.type][players.length]?.forEach((value: number[], i: number) => {
       saveMatch(new Match({
         eventID: event.id,
         orderID: i,

@@ -15,7 +15,7 @@ const useStyles = createUseStyles((theme: ThemeType) => ({
  * PlayerPanelProps
  */
 type PlayerPanelProps = {
-  player: Player | undefined;
+  player: Player | Player[] | undefined;
 };
 
 /**
@@ -36,7 +36,7 @@ const PlayerPanel = (props: PlayerPanelProps) => {
       <div
         className={classes.player}
       >
-        {getPlayerName(player)}
+        {getPlayerName(player, 3)}
       </div>
     </StrictMode>
   );

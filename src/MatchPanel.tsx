@@ -109,8 +109,21 @@ const MatchPanel = (props: MatchPanelProps) => {
   }, [status]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <div />;
-  const player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
-  const player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
+
+  let player1: Player | undefined | Player[];
+  let player2: Player | undefined | Player[];
+  if (match.playerIndices.length === 2) {
+    player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
+    player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
+  } else if (match.playerIndices.length === 4) {
+    const p1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
+    const p2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
+    const p3 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[2] : 2));
+    const p4 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[3] : 3));
+
+    if (p1 && p2) { player1 = [p1, p2]; }
+    if (p3 && p4) { player2 = [p3, p4]; }
+  } else return <div />;
 
   return (
     <div className={classes.match}>
