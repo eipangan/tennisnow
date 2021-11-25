@@ -152,7 +152,7 @@ const EventSettings = (props: EventSettingsProps) => {
           </Item>
         </div>
         <div className={classes.eventSettingsRow}>
-          <Collapse style={{ width: 270 }}>
+          <Collapse style={{ width: 270 }} defaultActiveKey={players.find((player) => (player.name && player.name.length > 1)) ? 'players' : undefined}>
             <Panel
               className={classes.eventSettingsPlayers}
               showArrow={false}
