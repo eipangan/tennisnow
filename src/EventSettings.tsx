@@ -244,13 +244,15 @@ const EventSettings = (props: EventSettingsProps) => {
         </div>
         <div style={{ height: '12px' }} />
         <div className={classes.eventSettingsRow}>
-          <Button
-            icon={<CloseOutlined />}
-            onClick={onClose}
-            shape="round"
-          >
-            {t('cancel')}
-          </Button>
+          {event !== undefined ? (
+            <Button
+              icon={<CloseOutlined />}
+              onClick={onClose}
+              shape="round"
+            >
+              {t('cancel')}
+            </Button>
+          ) : <div />}
           <div style={{ width: '12px' }} />
           <Button
             icon={<CheckOutlined />}
