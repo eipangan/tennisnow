@@ -158,7 +158,7 @@ const EventSettings = (props: EventSettingsProps) => {
               showArrow={false}
               key="players"
               header={(
-                <Button type="link" size="large">
+                <Button type="link">
                   {t('players', { numPlayers })}
                 </Button>
               )}
