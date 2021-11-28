@@ -1,5 +1,5 @@
 import { CheckOutlined, CloseOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Collapse, Drawer, Form, Input, Select } from 'antd';
+import { Button, Collapse, Drawer, Form, Input, Radio } from 'antd';
 import ButtonGroup from 'antd/lib/button/button-group';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
@@ -48,7 +48,6 @@ const EventSettings = (props: EventSettingsProps) => {
   }));
 
   const { Item } = Form;
-  const { Option } = Select;
   const { Panel } = Collapse;
 
   const minNumPlayers = 2;
@@ -145,10 +144,10 @@ const EventSettings = (props: EventSettingsProps) => {
             key="type"
             name="type"
           >
-            <Select size="large" style={{ width: 270 }}>
-              <Option value={EventType.DOUBLES_ROUND_ROBIN}>{t(EventType.DOUBLES_ROUND_ROBIN)}</Option>
-              <Option value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Option>
-            </Select>
+            <Radio.Group size="large">
+              <Radio.Button value={EventType.DOUBLES_ROUND_ROBIN}>{t(EventType.DOUBLES_ROUND_ROBIN)}</Radio.Button>
+              <Radio.Button value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Radio.Button>
+            </Radio.Group>
           </Item>
         </div>
         <div className={classes.eventSettingsRow}>
