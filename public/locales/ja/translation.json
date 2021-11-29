@@ -1,50 +1,23 @@
 {
   "cancel": "キャンセル",
   "clearNames": "全名をクリアする",
-  "create": "作成",
-  "delete": "削除",
-  "deleteEventConfirm": "このイベントを削除しますか？",
-  "deleteMatchConfirm": "このマッチを削除しますか？",
   "draw": "引分",
   "event": "イベント",
-  "events": "イベント一覧",
   "eventSettings": "新規イベントの作成",
   "eventSummary": "{{eventTypeStr}} | {{numPlayers}}人シングルス",
-  "finished": "過去",
   "FIX_DOUBLES_ROUND_ROBIN": "ダブルス固定ペア",
   "GENERIC_EVENT": "イベントその他",
   "lost": "敗戦",
   "name": "名前",
   "newEvent": "新規イベント",
-  "newMatch": "新規マッチ",
-  "noEvents": "イベントはありません",
   "ok": "決定",
   "player": "参加者",
   "players": "参加者{{numPlayers}}人",
   "randomizeOrder": "順序をランダム化",
-  "save": "保存",
-  "signin": "ログイン",
-  "signout": "ログアウト",
-  "signoutConfirm": "ログアウトしますか？",
   "SINGLES_ROUND_ROBIN": "シングルス",
   "slogan": "サークルのテニスイベントを管理するウェブアプリ！",
   "DOUBLES_ROUND_ROBIN": "ダブルス",
   "title": "Tennisnow.net",
-  "userSettings": "ユーサー設定",
   "vs": "対",
-  "won": "勝利",
-  "intro": {
-    "welcome": {
-      "title": "テニスしましょう！"
-    },
-    "events": {
-      "title": "イベントの管理",
-      "body1": "イベント一覧を管理できる. 参加人数や参加者名も管理できる. イベントを開始する前にジャンケン不要で、アプリが自動的に乱数表を作ってスムーズにプレーできる。",
-      "body2": "各マッチに勝利したチームを指定して参加者の順位表も見られる。"
-    },
-    "signin": {
-      "title": "まずはサインイン",
-      "body": "サインインすると、上記の機能を楽しめる! 新機能やアップデートをツイッターで発表するため、@tennisnownetをフォローしてね!"
-    }
-  }
+  "won": "勝利"
 }

@@ -1,50 +1,23 @@
 {
   "cancel": "Cancel",
   "clearNames": "Clear Names",
-  "create": "Create",
-  "delete": "Delete",
-  "deleteEventConfirm": "Delete this event?",
-  "deleteMatchConfirm": "Delete this match?",
   "draw": "Draw",
   "event": "Event",
-  "events": "Events",
   "eventSettings": "New Event Settings",
   "eventSummary": "{{eventTypeStr}} | {{numPlayers}} players",
-  "finished": "Finished",
   "FIX_DOUBLES_ROUND_ROBIN": "Fix Doubles",
   "GENERIC_EVENT": "Basic Event",
   "lost": "Lost",
   "name": "Name",
   "newEvent": "New Event",
-  "newMatch": "New Match",
-  "noEvents": "No Events",
   "ok": "OK",
   "player": "Player",
   "players": "{{numPlayers}} players",
   "randomizeOrder": "Randomize Order",
-  "save": "Save",
-  "signin": "Sign in",
-  "signout": "Sign out",
-  "signoutConfirm": "Are you sure you want to sign out?",
   "SINGLES_ROUND_ROBIN": "Singles",
   "slogan": "Web app to keep track of matches in small tennis events!",
   "DOUBLES_ROUND_ROBIN": "Doubles",
   "title": "Tennisnow.net",
-  "userSettings": "User Settings",
   "vs": "vs",
-  "won": "Won",
-  "intro": {
-    "welcome": {
-      "title": "Let's play!"
-    },
-    "events": {
-      "title": "Organize events",
-      "body1": "Manage a list of events. Manage the number of players, and optionally even the player names. When you're ready to play, you can also randomize player matches.",
-      "body2": "You can set who won each match, and later see which player has the most victories."
-    },
-    "signin": {
-      "title": "When you sign in ...",
-      "body": "You will be able to take advantage of all these features! Follow @tennisnownet on Twitter to keep in touch with new features and updates!"
-    }
-  }
+  "won": "Won"
 }
