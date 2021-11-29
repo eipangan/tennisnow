@@ -1,5 +1,5 @@
 import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
-import { Button, PageHeader, Tag } from 'antd';
+import { Button, PageHeader, Tag, Typography } from 'antd';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -78,7 +78,7 @@ const App = () => {
     } else {
       dayjs.locale('en');
     }
-    document.title = `${t('title')} | ${t('slogan')}`;
+    document.title = `${t('title')}`;
   }, [i18n.language, t]);
 
   useEffect(() => {
@@ -157,6 +157,9 @@ const App = () => {
           </Button>,
         ]}
       />
+      <Typography.Text type="secondary">
+        {t('slogan')}
+      </Typography.Text>
       <div className={classes.appContent}>
         {isEventSettingsVisible ? (
           <EventSettings
