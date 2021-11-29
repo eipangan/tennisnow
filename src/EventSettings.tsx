@@ -145,8 +145,8 @@ const EventSettings = (props: EventSettingsProps) => {
             name="type"
           >
             <Radio.Group size="large">
-              <Radio.Button value={EventType.DOUBLES_ROUND_ROBIN}>{t(EventType.DOUBLES_ROUND_ROBIN)}</Radio.Button>
               <Radio.Button value={EventType.SINGLES_ROUND_ROBIN}>{t(EventType.SINGLES_ROUND_ROBIN)}</Radio.Button>
+              <Radio.Button value={EventType.DOUBLES_ROUND_ROBIN}>{t(EventType.DOUBLES_ROUND_ROBIN)}</Radio.Button>
             </Radio.Group>
           </Item>
         </div>
