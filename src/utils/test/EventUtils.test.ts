@@ -1,13 +1,15 @@
-import { renderHook } from '@testing-library/react-hooks';
-import useEvent from '../../hooks/useEvent';
+import dayjs from 'dayjs';
+import { Event, EventType } from '../../models';
 import { getNewPlayers } from '../EventUtils';
 
 describe('EventUtils', () => {
-  it('should run getPlayers() with just eventID parameter', async () => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
+  const event = new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.DOUBLES_ROUND_ROBIN,
+  });
 
+  it('should run getPlayers() with just eventID parameter', async () => {
     const defaultNumPlayers = 6;
     const players = getNewPlayers(event.id);
 
@@ -50,10 +52,6 @@ describe('EventUtils', () => {
   });
 
   it('should run getPlayers() with eventID, numPlayers=4 parameter', async () => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
-
     const numPlayers = 4;
     const players = getNewPlayers(event.id, numPlayers);
 
@@ -83,10 +81,6 @@ describe('EventUtils', () => {
   });
 
   it('should run getPlayers() with eventID, numPlayers=4, playersNames parameter', async () => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
-
     const numPlayers = 4;
     const playerNames = ['P1', 'P2', 'P3'];
     const players = getNewPlayers(event.id, numPlayers, playerNames);
