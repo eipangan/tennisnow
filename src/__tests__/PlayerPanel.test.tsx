@@ -1,10 +1,9 @@
 import { prettyDOM, render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
 import { fail } from 'assert';
+import dayjs from 'dayjs';
 import React from 'react';
 import { ThemeProvider } from 'react-jss';
-import useEvent from '../hooks/useEvent';
-import { Player } from '../models';
+import { Event, EventType, Player } from '../models';
 import PlayerPanel from '../PlayerPanel';
 import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
@@ -13,10 +12,11 @@ let player: Player;
 
 describe('PlayerPanel', () => {
   beforeAll(() => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
-
+    const event = new Event({
+      date: dayjs().add(1, 'hour').startOf('hour').toDate()
+        .toISOString(),
+      type: EventType.DOUBLES_ROUND_ROBIN,
+    });
     const players = getNewPlayers(event.id, 6);
 
     expect(event).toBeDefined();
