@@ -55,7 +55,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const playerPrefix = 'player';
 
   const [form] = Form.useForm();
-  const [numPlayers, setNumPlayers] = useState<number>(players.length >= minNumPlayers && players.length <= maxNumPlayers ? players.length : 6);
+  const [numPlayers, setNumPlayers] = useState<number>(players && players.length >= minNumPlayers && players.length <= maxNumPlayers ? players.length : 6);
 
   const getUpdatedEvent = (): Event => Event.copyOf(myEvent, (updated) => {
     // update date and time

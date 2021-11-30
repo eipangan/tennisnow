@@ -1,17 +1,24 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { EventContext } from '../EventContext';
 import EventSettings from '../EventSettings';
-import useEvent from '../hooks/useEvent';
+import { Event, EventType } from '../models';
 import { theme } from '../Theme';
+import { getNewPlayers } from '../utils/EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
 describe('EventSettings', () => {
+  const event = new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.DOUBLES_ROUND_ROBIN,
+  });
+  const players = getNewPlayers(event.id, 6);
+
   beforeAll(() => {
     window.matchMedia = window.matchMedia || (() => ({
       matches: false,
@@ -20,42 +27,20 @@ describe('EventSettings', () => {
     }));
   });
 
-  it('should render without crashing when EventContext is availabe', async () => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
-
+  it('should return a valid DOM', async () => {
     const setEventID = jest.fn((id: string) => { });
 
     await act(async () => {
       render(
         <ThemeProvider theme={theme}>
           <Suspense fallback={null}>
-            <EventContext.Provider value={{ event, setEventID }}>
-              <EventSettings onClose={() => { }} />
-            </EventContext.Provider>
-          </Suspense>
-        </ThemeProvider>,
-      );
-    });
-
-    expect(screen.getByText('eventSettings')).toBeInTheDocument();
-    expect(screen.getByText('players')).toBeInTheDocument();
-    expect(screen.getByText('cancel')).toBeInTheDocument();
-    expect(screen.getByText('ok')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByTestId('minus'));
-    fireEvent.click(screen.getByTestId('plus'));
-    fireEvent.click(screen.getByText('cancel'));
-    fireEvent.click(screen.getByText('ok'));
-  });
-
-  it('should render without crashing when EventContext is NOT availabe', async () => {
-    await act(async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <EventSettings onClose={() => { }} />
+            <EventSettings
+              event={event}
+              setEvent={() => { }}
+              players={players}
+              setPlayers={() => { }}
+              onClose={() => { }}
+            />
           </Suspense>
         </ThemeProvider>,
       );

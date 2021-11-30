@@ -1,55 +1,48 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, fireEvent, prettyDOM, render, screen } from '@testing-library/react';
+import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { EventContext } from '../EventContext';
-import useEvent from '../hooks/useEvent';
 import MatchesPanel from '../MatchesPanel';
+import { Event, EventType, Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
+import { getNewPlayers } from '../utils/EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
 describe('Matches', () => {
-  it('should render MatchesPanel with EventContext', async () => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
-
-    const setEventID = jest.fn((id: string) => { });
-
-    expect(event).toBeDefined();
-
-    await act(async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <EventContext.Provider value={{ event, setEventID }}>
-              <MatchesPanel />
-            </EventContext.Provider>
-          </Suspense>
-        </ThemeProvider>,
-      );
-    });
-
-    expect(screen.getByTestId('more')).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('more'));
+  const event = new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.DOUBLES_ROUND_ROBIN,
   });
+  const players = getNewPlayers(event.id, 6);
+  const matches = [new Match({
+    eventID: 'eid',
+    orderID: 1,
+    playerIndices: [0, 1],
+    status: MatchStatus.NEW,
+  }), new Match({
+    eventID: 'eid',
+    orderID: 2,
+    playerIndices: [1, 0],
+    status: MatchStatus.NEW,
+  })];
 
   it('should render MatchesPanel without EventContext', async () => {
-    await act(async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <MatchesPanel />
-          </Suspense>
-        </ThemeProvider>,
-      );
-    });
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <MatchesPanel
+            matches={matches}
+            fetchMatches={() => { }}
+            players={players}
+          />
+        </Suspense>
+      </ThemeProvider>,
+    );
 
-    expect(screen.getByTestId('more')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByTestId('more'));
+    expect(prettyDOM()).toBeDefined();
   });
 });

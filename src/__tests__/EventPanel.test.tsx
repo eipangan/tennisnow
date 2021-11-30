@@ -1,17 +1,35 @@
-import { act, render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, prettyDOM, render } from '@testing-library/react';
+import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { EventContext } from '../EventContext';
 import EventPanel from '../EventPanel';
-import useEvent from '../hooks/useEvent';
+import { Event, EventType, Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
+import { getNewPlayers } from '../utils/EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
 describe('EventPanel', () => {
+  const event = new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.DOUBLES_ROUND_ROBIN,
+  });
+  const players = getNewPlayers(event.id, 6);
+  const matches = [new Match({
+    eventID: 'eid',
+    orderID: 1,
+    playerIndices: [0, 1],
+    status: MatchStatus.NEW,
+  }), new Match({
+    eventID: 'eid',
+    orderID: 2,
+    playerIndices: [1, 0],
+    status: MatchStatus.NEW,
+  })];
+
   beforeAll(() => {
     window.matchMedia = window.matchMedia || (() => ({
       matches: false,
@@ -20,39 +38,20 @@ describe('EventPanel', () => {
     }));
   });
 
-  it('should render without with EventContext', async () => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
+  it('should return a valid DOM', async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <EventPanel
+            event={event}
+            matches={matches}
+            fetchMatches={() => { }}
+            players={players}
+          />
+        </Suspense>
+      </ThemeProvider>,
+    );
 
-    const setEventID = jest.fn((id: string) => { });
-
-    expect(event).toBeDefined();
-
-    await act(async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <EventContext.Provider value={{ event, setEventID }}>
-              <EventPanel />
-            </EventContext.Provider>
-          </Suspense>
-        </ThemeProvider>,
-      );
-    });
-
-    expect(screen.getByText('player')).toBeInTheDocument();
-  });
-
-  it('should render without without EventContext', async () => {
-    await act(async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <EventPanel />
-          </Suspense>
-        </ThemeProvider>,
-      );
-    });
+    expect(prettyDOM()).toBeDefined();
   });
 });
