@@ -1,5 +1,4 @@
 import { prettyDOM, render, screen } from '@testing-library/react';
-import { fail } from 'assert';
 import dayjs from 'dayjs';
 import React from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -11,20 +10,16 @@ import { getNewPlayers } from '../utils/EventUtils';
 let player: Player;
 
 describe('PlayerPanel', () => {
-  beforeAll(() => {
-    const event = new Event({
-      date: dayjs().add(1, 'hour').startOf('hour').toDate()
-        .toISOString(),
-      type: EventType.DOUBLES_ROUND_ROBIN,
-    });
-    const players = getNewPlayers(event.id, 6);
+  const event = new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.DOUBLES_ROUND_ROBIN,
+  });
+  const players = getNewPlayers(event.id, 6);
 
+  beforeAll(() => {
     expect(event).toBeDefined();
     expect(players).toBeDefined();
-
-    if (!players) fail('players undefined');
-    [player] = players;
-    expect(player).toBeDefined();
   });
 
   it('should return a valid DOM', async () => {

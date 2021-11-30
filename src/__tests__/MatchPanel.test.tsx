@@ -1,12 +1,10 @@
-import { act, prettyDOM, render } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { prettyDOM, render } from '@testing-library/react';
 import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import useEvent from '../hooks/useEvent';
 import '../i18n';
 import MatchPanel from '../MatchPanel';
-import { Match, MatchStatus } from '../models';
+import { Event, EventType, Match, MatchStatus } from '../models';
 import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
 
@@ -17,88 +15,37 @@ jest.mock('../PlayerPanel', () => ({
 jest.mock('aws-amplify');
 
 describe('MatchPanel', () => {
-  describe('invalid matchID', () => {
-    it('should render without crashing', async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <MatchPanel matchID="" />
-          </Suspense>
-        </ThemeProvider>,
-      );
-
-      expect(prettyDOM()).toBeDefined();
-    });
-
-    it('should render without crashing', async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <MatchPanel matchID="ABC" />
-          </Suspense>
-        </ThemeProvider>,
-      );
-
-      expect(prettyDOM()).toBeDefined();
-    });
+  const event = new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.DOUBLES_ROUND_ROBIN,
+  });
+  const players = getNewPlayers(event.id, 6);
+  const match = new Match({
+    eventID: 'eid',
+    orderID: 1,
+    playerIndices: [0, 1],
+    status: MatchStatus.NEW,
   });
 
-  describe('valid matchID', () => {
-    beforeAll(() => {
-      const { result } = renderHook(() => useEvent());
-      const { current } = result;
-      const { event } = current;
-
-      const players = getNewPlayers(event.id, 6);
-
-      expect(event).toBeDefined();
-      expect(players).toBeDefined();
-    });
-
-    it('should render without crashing', async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <MatchPanel matchID="ABC" />
-          </Suspense>
-        </ThemeProvider>,
-      );
-
-      expect(prettyDOM()).toBeDefined();
-    });
+  beforeAll(() => {
+    expect(event).toBeDefined();
+    expect(players).toBeDefined();
   });
 
-  describe('valid match', () => {
-    const match = new Match({
-      eventID: 'eid',
-      createdTime: dayjs().toDate().toISOString(),
-      playerIndices: [0, 1],
-      status: MatchStatus.NEW,
-    });
+  it('should return a valid DOM', async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback={null}>
+          <MatchPanel
+            match={match}
+            fetchMatches={() => { }}
+            players={players}
+          />
+        </Suspense>
+      </ThemeProvider>,
+    );
 
-    beforeAll(() => {
-      const { result } = renderHook(() => useEvent());
-      const { current } = result;
-      const { event } = current;
-
-      const players = getNewPlayers(event.id, 6);
-
-      expect(event).toBeDefined();
-      expect(players).toBeDefined();
-    });
-
-    it('should render without crashing', async () => {
-      await act(async () => {
-        render(
-          <ThemeProvider theme={theme}>
-            <Suspense fallback={null}>
-              <MatchPanel matchID={match.id} />
-            </Suspense>
-          </ThemeProvider>,
-        );
-      });
-
-      expect(prettyDOM()).toBeDefined();
-    });
+    expect(prettyDOM()).toBeDefined();
   });
 });
