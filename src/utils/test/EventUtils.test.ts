@@ -9,6 +9,10 @@ describe('EventUtils', () => {
     type: EventType.DOUBLES_ROUND_ROBIN,
   });
 
+  beforeAll(() => {
+    expect(event).toBeDefined();
+  });
+
   it('should run getPlayers() with just eventID parameter', async () => {
     const defaultNumPlayers = 6;
     const players = getNewPlayers(event.id);

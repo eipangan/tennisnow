@@ -8,6 +8,10 @@ describe('Utils', () => {
     type: EventType.DOUBLES_ROUND_ROBIN,
   });
 
+  beforeAll(() => {
+    expect(event).toBeDefined();
+  });
+
   it('should runs utils as expected', async () => {
   });
 });

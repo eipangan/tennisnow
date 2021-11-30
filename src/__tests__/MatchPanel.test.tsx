@@ -20,16 +20,17 @@ describe('MatchPanel', () => {
       .toISOString(),
     type: EventType.DOUBLES_ROUND_ROBIN,
   });
-  const players = getNewPlayers(event.id, 6);
   const match = new Match({
     eventID: 'eid',
     orderID: 1,
     playerIndices: [0, 1],
     status: MatchStatus.NEW,
   });
+  const players = getNewPlayers(event.id, 6);
 
   beforeAll(() => {
     expect(event).toBeDefined();
+    expect(match).toBeDefined();
     expect(players).toBeDefined();
   });
 

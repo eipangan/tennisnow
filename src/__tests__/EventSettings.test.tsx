@@ -11,6 +11,12 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
+window.matchMedia = window.matchMedia || (() => ({
+  matches: false,
+  addListener() { },
+  removeListener() { },
+}));
+
 describe('EventSettings', () => {
   const event = new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
@@ -20,16 +26,11 @@ describe('EventSettings', () => {
   const players = getNewPlayers(event.id, 6);
 
   beforeAll(() => {
-    window.matchMedia = window.matchMedia || (() => ({
-      matches: false,
-      addListener() { },
-      removeListener() { },
-    }));
+    expect(event).toBeDefined();
+    expect(players).toBeDefined();
   });
 
   it('should render without crashing', async () => {
-    const setEventID = jest.fn((id: string) => { });
-
     await act(async () => {
       render(
         <ThemeProvider theme={theme}>

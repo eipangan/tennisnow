@@ -11,13 +11,18 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
+window.matchMedia = window.matchMedia || (() => ({
+  matches: false,
+  addListener() { },
+  removeListener() { },
+}));
+
 describe('PlayersSummary', () => {
   const event = new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
     type: EventType.DOUBLES_ROUND_ROBIN,
   });
-  const players = getNewPlayers(event.id, 6);
   const matches = [new Match({
     eventID: 'eid',
     orderID: 1,
@@ -29,13 +34,12 @@ describe('PlayersSummary', () => {
     playerIndices: [1, 0],
     status: MatchStatus.NEW,
   })];
+  const players = getNewPlayers(event.id, 6);
 
   beforeAll(() => {
-    window.matchMedia = window.matchMedia || (() => ({
-      matches: false,
-      addListener() { },
-      removeListener() { },
-    }));
+    expect(event).toBeDefined();
+    expect(matches).toBeDefined();
+    expect(players).toBeDefined();
   });
 
   it('should render without crashing', async () => {

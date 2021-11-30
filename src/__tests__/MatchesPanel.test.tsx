@@ -17,7 +17,6 @@ describe('Matches', () => {
       .toISOString(),
     type: EventType.DOUBLES_ROUND_ROBIN,
   });
-  const players = getNewPlayers(event.id, 6);
   const matches = [new Match({
     eventID: 'eid',
     orderID: 1,
@@ -29,6 +28,13 @@ describe('Matches', () => {
     playerIndices: [1, 0],
     status: MatchStatus.NEW,
   })];
+  const players = getNewPlayers(event.id, 6);
+
+  beforeAll(() => {
+    expect(event).toBeDefined();
+    expect(matches).toBeDefined();
+    expect(players).toBeDefined();
+  });
 
   it('should render without crashing', async () => {
     render(
