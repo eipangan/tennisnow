@@ -1,4 +1,5 @@
 import { prettyDOM, render, screen } from '@testing-library/react';
+import { fail } from 'assert';
 import dayjs from 'dayjs';
 import React from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -16,10 +17,13 @@ describe('PlayerPanel', () => {
     type: EventType.DOUBLES_ROUND_ROBIN,
   });
   const players = getNewPlayers(event.id, 6);
+  if (!players) fail('players undefined');
+  [player] = players;
 
   beforeAll(() => {
     expect(event).toBeDefined();
     expect(players).toBeDefined();
+    expect(player).toBeDefined();
   });
 
   it('should return a valid DOM', async () => {
