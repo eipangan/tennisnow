@@ -1,17 +1,35 @@
-import { act, render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, prettyDOM, render, screen } from '@testing-library/react';
+import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
-import { EventContext } from '../EventContext';
-import useEvent from '../hooks/useEvent';
+import { Event, EventType, Match, MatchStatus } from '../models';
 import PlayersSummary from '../PlayersSummary';
 import { theme } from '../Theme';
+import { getNewPlayers } from '../utils/EventUtils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
 describe('PlayersSummary', () => {
+  const event = new Event({
+    date: dayjs().add(1, 'hour').startOf('hour').toDate()
+      .toISOString(),
+    type: EventType.DOUBLES_ROUND_ROBIN,
+  });
+  const players = getNewPlayers(event.id, 6);
+  const matches = [new Match({
+    eventID: 'eid',
+    orderID: 1,
+    playerIndices: [0, 1],
+    status: MatchStatus.NEW,
+  }), new Match({
+    eventID: 'eid',
+    orderID: 2,
+    playerIndices: [1, 0],
+    status: MatchStatus.NEW,
+  })];
+
   beforeAll(() => {
     window.matchMedia = window.matchMedia || (() => ({
       matches: false,
@@ -20,40 +38,21 @@ describe('PlayersSummary', () => {
     }));
   });
 
-  it('should render without crashing with EventContext', async () => {
-    const { result } = renderHook(() => useEvent());
-    const { current } = result;
-    const { event } = current;
-
-    const setEventID = jest.fn((id: string) => { });
-
-    expect(event).toBeDefined();
-
+  it('should return a valid DOM', async () => {
     await act(async () => {
       render(
         <ThemeProvider theme={theme}>
           <Suspense fallback={null}>
-            <EventContext.Provider value={{ event, setEventID }}>
-              <PlayersSummary />
-            </EventContext.Provider>
+            <PlayersSummary
+              matches={matches}
+              players={players}
+            />
           </Suspense>
         </ThemeProvider>,
       );
     });
 
-    expect(screen.getByText('player')).toBeInTheDocument();
-  });
-
-  it('should render without crashing without EventContext', async () => {
-    await act(async () => {
-      render(
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>
-            <PlayersSummary />
-          </Suspense>
-        </ThemeProvider>,
-      );
-    });
+    expect(prettyDOM()).toBeDefined();
 
     expect(screen.getByText('player')).toBeInTheDocument();
     expect(screen.getByText('won')).toBeInTheDocument();

@@ -1,4 +1,4 @@
-import { act, fireEvent, prettyDOM, render, screen } from '@testing-library/react';
+import { prettyDOM, render } from '@testing-library/react';
 import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -30,7 +30,7 @@ describe('Matches', () => {
     status: MatchStatus.NEW,
   })];
 
-  it('should render MatchesPanel without EventContext', async () => {
+  it('should return a valid DOM', async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>
