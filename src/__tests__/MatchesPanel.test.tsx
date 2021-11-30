@@ -30,7 +30,7 @@ describe('Matches', () => {
     status: MatchStatus.NEW,
   })];
 
-  it('should return a valid DOM', async () => {
+  it('should render without crashing', async () => {
     render(
       <ThemeProvider theme={theme}>
         <Suspense fallback={null}>

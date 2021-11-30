@@ -27,7 +27,7 @@ describe('EventSettings', () => {
     }));
   });
 
-  it('should return a valid DOM', async () => {
+  it('should render without crashing', async () => {
     const setEventID = jest.fn((id: string) => { });
 
     await act(async () => {

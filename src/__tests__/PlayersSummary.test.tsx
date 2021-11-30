@@ -38,7 +38,7 @@ describe('PlayersSummary', () => {
     }));
   });
 
-  it('should return a valid DOM', async () => {
+  it('should render without crashing', async () => {
     await act(async () => {
       render(
         <ThemeProvider theme={theme}>
