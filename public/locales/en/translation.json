@@ -15,7 +15,7 @@
   "players": "{{numPlayers}} players",
   "randomizeOrder": "Randomize Order",
   "SINGLES_ROUND_ROBIN": "Singles",
-  "slogan": "Web app to keep track of matches in small tennis events",
+  "slogan": "Tennis round robin schedule generator",
   "DOUBLES_ROUND_ROBIN": "Doubles",
   "title": "Tennisnow.net",
   "vs": "vs",

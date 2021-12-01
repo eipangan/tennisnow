@@ -1,7 +1,7 @@
 {
   "short_name": "Tennisnow.net",
   "name": "Tennisnow.net",
-  "description": "Web app to keep track of matches in small tennis events!",
+  "description": "Tennis round robin schedule generator. テニス乱数表アプリ。",
   "icons": [
     {
       "src": "favicon.ico",
