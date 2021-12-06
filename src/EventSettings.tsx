@@ -110,7 +110,7 @@ const EventSettings = (props: EventSettingsProps) => {
     fetchPlayers();
     return () => { };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myEvent, form, minNumPlayers]);
+  }, []);
 
   // whenever players change, update player names
   useEffect(() => {
