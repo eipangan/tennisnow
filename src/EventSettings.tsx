@@ -50,7 +50,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const { Item } = Form;
   const { Panel } = Collapse;
 
-  const minNumPlayers = 2;
+  const [minNumPlayers, setMinNumPlayers] = useState<number>(event && event.type === EventType.SINGLES_ROUND_ROBIN ? 2 : 4);
   const maxNumPlayers = 8;
   const playerPrefix = 'player';
 
@@ -110,7 +110,7 @@ const EventSettings = (props: EventSettingsProps) => {
     fetchPlayers();
     return () => { };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myEvent, form]);
+  }, [myEvent, form, minNumPlayers]);
 
   // whenever players change, update player names
   useEffect(() => {
@@ -138,6 +138,21 @@ const EventSettings = (props: EventSettingsProps) => {
         form={form}
         labelCol={{ span: 0 }}
         initialValues={{ eventType: myEvent.type }}
+        onValuesChange={({ type }: { type: EventType }) => {
+          switch (type) {
+            case EventType.SINGLES_ROUND_ROBIN:
+              setMinNumPlayers(2);
+              break;
+            case EventType.DOUBLES_ROUND_ROBIN:
+              setMinNumPlayers(4);
+              if (numPlayers < 4) {
+                setNumPlayers(4);
+              }
+              break;
+            default:
+              break;
+          }
+        }}
       >
         <div className={classes.eventSettingsRow}>
           <Item
