@@ -40,15 +40,11 @@ const EventSettings = (props: EventSettingsProps) => {
   const classes = useStyles({ theme });
 
   const { event, setEvent, players, setPlayers, onClose } = props;
-
   const [myEvent, _] = useState<Event>(new Event({
     date: dayjs().add(1, 'hour').startOf('hour').toDate()
       .toISOString(),
-    type: EventType.DOUBLES_ROUND_ROBIN,
+    type: event ? event.type : EventType.DOUBLES_ROUND_ROBIN,
   }));
-
-  const { Item } = Form;
-  const { Panel } = Collapse;
 
   const [minNumPlayers, setMinNumPlayers] = useState<number>(event && event.type === EventType.SINGLES_ROUND_ROBIN ? 2 : 4);
   const maxNumPlayers = 8;
@@ -57,7 +53,10 @@ const EventSettings = (props: EventSettingsProps) => {
   const [form] = Form.useForm();
   const [numPlayers, setNumPlayers] = useState<number>(players && players.length >= minNumPlayers && players.length <= maxNumPlayers ? players.length : 6);
 
-  const getUpdatedEvent = (): Event => Event.copyOf(myEvent, (updated) => {
+  const { Item } = Form;
+  const { Panel } = Collapse;
+
+  const getOkEvent = (): Event => Event.copyOf(myEvent, (updated) => {
     // update date and time
     const date = form.getFieldValue('date');
     const time = form.getFieldValue('time');
@@ -90,29 +89,7 @@ const EventSettings = (props: EventSettingsProps) => {
     return updatedPlayers;
   };
 
-  // initialize screen (called only once)
-  useEffect(() => {
-    form.setFieldsValue({
-      date: dayjs(myEvent.date),
-      time: dayjs(myEvent.date).format('HHmm'),
-      type: event ? event.type : myEvent.type,
-    });
-
-    const fetchPlayers = async () => {
-      let fetchedPlayers = await getPlayers(myEvent.id);
-      if (fetchedPlayers.length < minNumPlayers) {
-        fetchedPlayers = getNewPlayers(myEvent.id, numPlayers);
-      }
-
-      setNumPlayers(fetchedPlayers.length);
-    };
-
-    fetchPlayers();
-    return () => { };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // whenever players change, update player names
+  // initialize player names if already exist (called only once)
   useEffect(() => {
     if (players) {
       players.forEach((player, index) => {
@@ -121,8 +98,7 @@ const EventSettings = (props: EventSettingsProps) => {
         });
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [players]);
+  }, [form, players]);
 
   return (
     <Drawer
@@ -137,7 +113,11 @@ const EventSettings = (props: EventSettingsProps) => {
       <Form
         form={form}
         labelCol={{ span: 0 }}
-        initialValues={{ eventType: myEvent.type }}
+        initialValues={{
+          date: dayjs(myEvent.date),
+          time: dayjs(myEvent.date).format('HHmm'),
+          type: myEvent.type,
+        }}
         onValuesChange={({ type }: { type: EventType }) => {
           switch (type) {
             case EventType.SINGLES_ROUND_ROBIN:
@@ -273,7 +253,7 @@ const EventSettings = (props: EventSettingsProps) => {
             shape="round"
             type="primary"
             onClick={async () => {
-              const okEvent = getUpdatedEvent();
+              const okEvent = getOkEvent();
               saveEvent(okEvent);
               setEvent(okEvent);
 
