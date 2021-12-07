@@ -146,7 +146,7 @@ const PlayersSummary = (props: PlayersSummaryProps) => {
     if (JSON.stringify(columns) !== JSON.stringify(myColumns)) {
       setColumns(myColumns);
     }
-  }, [matches, players]);
+  }, [columns, datasource, matches, players, t]);
 
   return (
     <Table

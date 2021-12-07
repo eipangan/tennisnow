@@ -53,7 +53,7 @@
         "no-unused-vars": "off",
         "no-use-before-define": "off",
         "object-curly-newline": "off",
-        "react-hooks/exhaustive-deps": "off",
+        "react-hooks/exhaustive-deps": "warn",
         "react-hooks/rules-of-hooks": "error",
         "react/jsx-filename-extension": [
             1,

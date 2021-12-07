@@ -106,7 +106,7 @@ const MatchPanel = (props: MatchPanelProps) => {
       }));
       fetchMatches(match.eventID);
     }
-  }, [status]);
+  }, [fetchMatches, match, status]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <div />;
 
