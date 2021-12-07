@@ -27,7 +27,7 @@ const useStyles = createUseStyles((theme: ThemeType) => {
       flex: 'none',
       flexDirection: 'column',
       fontSize: 'medium',
-      minWidth: '90px',
+      minWidth: '69px',
       whiteSpace: 'nowrap',
     },
     matchWinner: {
