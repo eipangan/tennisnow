@@ -106,7 +106,8 @@ const MatchPanel = (props: MatchPanelProps) => {
       }));
       fetchMatches(match.eventID);
     }
-  }, [fetchMatches, match, status]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <div />;
 
