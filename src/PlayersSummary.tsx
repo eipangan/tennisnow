@@ -146,7 +146,6 @@ const PlayersSummary = (props: PlayersSummaryProps) => {
     if (JSON.stringify(columns) !== JSON.stringify(myColumns)) {
       setColumns(myColumns);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches, players]);
 
   return (
