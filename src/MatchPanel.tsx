@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { EventContext } from './EventContext';
 import { Match, MatchStatus, Player } from './models';
 import PlayerPanel from './PlayerPanel';
 import { ThemeType } from './Theme';
@@ -52,7 +53,6 @@ const useStyles = createUseStyles((theme: ThemeType) => {
 
 type MatchPanelProps = {
   match: Match;
-  fetchMatches: (eventID: string) => void;
   players: Player[];
 };
 
@@ -61,7 +61,8 @@ const MatchPanel = (props: MatchPanelProps) => {
   const theme = useTheme<ThemeType>();
   const classes = useStyles({ theme });
 
-  const { match, fetchMatches, players } = props;
+  const { match, players } = props;
+  const { fetchMatches } = useContext(EventContext);
   const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status);
 
   let player1Class: string;
@@ -106,7 +107,7 @@ const MatchPanel = (props: MatchPanelProps) => {
       }));
       fetchMatches(match.eventID);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   if (!match || !players || !match.playerIndices || match.playerIndices.length < 2) return <div />;

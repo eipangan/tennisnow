@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Button, PageHeader, Tag, Typography } from 'antd';
 import { DataStore } from 'aws-amplify';
@@ -8,6 +9,7 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
+import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
 import EventSettings from './EventSettings';
 import { ReactComponent as AppTitle } from './images/title.svg';
@@ -115,6 +117,8 @@ const App = () => {
       fetchMatches(event.id);
     }
     return () => { };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
   // fetch players
@@ -170,12 +174,13 @@ const App = () => {
             onClose={() => setIsEventSettingsVisible(false)}
           />
         ) : <div />}
-        <EventPanel
-          event={event}
-          matches={matches}
-          fetchMatches={fetchMatches}
-          players={players}
-        />
+        <EventContext.Provider value={{ fetchMatches }}>
+          <EventPanel
+            event={event}
+            matches={matches}
+            players={players}
+          />
+        </EventContext.Provider>
       </div>
       <div className={classes.appFooter}>
         {t('title')}

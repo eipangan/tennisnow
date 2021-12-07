@@ -42,7 +42,6 @@ describe('Matches', () => {
         <Suspense fallback={null}>
           <MatchesPanel
             matches={matches}
-            fetchMatches={() => { }}
             players={players}
           />
         </Suspense>

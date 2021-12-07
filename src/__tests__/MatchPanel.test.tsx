@@ -40,7 +40,6 @@ describe('MatchPanel', () => {
         <Suspense fallback={null}>
           <MatchPanel
             match={match}
-            fetchMatches={() => { }}
             players={players}
           />
         </Suspense>

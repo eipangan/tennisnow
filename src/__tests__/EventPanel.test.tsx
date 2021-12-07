@@ -1,4 +1,4 @@
-import { act, prettyDOM, render } from '@testing-library/react';
+import { prettyDOM, render } from '@testing-library/react';
 import dayjs from 'dayjs';
 import React, { Suspense } from 'react';
 import { ThemeProvider } from 'react-jss';
@@ -49,7 +49,6 @@ describe('EventPanel', () => {
           <EventPanel
             event={event}
             matches={matches}
-            fetchMatches={() => { }}
             players={players}
           />
         </Suspense>
