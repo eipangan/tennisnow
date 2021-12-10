@@ -11,6 +11,8 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: any) => key }),
 }));
 
+jest.mock('aws-amplify');
+
 window.matchMedia = window.matchMedia || (() => ({
   matches: false,
   addListener() { },
