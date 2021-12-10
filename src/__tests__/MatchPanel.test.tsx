@@ -35,11 +35,46 @@ describe('MatchPanel', () => {
 
   const fetchMatches = async (eid: string) => { };
 
-  it('should render MatchSatus.NEW', async () => {
+  it('should render MatchSatus.NEW SINGLES', async () => {
     const match = new Match({
       eventID: event.id,
       orderID: 1,
       playerIndices: [0, 1],
+      status: MatchStatus.NEW,
+    });
+
+    render(
+      <ThemeProvider theme={theme}>
+        <Suspense fallback="loading...">
+          <EventContext.Provider value={{ fetchMatches }}>
+            <MatchPanel
+              match={match}
+              players={players}
+            />
+          </EventContext.Provider>
+        </Suspense>
+      </ThemeProvider>,
+    );
+
+    // loaded
+    expect(prettyDOM()).toBeDefined();
+    expect(screen.getByTestId('player1')).toBeInTheDocument();
+    expect(screen.getByTestId('middle')).toBeInTheDocument();
+    expect(screen.getByTestId('player2')).toBeInTheDocument();
+    expect(screen.getByText('vs')).toBeInTheDocument();
+
+    // click
+    fireEvent.click(screen.getByTestId('player1'));
+    fireEvent.click(screen.getByTestId('middle'));
+    expect(screen.getByText('vs')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('player2'));
+  });
+
+  it('should render MatchSatus.NEW DOUBLES', async () => {
+    const match = new Match({
+      eventID: event.id,
+      orderID: 1,
+      playerIndices: [0, 1, 2, 3],
       status: MatchStatus.NEW,
     });
 
