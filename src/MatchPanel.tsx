@@ -92,6 +92,7 @@ const MatchPanel = (props: MatchPanelProps) => {
       player2Class = classes.matchWinner;
       break;
 
+    case MatchStatus.NEW:
     default:
       player1Class = classes.matchNeutral;
       middleClass = classes.matchVs;
