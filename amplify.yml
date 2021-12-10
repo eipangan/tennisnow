@@ -30,3 +30,5 @@ test:
         - npm run test -- --watchAll=false
   artifacts:
     baseDirectory: cypress
+    files:
+      - '**/*'
