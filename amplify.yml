@@ -9,25 +9,15 @@ frontend:
     preBuild:
       commands:
         - npm ci
+    test:
+      - npm run test -- --coverage --watchAll=false
     build:
       commands:
         - npm run build
   artifacts:
     baseDirectory: build
     files:
-      - '**/*'
+      - "**/*"
   cache:
     paths:
       - node_modules/**/*
-test:
-  phases:
-    preTest:
-      commands:
-        - npm ci
-    test:
-      commands:
-        - npm run test -- --coverage --watchAll=false
-  artifacts:
-    baseDirectory: build
-    files:
-      - '**/*'
