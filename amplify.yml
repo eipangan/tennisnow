@@ -27,7 +27,7 @@ test:
         - mkdir -p cypress
     test:
       commands:
-        - npm run test -- --watchAll=false
+        - npm run test -- --coverage --watchAll=false
   artifacts:
     baseDirectory: cypress
     files:
