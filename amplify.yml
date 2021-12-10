@@ -10,7 +10,8 @@ frontend:
       commands:
         - npm ci
     test:
-      - npm run test -- --coverage --watchAll=false
+      commands:
+        - npm run test -- --coverage --watchAll=false
     build:
       commands:
         - npm run build
@@ -20,4 +21,4 @@ frontend:
       - "**/*"
   cache:
     paths:
-      - node_modules/**/*
+      - node_modules/**/*Ø
