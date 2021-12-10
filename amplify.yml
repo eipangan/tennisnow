@@ -24,6 +24,7 @@ test:
     preTest:
       commands:
         - npm ci
+        - mkdir -p cypress
     test:
       commands:
         - npm run test -- --watchAll=false
