@@ -70,6 +70,54 @@ describe('MatchPanel', () => {
       expect(screen.getByText('vs')).toBeInTheDocument();
       fireEvent.click(screen.getByTestId('player2'));
     });
+
+    it('should render empty indices', async () => {
+      const match = new Match({
+        eventID: event.id,
+        orderID: 1,
+        playerIndices: [],
+        status: MatchStatus.NEW,
+      });
+
+      render(
+        <ThemeProvider theme={theme}>
+          <Suspense fallback="loading...">
+            <EventContext.Provider value={{ fetchMatches }}>
+              <MatchPanel
+                match={match}
+                players={players}
+              />
+            </EventContext.Provider>
+          </Suspense>
+        </ThemeProvider>,
+      );
+
+      expect(prettyDOM()).toBeDefined();
+    });
+
+    it('should render undefined indices', async () => {
+      const match = new Match({
+        eventID: event.id,
+        orderID: 1,
+        playerIndices: undefined,
+        status: MatchStatus.NEW,
+      });
+
+      render(
+        <ThemeProvider theme={theme}>
+          <Suspense fallback="loading...">
+            <EventContext.Provider value={{ fetchMatches }}>
+              <MatchPanel
+                match={match}
+                players={players}
+              />
+            </EventContext.Provider>
+          </Suspense>
+        </ThemeProvider>,
+      );
+
+      expect(prettyDOM()).toBeDefined();
+    });
   });
 
   describe('SINGLES_ROUND_ROBIN', () => {

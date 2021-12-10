@@ -111,14 +111,12 @@ const MatchPanel = (props: MatchPanelProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
-  if (!match.playerIndices || match.playerIndices.length < 2) return <div />;
-
   let player1: Player | undefined | Player[];
   let player2: Player | undefined | Player[];
-  if (match.playerIndices.length === 2) {
+  if (match.playerIndices && match.playerIndices.length === 2) {
     player1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
     player2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
-  } else if (match.playerIndices.length === 4) {
+  } else if (match.playerIndices && match.playerIndices.length === 4) {
     const p1 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[0] : 0));
     const p2 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[1] : 1));
     const p3 = players.find((player) => (match.playerIndices ? player.index === match.playerIndices[2] : 2));
