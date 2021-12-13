@@ -77,7 +77,8 @@ const EventSettings = (props: EventSettingsProps) => {
   const getUpdatedPlayers = (myEventID: string): Player[] => {
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
-      const newPlayerName = form.getFieldValue(`${playerPrefix}${p}`).trim();
+      let newPlayerName = form.getFieldValue(`${playerPrefix}${p}`);
+      newPlayerName = newPlayerName ? newPlayerName.trim() : '';
       if (newPlayerName && newPlayerName.length > 0) {
         oldPlayerNames.push(newPlayerName);
       } else {
@@ -146,7 +147,7 @@ const EventSettings = (props: EventSettingsProps) => {
           </Item>
         </div>
         <div className={classes.eventSettingsRow}>
-          <Collapse style={{ width: 270 }} defaultActiveKey={players.find((player) => (player.name && player.name.length > 1)) ? 'players' : undefined}>
+          <Collapse style={{ width: 270 }} defaultActiveKey={players.find((player) => (player.name && player.name.length > 0)) ? 'players' : undefined}>
             <Panel
               className={classes.eventSettingsPlayers}
               showArrow={false}
