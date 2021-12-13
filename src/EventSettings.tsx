@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Event, EventType, Player } from './models';
 import { ThemeType } from './Theme';
-import { getNewPlayers, getPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
+import { getNewPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
 import { shuffle } from './utils/Utils';
 
 // initialize styles
@@ -77,7 +77,7 @@ const EventSettings = (props: EventSettingsProps) => {
   const getUpdatedPlayers = (myEventID: string): Player[] => {
     const oldPlayerNames: string[] = [];
     for (let p = 0; p < numPlayers; p += 1) {
-      const newPlayerName = form.getFieldValue(`${playerPrefix}${p}`);
+      const newPlayerName = form.getFieldValue(`${playerPrefix}${p}`).trim();
       if (newPlayerName && newPlayerName.length > 0) {
         oldPlayerNames.push(newPlayerName);
       } else {
