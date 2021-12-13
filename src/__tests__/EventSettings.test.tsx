@@ -8,9 +8,14 @@ import { theme } from '../Theme';
 import { getNewPlayers } from '../utils/EventUtils';
 
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: any) => key }),
+  useTranslation: () => ({
+    t: (key: any) => key,
+    i18n: {
+      language: 'en',
+      changeLanguage: (lng: string) => { },
+    },
+  }),
 }));
-
 jest.mock('aws-amplify');
 
 window.matchMedia = window.matchMedia || (() => ({
