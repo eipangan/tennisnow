@@ -63,7 +63,7 @@ const MatchPanel = (props: MatchPanelProps) => {
 
   const { match, players } = props;
   const { fetchMatches } = useContext(EventContext);
-  const [status, setStatus] = useState<MatchStatus | keyof typeof MatchStatus>(match.status);
+  const [status, setStatus] = useState<keyof typeof MatchStatus>(match.status);
 
   let player1Class: string;
   let middleClass: string;
@@ -100,6 +100,10 @@ const MatchPanel = (props: MatchPanelProps) => {
       player2Class = classes.matchNeutral;
       break;
   }
+
+  useEffect(() => {
+    setStatus(match.status);
+  }, [match.status]);
 
   useEffect(() => {
     if (match.status !== status) {
