@@ -13,8 +13,9 @@ import { EventContext } from './EventContext';
 import EventPanel from './EventPanel';
 import EventSettings from './EventSettings';
 import { ReactComponent as AppTitle } from './images/title.svg';
-import { Event, Match, Player } from './models';
+import { Event, EventType, Match, Player } from './models';
 import { ThemeType } from './Theme';
+import { getNewPlayers, saveEvent, saveMatches, savePlayers } from './utils/EventUtils';
 
 // initialize dayjs
 dayjs.extend(updateLocale);
@@ -102,7 +103,28 @@ const App = () => {
       };
       fetchEvent(eventID);
     } else {
-      setIsEventSettingsVisible(true);
+      const newEvent = new Event({
+        date: dayjs().add(1, 'hour').startOf('hour').toDate()
+          .toISOString(),
+        type: EventType.DOUBLES_ROUND_ROBIN,
+      });
+      if (newEvent) {
+        const numPlayers = 6;
+        const oldPlayerNames: string[] = [];
+        for (let p = 0; p < numPlayers; p += 1) {
+          oldPlayerNames.push(String(p + 1));
+        }
+
+        const okPlayers = getNewPlayers(newEvent.id, numPlayers, oldPlayerNames);
+
+        savePlayers(newEvent.id, okPlayers)
+          .then(() => saveMatches(newEvent, okPlayers))
+          .then(() => setEvent(newEvent))
+          .then(() => saveEvent(newEvent))
+          .then(() => setEvent(newEvent));
+      } else {
+        setIsEventSettingsVisible(true);
+      }
     }
   }, []);
 
@@ -203,3 +225,6 @@ const App = () => {
 };
 
 export default App;
+function getUpdatedPlayers(id: any) {
+  throw new Error('Function not implemented.');
+}
