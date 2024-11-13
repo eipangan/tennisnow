@@ -35,5 +35,18 @@
         "tennisnow918c11b0": {}
       }
     }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tennisnow-dev-3775c-authRole",
+      "UnauthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-dev-3775c-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::651151937914:role/amplify-tennisnow-dev-3775c-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-tennisnow-dev-3775c-deployment",
+      "UnauthRoleName": "amplify-tennisnow-dev-3775c-unauthRole",
+      "StackName": "amplify-tennisnow-dev-3775c",
+      "StackId": "arn:aws:cloudformation:us-east-1:651151937914:stack/amplify-tennisnow-dev-3775c/de5a9630-a17c-11ef-8b1a-0affd896db43",
+      "AmplifyAppId": "d3rzxqf6swku6l"
+    }
   }
 }
