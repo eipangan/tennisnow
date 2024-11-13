@@ -1,5 +1,5 @@
 import Table, { ColumnProps } from 'antd/lib/table';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Match, MatchStatus, Player } from './models';

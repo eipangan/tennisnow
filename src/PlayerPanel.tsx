@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Player } from './models';
 import { ThemeType } from './Theme';
