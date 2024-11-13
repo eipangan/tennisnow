@@ -1,4 +1,4 @@
-import { DataStore } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import { Event, EventType, Match, MatchStatus, Player } from '../models';

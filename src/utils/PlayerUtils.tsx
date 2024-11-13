@@ -1,4 +1,4 @@
-import { DataStore } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
 import { Player } from '../models';
 
 /**

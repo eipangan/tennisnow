@@ -2,7 +2,7 @@
 import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Button, Tag, Typography } from 'antd';
 import { PageHeader } from '@ant-design/pro-components';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
