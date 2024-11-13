@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import MatchesPanel from './MatchesPanel';
-import { Event, Match, Player } from './models';
+import React, { Event, Match, Player } from './models';
 import PlayersSummary from './PlayersSummary';
 
 // initialize dayjs

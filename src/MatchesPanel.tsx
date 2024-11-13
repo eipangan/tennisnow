@@ -1,3 +1,4 @@
+import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import MatchPanel from './MatchPanel';
 import { Match, Player } from './models';

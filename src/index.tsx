@@ -1,4 +1,4 @@
-import Amplify from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'react-jss';
