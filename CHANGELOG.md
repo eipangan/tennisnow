@@ -1,5 +1,9 @@
 # Change Log
 
+## 2024.11
+
+* Upgrade libraries to latest versions
+
 ## 2020.06
 
 * Now using server-side state management using AWS Amplify DataStore
