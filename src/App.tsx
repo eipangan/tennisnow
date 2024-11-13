@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { CopyrightCircleOutlined, TwitterOutlined } from '@ant-design/icons';
-import { Button, PageHeader, Tag, Typography } from 'antd';
+import { Button, Tag, Typography } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';

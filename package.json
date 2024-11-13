@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.5.1",
+    "@ant-design/pro-components": "^2.8.1",
     "@aws-amplify/datastore": "^5.0.59",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.9.0",
