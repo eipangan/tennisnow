@@ -18,5 +18,5 @@ The "event" page lists all the details about a particular event. Users can updat
 
 ## Links
 
-* [Change log](CHANGELOG)
-* [How to contribute](CONTRIBUTE)
+* [Change log](CHANGELOG.md)
+* [How to contribute](CONTRIBUTE.md)
