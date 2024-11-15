@@ -24,7 +24,7 @@ export const saveEvent = async (event: Event) => {
  */
 export const getPlayers = async (eventID: string): Promise<Player[]> => {
   let players: Player[] = [];
-  const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
+  const fetchedPlayers = await DataStore.query(Player, (p) => p.eventID.eq(eventID));
   if (fetchedPlayers && Array.isArray(fetchedPlayers)) {
     players = fetchedPlayers.sort((a, b) => a.index - b.index);
   }
@@ -68,7 +68,7 @@ export const savePlayers = async (
   eventID: string,
   players: Player[],
 ): Promise<void> => {
-  const currentPlayers = await DataStore.query(Player, (p) => p.eventID('eq', eventID));
+  const currentPlayers = await DataStore.query(Player, (p) => p.eventID.eq(eventID));
 
   // remove unneeded players
   if (currentPlayers && Array.isArray(currentPlayers)) {

@@ -130,7 +130,7 @@ const App = () => {
   }, []);
 
   const fetchMatches = async (eid: string) => {
-    const fetchedMatches = await DataStore.query(Match, (m) => m.eventID('eq', eid));
+    const fetchedMatches = await DataStore.query(Match, (m) => m.eventID.eq(eid));
     setMatches(fetchedMatches);
   };
 
@@ -149,13 +149,13 @@ const App = () => {
     if (!event) return () => { };
 
     const fetchPlayers = async (eid: string) => {
-      setPlayers(await DataStore.query(Player, (p) => p.eventID('eq', eid)));
+      setPlayers(await DataStore.query(Player, (p) => p.eventID.eq(eid)));
     };
 
     fetchPlayers(event.id);
     const subscription = DataStore.observe(
       Player,
-      (p) => p.eventID('eq', event.id),
+      (p) => p.eventID.eq(event.id),
     )
       .subscribe(() => {
         fetchPlayers(event.id);
