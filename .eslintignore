@@ -11,3 +11,6 @@ src/setupTests.ts
 
 # Ignore automatically generated models
 src/models/*
+src/models/models
+
+amplify-codegen-temp/models/models

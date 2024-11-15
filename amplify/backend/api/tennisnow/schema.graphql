@@ -1,0 +1,42 @@
+type Event @model @auth(rules: [{allow: owner}]) {
+  id: ID! @primaryKey
+  date: AWSDateTime!
+  place: String
+  type: EventType!
+  summary: String
+  details: String
+  matches: [Match] @hasMany(indexName: "byEvent", fields: ["id"])
+  players: [Player] @hasMany(indexName: "byEvent", fields: ["id"])
+  owner: String
+}
+
+type Match @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  eventID: ID! @index(name: "byEvent", sortKeyFields: ["id"])
+  orderID: Int!
+  playerIndices: [Int]
+  status: MatchStatus!
+  owner: String
+}
+
+type Player @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  eventID: ID! @index(name: "byEvent", sortKeyFields: ["id"])
+  index: Int!
+  name: String
+  owner: String
+}
+
+enum EventType {
+  GENERIC_EVENT
+  SINGLES_ROUND_ROBIN
+  FIX_DOUBLES_ROUND_ROBIN
+  DOUBLES_ROUND_ROBIN
+}
+
+enum MatchStatus {
+  NEW
+  PLAYER1_WON
+  PLAYER2_WON
+  DRAW
+}

@@ -1,4 +1,6 @@
 import { ModelInit, MutableModel } from "@aws-amplify/datastore";
+// @ts-ignore
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
 export enum EventType {
   GENERIC_EVENT = "GENERIC_EVENT",
@@ -16,37 +18,82 @@ export enum MatchStatus {
 
 
 
-export declare class Event {
+
+
+
+
+type EagerEvent = {
   readonly id: string;
   readonly date: string;
-  readonly place?: string;
+  readonly place?: string | null;
   readonly type: EventType | keyof typeof EventType;
-  readonly summary?: string;
-  readonly details?: string;
-  readonly matches?: (Match | null)[];
-  readonly players?: (Player | null)[];
-  readonly owner?: string;
-  constructor(init: ModelInit<Event>);
-  static copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
+  readonly summary?: string | null;
+  readonly details?: string | null;
+  readonly matches?: (Match | null)[] | null;
+  readonly players?: (Player | null)[] | null;
+  readonly owner?: string | null;
 }
 
-export declare class Match {
+type LazyEvent = {
+  readonly id: string;
+  readonly date: string;
+  readonly place?: string | null;
+  readonly type: EventType | keyof typeof EventType;
+  readonly summary?: string | null;
+  readonly details?: string | null;
+  readonly matches: AsyncCollection<Match>;
+  readonly players: AsyncCollection<Player>;
+  readonly owner?: string | null;
+}
+
+export declare type Event = LazyLoading extends LazyLoadingDisabled ? EagerEvent : LazyEvent
+
+export declare const Event: (new (init: ModelInit<Event>) => Event) & {
+  copyOf(source: Event, mutator: (draft: MutableModel<Event>) => MutableModel<Event> | void): Event;
+}
+
+type EagerMatch = {
   readonly id: string;
   readonly eventID: string;
   readonly orderID: number;
-  readonly playerIndices?: (number | null)[];
+  readonly playerIndices?: (number | null)[] | null;
   readonly status: MatchStatus | keyof typeof MatchStatus;
-  readonly owner?: string;
-  constructor(init: ModelInit<Match>);
-  static copyOf(source: Match, mutator: (draft: MutableModel<Match>) => MutableModel<Match> | void): Match;
+  readonly owner?: string | null;
 }
 
-export declare class Player {
+type LazyMatch = {
+  readonly id: string;
+  readonly eventID: string;
+  readonly orderID: number;
+  readonly playerIndices?: (number | null)[] | null;
+  readonly status: MatchStatus | keyof typeof MatchStatus;
+  readonly owner?: string | null;
+}
+
+export declare type Match = LazyLoading extends LazyLoadingDisabled ? EagerMatch : LazyMatch
+
+export declare const Match: (new (init: ModelInit<Match>) => Match) & {
+  copyOf(source: Match, mutator: (draft: MutableModel<Match>) => MutableModel<Match> | void): Match;
+}
+
+type EagerPlayer = {
   readonly id: string;
   readonly eventID: string;
   readonly index: number;
-  readonly name?: string;
-  readonly owner?: string;
-  constructor(init: ModelInit<Player>);
-  static copyOf(source: Player, mutator: (draft: MutableModel<Player>) => MutableModel<Player> | void): Player;
+  readonly name?: string | null;
+  readonly owner?: string | null;
+}
+
+type LazyPlayer = {
+  readonly id: string;
+  readonly eventID: string;
+  readonly index: number;
+  readonly name?: string | null;
+  readonly owner?: string | null;
+}
+
+export declare type Player = LazyLoading extends LazyLoadingDisabled ? EagerPlayer : LazyPlayer
+
+export declare const Player: (new (init: ModelInit<Player>) => Player) & {
+  copyOf(source: Player, mutator: (draft: MutableModel<Player>) => MutableModel<Player> | void): Player;
 }

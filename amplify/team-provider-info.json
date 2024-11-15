@@ -47,6 +47,14 @@
       "StackName": "amplify-tennisnow-dev-3775c",
       "StackId": "arn:aws:cloudformation:us-east-1:651151937914:stack/amplify-tennisnow-dev-3775c/de5a9630-a17c-11ef-8b1a-0affd896db43",
       "AmplifyAppId": "d3rzxqf6swku6l"
+    },
+    "categories": {
+      "auth": {
+        "tennisnow14f5a71c": {}
+      },
+      "api": {
+        "tennisnow": {}
+      }
     }
   }
 }

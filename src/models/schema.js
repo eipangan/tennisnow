@@ -91,6 +91,14 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -172,7 +180,8 @@ export const schema = {
                     "properties": {
                         "name": "byEvent",
                         "fields": [
-                            "eventID"
+                            "eventID",
+                            "id"
                         ]
                     }
                 },
@@ -248,7 +257,8 @@ export const schema = {
                     "properties": {
                         "name": "byEvent",
                         "fields": [
-                            "eventID"
+                            "eventID",
+                            "id"
                         ]
                     }
                 },
@@ -295,5 +305,6 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "1aa0cacc935b38312fde911b26ac04fb"
+    "codegenVersion": "3.4.4",
+    "version": "a477fb9a6bafef05710b719675dc1b26"
 };
