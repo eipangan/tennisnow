@@ -1,6 +1,6 @@
 import { Amplify } from 'aws-amplify';
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from 'react-jss';
 import awsconfig from './aws-exports';
 import './i18n';
@@ -14,13 +14,14 @@ const App = React.lazy(() => import('./App'));
 Amplify.configure(awsconfig);
 
 // render App
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(
   <ThemeProvider theme={theme}>
     <Suspense fallback={<div className="loader" />}>
       <App />
     </Suspense>
   </ThemeProvider>,
-  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change
