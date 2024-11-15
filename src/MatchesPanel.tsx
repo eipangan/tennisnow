@@ -38,7 +38,7 @@ const MatchesPanel = (props: MatchesPanelProps) => {
           .map((match, index) => (
             <div
               className={classes.matchPanel}
-              key={index.toString()}
+              key={match.id}
             >
               <MatchPanel
                 match={match}
