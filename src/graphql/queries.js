@@ -10,9 +10,6 @@ export const getEvent = /* GraphQL */ `
       type
       summary
       details
-      owner
-      createdAt
-      updatedAt
       matches {
         nextToken
         __typename
@@ -21,6 +18,9 @@ export const getEvent = /* GraphQL */ `
         nextToken
         __typename
       }
+      owner
+      createdAt
+      updatedAt
       __typename
     }
   }
@@ -72,13 +72,13 @@ export const getMatch = /* GraphQL */ `
     }
   }
 `;
-export const listMatchs = /* GraphQL */ `
-  query ListMatchs(
+export const listMatches = /* GraphQL */ `
+  query ListMatches(
     $filter: ModelMatchFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listMatchs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listMatches(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         eventID

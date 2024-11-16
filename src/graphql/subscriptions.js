@@ -2,17 +2,17 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateEvent = /* GraphQL */ `
-  subscription OnCreateEvent($owner: String!) {
-    onCreateEvent(owner: $owner) {
+  subscription OnCreateEvent(
+    $filter: ModelSubscriptionEventFilterInput
+    $owner: String
+  ) {
+    onCreateEvent(filter: $filter, owner: $owner) {
       id
       date
       place
       type
       summary
       details
-      owner
-      createdAt
-      updatedAt
       matches {
         nextToken
         __typename
@@ -21,22 +21,25 @@ export const onCreateEvent = /* GraphQL */ `
         nextToken
         __typename
       }
+      owner
+      createdAt
+      updatedAt
       __typename
     }
   }
 `;
 export const onUpdateEvent = /* GraphQL */ `
-  subscription OnUpdateEvent($owner: String!) {
-    onUpdateEvent(owner: $owner) {
+  subscription OnUpdateEvent(
+    $filter: ModelSubscriptionEventFilterInput
+    $owner: String
+  ) {
+    onUpdateEvent(filter: $filter, owner: $owner) {
       id
       date
       place
       type
       summary
       details
-      owner
-      createdAt
-      updatedAt
       matches {
         nextToken
         __typename
@@ -45,22 +48,25 @@ export const onUpdateEvent = /* GraphQL */ `
         nextToken
         __typename
       }
+      owner
+      createdAt
+      updatedAt
       __typename
     }
   }
 `;
 export const onDeleteEvent = /* GraphQL */ `
-  subscription OnDeleteEvent($owner: String!) {
-    onDeleteEvent(owner: $owner) {
+  subscription OnDeleteEvent(
+    $filter: ModelSubscriptionEventFilterInput
+    $owner: String
+  ) {
+    onDeleteEvent(filter: $filter, owner: $owner) {
       id
       date
       place
       type
       summary
       details
-      owner
-      createdAt
-      updatedAt
       matches {
         nextToken
         __typename
@@ -69,13 +75,19 @@ export const onDeleteEvent = /* GraphQL */ `
         nextToken
         __typename
       }
+      owner
+      createdAt
+      updatedAt
       __typename
     }
   }
 `;
 export const onCreateMatch = /* GraphQL */ `
-  subscription OnCreateMatch($owner: String!) {
-    onCreateMatch(owner: $owner) {
+  subscription OnCreateMatch(
+    $filter: ModelSubscriptionMatchFilterInput
+    $owner: String
+  ) {
+    onCreateMatch(filter: $filter, owner: $owner) {
       id
       eventID
       orderID
@@ -89,8 +101,11 @@ export const onCreateMatch = /* GraphQL */ `
   }
 `;
 export const onUpdateMatch = /* GraphQL */ `
-  subscription OnUpdateMatch($owner: String!) {
-    onUpdateMatch(owner: $owner) {
+  subscription OnUpdateMatch(
+    $filter: ModelSubscriptionMatchFilterInput
+    $owner: String
+  ) {
+    onUpdateMatch(filter: $filter, owner: $owner) {
       id
       eventID
       orderID
@@ -104,8 +119,11 @@ export const onUpdateMatch = /* GraphQL */ `
   }
 `;
 export const onDeleteMatch = /* GraphQL */ `
-  subscription OnDeleteMatch($owner: String!) {
-    onDeleteMatch(owner: $owner) {
+  subscription OnDeleteMatch(
+    $filter: ModelSubscriptionMatchFilterInput
+    $owner: String
+  ) {
+    onDeleteMatch(filter: $filter, owner: $owner) {
       id
       eventID
       orderID
@@ -119,8 +137,11 @@ export const onDeleteMatch = /* GraphQL */ `
   }
 `;
 export const onCreatePlayer = /* GraphQL */ `
-  subscription OnCreatePlayer($owner: String!) {
-    onCreatePlayer(owner: $owner) {
+  subscription OnCreatePlayer(
+    $filter: ModelSubscriptionPlayerFilterInput
+    $owner: String
+  ) {
+    onCreatePlayer(filter: $filter, owner: $owner) {
       id
       eventID
       index
@@ -133,8 +154,11 @@ export const onCreatePlayer = /* GraphQL */ `
   }
 `;
 export const onUpdatePlayer = /* GraphQL */ `
-  subscription OnUpdatePlayer($owner: String!) {
-    onUpdatePlayer(owner: $owner) {
+  subscription OnUpdatePlayer(
+    $filter: ModelSubscriptionPlayerFilterInput
+    $owner: String
+  ) {
+    onUpdatePlayer(filter: $filter, owner: $owner) {
       id
       eventID
       index
@@ -147,8 +171,11 @@ export const onUpdatePlayer = /* GraphQL */ `
   }
 `;
 export const onDeletePlayer = /* GraphQL */ `
-  subscription OnDeletePlayer($owner: String!) {
-    onDeletePlayer(owner: $owner) {
+  subscription OnDeletePlayer(
+    $filter: ModelSubscriptionPlayerFilterInput
+    $owner: String
+  ) {
+    onDeletePlayer(filter: $filter, owner: $owner) {
       id
       eventID
       index

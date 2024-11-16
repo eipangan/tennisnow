@@ -13,9 +13,6 @@ export const createEvent = /* GraphQL */ `
       type
       summary
       details
-      owner
-      createdAt
-      updatedAt
       matches {
         nextToken
         __typename
@@ -24,6 +21,9 @@ export const createEvent = /* GraphQL */ `
         nextToken
         __typename
       }
+      owner
+      createdAt
+      updatedAt
       __typename
     }
   }
@@ -40,9 +40,6 @@ export const updateEvent = /* GraphQL */ `
       type
       summary
       details
-      owner
-      createdAt
-      updatedAt
       matches {
         nextToken
         __typename
@@ -51,6 +48,9 @@ export const updateEvent = /* GraphQL */ `
         nextToken
         __typename
       }
+      owner
+      createdAt
+      updatedAt
       __typename
     }
   }
@@ -67,9 +67,6 @@ export const deleteEvent = /* GraphQL */ `
       type
       summary
       details
-      owner
-      createdAt
-      updatedAt
       matches {
         nextToken
         __typename
@@ -78,6 +75,9 @@ export const deleteEvent = /* GraphQL */ `
         nextToken
         __typename
       }
+      owner
+      createdAt
+      updatedAt
       __typename
     }
   }
